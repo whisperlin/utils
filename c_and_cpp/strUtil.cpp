@@ -4,6 +4,20 @@
 #include <string>
 #include <vector>
 
+std::string string_combine_path(std::string  path0, std::string path1)
+{
+	path0 = replace_all(path0,"\\","/");
+	path1 = replace_all(path1, "\\", "/");
+	int len = path0.size();
+	if (len > 0 && path0.c_str()[len - 1] != '/')
+	{
+		path0 = path0 + "/";
+	}
+	path0 = path0 + path1;
+	path0 = replace_all(path0, "//", "/");
+	path0 = string_remove_dot_dot(path0);
+	return path0;
+}
 int string_split(std::vector<std::string>& dst, const std::string& src, const std::string& separator)
 {
 	if (src.empty() || separator.empty())
@@ -151,4 +165,9 @@ const char * std_replay_all(const char * text, const char * str1, const char * s
 	char * res = (char*)malloc(len * sizeof(char));
 	strcpy_s(res, len, path0.c_str());
 	return res;
+}
+void std_combine_path(const char * path0, const char * path1, char *result, int size)
+{
+	std::string  path = string_combine_path(path0, path1);
+	strcpy_s(result, size, path.c_str());
 }
