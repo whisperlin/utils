@@ -628,3 +628,46 @@ void	ini_get_value(int *handle, const char *section, const char *key, char *temp
 
 }
 #endif
+
+
+
+
+/*
+char section[255];
+char key[255];
+char value[255];
+int * handle = ini_load("[GAME]\nenv = test\nversion = 0\n[SEC]asset_http_addr = web01 - s3.s3.ejoy.com\nasset_http_port = 19780");
+int len = ini_get_section_count(handle);
+for (int i = 0; i < len; i++)
+{
+ini_get_section_by_index(handle, i, section, 255);
+printf("[%s]\n", section);
+
+int len2 = ini_get_value_count(handle, section);
+for (int j = 0; j < len2; j++)
+{
+ini_get_key_by_index(handle, section, j, key, 255);
+ini_get_value(handle, section, key, value, 255);
+
+printf("%s = %s\n", key, value);
+}
+
+}
+ini_release(&handle);
+
+inifile::IniFile ini;
+ini.loadFromString("[GAME]\nenv = test\nversion = 0\n[SEC]asset_http_addr = web01 - s3.s3.ejoy.com\nasset_http_port = 19780");
+int len = ini.getSectionCount();
+for (int i = 0; i < len; i++)
+{
+std::string s = ini.getSectionByIndex(i);
+printf("[%s]\n", s.c_str());
+int len2 = ini.getValueCount(s);
+for (int j = 0; j < len2; j++)
+{
+std::string key = ini.getValueKeyByIndex(s, j);
+std::string value;
+ini.getValue(s, key, value);
+printf("%s = %s\n", key.c_str(), value.c_str());
+}
+}*/
