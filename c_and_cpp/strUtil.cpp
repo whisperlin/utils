@@ -1,12 +1,16 @@
 
 #include "strUtil.h"
 #include "strUtil.hpp"
+#include "string_extern.h"
 #include <string>
 #include <vector>
 
+
+
+
 std::string string_combine_path(std::string  path0, std::string path1)
 {
-	path0 = replace_all(path0,"\\","/");
+	path0 = replace_all(path0, "\\", "/");
 	path1 = replace_all(path1, "\\", "/");
 	int len = path0.size();
 	if (len > 0 && path0.c_str()[len - 1] != '/')
@@ -93,7 +97,6 @@ std::string string_relative_path(std::string fullpath, std::string root)
 	fullpath = string_remove_dot_dot(fullpath);
 	root = string_remove_dot_dot(root);
 	size_t pos = 0;
-
 	if ((pos = fullpath.find(root)) != 0)
 	{
 		return fullpath;
@@ -108,7 +111,7 @@ std::string string_relative_path(std::string fullpath, std::string root)
 		return fullpath.substr(len + 1);
 	}
 }
- 
+
 std::string   replace_all(std::string   str, const   std::string&   old_value, const   std::string&   new_value)
 {
 	for (std::string::size_type pos(0); pos != std::string::npos; pos += new_value.length()) {
@@ -153,8 +156,8 @@ void std_split(const char*text, const char*spe, char*** result, int *size)
 		for (int i = 0; i < len; i++)
 		{
 			int len2 = res[i].size();
-			ary[i] = (char *)malloc((len2+1) * sizeof(char));
-			strcpy_s(ary[i], len2+1,res[i].c_str());
+			ary[i] = (char *)malloc((len2 + 1) * sizeof(char));
+			strcpy_s(ary[i], len2 + 1, res[i].c_str());
 		}
 	}
 }
@@ -170,4 +173,17 @@ void std_combine_path(const char * path0, const char * path1, char *result, int 
 {
 	std::string  path = string_combine_path(path0, path1);
 	strcpy_s(result, size, path.c_str());
+}
+void std_relative_path_ex(const char * path1, const char * path2, char *result, int count)
+{
+	std::string path0 = string_relative_path(path1, path2);
+	strcpy_s(result, count, path0.c_str());
+
+}
+char * std_str_clone(char * text)
+{
+	int size = strlen(text);
+	char * p = (char*)malloc((size + 1) * sizeof(char));
+	strcpy_s(p, size + 1, text);
+	return p;
 }
