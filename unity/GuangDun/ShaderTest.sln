@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{DBE3A95B-EDCE-5C2F-2F3A-EB1F9ACF6703}") = "ShaderTest", "Assembly-CSharp.csproj", "{3443BF3C-EAD6-E465-BADD-506AA56CA658}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3443BF3C-EAD6-E465-BADD-506AA56CA658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3443BF3C-EAD6-E465-BADD-506AA56CA658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3443BF3C-EAD6-E465-BADD-506AA56CA658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3443BF3C-EAD6-E465-BADD-506AA56CA658}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
