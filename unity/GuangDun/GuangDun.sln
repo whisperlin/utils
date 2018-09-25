@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuangDun", "GuangDun.csproj", "{45177F2D-ADC2-98CC-2EF7-25191D377AC7}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuangDun", "Assembly-CSharp.csproj", "{8CE53C37-73D6-B8D0-19F6-C83E7C27FFB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{45177F2D-ADC2-98CC-2EF7-25191D377AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45177F2D-ADC2-98CC-2EF7-25191D377AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45177F2D-ADC2-98CC-2EF7-25191D377AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45177F2D-ADC2-98CC-2EF7-25191D377AC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CE53C37-73D6-B8D0-19F6-C83E7C27FFB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CE53C37-73D6-B8D0-19F6-C83E7C27FFB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CE53C37-73D6-B8D0-19F6-C83E7C27FFB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CE53C37-73D6-B8D0-19F6-C83E7C27FFB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
