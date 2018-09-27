@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: SimpleSeaWave
+  m_Shader: {fileID: 4800000, guid: ecf227c4a76793f4e9fae8f682b6aea7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpTex:
+        m_Texture: {fileID: 2800000, guid: c5939a2aac815774c9954476bc919abe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CubeTex:
+        m_Texture: {fileID: 8900000, guid: 6d20e25586fb9ad4ba6135efd8dd9ffe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cubemap:
+        m_Texture: {fileID: 8900000, guid: 6d20e25586fb9ad4ba6135efd8dd9ffe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DepthMark:
+        m_Texture: {fileID: 2800000, guid: 724eb3cadba0c9b40a6c0cef5d85054c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmssionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GTex:
+        m_Texture: {fileID: 2800000, guid: e34f32f28ff361749bb8732b0e2845c7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GTexcolor:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IBL_Diffuse:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 64e7766099ad46747a07014e44d0aea1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 06f9b7a069c36ca46aae89d41272f5b9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaterTex:
+        m_Texture: {fileID: 2800000, guid: e34690ea357e3254094206e7e7bc982a, type: 3}
+        m_Scale: {x: 3, y: 3}
+        m_Offset: {x: 0, y: 0}
+    - _WaveTex:
+        m_Texture: {fileID: 2800000, guid: 1c78cad182b3dc94b98a6c35d044fe07, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - GlobeLight: 1
+    - IBL_Blur: 0.39
+    - IBL_Intensity: 1
+    - SBL_Intensity: 0.78
+    - _AddAlbedo: 0.3
+    - _Alpha: 0.847
+    - _BP_Gloss: 0
+    - _BlinnPhongSP: 1
+    - _Cutoff: 0.5
+    - _DepthPower: 1.05
+    - _EmissionIntensity: 0
+    - _Gama: -1
+    - _Gloss: 0.71
+    - _GlossPower: 0.9
+    - _Glossxx: 0.85
+    - _Linear: 1.4
+    - _MetallicPower: 1.53
+    - _NoiseRange: 6.43
+    - _NormalIntensity: 1.08
+    - _Refract: 0.22
+    - _SkinIntensity: 0
+    - _Specular: 0.11
+    - _WaterSpeed: 0.74
+    - _WaveDelta: 2.43
+    - _WaveRange: 0.3
+    - _WaveSpeed: -12.64
+    - _waveIntensity: 1
+    m_Colors:
+    - _AmbientLight: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DeepColor: {r: 0.030276809, g: 0.29411763, b: 0.21769476, a: 1}
+    - _GTexcolor: {r: 1, g: 1, b: 1, a: 1}
+    - _Range: {r: 0.13, g: 1.53, b: 0.37, a: 0.78}
+    - _SkinColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TopColor: {r: 0.066176474, g: 0.066176474, b: 0.066176474, a: 1}
+    - _WaterTexColor: {r: 0.09558821, g: 0.09558821, b: 0.09558821, a: 1}
+    - _WaveColor: {r: 1, g: 1, b: 1, a: 1}
