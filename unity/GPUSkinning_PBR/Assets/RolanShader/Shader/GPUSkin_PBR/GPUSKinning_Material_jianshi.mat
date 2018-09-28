@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GPUSKinning_Material_jianshi
+  m_Shader: {fileID: 4800000, guid: df893b33bd46ac146b6d7b7d978c4489, type: 3}
+  m_ShaderKeywords: ROOTOFF_BLENDOFF _ENABLE_CUT _SHADER_LEVEL_MID
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 0a657137ff62caf4cb7fe77335565690, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmssionMap:
+        m_Texture: {fileID: 2800000, guid: ba400f5ba7d63dd42b73e042e8e9af26, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IBL_Diffuse:
+        m_Texture: {fileID: 8900000, guid: 857d9d54c4eb6c34eb1e81296c00ec59, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: ba400f5ba7d63dd42b73e042e8e9af26, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatCap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 2800000, guid: 528ebe8f226392d499322c36deca1504, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicTex:
+        m_Texture: {fileID: 2800000, guid: 528ebe8f226392d499322c36deca1504, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Uv:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _node_3655:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - GlobeLight: 1
+    - IBL_Blur: 6
+    - IBL_Intensity: 1.45
+    - SBL_Intensity: 0.27
+    - _BP_Gloss: 0.161
+    - _Blend: 0.5
+    - _BlinnPhongSP: 0.87
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DISABLE_IBL_DIFFUSE: 0
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _ENABLE_CUT: 1
+    - _EmissionIntensity: 0.72
+    - _FogPower: 0.5
+    - _FogmaxPower: 0
+    - _Gama: 0
+    - _Gloss: 1
+    - _GlossMapScale: 1
+    - _GlossPower: 1.44
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _MatCapFactor: 0.45
+    - _Metallic: 0
+    - _MetallicPower: 0.78
+    - _Mode: 0
+    - _NormalIntensity: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SHADER_LEVEL: 1
+    - _SkinIntensity: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    - __dirty: 1
+    - _speed: 0.1
+    - powersp: 1
+    m_Colors:
+    - _AmbientLight: {r: 1, g: 0.9883367, b: 0.8308824, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FogColor: {r: 1, g: 1, b: 1, a: 0}
+    - _IBL_Color: {r: 0.25735295, g: 0.25735295, b: 0.25735295, a: 1}
+    - _Skin: {r: 1, g: 1, b: 1, a: 1}

@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPUSkinning_PBR", "Assembly-CSharp.csproj", "{A7C444D7-E414-9EDC-5317-7413C5C656BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPUSkinning_PBR", "Assembly-CSharp-Editor.csproj", "{2A46DC81-D5D4-EE62-75A3-E79E43132BBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7C444D7-E414-9EDC-5317-7413C5C656BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C444D7-E414-9EDC-5317-7413C5C656BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C444D7-E414-9EDC-5317-7413C5C656BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C444D7-E414-9EDC-5317-7413C5C656BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A46DC81-D5D4-EE62-75A3-E79E43132BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A46DC81-D5D4-EE62-75A3-E79E43132BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A46DC81-D5D4-EE62-75A3-E79E43132BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A46DC81-D5D4-EE62-75A3-E79E43132BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
