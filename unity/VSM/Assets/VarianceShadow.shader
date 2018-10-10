@@ -30,8 +30,9 @@
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
-				float4 lv_pos : TEXCOORD1;
-				float dep : TEXCOORD2;
+				float2 lvuv : TEXCOORD1;
+				float4 lv_pos : TEXCOORD2;
+				float dep : TEXCOORD3;
 			};
 
 			sampler2D _MainTex;
@@ -42,9 +43,13 @@
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				float4 wpos = mul(unity_ObjectToWorld, v.vertex); 
-				o.lv_pos =   mul(_WorldToLight, wpos); 
+				float4 lv_pos =   mul(_WorldToLight, wpos); 
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				o.dep =  o.lv_pos.z / o.lv_pos.w;
+				float2 uv =  float2( (lv_pos.x+1)/2  , (lv_pos.y+1)/2);
+				//uv.x = 1 - uv.x;
+				uv.y = 1-uv.y;
+				o.lvuv = uv;
+				o.dep =  lv_pos.z / lv_pos.w;
 				return o;
 			}
 			
@@ -54,14 +59,8 @@
 			{
 				// sample the texture
 				float4 col = tex2D(_MainTex, i.uv);
-				float2 uv =  float2( (i.lv_pos.x+1)/2  , (i.lv_pos.y+1)/2);
-				//uv.x = 1 - uv.x;
-				uv.y = 1-uv.y;
-
-				float d = i.lv_pos.z / i.lv_pos.w;
- 
-		 		float s = chebyshevUpperBound(d,uv);
-			
+				float d = i.dep;
+		 		float s = chebyshevUpperBound(d,i.lvuv);
 				return col *s;
 			}
 			ENDCG
