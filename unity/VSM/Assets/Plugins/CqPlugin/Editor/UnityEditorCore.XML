@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UnityEditorCore</name>
+    </assembly>
+    <members>
+        <member name="F:CqCurveDrawer.oprState">
+            <summary>
+            0.移动 1.添加/删除 2.切线
+            </summary>
+        </member>
+        <member name="F:CqCurveDrawer.lastMat">
+            <summary>
+            上一次多边形所在的矩阵
+            </summary>
+        </member>
+        <member name="F:CqCurveDrawer.plane">
+            <summary>
+            顶点所在平面
+            </summary>
+        </member>
+        <member name="M:UnityDelayEditor.Call(System.Single,System.Action)">
+            <summary>
+            延迟second秒后,执行action
+            </summary>
+        </member>
+        <member name="T:CqLabelAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:CqQuaternionAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:CqPropertyDrawer`1">
+            <summary>
+            当在编辑面板上右键弹出菜单时,OnGUI不会执行，关闭菜单后才会触发
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:PropertySceneDrawer">
+            <summary>
+            可以在编辑场景中绘制的,属性基类
+            </summary>
+        </member>
+        <member name="T:UnityEditorCore.ListBoxAttributeDrawer">
+            <summary>
+            绘制列表框
+            </summary>
+        </member>
+        <member name="T:UnityEditorCore.RectAttributeDrawer">
+            <summary>
+            绘制区域
+            </summary>
+        </member>
+        <member name="T:UnityEditorCore.ButtonAttributeDrawer">
+            <summary>
+            绘制列表框
+            </summary>
+        </member>
+        <member name="M:UnityEditorCore.ButtonAttributeDrawer.OnCqGUI(UnityEditor.SerializedProperty)">
+            <summary>
+            当面板绘制时
+            </summary>
+        </member>
+        <member name="T:UnityEditorCore.ButtonsAttributeDrawer">
+            <summary>
+            绘制多按钮(修饰枚举变量,位的方式)
+            </summary>
+        </member>
+        <member name="M:UnityEditorCore.ButtonsAttributeDrawer.OnCqGUI(UnityEditor.SerializedProperty)">
+            <summary>
+            当面板绘制时
+            </summary>
+        </member>
+        <member name="T:UnityEditorCore.CheckBoxAttributeDrawer">
+            <summary>
+            绘制勾选框
+            </summary>
+        </member>
+        <member name="M:UnityEditorCore.CheckBoxAttributeDrawer.OnCqGUI(UnityEditor.SerializedProperty)">
+            <summary>
+            当面板绘制时
+            </summary>
+        </member>
+        <member name="T:UnityEditorCore.ComBoxAttributeDrawer">
+            <summary>
+            绘制组合框
+            </summary>
+        </member>
+        <member name="T:ColorAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:CurveAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:SliderAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:TextBoxAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:PolygonAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="F:PolygonAttributeDrawer.plane">
+            <summary>
+            顶点所在平面
+            </summary>
+        </member>
+        <member name="F:PolygonAttributeDrawer.lastMat">
+            <summary>
+            上一次多边形所在的矩阵
+            </summary>
+        </member>
+        <member name="F:PolygonAttributeDrawer.oprState">
+            <summary>
+            0.正常 1.移动顶点 2.添加
+            </summary>
+        </member>
+        <member name="M:PolygonAttributeDrawer.Check(System.Collections.Generic.IList{UnityEngine.Vector2},System.Single)">
+            <summary>
+            当顶点不够构成一个平面时,初始化3个顶点
+            </summary>
+        </member>
+        <member name="T:VectorAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="M:CqEditorGUI.BeginDrawer(UnityEngine.Rect,UnityEditor.SerializedProperty,UnityEngine.GUIContent)">
+            <summary>
+            刚开始绘制时position的x=0,y=绘制起点的列坐标 width宽度为列宽
+            </summary>
+        </member>
+        <member name="M:CqEditorGUI.EndDrawer">
+            <summary>
+            结束属性绘制返回编辑器高度
+            </summary>
+        </member>
+        <member name="M:CqEditorGUI.DrawControlFromStart(System.Single,System.Single,System.Single)">
+            <summary>
+            获取一个将要绘制的控件的区域(从编辑面板的最后向前定位)
+            </summary>
+        </member>
+        <member name="M:CqEditorGUI.DrawControlToEnd(System.Single,System.Single,System.Single)">
+            <summary>
+            获取一个将要绘制的控件的区域(从编辑面板的最后向前定位)
+            </summary>
+        </member>
+        <member name="M:CqEditorGUI.BaseDrawControl(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            获取一个将要绘制的控件的区域,基于起始描点的偏移和终止描点的偏移来定位区域
+            </summary>
+        </member>
+        <member name="M:CqEditorGUI.FolderOut(System.Boolean,System.String)">
+            <summary>
+            折叠标签
+            </summary>
+        </member>
+        <member name="T:ComponentPropertyAttributeDrawer">
+            <summary>
+            继承PropertyDrawer, 必须放入Editor文件夹下
+            </summary>
+        </member>
+        <member name="T:SetPropertyDrawer">
+            <summary>
+            提供Inspector编辑属性时,回调方法
+            </summary>
+        </member>
+        <member name="T:UnityCore.UnityEditorThread">
+            <summary>
+            由UnityEdtior线程调用异步函数
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityEditorThread.Call(System.Action)">
+            <summary>
+            由Unity主线程调用异步函数
+            </summary>
+        </member>
+        <member name="T:EditorGlobalCoroutine">
+            <summary>
+            编辑器模式下的协程支持
+            </summary>
+        </member>
+        <member name="M:EditorGlobalCoroutine.#cctor">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:EditorGlobalCoroutine.Call(System.Single,System.Action)">
+            <summary>
+            延迟second秒后,执行action
+            </summary>
+        </member>
+        <member name="M:UnityEditor.SelectionUtil.ChangedOnce(System.Action)">
+            <summary>
+            当Hierarchy面板选中改变时回调一次
+            </summary>
+        </member>
+        <member name="T:ComponentPropertyWindow">
+            <summary>
+            通过面板编辑器选择一个组件的属性或者字段或者方法
+            </summary>
+        </member>
+        <member name="M:ComponentPropertyWindow.EditObject(UnityEngine.GameObject,System.Action{UnityEngine.Component,System.String,System.Reflection.MemberTypes},System.Type[],System.Reflection.MemberTypes)">
+            <summary>
+            弹出一个面板,列出obj 的组件列表,
+            选中组件后列出所有是allowTypes之中的类型的成员.
+            回调选中的成员
+            </summary>
+        </member>
+        <member name="F:ComponentPropertyWindow.OnSelectTarget">
+            <summary>
+            Component 组件,string 属性名/字段名/方法名
+            </summary>
+        </member>
+        <member name="M:ComponentPropertyWindow.isValidType(System.Type)">
+            <summary>
+            是否是一个满足需求的类型
+            </summary>
+        </member>
+        <member name="T:CqEaseWindow">
+            <summary>
+            获取一个预设的缓动
+            </summary>
+        </member>
+        <member name="T:FormMapWindow">
+            <summary>
+            二维bool数组编辑器
+            </summary>
+        </member>
+    </members>
+</doc>
