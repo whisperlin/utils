@@ -1,0 +1,99 @@
+#version 100
+
+
+attribute vec4 _glesVertex;
+attribute vec4 _glesColor;
+attribute vec4 _glesMultiTexCoord0;
+attribute vec4 _glesMultiTexCoord1;
+uniform highp vec4 _Time;
+uniform highp vec3 _WorldSpaceCameraPos;
+uniform highp mat4 unity_World2Shadow[4];
+uniform highp mat4 glstate_matrix_mvp;
+uniform highp mat4 _Object2World;
+uniform highp vec4 unity_FogParams;
+uniform highp vec4 _NormalMap_ST;
+uniform highp vec4 _MaskMap_ST;
+uniform highp vec4 _Speed;
+uniform highp vec4 _Wave1;
+uniform highp vec4 _Wave2;
+uniform highp vec4 _Wave3;
+uniform highp vec4 _Wave4;
+uniform highp vec4 _ReflectionTex_ST;
+uniform highp mat4 _ProjMatrix;
+varying highp vec4 xlv_COLOR;
+varying highp vec4 xlv_TEXCOORD0;
+varying highp vec4 xlv_TEXCOORD1;
+varying highp vec4 xlv_TEXCOORD2;
+varying highp vec3 xlv_TEXCOORD3;
+varying highp vec3 xlv_TEXCOORD4;
+varying highp vec4 xlv_TEXCOORD5;
+varying mediump vec4 xlv_TEXCOORD6;
+varying highp float xlv_TEXCOORD7;
+void main ()
+{
+  lowp vec4 tmpvar_1;
+  tmpvar_1 = _glesColor;
+  highp vec4 vertex_2;
+  highp vec4 tmpvar_3;
+  highp vec4 tmpvar_4;
+  highp vec4 tmpvar_5;
+  highp vec4 tmpvar_6;
+  highp vec4 tmpvar_7;
+  highp vec3 tmpvar_8;
+  highp vec4 tmpvar_9;
+  mediump vec4 tmpvar_10;
+  vertex_2.xzw = _glesVertex.xzw;
+  vertex_2.y = (_glesVertex.y - ((0.2 - 
+    ((sin((
+      (normalize(_glesVertex.xyz) * _Time.z)
+    .x * 2.0)) * 0.2) * (1.0 - _glesColor.w))
+  ) * _glesMultiTexCoord0.y));
+  tmpvar_3 = (glstate_matrix_mvp * vertex_2);
+  tmpvar_4 = tmpvar_1;
+  tmpvar_9.xyz = vertex_2.xyz;
+  tmpvar_5.xy = _glesMultiTexCoord0.xy;
+  tmpvar_9.w = _glesMultiTexCoord1.x;
+  highp vec2 tmpvar_11;
+  tmpvar_11.x = sin(_Wave1.w);
+  tmpvar_11.y = cos(_Wave1.w);
+  highp vec2 tmpvar_12;
+  tmpvar_12 = (_glesVertex.xz * _NormalMap_ST.xy);
+  tmpvar_6.xy = (((tmpvar_12 + _NormalMap_ST.zw) * _Wave1.y) + ((_Time.y * _Wave1.x) * tmpvar_11));
+  highp vec2 tmpvar_13;
+  tmpvar_13.x = sin(_Wave2.w);
+  tmpvar_13.y = cos(_Wave2.w);
+  tmpvar_6.zw = (((tmpvar_12 + _NormalMap_ST.zw) * _Wave2.y) + ((_Time.y * _Wave2.x) * tmpvar_13));
+  highp vec2 tmpvar_14;
+  tmpvar_14.x = sin(_Wave3.w);
+  tmpvar_14.y = cos(_Wave3.w);
+  tmpvar_7.xy = (((tmpvar_12 + _NormalMap_ST.zw) * _Wave3.y) + ((_Time.y * _Wave3.x) * tmpvar_14));
+  highp vec2 tmpvar_15;
+  tmpvar_15.x = sin(_Wave4.w);
+  tmpvar_15.y = cos(_Wave4.w);
+  tmpvar_7.zw = (((tmpvar_12 + _NormalMap_ST.zw) * _Wave4.y) + ((_Time.y * _Wave4.x) * tmpvar_15));
+  highp vec3 tmpvar_16;
+  tmpvar_16 = (_WorldSpaceCameraPos - vertex_2.xyz);
+  highp vec4 tmpvar_17;
+  tmpvar_17 = (_Object2World * _glesVertex);
+  tmpvar_5.zw = ((tmpvar_17.xz * _MaskMap_ST.xy) + _MaskMap_ST.zw);
+  highp mat3 tmpvar_18;
+  tmpvar_18[0] = _ProjMatrix[0].xyz;
+  tmpvar_18[1] = _ProjMatrix[1].xyz;
+  tmpvar_18[2] = _ProjMatrix[2].xyz;
+  tmpvar_8 = (tmpvar_18 * tmpvar_16);
+  tmpvar_8.xy = (tmpvar_8.xy / tmpvar_8.z);
+  tmpvar_8.xy = (((tmpvar_8.xy + 
+    (_Speed.xy * _Time.xx)
+  ) * _ReflectionTex_ST.xy) + _ReflectionTex_ST.zw);
+  tmpvar_10 = (unity_World2Shadow[0] * tmpvar_17);
+  gl_Position = tmpvar_3;
+  xlv_COLOR = tmpvar_4;
+  xlv_TEXCOORD0 = tmpvar_5;
+  xlv_TEXCOORD1 = tmpvar_6;
+  xlv_TEXCOORD2 = tmpvar_7;
+  xlv_TEXCOORD3 = normalize(tmpvar_16.zxy);
+  xlv_TEXCOORD4 = tmpvar_8;
+  xlv_TEXCOORD5 = tmpvar_9;
+  xlv_TEXCOORD6 = tmpvar_10;
+  xlv_TEXCOORD7 = ((tmpvar_3.z * unity_FogParams.z) + unity_FogParams.w);
+}
