@@ -61,7 +61,7 @@
                 o.diff = nl * _Diffuse * _LightColor0;
 
 
-                o.ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * _Diffuse;
+                o.ambient =  ShadeSH9(half4(worldNormal,1)) * _Diffuse;
                 return o;
             }
             
