@@ -63,6 +63,10 @@ public class CubemapSHProjector : EditorWindow
                     {
                         view_mat.SetVector("c" + i.ToString(), coefficients[i]);
                         view_mat.SetTexture("input", input_cubemap);
+						string param = "g_sph"+i.ToString();
+						Shader.SetGlobalVector(param ,  coefficients[i]);
+						Debug.Log (param + " " + coefficients [i].ToString ());
+						//Shader.SetGlobalFloatArray ();
                     }
 
                     SceneView.RepaintAll();

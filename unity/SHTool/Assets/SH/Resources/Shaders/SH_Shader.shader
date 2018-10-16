@@ -48,6 +48,7 @@
 				UNITY_TRANSFER_FOG(o,o.vertex);
 
 				float4 sh_0 = v.color;
+
 				float4 sh_1 = float4(v.uv2, v.uv3);
 				float sh_2 = v.uv4.x;
 
@@ -57,7 +58,7 @@
 				float b = (dot(sh_0, float4(0.5759, -0.0224, 0.0385, -0.0363)) + dot(sh_1, float4(-0.039, 0.0004, -0.0751, -0.0476)) - sh_2 * 0.2214);
 
 				o.radiance = float4(r, b, g, 1) * 0.4;
-
+		
 				return o;
 			}
 			
