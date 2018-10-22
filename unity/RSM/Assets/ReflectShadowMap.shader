@@ -105,54 +105,37 @@
 				
 				
 				fixed3 amblentColor = fixed3(0,0,0);
-			 for(float j = 0; j < 8; j++) 
-			 {
-				for(float  k = 0 ; k < 8 ; k++)
-				{
-			  
-					float2 uv0 = float2(j/8,k/8);
-					//uv0 = float2(0.75,0.75);
+				 for(float j = 0; j < 8; j++) 
+				 {
+					for(float  k = 0 ; k < 8 ; k++)
+					{
+						float2 uv0 = float2(j/8,k/8);
+						float4 _wn = tex2D(_RSM_NORMAL,  uv0) * 2 - float4(1,1,1,0) ;   //世界法线.
+						_wn = normalize(_wn);
 
+						float3 _col = tex2D(_RSM_LIGHT,  uv0);//漫反光点颜色.
 
-					float4 _wn = tex2D(_RSM_NORMAL,  uv0) * 2 - float4(1,1,1,0) ;   //世界法线.
-					_wn = normalize(_wn);
-					float3 _col = tex2D(_RSM_LIGHT,  uv0);//反光点颜色.
+						float4 word  = GetWorldPositionFromDepth(uv0);
 
+						//这部放到前面去了.
+						//反光点漫射一次. 一般还会乘多一个材质反射强度.
+						//这步移到MRT去了.
+						//float nl = max(0,dot(-_G_WorldSpaceLightDir,_wn));
+						//_col = _col*nl;
 
-					//float  _d =  DecodeFloatRGBA( tex2D(_ShadowTex,  uv0)  )  ;//反射点的深度，用来反推世界坐标。
+						//反射点到当前点的方向.
+						float3 _dir2 =  i.worldPos  -  word ;
+						float dis = length(_dir2);
 
+						_dir2 =  normalize(_dir2) ;
+						//当前点的间接光照漫反射. 
+						float nl2 = max(0,dot(-_dir2,i.worldNormal)) ;
+						_col = _col*nl2  / dis ;
 
-	 
-					float4 word  = GetWorldPositionFromDepth(uv0);
-					//word.z = 0;
-					//word = float4(2,5,0,0);
-					//word = float4(5,2,0,0);
+						amblentColor += _col   ;
 
-					//反光点漫射一次. 一般还会乘多一个材质反射强度.
-					float nl = max(0,dot(-_G_WorldSpaceLightDir,_wn));
-
-					_col = _col*nl;
-					//return float4(_col,1);
-
-					//反射点到当前点的方向.
-					float3 _dir2 =  i.worldPos  -  word ;
-					float dis = length(_dir2);
-
-					_dir2 =  normalize(_dir2) ;
-					//当前点的间接光照漫反射. 
-					float nl2 = max(0,dot(-_dir2,i.worldNormal)) ;
-					_col = _col*nl2  / dis ;
-
-					//
-				 
-
-					amblentColor += _col   ;
-					 
-
-
-				}
-			 }
-				 
+					}
+				 }
 
                 float3 c =  ambient +  ( spec + diff )*s  +  float4(amblentColor,1) * _InvPower; ;
 

@@ -18,6 +18,8 @@ Shader "Test/RSM"
 			#pragma vertex vert
 			#pragma fragment frag
 			#include "Shadow.cginc"
+
+			#include "Shadow.cginc"
 			// make fog work
 			#pragma multi_compile_fog
 			
@@ -34,7 +36,7 @@ Shader "Test/RSM"
 			{
 				float4 vertex : SV_POSITION;
 				float4 pos : TEXCOORD0;
-				float4 wnormal : TEXCOORD1;
+				float4 worldNormal : TEXCOORD1;
 			};
 			fixed4 EncodeNormial(fixed3 n)
 			{
@@ -54,12 +56,12 @@ Shader "Test/RSM"
 				float4 _pos = mul(_WorldToLight, wpos); 
 				//_pos = mul(_WorldToLightInv, _pos); 
 				//_pos = mul(_WorldToLight, _pos); 
-
+ 
  
 				o.vertex = _pos; 
  
  
-				o.wnormal =   normalize(  mul(unity_ObjectToWorld,v.normal) );
+				o.worldNormal =   normalize(  mul(unity_ObjectToWorld,v.normal) );
  
 		 
 				o.pos = o.vertex;
@@ -75,13 +77,18 @@ Shader "Test/RSM"
 			{
 				float depth = i.pos.z /i.pos.w;
 
+
+				float nl = max(0,dot(-_G_WorldSpaceLightDir,i.worldNormal));
+ 
+
 				RTMOut o;
-				o.color0 = _Color;//反射颜色
+				//o.color0 = _Color ;//漫反射颜色
+				o.color0 = _Color * nl;//漫反射颜色
  
 				o.color1 = EncodeFloatRGBA(depth);//深度
  
 
-				o.color2 =   EncodeNormial( i.wnormal );
+				o.color2 =   EncodeNormial( i.worldNormal );
 				return o;
 				 
 
