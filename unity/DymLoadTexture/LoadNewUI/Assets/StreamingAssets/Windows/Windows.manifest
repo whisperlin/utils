@@ -1,0 +1,27 @@
+ManifestFileVersion: 0
+CRC: 1438154927
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: image/img/table.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: image/prefab/image.unity3d
+      Dependencies:
+        Dependency_0: image/ok.unity3d
+        Dependency_1: image/shadedlg.unity3d
+        Dependency_2: image/timg.unity3d
+    Info_2:
+      Name: image/prefab/image2.unity3d
+      Dependencies:
+        Dependency_0: image/img/table.unity3d
+        Dependency_1: image/shadedlg.unity3d
+    Info_3:
+      Name: image/ok.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: image/shadedlg.unity3d
+      Dependencies: {}
+    Info_5:
+      Name: image/timg.unity3d
+      Dependencies: {}
