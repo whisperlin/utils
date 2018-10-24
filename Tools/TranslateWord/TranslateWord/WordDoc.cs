@@ -15,7 +15,7 @@ namespace TranslateWord
 
         static string Translate(string text)
         {
-            return text + "("+XiaoNiu.TranslateWord(text)+")";
+            return   "("+XiaoNiu.TranslateWord(text)+")";
         }
         static string TryTranslate(  string text, ref string temp)
         {

@@ -6,10 +6,12 @@ public class SetGlobalDecal : MonoBehaviour {
 
 	Camera cam;
 	public Texture2D tex;
-	readonly int _WorldToGlobalDecal = Shader.PropertyToID("WorldToGlobalDecal");
-	readonly int _GlobalDecalTex = Shader.PropertyToID("GlobalDecalTex");
+	int _WorldToGlobalDecal;
+	int _GlobalDecalTex;
 	// Use this for initialization
 	void Start () {
+		 _WorldToGlobalDecal = Shader.PropertyToID("WorldToGlobalDecal");
+		 _GlobalDecalTex = Shader.PropertyToID("GlobalDecalTex");
 		cam = GetComponent<Camera> ();
 	}
 	
