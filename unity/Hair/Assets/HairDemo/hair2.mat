@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New Material 2
-  m_Shader: {fileID: 4800000, guid: d1b82566079af324bb77ae2f6a95bd95, type: 3}
-  m_ShaderKeywords: _NORMALMAP
+  m_Name: hair2
+  m_Shader: {fileID: 4800000, guid: 24a3ee0d9d97a5d45b7294b732addb18, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -18,8 +18,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AmbientMap:
+        m_Texture: {fileID: 2800000, guid: 5705f2fc1302ea340a90c9525cc0428b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 63aad90a77746fd4598f85aa498c39ef, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -35,10 +39,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _IBL_Diffuse:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -58,24 +58,28 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SpecularTex:
+    - _SpecMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TangentMap:
-        m_Texture: {fileID: 0}
+    - _SpecShift:
+        m_Texture: {fileID: 2800000, guid: 61aca289342efab42ac526c491545308, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _diffuseMap:
+        m_Texture: {fileID: 2800000, guid: a8bc3d63ffc7d5445af397636724bf33, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _normalMap:
+        m_Texture: {fileID: 2800000, guid: b3a8ee8c6a185484194483585c6ea95a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Anisotropy: 1
+    - _AmbOcc: 1
     - _BumpScale: 1
-    - _Cutoff: 0.355
+    - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _Distortion: 1
     - _DstBlend: 0
-    - _Fresnel: 1
-    - _FresnelDamp: 1
-    - _Gloss: 0.749
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -83,15 +87,25 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Power: 1
-    - _Scale: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularPower: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - _alphaPower: 3
+    - _primaryShift: 1
+    - _secondaryShift: -1
+    - _specularPower: 16.3
+    - _specularPower2: 50
+    - primaryShift: 1
+    - secondaryShift: 1
+    - specExp1: 128
+    - specExp2: 128
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _diffuseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _specularColor: {r: 1, g: 0.86764705, b: 0.86764705, a: 1}
+    - _specularColor2: {r: 0.7403651, g: 0.7058823, b: 1, a: 1}
+    - specularColor1: {r: 1, g: 1, b: 1, a: 1}
+    - specularColor2: {r: 1, g: 1, b: 1, a: 1}
