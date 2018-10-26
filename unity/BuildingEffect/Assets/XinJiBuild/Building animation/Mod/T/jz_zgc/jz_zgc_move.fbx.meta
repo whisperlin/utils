@@ -1,0 +1,199 @@
+fileFormatVersion: 2
+guid: 6aa9ace2837bebb498ae2ff2ae6b01c1
+timeCreated: 1519973079
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: changeColor1
+    100002: changeColor10
+    100004: changeColor11
+    100006: changeColor2
+    100008: changeColor3
+    100010: changeColor4
+    100012: changeColor5
+    100014: changeColor6
+    100016: changeColor7
+    100018: changeColor8
+    100020: changeColor9
+    100022: //RootNode
+    100024: changeColor12
+    100026: changeColor13
+    400000: changeColor1
+    400002: changeColor10
+    400004: changeColor11
+    400006: changeColor2
+    400008: changeColor3
+    400010: changeColor4
+    400012: changeColor5
+    400014: changeColor6
+    400016: changeColor7
+    400018: changeColor8
+    400020: changeColor9
+    400022: //RootNode
+    400024: changeColor12
+    400026: changeColor13
+    2300000: changeColor1
+    2300002: changeColor10
+    2300004: changeColor11
+    2300006: changeColor2
+    2300008: changeColor3
+    2300010: changeColor4
+    2300012: changeColor5
+    2300014: changeColor6
+    2300016: changeColor7
+    2300018: changeColor8
+    2300020: changeColor9
+    2300022: changeColor12
+    2300024: changeColor13
+    3300000: changeColor1
+    3300002: changeColor10
+    3300004: changeColor11
+    3300006: changeColor2
+    3300008: changeColor3
+    3300010: changeColor4
+    3300012: changeColor5
+    3300014: changeColor6
+    3300016: changeColor7
+    3300018: changeColor8
+    3300020: changeColor9
+    3300022: changeColor12
+    3300024: changeColor13
+    4300000: changeColor1
+    4300002: changeColor2
+    4300004: changeColor3
+    4300006: changeColor4
+    4300008: changeColor5
+    4300010: changeColor6
+    4300012: changeColor7
+    4300014: changeColor8
+    4300016: changeColor9
+    4300018: changeColor10
+    4300020: changeColor11
+    4300022: changeColor13
+    4300024: changeColor12
+    7400000: move
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: move
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 40
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: changeColor1
+        weight: 1
+      - path: changeColor1/changeColor2
+        weight: 1
+      - path: changeColor1/changeColor3
+        weight: 1
+      - path: changeColor1/changeColor4
+        weight: 1
+      - path: changeColor1/changeColor5
+        weight: 1
+      - path: changeColor1/changeColor6
+        weight: 1
+      - path: changeColor1/changeColor7
+        weight: 1
+      - path: changeColor1/changeColor8
+        weight: 1
+      - path: changeColor1/changeColor9
+        weight: 1
+      - path: changeColor1/changeColor10
+        weight: 1
+      - path: changeColor1/changeColor11
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

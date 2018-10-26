@@ -1,0 +1,278 @@
+fileFormatVersion: 2
+guid: fa9a7e3f4d7d0574fb10dc4d2e0b552d
+timeCreated: 1516934684
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: changeColor1
+    100002: changeColor10
+    100004: changeColor11
+    100006: changeColor12
+    100008: changeColor13
+    100010: changeColor14
+    100012: changeColor15
+    100014: changeColor16
+    100016: changeColor17
+    100018: changeColor18
+    100020: changeColor19
+    100022: changeColor2
+    100024: changeColor20
+    100026: changeColor21
+    100028: changeColor22
+    100030: changeColor23
+    100032: changeColor3
+    100034: changeColor4
+    100036: changeColor5
+    100038: changeColor6
+    100040: changeColor7
+    100042: changeColor8
+    100044: changeColor9
+    100046: D
+    100048: //RootNode
+    100050: M
+    400000: changeColor1
+    400002: changeColor10
+    400004: changeColor11
+    400006: changeColor12
+    400008: changeColor13
+    400010: changeColor14
+    400012: changeColor15
+    400014: changeColor16
+    400016: changeColor17
+    400018: changeColor18
+    400020: changeColor19
+    400022: changeColor2
+    400024: changeColor20
+    400026: changeColor21
+    400028: changeColor22
+    400030: changeColor23
+    400032: changeColor3
+    400034: changeColor4
+    400036: changeColor5
+    400038: changeColor6
+    400040: changeColor7
+    400042: changeColor8
+    400044: changeColor9
+    400046: D
+    400048: //RootNode
+    400050: M
+    2300000: changeColor10
+    2300002: changeColor11
+    2300004: changeColor12
+    2300006: changeColor13
+    2300008: changeColor14
+    2300010: changeColor15
+    2300012: changeColor16
+    2300014: changeColor17
+    2300016: changeColor18
+    2300018: changeColor19
+    2300020: changeColor2
+    2300022: changeColor20
+    2300024: changeColor21
+    2300026: changeColor22
+    2300028: changeColor23
+    2300030: changeColor3
+    2300032: changeColor4
+    2300034: changeColor5
+    2300036: changeColor6
+    2300038: changeColor7
+    2300040: changeColor8
+    2300042: changeColor9
+    3300000: changeColor10
+    3300002: changeColor11
+    3300004: changeColor12
+    3300006: changeColor13
+    3300008: changeColor14
+    3300010: changeColor15
+    3300012: changeColor16
+    3300014: changeColor17
+    3300016: changeColor18
+    3300018: changeColor19
+    3300020: changeColor2
+    3300022: changeColor20
+    3300024: changeColor21
+    3300026: changeColor22
+    3300028: changeColor23
+    3300030: changeColor3
+    3300032: changeColor4
+    3300034: changeColor5
+    3300036: changeColor6
+    3300038: changeColor7
+    3300040: changeColor8
+    3300042: changeColor9
+    4300000: changeColor12
+    4300002: changeColor23
+    4300004: changeColor3
+    4300006: changeColor4
+    4300008: changeColor6
+    4300010: changeColor5
+    4300012: changeColor8
+    4300014: changeColor9
+    4300016: changeColor10
+    4300018: changeColor7
+    4300020: changeColor11
+    4300022: changeColor2
+    4300024: changeColor13
+    4300026: changeColor18
+    4300028: changeColor19
+    4300030: changeColor20
+    4300032: changeColor21
+    4300034: changeColor14
+    4300036: changeColor15
+    4300038: changeColor16
+    4300040: changeColor17
+    4300042: changeColor22
+    7400000: buildStart
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: buildStart
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 240
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: changeColor1
+        weight: 1
+      - path: changeColor1/changeColor12
+        weight: 1
+      - path: changeColor1/changeColor13
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor14
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor14/changeColor15
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor14/changeColor15/changeColor16
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor14/changeColor15/changeColor16/changeColor17
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor18
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor18/changeColor19
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor18/changeColor19/changeColor20
+        weight: 1
+      - path: changeColor1/changeColor13/changeColor18/changeColor19/changeColor20/changeColor21
+        weight: 1
+      - path: changeColor1/changeColor22
+        weight: 1
+      - path: changeColor1/changeColor23
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor3
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor4
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor4/changeColor5
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor4/changeColor6
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor7
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor8
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor8/changeColor9
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor8/changeColor10
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor11
+        weight: 1
+      - path: changeColor1/changeColor23/changeColor11/changeColor2
+        weight: 1
+      - path: changeColor1/D
+        weight: 1
+      - path: changeColor1/M
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
