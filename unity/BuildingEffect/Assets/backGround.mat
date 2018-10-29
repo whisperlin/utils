@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: backGround
-  m_Shader: {fileID: 10703, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: ae94da7bea5d1054795866597d274ab3, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,7 +19,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d44b2d35edc26f942bc3aad48f097ea7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -38,12 +38,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ImageLight:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 19cb3c775c1862146a9a17e9ac6d43f9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2dd100ccefb22d440b72e58b8fe352f7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: b0f76de4b67993e4b8328f9e17f2dff3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -62,15 +70,30 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _LightAdd: 1.45
+    - _LightPower: 0.5
+    - _LightWhite: 0.13
     - _Metallic: 0
     - _Mode: 0
+    - _NoiseV: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Power: 0.5
+    - _Power2: 1.9
+    - _RimPower: 1
+    - _Shininess: 0.025
     - _SmoothnessTextureChannel: 0
+    - _Specular: 0.78
     - _SpecularHighlights: 1
+    - _Speed: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.141}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ImageColor: {r: 1, g: 0.6392157, b: 0.6392157, a: 1}
+    - _LightDirect: {r: 6, g: 27, b: 14, a: 0.35}
+    - _OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0.34901962, g: 0.54509807, b: 0.9333334, a: 1}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
