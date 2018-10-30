@@ -14,7 +14,9 @@
     {
         Tags{ "RenderType" = "Opaque" }
         LOD 200
-
+		CGINCLUDE
+		//some code
+		END
         CGPROGRAM
 
         #pragma surface surf Lambert addshadow

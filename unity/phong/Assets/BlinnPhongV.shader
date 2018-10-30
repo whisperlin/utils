@@ -64,14 +64,26 @@
                 o.ambient =  ShadeSH9(half4(worldNormal,1)) * _Diffuse;
                 return o;
             }
-            
+            inline half Pow5_2(half x)
+			{
+				return x*x * x*x * x;
+			}
+
+
+			//捏菲尔算法
+			inline half3 FresnelTerm2(half3 specularColor, half LdotH)
+			{
+				half t = Pow5(1 - LdotH);	// ala Schlick interpoliation
+				return specularColor + (1 - specularColor) * t;
+			}
             fixed4 frag (v2f i) : SV_Target
             {
             	fixed3 ambient = i.ambient;
               
 
                 float3 spec = _LightColor0.rgb * _Specular.rgb * pow(i.halfD, _Gloss) * _SpecularStrength;
-
+                //float3 spec = _LightColor0.rgb *FresnelTerm (_Specular.rgb ,i.halfD ) *_SpecularStrength;
+                //FresnelTerm
        
                 float3 diff = i.diff;
 

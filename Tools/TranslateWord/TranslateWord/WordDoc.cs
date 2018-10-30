@@ -94,7 +94,7 @@ namespace TranslateWord
             //    }
             //} 
 
-            doc.Save(path+"modify.docx");
+            doc.Save(path.Substring(0, path.Length - 5) + "翻译.docx");
             MessageBox.Show("翻译完成");
         }
     }

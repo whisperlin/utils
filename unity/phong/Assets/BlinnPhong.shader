@@ -70,11 +70,14 @@
                 viewDir = normalize(viewDir);
                 float3 halfDir = normalize(lightDir + viewDir);
 
-
+                float nl = max(0, dot(i.worldNormal, _WorldSpaceLightPos0.xyz));
                 float d = max(0, dot(halfDir, worldNormal));
                 float3 spec = _LightColor0.rgb * _Specular.rgb * pow(d, _Gloss) * _SpecularStrength;
 
-                float nl = max(0, dot(i.worldNormal, _WorldSpaceLightPos0.xyz));
+                //float3 spec = _LightColor0.rgb * _Specular.rgb * pow(i.halfD, _Gloss) * _SpecularStrength;
+                //float3 spec = _LightColor0.rgb *FresnelTerm (_Specular.rgb ,nl ) *_SpecularStrength;
+
+
                 //fixed3 lambert = 0.5 *  nl + 0.5;
            
                 // diffuse
