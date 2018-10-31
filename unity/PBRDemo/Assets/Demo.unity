@@ -958,8 +958,6 @@ GameObject:
   m_Component:
   - component: {fileID: 392422309}
   - component: {fileID: 392422312}
-  - component: {fileID: 392422311}
-  - component: {fileID: 392422310}
   m_Layer: 0
   m_Name: jinshu
   m_TagString: Untagged
@@ -981,30 +979,6 @@ Transform:
   m_Father: {fileID: 1092286859}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &392422310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114581724761967162, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 392422308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &392422311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114473184318653714, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 392422308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!137 &392422312
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -1936,8 +1910,6 @@ GameObject:
   m_Component:
   - component: {fileID: 645541177}
   - component: {fileID: 645541180}
-  - component: {fileID: 645541179}
-  - component: {fileID: 645541178}
   m_Layer: 0
   m_Name: Object007
   m_TagString: Untagged
@@ -1959,30 +1931,6 @@ Transform:
   m_Father: {fileID: 1092286859}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &645541178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114638607746945036, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645541176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &645541179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114956992318329074, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645541176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!137 &645541180
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -2041,8 +1989,6 @@ GameObject:
   m_Component:
   - component: {fileID: 657566620}
   - component: {fileID: 657566623}
-  - component: {fileID: 657566622}
-  - component: {fileID: 657566621}
   m_Layer: 0
   m_Name: feijinshu
   m_TagString: Untagged
@@ -2064,30 +2010,6 @@ Transform:
   m_Father: {fileID: 1092286859}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &657566621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114458875675957006, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 657566619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &657566622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114284392546614598, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 657566619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!137 &657566623
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -25987,7 +25909,6 @@ GameObject:
   - component: {fileID: 2008861781}
   - component: {fileID: 2008861784}
   - component: {fileID: 2008861783}
-  - component: {fileID: 2008861782}
   m_Layer: 0
   m_Name: Object006
   m_TagString: Untagged
@@ -26009,18 +25930,6 @@ Transform:
   m_Father: {fileID: 1092286859}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2008861782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114854782649294628, guid: 905ecac2c7226254ba37488d8e76e26f,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2008861780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2008861783
 MonoBehaviour:
   m_ObjectHideFlags: 0

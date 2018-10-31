@@ -83,6 +83,8 @@ inline half3 DiffuseAndSpecularFromMetallic (half3 albedo, half metallic, out ha
 {
 	specColor = lerp (unity_ColorSpaceDielectricSpec.rgb, albedo, metallic);
 	oneMinusReflectivity = OneMinusReflectivityFromMetallic(metallic);
+ 
+	//return albedo;
 	return albedo * oneMinusReflectivity;
 }
 
@@ -240,7 +242,7 @@ float3 PBR_SP(float3 normalDirection ,float3 lightDirection ,float3 Light,
     float LdotH = saturate(dot(lightDirection, halfDirection));
     
     // input metallic map (R - channel is metallic )
-    float3 specularColor =  MetallicTex.r * _MetallicPower;
+    float3 specularColor  ; 
     // metallic map (A - channel is gloss)
     float3 gloss = MetallicTex.a * _GlossPower;
     // invent gloss range 
@@ -248,24 +250,18 @@ float3 PBR_SP(float3 normalDirection ,float3 lightDirection ,float3 Light,
     float roughness = perceptualRoughness;
 
      float specularMonochrome;
-    diffusefinalColor = DiffuseAndSpecularFromMetallic( diffuseColor, specularColor, specularColor, specularMonochrome );
+    diffusefinalColor = DiffuseAndSpecularFromMetallic( diffuseColor, MetallicTex.r * _MetallicPower, specularColor, specularMonochrome );
     specularMonochrome = 1.0-specularMonochrome;
- //    specularColor = lerp(unity_ColorSpaceDielectricSpec.rgb, diffuseColor, specularColor);
-	// specularMonochrome = OneMinusReflectivityFromMetallic(specularColor);
-	// diffusefinalColor = diffuseColor * ( specularMonochrome);
-	
- // return float4(diffusefinalColor,.);
-
-
-  //  diffuseColor = DiffuseAndSpecularFromMetallic(diffuseColor, specularColor, specularColor, specularMonochrome );
+ 
     float NdotV = abs(dot( normalDirection, viewDirection ));
     float NdotH = saturate(dot( normalDirection, halfDirection));
     float VdotH = saturate(dot( viewDirection, halfDirection ));
 
-    float visTerm = SmithJointGGXVisibilityTerm( NdotL, NdotV, roughness );
     float normTerm = GGXTerm(NdotH, roughness);
 
-    float specularPBL = (visTerm*normTerm) * UNITY_PI;
+    float visTerm = SmithJointGGXVisibilityTerm( NdotL, NdotV, roughness );
+    float specularPBL = (visTerm*normTerm ) * UNITY_PI;
+
                 #ifdef UNITY_COLORSPACE_GAMMA
                     specularPBL = sqrt(max(1e-4h, specularPBL));
                 #endif
@@ -281,8 +277,12 @@ float3 PBR_SP(float3 normalDirection ,float3 lightDirection ,float3 Light,
                 #endif
                 specularPBL *= any(specularColor) ? 1.0 : 0.0;
 
+   // float3 directSpecular = Light * normTerm * UNITY_PI ;
    float3 directSpecular = Light * specularPBL*FresnelTerm(specularColor, LdotH) ;
-   half grazingTerm = saturate( gloss + specularMonochrome );
+
+   //float3 directSpecular = Light *FresnelTerm(specularColor, LdotH) ;
+    //return directSpecular ;
+   //half grazingTerm = saturate( gloss + specularMonochrome );
 
 //   float3 indirectSpecular = SBL;
 //    float3 ins =indirectSpecular * FresnelLerp (specularColor, grazingTerm, NdotV);

@@ -1,30 +1,30 @@
 ﻿//rolantin shader 0.01 version
 Shader "Rolan/Human-Lieguo" {
     Properties {
-     _Color("漫射颜色", Color) = (1, 1, 1, 1) _MainTex("漫射贴图", 2D) = "white" {}
-       _BumpMap("法线贴图", 2D) = "bump" {}
-      [HideInInspector]  _NormalIntensity("法线强度", Range(0, 3)) = 1 
-        _Metallic("金属贴图", 2D) = "white" {}
-    [HideInInspector]    _MetallicPower("PBR金属强度", Range(0, 1)) = 0 
-    [HideInInspector]    _GlossPower("PBR高光强度", Range(0, 1)) = 1 
-    [HideInInspector]    IBL_Blur("环境球模糊强度", Range(0, 10)) = 1 
-    [HideInInspector]    [Toggle(_DISABLE_IBL_DIFFUSE)] _DISABLE_IBL_DIFFUSE("禁用环境球", Int) = 0
-     [HideInInspector]   _IBL_Diffuse("环境球", Cube) = "_Skybox" {}
-     [HideInInspector]   IBL_Intensity("环境球强度", Range(0, 10)) = 1 
-    [HideInInspector]   _AmbientLight("环境光", Color) = (0.5, 0.5, 0.5, 1) 
-     [HideInInspector]   SBL_Intensity("反射球强度", Range(0, 10)) = 0 
-     [HideInInspector]   _SkinColor("皮肤颜色", Color) = (1, 1, 1, 1) 
-     [HideInInspector]   _SkinIntensity("皮肤强度", Range(0, 20)) = 0 
-     [HideInInspector]   _SkinMap("皮肤贴图", 2D) = "white" {}
-     [HideInInspector]   _EmssionMap("自发光", 2D) = "white" {}
-     [HideInInspector]   _EmissionIntensity("自发光强度", Range(0, 2)) = 0
-     [HideInInspector]   _BlinnPhongSP("高光强度", Range(0, 10)) = 1 
-     [HideInInspector]   _BP_Gloss("高光范围", Range(0, 1)) = 0 
-     [HideInInspector]   GlobeLight("全局光强度", Range(0, 1)) = 1
-     [HideInInspector]   _Gama("Gama",Range(-1, 1)) = 0
-     [HideInInspector]   _Cutoff("透明", Range(0, 1)) = 0.5
+		_Color("漫射颜色", Color) = (1, 1, 1, 1) _MainTex("漫射贴图", 2D) = "white" {}
+		_BumpMap("法线贴图", 2D) = "bump" {}
+		[HideInInspector]  _NormalIntensity("法线强度", Range(0, 3)) = 1 
+		_Metallic("金属贴图", 2D) = "white" {}
+		_MetallicPower("PBR金属强度", Range(0, 1)) = 0 
+		_GlossPower("PBR高光强度", Range(0, 1)) = 1 
+		IBL_Blur("环境球模糊强度", Range(0, 10)) = 1 
+		[Toggle(_DISABLE_IBL_DIFFUSE)] _DISABLE_IBL_DIFFUSE("禁用环境球", Int) = 0
+		_IBL_Diffuse("环境球", Cube) = "_Skybox" {}
+		IBL_Intensity("环境球强度", Range(0, 10)) = 1 
+		_AmbientLight("环境光", Color) = (0.5, 0.5, 0.5, 1) 
+		SBL_Intensity("反射球强度", Range(0, 10)) = 0 
+		_SkinColor("皮肤颜色", Color) = (1, 1, 1, 1) 
+		_SkinIntensity("皮肤强度", Range(0, 20)) = 0 
+		_SkinMap("皮肤贴图", 2D) = "white" {}
+		_EmssionMap("自发光", 2D) = "white" {}
+		_EmissionIntensity("自发光强度", Range(0, 2)) = 0
+		_BlinnPhongSP("高光强度", Range(0, 10)) = 1 
+		_BP_Gloss("高光范围", Range(0, 1)) = 0 
+		GlobeLight("全局光强度", Range(0, 1)) = 1
+		_Gama("Gama",Range(-1, 1)) = 0
+		_Cutoff("透明", Range(0, 1)) = 0.5
 
-     [HideInInspector]   [Toggle(_ENABLE_CUT)] _ENABLE_CUT("透明提除", Int) = 1
+		[Toggle(_ENABLE_CUT)] _ENABLE_CUT("透明提除", Int) = 1
 
    
     }
@@ -172,25 +172,23 @@ Shader "Rolan/Human-Lieguo" {
                     SBLAndIBL(_IBL_Diffuse, normalDirection , _Metallic_var.r,indirectSpecular,IBLColor);
                 #endif
 
+                //diffusefinalColor = DiffuseAndSpecularFromMetallic( diffuseColor, specularColor, specularColor, specularMonochrome );
+
                 float3 PbrSpecular = PBR_SP(normalDirection, normalize(-LightDir0), DirectionalLight(normalDirection)[0], _Metallic_var, diffuseColor, MetallicDiff);
-              //  float3 HighLight = (Phong(LightDir2, normalDirection,_Metallic_var.r,_Metallic_var.a) * SpLight* LightIntensity2 * LightColor2)  * diffuseColor *  _BlinnPhongSP;
+ 				//return fixed4(PbrSpecular, 1);
                  float3 HighLight = (Phong(LightDir2, normalDirection,_Metallic_var.r,_Metallic_var.a) )  * diffuseColor *  _BlinnPhongSP;
                 float3 FinalSP = (PbrSpecular + indirectSpecular + HighLight);
 
                 /////// Diffuse:
                 //   NdotL = dot( normalDirection, LightDir1 );
                 float4 _SkinMap_var = tex2D(_SkinMap, TRANSFORM_TEX(i.uv0, _SkinMap));
-                //float3 IBLColor = IBL(_IBL_Diffuse, normalDirection);
-              //  float3 Skin = _SkinMap_var.rgb * ( (DirectionalLight(-normalDirection)[1] ) +PointLight(-normalDirection ,LightDir2))  * _SkinIntensity * _SkinColor;
+ 
                     float3 Skin = _SkinMap_var.rgb *  (DirectionalLight(-normalDirection)[1] ) * _SkinIntensity * _SkinColor;
-                // Light wrapping
-                //  float3 NdotLWrap = NdotL * ( 1.0 - Skin );
-                //  float3 forwardLight = max(float3(0.0,0.0,0.0), NdotLWrap +Skin );
-                //  NdotL = max(0.0,dot( normalDirection, lightDirection ));
-                //  half fd90 = 0.5 + 2 * LdotH * LdotH * (1-gloss);
-                //  float nlPow5 = Pow5(1-NdotLWrap);
-                //  float nvPow5 = Pow5(1-NdotV);
+
+                
                 float3 directDiffuse = (Skin + FullLight + IBLColor+ Emission)* MetallicDiff;
+                //return fixed4(directDiffuse, 1);
+                //return fixed4(FinalSP, 1);
                 float3 pbl = (directDiffuse + FinalSP ) * GlobeLight;
                 return fixed4(pbl, 1);
             }
