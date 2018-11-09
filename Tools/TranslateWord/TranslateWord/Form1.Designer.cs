@@ -30,6 +30,8 @@
         {
             this.openButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.textBoxKey = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // openButton
@@ -53,17 +55,37 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // textBoxKey
+            // 
+            this.textBoxKey.Location = new System.Drawing.Point(208, 107);
+            this.textBoxKey.Name = "textBoxKey";
+            this.textBoxKey.Size = new System.Drawing.Size(255, 21);
+            this.textBoxKey.TabIndex = 2;
+            this.textBoxKey.Text = "2bcdfc7d5b2f8217b7bdfa3a8e89799b";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(50, 116);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(23, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Key";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(550, 381);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBoxKey);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.openButton);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -71,6 +93,8 @@
 
         private System.Windows.Forms.Button openButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBoxKey;
+        private System.Windows.Forms.Label label1;
     }
 }
 

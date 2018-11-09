@@ -28,52 +28,63 @@ namespace TranslateWord
         private const String host = "http://api.niutrans.vip";
         private const String path = "/NiuTransServer/translation";  //"/NiuTransServer/translation";
         private const String method = "GET";
-        private const String apikey = "2bcdfc7d5b2f8217b7bdfa3a8e89799b";
+        public static String apikey = "2bcdfc7d5b2f8217b7bdfa3a8e89799b";
 
       
         public static string TranslateWord(string  text)
         {
             string res = "";
-            String querys = "from=en&to=zh&apikey=" + apikey+"& src_text=" + text ;
+            try
+            {
+               
+                String querys = "from=en&to=zh&apikey=" + apikey + "& src_text=" + text;
 
 
-            String url = host + path + "?"+ querys;
-            HttpWebRequest httpRequest = null;
-            HttpWebResponse httpResponse = null;
-         
-
-            httpRequest = (HttpWebRequest)WebRequest.Create(url);
-
-            System.Console.WriteLine(url);
-            httpRequest.Method = method;
+                String url = host + path + "?" + querys;
+                HttpWebRequest httpRequest = null;
+                HttpWebResponse httpResponse = null;
 
 
-            try {
-                httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+                System.Console.WriteLine(url);
+                httpRequest.Method = method;
+
+
+                try
+                {
+                    httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                }
+                catch (WebException ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    httpResponse = (HttpWebResponse)ex.Response;
+                }
+                Console.WriteLine(httpResponse.StatusCode);
+                Console.WriteLine(httpResponse.Method);
+                Console.WriteLine(httpResponse.Headers);
+                Stream st = httpResponse.GetResponseStream();
+                StreamReader reader = new StreamReader(st, Encoding.GetEncoding("utf-8"));
+                res = reader.ReadToEnd();
+
+                //JObject jo = (JObject)JsonConvert.DeserializeObject(jsonText);
+                Console.WriteLine(res);
+                Console.WriteLine("\n");
+                //JsonConverter.DeserializeObject<JsonData>(res);
+                //JSONArray getJsonArray = JSONArray.fromObject(res);
+
+
+                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                //执行反序列化
+                JsonData obj = jsonSerializer.Deserialize<JsonData>(res);
+
+                return obj.tgt_text;
             }
-            catch (WebException ex) {
-                MessageBox.Show(ex.ToString());
-                httpResponse = (HttpWebResponse)ex.Response;
+            catch (Exception e)
+            {
+                return res;
             }
-            Console.WriteLine(httpResponse.StatusCode);
-            Console.WriteLine(httpResponse.Method);
-            Console.WriteLine(httpResponse.Headers);
-            Stream st = httpResponse.GetResponseStream();
-            StreamReader reader = new StreamReader(st, Encoding.GetEncoding("utf-8"));
-            res = reader.ReadToEnd();
-
-            //JObject jo = (JObject)JsonConvert.DeserializeObject(jsonText);
-            Console.WriteLine(res);
-            Console.WriteLine("\n");
-            //JsonConverter.DeserializeObject<JsonData>(res);
-            //JSONArray getJsonArray = JSONArray.fromObject(res);
-
             
-            JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-            //执行反序列化
-            JsonData obj = jsonSerializer.Deserialize<JsonData>(res);
-
-            return obj.tgt_text;
         }
         public static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
