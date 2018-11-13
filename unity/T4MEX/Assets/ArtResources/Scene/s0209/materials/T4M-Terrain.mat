@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: T4M-Terrain
+  m_Shader: {fileID: 4800000, guid: 6d38b732c3a386b4ea31be0bca14e51f, type: 3}
+  m_ShaderKeywords: UseUnityShadow
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Control:
+        m_Texture: {fileID: 2800000, guid: ed28cc80eb0ea684bae1737d3a400ded, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Control2:
+        m_Texture: {fileID: 2800000, guid: 05a77854f210bb14b8d340cc59e6c197, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DiffIBL:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmssionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Lightmap:
+        m_Texture: {fileID: 2800000, guid: aec5b6ec67bb6ba459b8e77b769ac9e0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: de061f434bc0e2b4b88d5fd513137d3d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecIBL:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat0:
+        m_Texture: {fileID: 2800000, guid: ea93ca33563776b499097aed516777c7, type: 3}
+        m_Scale: {x: 80, y: 80}
+        m_Offset: {x: 0, y: 0}
+    - _Splat1:
+        m_Texture: {fileID: 2800000, guid: 46cbfecf920893248b15db9b7fe7b321, type: 3}
+        m_Scale: {x: 260, y: 260}
+        m_Offset: {x: 0, y: 0}
+    - _Splat2:
+        m_Texture: {fileID: 2800000, guid: b297ec18ee25cd54ea2f7eba21eb9d0f, type: 3}
+        m_Scale: {x: 140, y: 140}
+        m_Offset: {x: 0, y: 0}
+    - _Splat3:
+        m_Texture: {fileID: 2800000, guid: 7cdb8f16b42b0a544b3cd0eda7b7e46e, type: 3}
+        m_Scale: {x: 280, y: 280}
+        m_Offset: {x: 0, y: 0}
+    - _Splat4:
+        m_Texture: {fileID: 2800000, guid: f7c5d8b2b8256aa44b979b7596f18347, type: 3}
+        m_Scale: {x: 54, y: 54}
+        m_Offset: {x: 0, y: 0}
+    - _Splat5:
+        m_Texture: {fileID: 2800000, guid: 53d4727ed15675a4ab9571c0df41d01f, type: 3}
+        m_Scale: {x: 121, y: 121}
+        m_Offset: {x: 0, y: 0}
+    - _Splat6:
+        m_Texture: {fileID: 2800000, guid: dfe4996fe2a8407439eaeb178cc62ead, type: 3}
+        m_Scale: {x: 135, y: 135}
+        m_Offset: {x: 0, y: 0}
+    - _Splat7:
+        m_Texture: {fileID: 2800000, guid: 126bae51f1823b64fadf73deb4e5ce9f, type: 3}
+        m_Scale: {x: 188, y: 188}
+        m_Offset: {x: 0, y: 0}
+    - _Splat_Normals:
+        m_Texture: {fileID: 18700000, guid: edd0f6cb055aa8748855add5065c7545, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - UseUnityShadow: 1
+    - _Detail_Normal_Idensity: 2
+    - _DiffIBLPower: 1
+    - _DstBlend: 0
+    - _Lightmap_Scale: 1
+    - _NoLODDistance: 200
+    - _Normal_Idensity: 6
+    - _SpecIBLPower: 1
+    - _SrcBlend: 1
+    - _ToLinear: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Diffuse: {r: 1, g: 1, b: 1, a: 1}
+    - _EmssionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Tiling3: {r: 1, g: 1, b: 0, a: 0}
+    - _color: {r: 1, g: 1, b: 1, a: 1}
