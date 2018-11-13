@@ -165,11 +165,11 @@ Shader "DAFUHAO_Editor/T4M_12" {
 				float4 finalColor = float4(_Total_Color * _color.rgb,1);
 
 				float3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
-                fixed3 worldNormal = normalize(i.normalDir);
+                fixed3 worldNormal = normalize(normalDirection);
                 //内置函数写法
                 //float3 worldLightDir=normalize(UnityWorldSpaceLightDir(i.worldPos));
                 fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
-                finalColor.rgb *= _LightColor0.rgb * _Diffuse.rgb * max(0,dot(worldNormal, worldLightDir)) ;
+                finalColor.rgb *= (ambient + _LightColor0.rgb * _Diffuse.rgb * max(0,dot(worldNormal, worldLightDir)) ) ;
 
 
                 #ifdef UseUnityShadow
