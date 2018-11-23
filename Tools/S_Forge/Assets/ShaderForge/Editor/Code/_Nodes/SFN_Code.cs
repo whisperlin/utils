@@ -19,7 +19,8 @@ namespace ShaderForge {
 		Fixed3,
 		Fixed4,
 		Sampler2D,
-		Matrix4x4
+		Matrix4x4,
+		Texture2dArray
 		/*, Texture*/ };
 
 	[System.Serializable]
@@ -81,6 +82,12 @@ namespace ShaderForge {
 				return "sampler2D"; // Uppercase D
 			if( cvt == CustomValueType.Matrix4x4 )
 				return "float4x4";
+			if(cvt == CustomValueType.Texture2dArray)
+			{
+				Debug.LogError ("here no modify");
+				return "Texture2dArray";
+			}
+			
 			return cvt.ToString().ToLower();
 		}
 

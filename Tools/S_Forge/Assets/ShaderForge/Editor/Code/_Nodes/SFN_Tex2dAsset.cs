@@ -73,27 +73,7 @@ namespace ShaderForge {
 
 			//if( varDefined )
 				return GetVariableName();
-			//else
-				//DefineVariable(); // This lags for some reason
 
-			/*
-			bool useLOD = GetInputIsConnected( 1 ) || (SF_Evaluator.inVert || SF_Evaluator.inTess);
-			string uvStr = GetInputIsConnected( 0 ) ? GetInputCon( 0 ).Evaluate() : SF_Evaluator.WithProgramPrefix( "uv0.xy" );
-			string func = useLOD ? "tex2Dlod" : "tex2D";
-			string mip = GetInputIsConnected( 1 ) ? GetInputCon( 1 ).Evaluate() : "0";
-
-			if( useLOD ) {
-				uvStr = "float4(" + uvStr + ",0.0," + mip + ")";
-			}
-
-
-			string s = func + "(" + property.GetVariable() + "," + uvStr + ")";
-			if( IsNormalMap() ) {
-				s = "UnpackNormal(" + s + ")";
-			}
-			*/
-			//Debug.LogError( "Invalid evaluation of " + property.name );
-//			return "";
 		}
 
 
@@ -224,20 +204,6 @@ namespace ShaderForge {
 
 			GUI.EndGroup();
 
-
-
-		//	GUI.DragWindow();
-
-			
-			
-
-			/*
-			EditorGUI.BeginChangeCheck();
-			textureAsset = (Texture)EditorGUI.ObjectField( rectInner, textureAsset, typeof( Texture ), false );
-			if( EditorGUI.EndChangeCheck() ) {
-				OnAssignedTexture();
-			}
-			 * */
 
 		}
 

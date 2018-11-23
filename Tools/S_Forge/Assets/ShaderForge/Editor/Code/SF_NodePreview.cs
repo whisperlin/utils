@@ -166,7 +166,10 @@ namespace ShaderForge {
 			Texture2D nodeIcon = SF_Resources.LoadNodeIcon(path);
 			SF_Blit.Render( texture, "ReadPackedData", nodeIcon );
 		}
-
+		public void SetIndex(float index)
+		{
+			SF_Blit.mat.SetFloat ("_Index",index);
+		}
 		public void GenerateBaseData( bool render3D = true ) {
 			SF_Blit.mat.SetVector( "_OutputMask", Vector4.one );
 

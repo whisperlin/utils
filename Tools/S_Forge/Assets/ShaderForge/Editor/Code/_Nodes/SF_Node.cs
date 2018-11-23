@@ -29,7 +29,7 @@ namespace ShaderForge {
 
 		public const int NODE_SIZE = 96;
 		public const int NODE_WIDTH = NODE_SIZE + 3;	// This fits a NODE_SIZE texture inside
-		public const int NODE_HEIGHT = NODE_SIZE + 16;	// This fits a NODE_SIZE texture inside
+		public const int NODE_HEIGHT = NODE_SIZE + 16 ;	// This fits a NODE_SIZE texture inside
 
 		public int node_width = NODE_WIDTH;
 		public int node_height = NODE_HEIGHT;
@@ -583,6 +583,21 @@ namespace ShaderForge {
 			return value;
 		}
 
+		public int UndoableIntField(Rect r, int value, string undoInfix, GUIStyle style = null){
+			if(style == null)
+				style = EditorStyles.textField;
+			int newValue = EditorGUI.IntField( r, value, style );
+			if(newValue != value){
+				if(IsProperty() || IsGlobalProperty()){
+					UndoRecord("set " + undoInfix + " of " + (IsGlobalProperty() ? property.nameInternal : property.nameDisplay));
+				} else {
+					UndoRecord("set " + undoInfix + " of " + nodeName + " node");
+				}
+				return newValue;
+			}
+			return value;
+		}
+
 		// (r, ref texture.dataUniform.r, "value", SF_Styles.LargeTextField);
 
 		public void UndoableEnterableFloatField(Rect r, ref float value, string undoInfix, GUIStyle style){
@@ -943,7 +958,10 @@ namespace ShaderForge {
 		public virtual void RefreshValue() {
 			// Override this
 		}
-
+		public void SetIndex(float index)
+		{
+			texture.SetIndex (index);
+		}
 		public void RefreshValue( int ia, int ib ) {
 
 		//	Debug.Log("Refreshing value of " + nodeName);
@@ -1311,13 +1329,6 @@ namespace ShaderForge {
 
 		public void DrawWindow() {
 
-
-
-
-			
-
-			//Vector2 prev = new Vector2( rect.x, rect.y );
-			//int prevCont = GUIUtility.hotControl;
 
 			if(Event.current.type == EventType.Repaint){
 				commentYposCurrent = Mathf.Lerp(commentYposCurrent, commentYposTarget, 0.4f);

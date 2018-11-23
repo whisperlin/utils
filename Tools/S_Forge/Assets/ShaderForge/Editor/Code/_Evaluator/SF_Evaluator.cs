@@ -331,13 +331,7 @@ namespace ShaderForge {
 					}
 				}
 
-				/*
-				if( n is SFN_Tex2d ) {
-					if( !n.GetInputIsConnected( "UVIN" ) ) { // Unconnected UV input
-						dependencies.uv0 = true;
-						dependencies.uv0_frag = true;
-					}
-				}*/
+	 
 
 				if( n is SFN_VertexColor ) {
 					dependencies.NeedFragVertexColor(); // TODO: Check if it really needs to be frag
@@ -3297,7 +3291,15 @@ namespace ShaderForge {
 						texNames.Add( t2d.property.nameInternal );
 						textures.Add( t2d.textureAsset );
 					}
-				} else if( editor.nodes[i] is SFN_Tex2dAsset ) {
+				} 
+				else if( editor.nodes[i] is SFN_Tex2dAry ) {
+					SFN_Tex2dAry t2d = editor.nodes[i] as SFN_Tex2dAry;
+					if( t2d.textureAsset != null ) {
+						texNames.Add( t2d.property.nameInternal );
+						textures.Add( t2d.textureAsset );
+					}
+				} 
+				else if( editor.nodes[i] is SFN_Tex2dAsset ) {
 					SFN_Tex2dAsset t2dAsset = editor.nodes[i] as SFN_Tex2dAsset;
 					if( t2dAsset.textureAsset != null ) {
 						texNames.Add( t2dAsset.property.nameInternal );
@@ -3343,6 +3345,10 @@ namespace ShaderForge {
 				case ( "ShaderForge.SFN_Tex2d" ):
 					SFN_Tex2d texNode = (SFN_Tex2d)node;
 					m.SetTexture( texNode.property.GetVariable(), texNode.TextureAsset );
+					break;
+				case ( "ShaderForge.SFN_Tex2dAry" ):
+					SFN_Tex2dAry texAryNode = (SFN_Tex2dAry)node;
+				m.SetTexture( texAryNode.property.GetVariable(), texAryNode.textureAsset );
 					break;
 				case ( "ShaderForge.SFN_Tex2dAsset" ):
 					SFN_Tex2dAsset texAssetNode = (SFN_Tex2dAsset)node;

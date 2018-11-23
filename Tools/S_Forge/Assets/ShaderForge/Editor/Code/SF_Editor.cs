@@ -231,6 +231,9 @@ namespace ShaderForge {
 			AddTemplate( typeof( SFN_Slider ), 				catProps + "Slider" );
 			AddTemplate( typeof( SFN_SwitchProperty ),		catProps + "Switch" );
 			AddTemplate( typeof( SFN_Tex2d ), 				catProps + "Texture 2D", KeyCode.T );
+			AddTemplate( typeof( SFN_Tex2dAry ), 				catProps + "Texture 2D Array", KeyCode.T );
+			AddTemplate( typeof( SFN_Tex2dAryAsset ), 				catProps + "Tex2DArrayAsset", KeyCode.T );
+
 			AddTemplate( typeof( SFN_Tex2dAsset ), 			catProps + "Texture Asset" );
 			AddTemplate( typeof( SFN_ToggleProperty ),		catProps + "Toggle" );
 			AddTemplate( typeof( SFN_ValueProperty ), 		catProps + "Value" );
