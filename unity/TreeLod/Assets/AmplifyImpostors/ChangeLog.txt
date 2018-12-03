@@ -1,0 +1,58 @@
+Release Notes:
+v0.9.0
+* Improvements:
+    * Added support for Custom Map Baking when generating impostors with both a custom bake shader and a custom runtime shader
+    * Added "Baking Presets" that allows per output customization, each output can be overridden and has the following fields:
+        * File output toggle
+        * Name Suffix
+        * Texture relative Scale
+        * Texture color space
+        * Texture channels
+        * Texture import compression quality
+        * File save format (PNG and TGA)
+    * New sample with custom baking in which the final impostors share the dynamic colors from the original object
+    * Added TGA saving file format which greatly reduces saving time when baking (only uncompressed format for now so keep in mind disk space)
+    * Various others smaller improvements to speed up the baking and saving times
+    * ASE impostor node now allows the use of custom maps
+    * Added progress bar when baking
+    * Mesh billboard editor tool now doesn't automatically updates the image and instead displays a update button, this should prevent some UI hangs when editing some fields
+    * Added metallic template and metallic workflow option to impostor node for custom impostor rendering
+* Fixes:
+    * Fixed errors when baking an object with a corrupt mesh
+    * Fixed issue where on first bake renderers would fail to automatically set if there was only one LOD
+    * Fixed issue with a built-in shader value not being set properly when baking (should fix parallax UBER shader baking)
+    * Some small UI and default options fixes
+    * Baker no longer forces a rename on the impostor object or texture files
+
+v0.8.4
+* Fixes:
+    * Fixed disappearing impostor when looked at from below it's local axis
+    * Fixed issue which would import the same texture twice in rare occasions
+    * Fixed compile issue when upgrading to 2018.2 and then downgrading to a different version
+* Improvements:
+    * Added experimental option to the cginc file that clips neighbor frames to remove rare artifacts
+    * Added normal compression option which allows to change texture compression quality at import
+    * Added tooltips to every field in the inspector
+    * Updated Impostor Node with the latest changes and fixes
+
+v0.8.3
+* Fixes:
+    * Fixed issue with spot/point lights not casting shadows properly
+    * Fixed issue where the emission texture would randomly bake a white texture
+    * Fixed issue of albedo texture becoming darker when project was in gamma space
+* Improvements:
+    * Baker no longer changes the read/write option of texture importer
+    * Emission and Specular textures now default to black when not present
+
+v0.8.2
+* Fixes:
+    * Fixed shader compilation errors on Android (gles3)
+
+v0.8.1
+* Fixes:
+    * Fixed Unity Editor tools related script errors
+* Improvements:
+    * Added support for creation of Impostor shaders through Amplify Shader Editor (wip)
+
+v0.8.0
+* Initial Release

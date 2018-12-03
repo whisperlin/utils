@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeLod", "Assembly-CSharp.csproj", "{D051FB77-33C6-ACC4-5A45-CFC985387465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeLod", "Assembly-CSharp-Editor.csproj", "{F1823B25-7432-9E28-54C9-A3BFF807FAB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D051FB77-33C6-ACC4-5A45-CFC985387465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D051FB77-33C6-ACC4-5A45-CFC985387465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D051FB77-33C6-ACC4-5A45-CFC985387465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D051FB77-33C6-ACC4-5A45-CFC985387465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1823B25-7432-9E28-54C9-A3BFF807FAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1823B25-7432-9E28-54C9-A3BFF807FAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1823B25-7432-9E28-54C9-A3BFF807FAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1823B25-7432-9E28-54C9-A3BFF807FAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

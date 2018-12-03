@@ -1,0 +1,228 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ba7a43222473d4292f91ae936fe2cc, type: 3}
+  m_Name: ColoredBarrel_Impostor
+  m_EditorClassIdentifier: 
+  Material: {fileID: 21446727953050358}
+  Mesh: {fileID: 43833907539682750}
+  Version: 8500
+  ImpostorType: 1
+  LockedSizes: 1
+  SelectedSize: 2048
+  TexSize: {x: 2048, y: 2048}
+  DecoupleAxisFrames: 0
+  HorizontalFrames: 16
+  VerticalFrames: 16
+  PixelPadding: 32
+  MaxVertices: 8
+  Tolerance: 0.15
+  NormalScale: 0.01
+  ShapePoints:
+  - {x: 0.14769849, y: 0.11964631}
+  - {x: 0.14782664, y: 0.8933102}
+  - {x: 0.38001624, y: 1}
+  - {x: 0.6461214, y: 1}
+  - {x: 0.8523991, y: 0.88280946}
+  - {x: 0.852016, y: 0.099959135}
+  - {x: 0.60733414, y: 0.0018942952}
+  - {x: 0.37066555, y: 0.0020064116}
+  Preset: {fileID: 11400000, guid: 13c7fc685872856409c5954889a4faac, type: 2}
+  OverrideOutput: []
+--- !u!21 &21446727953050358
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ColoredBarrel_Impostor
+  m_Shader: {fileID: 4800000, guid: 8c0c55170fae60047b93e60e2999e382, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 371850219b98af8469c35c1ac6a29607, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 2800000, guid: 86fd656040084cc4ea7482f94eebf685, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: a0c64c9d0a863e840b8991c363c2a853, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 2800000, guid: 622524f1cdc444c46b18e9de3ee72ac7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Specular:
+        m_Texture: {fileID: 2800000, guid: 1f807c8ae53def443a52ccd3abfb2ff1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AI_Clip: 0.5
+    - _AI_DepthSize: 1.9969516
+    - _AI_Frames: 16
+    - _AI_FramesX: 16
+    - _AI_FramesY: 16
+    - _AI_ImpostorSize: 1.2915367
+    - _AI_Parallax: 1
+    - _AI_ShadowBias: 0.25
+    - _AI_TextureBias: -1
+    - _Clip: 0.5
+    - _DepthSize: 1.9969516
+    - _Frames: 16
+    - _FramesX: 16
+    - _FramesY: 16
+    - _Hue: 0
+    - _ImpostorSize: 1.2915367
+    - _Parallax: 1
+    - _ShadowBias: 0.25
+    - _TextureBias: -1
+    m_Colors:
+    - _AI_HueVariation: {r: 0, g: 0, b: 0, a: 0}
+    - _AI_Offset: {r: 0.004179459, g: 0.0013484955, b: 0.0028493158, a: 0}
+    - _Offset: {r: 0.004179459, g: 0.0013484955, b: 0.0028493158, a: 0}
+--- !u!43 &43833907539682750
+Mesh:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ColoredBarrel_Impostor
+  serializedVersion: 8
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 18
+    topology: 0
+    firstVertex: 0
+    vertexCount: 8
+    localAABB:
+      m_Center: {x: 0.00006303191, y: -0.0012232661, z: 0}
+      m_Extent: {x: 0.45507336, y: 0.6445451, z: 0}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexBuffer: 070005000300030001000700070006000500050004000300030002000100010000000700
+  m_Skin: []
+  m_VertexData:
+    m_CurrentChannels: 11
+    m_VertexCount: 8
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 24
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 256
+    _typelessdata: 1df7e8bee883fb3e000000000000000000000000000080bf463e173edc5e613f6be1e8be9f0a02bf000000000000000000000000000080bfde5f173e3080da3dbcae1ebe135125bf000000000000000000000000000080bf7d91c23e000000001c40413e135125bf000000000000000000000000ffff7fbf3668253f00000000a307e93ea123fdbe000000000000000000000000000080bfd4365a3f9801f03dc7c6e83e5144043f000000000000000000000000000080bfb81d5a3f1469663ff8f30d3ebdb0243f000000000000000000000000000080bf407a1b3fdb837f3f950c2bbe3fa7243f000000000000000000000000000080bfe0c7bd3e827c7f3f
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0.004179459, y: 0.0013484955, z: 0.0028493158}
+    m_Extent: {x: 0.60725814, y: 0.5107416, z: 0.60693204}
+  m_MeshUsageFlags: 0
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  m_MeshOptimized: 0
