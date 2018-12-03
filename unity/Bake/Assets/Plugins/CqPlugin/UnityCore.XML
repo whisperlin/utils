@@ -1,0 +1,2136 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UnityCore</name>
+    </assembly>
+    <members>
+        <member name="M:UnitStateCtrl.Set(System.UInt32,System.UInt32,System.Func{System.Single,System.Single})">
+            <summary>
+            应用于那些只由BUFF变更的属性,战斗过程中属性不会发生变化.(防御),
+            Buff过程中只更新由基础值到最终值的计算公式,实际属性的变更发生在外部获取(战斗计算)
+            加成效果可以是临时的,这些属性加成在Buff退出时取消
+            </summary>
+        </member>
+        <member name="M:UnitStateCtrl.Set(System.UInt32,System.UInt32,System.Single)">
+            <summary>
+            应用于那些不只由Buff变更的属性,战斗过程中属性也会发生变化.(生命值,能量值)
+            Buff过程中直接获取/修改属性,加成效果是永久的, 这些加成或者变化不应该在Buff退出时取消
+            </summary>
+        </member>
+        <member name="E:UnitStateCtrl.OnSetAttritube">
+            <summary>
+            当战斗计算时属性更新的回调
+            </summary>
+        </member>
+        <member name="T:UnityCore.UnityCall">
+            <summary>
+            函数调用类
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityCall.GetControlCall(System.Action,System.Single)">
+            <summary>
+            外部调用频率较高,控制执行的最小时间间隔
+            (可以用于处理摄像机移动时更新场景物件的渲染,相机移动是很频繁的,但更新场景物件的渲染有效率消耗,所以要有频率控制)
+            </summary>
+        </member>
+        <member name="T:UnityCore.CqCurve">
+            <summary>
+            曲线
+            </summary>
+        </member>
+        <member name="F:UnityCore.CqCurve.close">
+            <summary>
+            闭合
+            </summary>
+        </member>
+        <member name="T:UnityCore.CqCurvePoint">
+            <summary>
+            曲线点
+            </summary>
+        </member>
+        <member name="F:UnityCore.CqCurvePoint.p">
+            <summary>
+            端点
+            </summary>
+        </member>
+        <member name="F:UnityCore.CqCurvePoint.inTangent">
+            <summary>
+            进入的切线
+            </summary>
+        </member>
+        <member name="F:UnityCore.CqCurvePoint.outTangent">
+            <summary>
+            离开的切线
+            </summary>
+        </member>
+        <member name="F:UnityCore.CqCurvePoint.smooth">
+            <summary>
+            平滑
+            </summary>
+        </member>
+        <member name="T:UnityCore.DrawCalc">
+            <summary>
+            图形绘制算法
+            </summary>
+        </member>
+        <member name="M:UnityCore.DrawCalc.DrawRect(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Action{UnityEngine.Vector2,UnityEngine.Vector2})">
+            <summary>
+            绘制任意角度的矩形
+            </summary>
+        </member>
+        <member name="M:UnityCore.DrawCalc.DrawCirCle(System.Single,UnityEngine.Vector2,System.Int32,System.Action{UnityEngine.Vector2,UnityEngine.Vector2})">
+            <summary>
+            绘制圆
+            </summary>
+        </member>
+        <member name="M:UnityCore.DrawCalc.DrawCapsule(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Action{UnityEngine.Vector2,UnityEngine.Vector2})">
+            <summary>
+            绘制胶囊
+            </summary>
+        </member>
+        <member name="M:UnityCore.DrawCalc.DrawDottedLine(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Boolean,System.Action{UnityEngine.Vector2,UnityEngine.Vector2})">
+            <summary>
+            绘制虚线
+            </summary>
+        </member>
+        <member name="M:UnityCore.DrawCalc.DrawArrowLine(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Single,System.Action{UnityEngine.Vector2,UnityEngine.Vector2})">
+            <summary>
+            绘制由A指向B的线段并在中间有一个方向箭头
+            </summary>
+        </member>
+        <member name="T:UnityCore.HelpDraw">
+            <summary>
+            绘制辅助线
+            </summary>
+        </member>
+        <member name="P:UnityCore.HelpDraw.HelpDrawStyle">
+            <summary>
+            按调用处理方式分两种:1.调用即时绘制(外部调用时需放在update内) 2.调用只计算,在统一绘制接口里面绘制
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawLine(UnityEngine.Vector2,UnityEngine.Vector2)">
+            <summary>
+            绘制线条
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawLine(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            绘制线条
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawRect(UnityEngine.Vector2,UnityEngine.Vector2,System.Single)">
+            <summary>
+            绘制任意角度的矩形
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawCapsule(UnityEngine.Vector2,UnityEngine.Vector2,System.Single)">
+            <summary>
+            绘制胶囊
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawDottedLine(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>
+            绘制虚线
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawArrowLine(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Single)">
+            <summary>
+            绘制由A指向B的线段并在中间有一个方向箭头
+            </summary>
+        </member>
+        <member name="M:UnityCore.HelpDraw.DrawCirCle(System.Single,UnityEngine.Vector2,System.Int32)">
+            <summary>
+            绘制圆
+            </summary>
+        </member>
+        <member name="F:UnityCore.HelpDrawStyle.Debug">
+            <summary>
+            在编辑器中,运行游戏时,开启Gizmos显示
+            </summary>
+        </member>
+        <member name="F:UnityCore.HelpDrawStyle.Gizmos">
+            <summary>
+            在编辑器中,运行模式和非运行模式下,开启Gizmos显示
+            </summary>
+        </member>
+        <member name="F:UnityCore.HelpDrawStyle.Graphics">
+            <summary>
+            运行时显示
+            </summary>
+        </member>
+        <member name="T:UnityCore.HelpLineData">
+            <summary>
+            辅助线数据结构
+            </summary>
+        </member>
+        <member name="T:UnityCore.OnValueChangedAttribute">
+            <summary>
+            当字段变化时设置属性或者调用方法
+            </summary>
+        </member>
+        <member name="T:UnityCore.ColorAttribute">
+            <summary>
+            颜色编辑框
+            </summary>
+        </member>
+        <member name="T:UnityCore.PolygonAttribute">
+            <summary>
+            多边形编辑控件
+            </summary>
+        </member>
+        <member name="M:UnityCore.PolygonAttribute.#ctor(System.String)">
+            <summary>
+            多边形编辑控件
+            </summary>
+        </member>
+        <member name="T:UnityCore.ListBoxAttribute">
+            <summary>
+            列表框
+            </summary>
+        </member>
+        <member name="T:UnityCore.ExtendInspectorAttribute">
+            <summary>
+            扩展编辑器支持方法定义
+            </summary>
+        </member>
+        <member name="T:UnityCore.InpectorDrawStyleAttribute">
+            <summary>
+            修饰在Inspector中的组件,定义内部属性呈现时的名称宽度
+            </summary>
+        </member>
+        <member name="F:UnityCore.InpectorDrawStyleAttribute.prefixLabelWidth">
+            <summary>
+            前缀标签宽度
+            </summary>
+        </member>
+        <member name="M:UnityCore.InpectorDrawStyleAttribute.#ctor(System.Single)">
+            <param name="prefixLabelWidth">前缀标签宽度</param>
+        </member>
+        <member name="T:UnityCore.TouchInputOne">
+            <summary>
+            单手指触屏输入
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputOne.TouchDown">
+            <summary>
+            按下
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputOne.TouchUp">
+            <summary>
+            脱离按下
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputOne.TouchMove">
+            <summary>
+            按下移动时产生移动增量
+            </summary>
+        </member>
+        <member name="E:UnityCore.KeyBoardInput.OnClick">
+            <summary>
+            按键按下
+            </summary>
+        </member>
+        <member name="T:UnityCore.TouchInputDouble">
+            <summary>
+            双手指触屏输入
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputDouble.TouchDown">
+            <summary>
+            按下
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputDouble.TouchUp">
+            <summary>
+            脱离按下
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputDouble.TouchMoveByDis">
+            <summary>
+            按下移动时两手指间距离变化
+            </summary>
+        </member>
+        <member name="F:UnityCore.TouchInputDouble.TouchMoveByAngle">
+            <summary>
+            按下移动时两手指间角度变化(弧度)
+            </summary>
+        </member>
+        <member name="T:UnityCore.LoadResources`1">
+            <summary>
+            通过相对路径加载本地资源T,加载先更新本地文件到最新
+            </summary>
+        </member>
+        <member name="M:UnityCore.LoadResources`1.#ctor(System.Action{System.String,System.Action{`0}})">
+            <summary>
+            
+            </summary>
+            <param name="LoadLocalFileAsync"></param>
+            <param name="UpdateFile">更新文件</param>
+        </member>
+        <member name="M:UnityCore.LoadResources`1.LoadAsync(System.String,System.Action{`0})">
+            <summary>
+            异步获取结果
+            </summary>
+        </member>
+        <member name="M:UnityCore.LoadResources`1.Load(System.String)">
+            <summary>
+            同步获取结果
+            </summary>
+        </member>
+        <member name="M:UnityCore.LoadResources`1.Clear">
+            <summary>
+            清除
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingListItemRound">
+            <summary>
+            绑定List元素
+            </summary>
+        </member>
+        <member name="P:UnityCore.BindingListItemRound.Index">
+            <summary>
+            元素在列表中的索引
+            </summary>
+        </member>
+        <member name="P:UnityCore.BindingListItemRound.FullPath">
+            <summary>
+            是预留的克隆元素
+            </summary>
+        </member>
+        <member name="M:UnityCore.BindingListItemRound.UpdatePos">
+            <summary>
+            滚动回调
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingListRound">
+            <summary>
+            循环利用的绑定List
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingList">
+            <summary>
+            绑定List
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingListItem">
+            <summary>
+            绑定List元素
+            </summary>
+        </member>
+        <member name="P:UnityCore.BindingListItem.Index">
+            <summary>
+            元素在列表中的索引
+            </summary>
+        </member>
+        <member name="P:UnityCore.BindingListItem.IsCloneItem">
+            <summary>
+            是预留的克隆元素
+            </summary>
+        </member>
+        <member name="T:UnityCore.MoveItem">
+            <summary>
+            处理UI上按钮,开启时缓动排列位置
+            </summary>
+        </member>
+        <member name="T:UnityCore.MoveGroup">
+            <summary>
+            处理UI上一组按钮,排列缓动
+            </summary>
+        </member>
+        <member name="E:UnityCore.InputMgr.OnMouseScroll">
+            <summary>
+            鼠标中键滚动
+            </summary>
+        </member>
+        <member name="M:UnityCore.InputMgr.Init">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="T:UnityCore.DrawGUIAttribute">
+            <summary>
+            修饰Mono脚本,在GUI中绘制类成员
+            </summary>
+        </member>
+        <member name="T:UnityCore.ControlPropertyAttribute">
+            <summary>
+            控件属性的基类
+            </summary>
+        </member>
+        <member name="M:UnityCore.ControlPropertyAttribute.GetValue">
+            <summary>
+            获取构造定义的一个关联属性的值
+            </summary>
+        </member>
+        <member name="F:UnityCore.ControlPropertyAttribute.convertMethod">
+            <summary>
+            依赖数据转换函数
+            </summary>
+        </member>
+        <member name="M:UnityCore.ControlPropertyAttribute.Init(UnityCore.ControlAttribute)">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="T:UnityCore.ControlAttribute">
+            <summary>
+            控件的基类
+            </summary>
+        </member>
+        <member name="P:UnityCore.ControlAttribute.IsDirty">
+            <summary>
+            当发生属性修改时,由于数据的改变要在绘制之后,所以在下一次进入时才通知出来属性改变
+            通过这个属性来控制通知属性改变
+            </summary>
+        </member>
+        <member name="F:UnityCore.ControlAttribute.label">
+            <summary>
+            前缀名称
+            </summary>
+        </member>
+        <member name="F:UnityCore.ControlAttribute.prefixLabelWidth">
+            <summary>
+            前缀标签宽度
+            </summary>
+        </member>
+        <member name="M:UnityCore.ControlAttribute.#ctor(System.String)">
+            <summary>
+            修饰属性的控件特性的基类
+            </summary>
+        </member>
+        <member name="M:UnityCore.ControlAttribute.OnSetTarget">
+            <summary>
+            初始化控件特性,传入它所修饰的对象
+            </summary>
+        </member>
+        <member name="P:UnityCore.CqPropertyAttribute.Value">
+            <summary>
+            获取修饰属性的值
+            </summary>
+        </member>
+        <member name="T:UnityCore.ItemsAttribute">
+            <summary>
+            列表
+            </summary>
+        </member>
+        <member name="M:UnityCore.ItemsAttribute.#ctor(System.String[])">
+            <summary>
+            列表
+            </summary>
+        </member>
+        <member name="T:UnityCore.DrawRectAttribute">
+            <summary>
+            绘制区域
+            </summary>
+        </member>
+        <member name="M:UnityCore.DrawRectAttribute.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            绘制区域
+            </summary>
+        </member>
+        <member name="T:UnityCore.ComponentFPAttribute">
+            <summary>
+            由对应字段或者属性的对象来确定属性源
+            </summary>
+        </member>
+        <member name="T:UnityCore.RectAttribute">
+            <summary>
+            区域
+            </summary>
+        </member>
+        <member name="M:UnityCore.RectAttribute.#ctor(System.String)">
+            <summary>
+            按钮控件
+            </summary>
+        </member>
+        <member name="T:UnityCore.CqLabelAttribute">
+            <summary>
+            编辑一个基础属性
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingFPType">
+            <summary>
+            绑定属性类型
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_string">
+            <summary>
+            字符串(string)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_bool">
+            <summary>
+            布尔(bool)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_int">
+            <summary>
+            整数(int)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_float">
+            <summary>
+            浮点数(float)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_Vector2">
+            <summary>
+            二维向量(Vector2)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_Vector3">
+            <summary>
+            三维向量(Vector3)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_Color">
+            <summary>
+            颜色(Color)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_Color32">
+            <summary>
+            颜色32(Color32)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_Sprite">
+            <summary>
+            图标(Sprite)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_Texture">
+            <summary>
+            纹理(Texture)
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingFPType.Type_object">
+            <summary>
+            对象(Type_object)
+            </summary>
+        </member>
+        <member name="T:UnityCore.ClickAttribute">
+            <summary>
+            点击
+            </summary>
+        </member>
+        <member name="M:UnityCore.ClickAttribute.#ctor(System.String)">
+            <summary>
+            点击
+            </summary>
+        </member>
+        <member name="T:UnityCore.ComponentFPTypeAttribute">
+            <summary>
+            由对应字段或者属性的类型来确定查找的类型
+            </summary>
+        </member>
+        <member name="T:UnityCore.HeightAttribute">
+            <summary>
+            高度
+            </summary>
+        </member>
+        <member name="M:UnityCore.HeightAttribute.#ctor(System.Single)">
+            <summary>
+            高度
+            </summary>
+        </member>
+        <member name="T:UnityCore.ToolTipAttribute">
+            <summary>
+            悬浮提示 不同于UnityEngine.TooltipAttriubte
+            它依赖于控件,不独立存在
+            </summary>
+        </member>
+        <member name="M:UnityCore.ToolTipAttribute.#ctor(System.String)">
+            <summary>
+            悬浮提示
+            </summary>
+        </member>
+        <member name="T:UnityCore.VisibleAttribute">
+            <summary>
+            使可见
+            </summary>
+        </member>
+        <member name="M:UnityCore.VisibleAttribute.#ctor(System.Boolean)">
+            <summary>
+            使可见
+            </summary>
+        </member>
+        <member name="T:UnityCore.IsEnabledAttribute">
+            <summary>
+            使可用
+            </summary>
+        </member>
+        <member name="M:UnityCore.IsEnabledAttribute.#ctor(System.Boolean)">
+            <summary>
+            使可用
+            </summary>
+        </member>
+        <member name="T:UnityCore.ButtonAttribute">
+            <summary>
+            按钮控件
+            </summary>
+        </member>
+        <member name="M:UnityCore.ButtonAttribute.#ctor(System.String)">
+            <summary>
+            按钮控件
+            </summary>
+        </member>
+        <member name="T:UnityCore.ButtonsAttribute">
+            <summary>
+            多按钮控件
+            一般用于枚举多选等等
+            修饰枚举时 所有枚举值按位递增排列 
+            </summary>
+        </member>
+        <member name="M:UnityCore.ButtonsAttribute.#ctor(System.String)">
+            <summary>
+            多按钮控件
+            一般用于枚举多选等等
+            修饰枚举时 所有枚举值按位递增排列 
+            </summary>
+        </member>
+        <member name="M:UnityCore.ButtonsAttribute.OnSetTarget">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="P:UnityCore.ButtonsAttribute.Items">
+            <summary>
+            获取显示的列表元素
+            </summary>
+        </member>
+        <member name="T:UnityCore.CheckBoxAttribute">
+            <summary>
+            勾选框
+            修饰 bool字段
+            </summary>
+        </member>
+        <member name="M:UnityCore.CheckBoxAttribute.#ctor(System.String)">
+            <summary>
+            勾选框
+            修饰 bool字段
+            </summary>
+        </member>
+        <member name="T:UnityCore.CurveAttribute">
+            <summary>
+            曲线
+            </summary>
+        </member>
+        <member name="M:UnityCore.CurveAttribute.#ctor(System.String)">
+            <summary>
+            使可用
+            </summary>
+        </member>
+        <member name="T:UnityCore.ComBoxStyle">
+            <summary>
+            编辑样式
+            </summary>
+        </member>
+        <member name="F:UnityCore.ComBoxStyle.RadioBox">
+            <summary>
+            单选框
+            </summary>
+        </member>
+        <member name="F:UnityCore.ComBoxStyle.CheckBox">
+            <summary>
+            复选
+            </summary>
+        </member>
+        <member name="T:UnityCore.ComBoxAttribute">
+            <summary>
+            组合框
+            一般用于枚举单选,多选等等
+            修饰枚举并且使用多选时 
+            a.所有枚举值按位递增排列 
+            b. 0 全部不选, -1 全部选中, 其他是枚举之和* 枚举值 = 当前下标值 ^ 2* 默认[0 ^ 2 = 1, 1 ^ 2 = 2, 4, 16, .....]
+            </summary>
+        </member>
+        <member name="F:UnityCore.ComBoxAttribute.style">
+            <summary>
+            编辑样式
+            </summary>
+        </member>
+        <member name="M:UnityCore.ComBoxAttribute.#ctor(System.String,UnityCore.ComBoxStyle)">
+            <summary>
+            组合框
+            一般用于枚举单选,多选等等
+            </summary>
+        </member>
+        <member name="M:UnityCore.ComBoxAttribute.OnSetTarget">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="P:UnityCore.ComBoxAttribute.Items">
+            <summary>
+            获取显示的列表元素
+            </summary>
+        </member>
+        <member name="T:UnityCore.SliderAttribute">
+            <summary>
+            滑动条
+            编辑一个范围属性
+            </summary>
+        </member>
+        <member name="M:UnityCore.SliderAttribute.#ctor(System.String,System.Single,System.Single)">
+            <summary>
+            滑动条
+            </summary>
+        </member>
+        <member name="T:UnityCore.TextBoxAttribute">
+            <summary>
+            文本框 支持多行文本
+            可编辑float,int,string
+            </summary>
+        </member>
+        <member name="T:UnityCore.CqQuaternionAttribute">
+            <summary>
+            编辑一个Quaternion属性
+            </summary>
+        </member>
+        <member name="T:UnityCore.LinkPropertyAttribute">
+            <summary>
+            提供通过该特性来关联一个属性来代替本身的字段
+            </summary>
+        </member>
+        <member name="T:UnityCore.VectorAttribute">
+            <summary>
+            编辑一个向量的属性
+            Vector2 Vector3 Vector4
+            </summary>
+        </member>
+        <member name="F:UnityCore.EditorGUIConfig.Unity_Item_Height">
+            <summary>
+            控件的默认高度
+            </summary>
+        </member>
+        <member name="F:UnityCore.EditorGUIConfig.Unity_Item_X">
+            <summary>
+            起始行偏移
+            </summary>
+        </member>
+        <member name="F:UnityCore.EditorGUIConfig.Unity_Item_Y">
+            <summary>
+            起始列偏移
+            </summary>
+        </member>
+        <member name="F:UnityCore.EditorGUIConfig.PrefixLabelWidth">
+            <summary>
+            前缀标题宽度
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.AttachGyro">
+            <summary>
+            将陀螺控制器连接到变换.
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.DetachGyro">
+            <summary>
+            将陀螺控制器从变换
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.UpdateCalibration(System.Boolean)">
+            <summary>
+            更新陀螺校准。
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.UpdateCameraBaseRotation(System.Boolean)">
+            <summary>
+            更新相机底座旋转。
+            </summary>
+            <param name='onlyHorizontal'>
+            只有Y旋转。
+            </param>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.ConvertRotation(UnityEngine.Quaternion)">
+             <summary>
+             将旋转从右交给左手。
+             </summary>
+             <returns>
+            返回角度
+             </returns>
+             <param name='q'>
+             旋转转换。
+             </param>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.ResetBaseOrientation">
+            <summary>
+            重新计算的参考系统。
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroAttitude.RecalculateReferenceRotation">
+            <summary>
+            重新计算基准旋转。
+            </summary>
+        </member>
+        <member name="T:UnityCore.GyroscopeControl">
+            <summary>
+            陀螺仪控制摄像机
+            1.不受物体约束基于3D空间旋转
+            2.保持观看物体,围绕物体旋转
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroscopeControl.GetGyro">
+            <summary>
+            获取转换后的陀螺仪角度
+            </summary>
+        </member>
+        <member name="M:UnityCore.GyroscopeControl.ConvertRotation(UnityEngine.Quaternion)">
+            <summary>
+            右手转左手
+            </summary>
+        </member>
+        <member name="F:UnityCore.GyroscopeControl.lowPassFilterFactor">
+            <summary>
+            角度跟随的速度
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingMethod">
+            <summary>
+            绑定方法
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingNode">
+            <summary>
+            绑定节点
+            </summary>
+        </member>
+        <member name="E:UnityCore.BindingNode.DataChanged">
+            <summary>
+            当该节点关联的数据变化发出通知
+            当子节点添加时向其通知一次
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingNotifyObject">
+            <summary>
+            绑定对象
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingObject">
+            <summary>
+            绑定对象
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingProperty">
+            <summary>
+            关注绑定对象的一个属性变化通知,同时提供更改这个属性的方法
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingProperty.convertExpression">
+            <summary>
+            转换函数
+            </summary>
+        </member>
+        <member name="F:UnityCore.BindingProperty.updateingDatatoView">
+            <summary>
+            在数据到界面的过程中
+            </summary>
+        </member>
+        <member name="T:UnityCore.BindingRoot">
+            <summary>
+            数据结构绑定根节点
+            </summary>
+        </member>
+        <member name="P:UnityCore.BindingRoot.DataContent">
+            <summary>
+            绑定的数据
+            </summary>
+        </member>
+        <member name="T:UnityCore.MonoBehaviourExtended">
+            <summary>
+            让添加时可以作删除的逻辑
+            让显示时可以做隐藏的逻辑
+            </summary>
+        </member>
+        <member name="F:UnityCore.MonoBehaviourExtended.OnDestroyCallBack">
+            <summary>
+            脚本被删除时的委托回调
+            </summary>
+        </member>
+        <member name="F:UnityCore.MonoBehaviourExtended.OnDisabledCallBack">
+            <summary>
+            脚本被关闭时的委托回调
+            </summary>
+        </member>
+        <member name="T:UnityCore.DownloadMgr">
+            <summary>
+            下载策略
+            </summary>
+        </member>
+        <member name="F:UnityCore.DownloadMgr.MaxDownloadingCount">
+            <summary>
+            最大同时下载数量,通常ftp服务器有连接数量限制,所以要控制连接数
+            </summary>
+        </member>
+        <member name="P:UnityCore.DownloadMgr.DownloadingCount">
+            <summary>
+            正在下载的数量
+            </summary>
+        </member>
+        <member name="M:UnityCore.DownloadMgr.DownLoadFile(System.String,System.String,System.Action{System.Boolean})">
+            <summary>
+            www下载文件到本地
+            </summary>
+        </member>
+        <member name="T:UnityCore.FileVersionMgr">
+            <summary>
+            本地文件更新的策略
+            1.读取网络文件md5清单和本地文件md5清单
+            2.在获取相应的文件时比对网络和本地的md5,不一样时下载网络文件替换到本地，并同时更新本地md5,并保存清单文件
+            </summary>
+        </member>
+        <member name="F:UnityCore.FileVersionMgr.md5File">
+            <summary>
+            文件版本清单相对路径
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileVersionMgr.CheckLocalVersion(System.String)">
+            <summary>
+            测试检查本地资源版本号
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileVersionMgr.CheckNetVersion(System.String)">
+            <summary>
+            测试检查网络资源版本号
+            </summary>
+        </member>
+        <member name="F:UnityCore.FileVersionMgr.netFileMD5">
+            <summary>
+            相对路径对应的网络文件的Md5值
+            </summary>
+        </member>
+        <member name="F:UnityCore.FileVersionMgr.localFileMD5">
+            <summary>
+            相对路径对应的本地文件的Md5值
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileVersionMgr.Init(System.String,System.String,System.Action)">
+            <summary>
+            初始化版本控制管理器
+            </summary>
+            <param name="OnComplete"></param>
+            <param name="netFolder">网络文件目录</param>
+            <param name="CachResFolder">本地缓存文件目录</param>
+        </member>
+        <member name="M:UnityCore.FileVersionMgr.UpdateFile(System.String,System.Action{System.String})">
+            <summary>
+            更新本地资源文件到最新
+            如果在下载更新的过程中,则等着下载完成时回调
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileVersionMgr.UpdateFile(System.String)">
+            <summary>
+            当资源已更新时,同步获取
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileVersionMgr.ForceUpdates(System.Func{System.String,System.Boolean},System.Action)">
+            <summary>
+            通过名称比较更新本地部分文件到最新
+            </summary>
+        </member>
+        <member name="T:UnityCore.ResMgr">
+            <summary>
+            资源策略
+            1.使用一个相对路径去访问资源
+            2.保证资源不重复加载（a.如果已经加载完成则直接拿缓存 b.如果正在加载则添加加载完成的回调 c.开始加载）
+            3.加载时先去本地找,如果没有或者本地文件比较旧时就从网络下载下到本地,下载后更新文件版本,再从本地加载到内存
+            </summary>
+        </member>
+        <member name="M:UnityCore.ResMgr.LoadTextAsync(System.String,System.Action{System.String})">
+            <summary>
+            异步加载文本文件内容
+            </summary>
+        </member>
+        <member name="M:UnityCore.ResMgr.LoadText(System.String)">
+            <summary>
+            同步加载文本文件内容
+            </summary>
+        </member>
+        <member name="M:UnityCore.ResMgr.LoadBundleAsync(System.String,System.Action{UnityEngine.Object[]})">
+            <summary>
+            异步加载资源包
+            </summary>
+        </member>
+        <member name="M:UnityCore.ResMgr.LoadTextureAsync(System.String,System.Action{UnityEngine.Texture2D})">
+            <summary>
+            异步加载图片
+            </summary>
+        </member>
+        <member name="M:UnityCore.ResMgr.LoadResources(System.String,System.String,System.Action{UnityEngine.Object})">
+            <summary>
+            加载本地资源路径(不含扩展名)
+            当找不到时加载网络资源
+            </summary>
+        </member>
+        <member name="T:UnityCore.CqChooseColor">
+            <summary>
+            选中时改变颜色
+            </summary>
+        </member>
+        <member name="T:UnityCore.UnityThread">
+            <summary>
+            由Unity主线程调用异步函数
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityThread.Call(System.Action)">
+            <summary>
+            由Unity主线程调用异步函数
+            </summary>
+        </member>
+        <member name="T:UnityCore.TweenMode">
+            <summary>
+            缓动方式
+            </summary>
+        </member>
+        <member name="F:UnityCore.TweenMode.StartToEnd">
+            <summary>
+            起始→终止
+            </summary>
+        </member>
+        <member name="F:UnityCore.TweenMode.EndToStart">
+            <summary>
+            终止→起始
+            </summary>
+        </member>
+        <member name="F:UnityCore.TweenMode.ToStart">
+            <summary>
+            当前→起始
+            </summary>
+        </member>
+        <member name="F:UnityCore.TweenMode.ToEnd">
+            <summary>
+            当前→终止
+            </summary>
+        </member>
+        <member name="T:UnityCore.RadioActive">
+            <summary>
+            设置显示隐藏的对象,由DoneActiveGroup控制
+            </summary>
+        </member>
+        <member name="T:UnityCore.RadioActiveGroup">
+            <summary>
+            由分组id控制一组对象的显示或者隐藏
+            </summary>
+        </member>
+        <member name="M:UnityCore.RadioActiveGroup.SetActive(UnityCore.RadioActive)">
+            <summary>
+            显示√/隐藏X
+            </summary>
+        </member>
+        <member name="M:UnityCore.RadioActiveGroup.SetActive(System.Int32)">
+            <summary>
+            显示√/隐藏X
+            </summary>
+        </member>
+        <member name="M:UnityCore.ColorUtil.ARGBHtmlToColor(System.String)">
+            <summary>
+            #ARGB Html格式字符串转Color
+            </summary>
+        </member>
+        <member name="M:UnityCore.ColorUtil.ARGBHtmlToRGBA(System.String)">
+            <summary>
+            #F000FF00=>00FF00F0
+            </summary>
+        </member>
+        <member name="M:UnityCore.ColorUtil.RGBAToColor(System.String)">
+            <summary>
+            #ARGB Html格式字符串转Color
+            </summary>
+        </member>
+        <member name="M:UnityCore.DebugUtil.GetRing(System.Int32,System.Single,System.Single)">
+            <summary>
+            采样圆周
+            </summary>
+            <param name="sampling">采样顶点数量(至少为2)</param>
+            <param name="rad">半径</param>
+            <param name="startRad">起始弧度</param>
+            <param name="endRad">终止弧度</param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityCore.DebugUtil.DrawDottedLine(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Color,System.Single,System.Boolean)">
+            <summary>
+            画虚线(2*x+pw*(2n+1))
+            </summary>
+            <param name="partWidth">单实线宽</param>
+            <param name="startByDotted">两端是否以虚线起始</param>
+        </member>
+        <member name="M:UnityCore.DebugUtil.DrawArrowLine(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Color,System.Single,System.Single)">
+            <summary>
+            绘制由A指向B的线段并在中间有一个方向箭头
+            </summary>
+        </member>
+        <member name="M:UnityCore.DebugUtil.DrawLine(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Color)">
+            <summary>
+            绘制在y=0平面上
+            </summary>
+        </member>
+        <member name="M:UnityCore.DebugUtil.DrawRect(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,UnityEngine.Color)">
+            <summary>
+            绘制任意角度的矩形
+            </summary>
+        </member>
+        <member name="M:UnityCore.DebugUtil.DrawCirCle(System.Single,UnityEngine.Vector2,UnityEngine.Color,System.Int32)">
+            <summary>
+            以pos为圆心绘制多边形
+            </summary>
+        </member>
+        <member name="M:UnityCore.DebugUtil.DrawCapsule(UnityEngine.Vector2,UnityEngine.Vector2,System.Single,UnityEngine.Color)">
+            <summary>
+            绘制胶囊
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityUtil.RegUnityType">
+            <summary>
+            注册缓动相关的Unity类型
+            发生在启动Unity项目的时候
+            </summary>
+        </member>
+        <member name="F:UnityCore.UnityUtil.EditorGetDeltaTime">
+            <summary>
+            获取编辑器下每帧的时间间隔
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityUtil.InPoint(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            判断是否与目标重叠
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityUtil.InCircle(UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
+             <summary>
+            判断目标是否在圆形区域内 
+             </summary>
+             <param name="center"></param>
+             <param name="pos"></param>
+             <param name="radius"></param>
+             <returns></returns>
+        </member>
+        <member name="M:UnityCore.UnityUtil.InSector(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Single)">
+             <summary>
+            判断目标是否在扇形区域内 
+             </summary>
+             <param name="center"></param>
+             <param name="pos"></param>
+             <param name="radius"></param>
+             <param name="angle"></param>
+             <returns></returns>
+        </member>
+        <member name="M:UnityCore.UnityUtil.InRect(UnityEngine.Transform,UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>
+            判断目标是否在矩形区域内
+            </summary>
+            <param name="center"></param>
+            <param name="pos"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityCore.UnityUtil.AutoModifiPath(UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            修正规划路线
+            1.去掉不可行走的路径点
+            2.补足成实际路线
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityUtil.AutoModifiPath(UnityEngine.AI.NavMeshAgent,UnityEngine.Vector3)">
+            <summary>
+            获取自带寻路的路径
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityUtil.GetCirclePos(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>
+            获取圆上一个角度上的坐标点
+            </summary>
+            <param name="center"></param>
+            <param name="radius"></param>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityCore.UnityUtil.UVToPosition(UnityEngine.Vector2)">
+            <summary>
+            通过球面uv坐标转化成球面3d单位化位置坐标
+            </summary>
+        </member>
+        <member name="M:UnityCore.UnityUtil.LatitudeAndLongitudeToPosition(UnityEngine.Vector2)">
+            <summary>
+            通过球面经纬度坐标转化成球面3d单位化位置坐标
+            </summary>
+        </member>
+        <member name="T:UnityCore.FileUtil">
+            <summary>
+            加载本地文件
+            *.png, *.assetbundle,*.dat,*.txt
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadAssetBundle(System.String)">
+            <summary>
+            读 AssetBundle
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadTexture(System.String,System.Int32,System.Int32)">
+            <summary>
+            读 Texture2D
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadText(System.String)">
+            <summary>
+            读 string
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadBytes(System.String)">
+            <summary>
+            读 byte[]
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadAssetBundleAsync(System.String,System.Action{UnityEngine.Object[]})">
+            <summary>
+            异步加载资源包,回调包含资源列表
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadTextAsync(System.String,System.Action{System.String})">
+            <summary>
+            读 string
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadBytesAsync(System.String,System.Action{System.Byte[]})">
+            <summary>
+            读 byte[]
+            </summary>
+        </member>
+        <member name="M:UnityCore.FileUtil.LoadTextureAsync(System.String,System.Action{UnityEngine.Texture2D})">
+            <summary>
+            读 Texture2D
+            </summary>
+        </member>
+        <member name="T:ConnectConsoleServer">
+            <summary>
+            连接到控制台服务器
+            </summary>
+        </member>
+        <member name="T:UnityEngine.AnimationCurveUtil">
+            <summary>
+            扩展曲线
+            </summary>
+        </member>
+        <member name="M:UnityEngine.AnimationCurveUtil.IsBeeline(UnityEngine.AnimationCurve,System.Int32)">
+            <summary>
+            曲线的key到下一个key之间是一条直线
+            </summary>
+        </member>
+        <member name="M:UnityEngine.AnimationCurveUtil.GetLineCure(UnityEngine.Vector2[])">
+            <summary>
+            由点生成折线
+            </summary>
+        </member>
+        <member name="M:UnityEngine.AnimationCurveUtil.Sampling(UnityEngine.AnimationCurve,System.Int32)">
+            <summary>
+            曲线采样,返回有宽度的点列表
+            </summary>
+            <param name="curve"></param>
+            <param name="sampling">对其中的曲线段采样点数量</param>
+            <param name="lineWidth">宽度</param>
+            <returns></returns>
+        </member>
+        <member name="T:UnityEngine.BoundsUtil">
+            <summary>
+            包围盒
+            </summary>
+        </member>
+        <member name="M:UnityEngine.BoundsUtil.ToVertexs(UnityEngine.Bounds)">
+            <summary>
+            由有旋转或者变换信息的包围盒得到在世界坐标系下的8个顶点
+            下面0(小小小),1(小小大),2(大小大),3(大小小) 
+            上面4(小大小),5(小大大),6(大大大),7(大大小) 
+            </summary>
+        </member>
+        <member name="M:UnityEngine.BoundsUtil.ToWorldVertexs(UnityEngine.Bounds,UnityEngine.Matrix4x4)">
+            <summary>
+            由有旋转或者变换信息的包围盒得到在世界坐标系下的8个顶点
+            下面0(小小小),1(小小大),2(大小大),3(大小小) 
+            上面4(小大小),5(小大大),6(大大大),7(大大小) 
+            </summary>
+        </member>
+        <member name="M:UnityEngine.BoundsUtil.ToWorldBounds(UnityEngine.Bounds,UnityEngine.Matrix4x4)">
+            <summary>
+            由有旋转或者变换信息的包围盒得到在世界坐标系下的包围盒
+            </summary>
+        </member>
+        <member name="M:UnityEngine.BoundsUtil.DebugDraw(UnityEngine.Bounds,UnityEngine.Matrix4x4,UnityEngine.Color)">
+            <summary>
+            绘制有旋转或者变换信息的包围盒
+            </summary>
+        </member>
+        <member name="M:UnityEngine.BoundsUtil.DebugDrawBox(UnityEngine.Vector3[],UnityEngine.Color)">
+            <summary>
+            绘制立方体
+            </summary>
+        </member>
+        <member name="M:UnityEngine.BoundsUtil.DebugDraw(UnityEngine.Bounds,UnityEngine.Color)">
+            <summary>
+            包围盒扩展
+            </summary>
+        </member>
+        <member name="M:UnityEngine.CameraUtil.IntoPixelRange(UnityEngine.Camera,UnityEngine.Vector2)">
+            <summary>
+            将p点按区间移动在相机像素范围内
+            </summary>
+        </member>
+        <member name="M:UnityEngine.CameraUtil.Intersects(UnityEngine.Camera,UnityEngine.Bounds)">
+            <summary>
+            摄像机视锥和包围盒是否相交或者包含
+            </summary>
+        </member>
+        <member name="M:UnityEngine.CameraUtil.Contains(UnityEngine.Camera,UnityEngine.Vector3)">
+            <summary>
+            点在摄像机视锥内
+            </summary>
+        </member>
+        <member name="M:UnityEngine.ComponentUtil.PathInHierarchy(UnityEngine.Component,UnityEngine.Transform)">
+            <summary>
+            获取脚本在Hierarchy中的路径
+            </summary>
+        </member>
+        <member name="T:UnityEngine.CurveLinePoint">
+            <summary>
+            一个顶点,包含是否是曲线的起始端点
+            </summary>
+        </member>
+        <member name="F:UnityEngine.CurveLinePoint.pos">
+            <summary>
+            曲线或者折线上的拐点
+            </summary>
+        </member>
+        <member name="F:UnityEngine.CurveLinePoint.isCurveStartPoint">
+            <summary>
+            是曲线的起始点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.EventUtil.GetMousePointInPlane(UnityEngine.Event,UnityEngine.Camera,UnityEngine.Plane)">
+            <summary>
+            获取鼠标在平面上移动的坐标点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.EventUtil.GetMouseScreenPosition(UnityEngine.Event)">
+            <summary>
+            获取鼠标在屏幕坐标系下的位置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.GetEdgeNormalDir(UnityEngine.Mesh)">
+            <summary>
+            获取边缘顶点向外的法线方向
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.GetEdge(UnityEngine.Mesh,System.Int32[]@)">
+            <summary>
+            获模型的边缘顶点,按顺序排列
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.Create3DByClose(UnityEngine.Mesh,UnityEngine.Vector3[],System.Single,System.Single)">
+            <summary>
+            将一条在同一平面上的闭合曲线或者闭合折线 上的点转化成网格
+            不计算uv
+            </summary>
+            <param name="lineWidth">延平面拓展的线条宽</param>
+            <param name="depth">垂直于平面拓展的线条厚度</param>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.Create3DByClose(UnityEngine.Mesh,UnityEngine.Vector3[],System.Single)">
+            <summary>
+            将一条在同一平面上的闭合曲线或者闭合折线 上的点转化成网格
+            不计算uv
+            </summary>
+            <param name="depth">垂直于平面拓展的线条厚度</param>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.Make3DVertices(UnityEngine.Mesh,System.Collections.Generic.List{UnityEngine.CurveLinePoint},System.Single,System.Single)">
+            <summary>
+            生成顶点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.MakeDepth(UnityEngine.Vector3[],System.Single)">
+            <summary>
+            将所有顶点往上下两个方向拓展
+            </summary>
+            <param name="depth">拓展的厚度</param>
+        </member>
+        <member name="F:UnityEngine.MeshUtil.clockwise_3dindexs">
+            <summary>
+            顺时针
+            
+            0 2
+            1 3
+            </summary>
+        </member>
+        <member name="F:UnityEngine.MeshUtil.anti_clockwise_3dindexs">
+            <summary>
+            逆时针
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.Make3DTriangles(UnityEngine.Mesh)">
+            <summary>
+            生成绘制三角形
+            </summary>
+            <param name="mesh"></param>
+            <param name="clockwise">顺时针</param>
+            <param name="close">闭合</param>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.SplitModels(UnityEngine.Mesh,UnityEngine.Mesh,UnityEngine.Vector3[],UnityEngine.Transform)">
+            <summary>
+            拆分由边缘生成的模型成各个子模型
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.Create2DByClose(UnityEngine.Mesh,UnityEngine.Vector2[],System.Single,System.Boolean)">
+            <summary>
+            将一条闭合顶点连线拓展成固定宽度的网格
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.CreateByLinePoints(UnityEngine.Mesh,UnityEngine.AnimationCurve,System.Int32,UnityEngine.Vector3,System.Single)">
+            <summary>
+            将一条曲线 生成2d网格
+            </summary>
+            <param name="mesh"></param>
+            <param name="curve"></param>
+            <param name="sampling"></param>
+            <param name="scale"></param>
+            <param name="lineWidth"></param>
+            <param name="close"></param>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.MakeVertices(System.Collections.Generic.List{UnityEngine.CurveLinePoint},System.Single,System.Boolean)">
+            <summary>
+            生成顶点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.MakeUV(UnityEngine.Mesh)">
+            <summary>
+            生成uv
+            </summary>
+        </member>
+        <member name="F:UnityEngine.MeshUtil.clockwise_indexs">
+            <summary>
+            顺时针
+            
+            0 2
+            1 3
+            </summary>
+        </member>
+        <member name="F:UnityEngine.MeshUtil.anti_clockwise_indexs">
+            <summary>
+            逆时针
+            </summary>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.MakeTriangles(UnityEngine.Vector3[],System.Boolean,System.Boolean)">
+            <summary>
+            生成绘制三角形
+            </summary>
+            <param name="mesh"></param>
+            <param name="clockwise">顺时针</param>
+            <param name="close">闭合,首尾相连</param>
+        </member>
+        <member name="M:UnityEngine.MeshUtil.IsClockwise(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3)">
+            <summary>
+            a-b-c组成的空间三角形是顺时针
+            </summary>
+        </member>
+        <member name="T:UnityEngine.RayUtil">
+            <summary>
+            射线扩展
+            </summary>
+        </member>
+        <member name="M:UnityEngine.RayUtil.DebugDraw(UnityEngine.Ray,UnityEngine.Color)">
+            <summary>
+            绘制射线
+            </summary>
+        </member>
+        <member name="M:UnityEngine.RayUtil.DebugDraw(UnityEngine.Ray)">
+            <summary>
+            绘制射线
+            </summary>
+        </member>
+        <member name="M:UnityEngine.RayUtil.TryIntersect(UnityEngine.Ray2D,UnityEngine.Ray2D,System.Single)">
+            <summary>
+            获取两直线交点,当角度在10度以内视为平行,返回null
+            </summary>
+        </member>
+        <member name="M:UnityEngine.RayUtil.Distance(UnityEngine.Ray2D,UnityEngine.Vector2)">
+            <summary>
+            获取点到直线的距离,正负可以用来判定在直线的哪一侧
+            </summary>
+        </member>
+        <member name="T:UnityEngine.RectUtil">
+            <summary>
+            区域扩展
+            </summary>
+        </member>
+        <member name="M:UnityEngine.RectUtil.Scale(UnityEngine.Rect,System.Single)">
+            <summary>
+            区域缩放
+            </summary>
+        </member>
+        <member name="M:UnityEngine.TransformUtil.FindParentComponent``1(UnityEngine.Transform,System.Boolean)">
+            <summary>
+            向上查找组件,
+            notFindSelf=true 从父开始
+            </summary>
+        </member>
+        <member name="M:UnityEngine.TransformUtil.RemoveAllChildren(UnityEngine.Transform)">
+            <summary>
+            删除所有子对象
+            </summary>
+        </member>
+        <member name="M:UnityEngine.UI.TextUtil.GetRealWidth(UnityEngine.UI.Text)">
+            <summary>
+            获得内容真实宽度
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.DistanceBySegment(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2@)">
+            <summary>
+            获取点到线段的距离,返回最近点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.GetPedal(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2)">
+            <summary>
+            获取点到直线的垂足
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.DistanceByLine(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2)">
+            <summary>
+            获取点到直线的距离
+            为正时表示p,a,b按顺时针排列
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.TryIntersect(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,System.Single)">
+            <summary>
+            获取两直线交点,当角度在10度以内视为平行,返回null
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.IsPolyClockwise(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2)">
+            <summary>
+            三角形顶点顺序顺时针,还是逆时针
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.IsPolyClockwise(System.Collections.Generic.IList{UnityEngine.Vector2})">
+            <summary>
+            是否顺时针排列顶点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.SortByClockwise(System.Collections.Generic.List{UnityEngine.Vector2})">
+            <summary>
+            顺时针排列顶点
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.CalcArea(System.Collections.Generic.IList{UnityEngine.Vector2})">
+            <summary>
+            多边形面积
+            为正表示顶点按逆时针排列;反之,按顺时针排列
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.MinDistance(UnityEngine.Vector2,System.Collections.Generic.IList{UnityEngine.Vector2},System.Int32@,System.Int32@,UnityEngine.Vector2@)">
+            <summary>
+            获取点在不规则多边形内和最近的边的距离
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.InRange(UnityEngine.Vector2,System.Collections.Generic.IList{UnityEngine.Vector2})">
+            <summary>
+            射线法
+            获取点是否在不规则多边形内,这个多边形可以凸,也可以凹
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.InRangeX(UnityEngine.Vector2,System.Collections.Generic.IList{UnityEngine.Vector2})">
+            <summary>
+            射线法
+            获取点与不规则多边形位置关系,这个多边形可以凸,也可以凹
+            0.内 1.边上 2.外
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.CheckAdd(System.Collections.Generic.IList{UnityEngine.Vector2},UnityEngine.Vector2)">
+            <summary>
+            不重复添加
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.PolygonUnion(System.Collections.Generic.List{UnityEngine.Vector2},System.Collections.Generic.List{UnityEngine.Vector2})">
+            <summary>
+            两多边形求并集
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.PolygonIntersection(System.Collections.Generic.List{UnityEngine.Vector2},System.Collections.Generic.List{UnityEngine.Vector2})">
+            <summary>
+            两多边形求交集
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.PolygonSub(System.Collections.Generic.List{UnityEngine.Vector2},System.Collections.Generic.List{UnityEngine.Vector2})">
+            <summary>
+            两多边形相减
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.PolygonInterPoints(System.Collections.Generic.List{UnityEngine.Vector2},System.Collections.Generic.List{UnityEngine.Vector2})">
+            <summary>
+            两多边形交点集合
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.Round(UnityEngine.Vector2)">
+            <summary>
+            所有分量4舍5入取整
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.ToVector3(UnityEngine.Vector2)">
+            <summary>
+            y=0平面2d坐标转3d坐标
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.GetRing(System.Int32,System.Single,System.Single)">
+            <summary>
+            采样圆周
+            </summary>
+            <param name="sampling">采样顶点数量(至少为2)</param>
+            <param name="rad">半径</param>
+            <param name="startRad">起始弧度</param>
+            <param name="endRad">终止弧度</param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.Cross(UnityEngine.Vector2,UnityEngine.Vector2)">
+            <summary>
+            二维向量叉乘x1y2-x2y1,
+            几何意义是两向量构成的平行四边形的面积,
+            也可以用来判定两个向量的夹角是顺时针还是逆时针
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.RotByDeg(UnityEngine.Vector2,System.Single)">
+            <summary>
+            向量逆时针旋转deg角度
+            </summary>
+            <param name="v"></param>
+            <param name="deg">角度</param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.Rot(UnityEngine.Vector2,System.Single)">
+            <summary>
+            向量逆时针旋转rad弧度
+            </summary>
+            <param name="v"></param>
+            <param name="rad">弧度</param>
+            <returns></returns>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.Rot90(UnityEngine.Vector2)">
+            <summary>
+            向量逆时针旋转90度
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.LerpUnclamped(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,System.Single)">
+            <summary>
+            3次贝塞尔插值
+            开始于a并结束于d的曲线
+            曲线起始方向a-b 结束方向c-d
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector2Util.InverseLerp(UnityEngine.Vector2,UnityEngine.Vector2,UnityEngine.Vector2,System.Single)">
+            <summary>
+            a+(b-a)*t=v 求t
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector3Util.ToVector2(UnityEngine.Vector3)">
+            <summary>
+            转y=0平面2d坐标
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector3Util.Floor(UnityEngine.Vector3)">
+            <summary>
+            所有分量向下取整
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector3Util.Round(UnityEngine.Vector3)">
+            <summary>
+            所有分量4舍5入取整
+            </summary>
+        </member>
+        <member name="M:UnityEngine.Vector3Util.IsPolyClockwise(UnityEngine.Vector3[])">
+            <summary>
+            多边形顶点顺序顺时针,还是逆时针
+            </summary>
+        </member>
+        <member name="T:UnityEngine.WWWUtil">
+            <summary>
+            WWW加载
+            </summary>
+        </member>
+        <member name="M:UnityEngine.WWWUtil.DownLoadFile(UnityEngine.WWW,System.String,System.Action{System.Boolean})">
+            <summary>
+            下载文件到本地
+            会由远程服务器忙，或者连接数的限制而失败
+            </summary>
+        </member>
+        <member name="M:UnityEngine.WWWUtil.DownLoad(UnityEngine.WWW,System.Action{System.Boolean})">
+            <summary>
+            www下载或者本地加载后,执行action
+            会由远程服务器忙，或者连接数的限制而失败
+            </summary>
+        </member>
+        <member name="T:ImageAtlas">
+            <summary>
+            psd导出的图集转图片方式
+            </summary>
+        </member>
+        <member name="T:RawImageAtlas">
+            <summary>
+            psd导出的图集转图片方式
+            </summary>
+        </member>
+        <member name="T:PsdAtlas">
+            <summary>
+            psd导出的图集转图片方式
+            </summary>
+        </member>
+        <member name="T:PolygonBuilder">
+            <summary>
+            生成一个多边形
+            </summary>
+        </member>
+        <member name="F:PolygonBuilder.list">
+            <summary>
+            多边形的顶点
+            </summary>
+        </member>
+        <member name="M:PolygonBuilder.InRange(UnityEngine.Vector3,System.Single@,UnityEngine.Vector3@)">
+            <summary>
+            判定世界坐标系下的点是否在多边形内,参数返回和最近的边的距离,以及到最近的点
+            </summary>
+        </member>
+        <member name="T:CqCore.Segment">
+            <summary>
+            线段
+            </summary>
+        </member>
+        <member name="M:CqCore.Segment.#ctor(UnityEngine.Vector2,UnityEngine.Vector2)">
+            <summary>
+            线段
+            </summary>
+        </member>
+        <member name="M:CqCore.Segment.InSegment(UnityEngine.Vector2,System.Single)">
+            <summary>
+            点在线段上(含两端点)
+            </summary>
+        </member>
+        <member name="M:CqCore.Segment.GetCrossPoint(CqCore.Segment,System.Nullable{UnityEngine.Vector2}@)">
+            <summary>
+            两条线段的位置关系可以分为三类：有重合部分、无重合部分但有交点、无交点
+            </summary>
+        </member>
+        <member name="M:CqCore.Segment.ToRay2D">
+            <summary>
+            转射线
+            </summary>
+        </member>
+        <member name="F:UGUI.Effects.Mirror.MirrorType.Horizontal">
+            <summary>
+            水平
+            </summary>
+        </member>
+        <member name="F:UGUI.Effects.Mirror.MirrorType.Vertical">
+            <summary>
+            垂直
+            </summary>
+        </member>
+        <member name="F:UGUI.Effects.Mirror.MirrorType.Quarter">
+            <summary>
+            四分之一
+            相当于水平，然后再垂直
+            </summary>
+        </member>
+        <member name="F:UGUI.Effects.Mirror.m_MirrorType">
+            <summary>
+            镜像类型
+            </summary>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.SetNativeSize">
+            <summary>
+            设置原始尺寸
+            </summary>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.DrawSimple(System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32)">
+            <summary>
+            绘制Simple版
+            </summary>
+            <param name="output"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.DrawSliced(System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32)">
+            <summary>
+            绘制Sliced版
+            </summary>
+            <param name="output"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.ExtendCapacity(System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32)">
+            <summary>
+            扩展容量
+            </summary>
+            <param name="verts"></param>
+            <param name="addCount"></param>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.SimpleScale(UnityEngine.Rect,System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32)">
+            <summary>
+            Simple缩放位移顶点（减半）
+            </summary>
+            <param name="rect"></param>
+            <param name="verts"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.SlicedScale(UnityEngine.Rect,System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32)">
+            <summary>
+            Sliced缩放位移顶点（减半）
+            </summary>
+            <param name="rect"></param>
+            <param name="verts"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.MirrorVerts(UnityEngine.Rect,System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32,System.Boolean)">
+            <summary>
+            镜像顶点
+            </summary>
+            <param name="rect"></param>
+            <param name="verts"></param>
+            <param name="count"></param>
+            <param name="isHorizontal"></param>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.SliceExcludeVerts(System.Collections.Generic.List{UnityEngine.UIVertex},System.Int32)">
+            <summary>
+            清理掉不能成三角面的顶点
+            </summary>
+            <param name="verts"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UGUI.Effects.Mirror.GetAdjustedBorders(UnityEngine.Rect)">
+            <summary>
+            返回矫正过的范围
+            </summary>
+            <param name="rect"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RegexAttribute">
+            <summary>
+            [Regex (@"^(?:\d{1,3}\.){3}\d{1,3}$", "Invalid IP address!\nExample: '127.0.0.1'")]
+            public string serverAddress = "192.168.0.1";
+            </summary>
+        </member>
+        <member name="T:InspectorContextMenuItemAttribute">
+            <summary>
+            在自定义的编辑器窗口创建一个上下文菜单并在其中完成静态方法调用
+            </summary>
+        </member>
+        <member name="T:ComponentPropertyAttribute">
+            <summary>
+            选择组件属性的控件
+            </summary>
+        </member>
+        <member name="T:ComponentProperty">
+            <summary>
+            一个组件的属性
+            </summary>
+        </member>
+        <member name="F:ComponentProperty.com">
+            <summary>
+            由于同一个GameObject有可能挂载多个同类型组件,所以不能通过名字的方式引用外部组件
+            </summary>
+        </member>
+        <member name="F:ComponentProperty.name">
+            <summary>
+            属性名
+            </summary>
+        </member>
+        <member name="T:TestPing">
+            <summary>
+            测试Ping 一个IP的延迟
+            </summary>
+        </member>
+        <member name="T:CqTween">
+            <summary>
+            高度抽象的缓动(对外接口)
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo(System.Object,System.String,System.Single,System.Single,System.Single,System.Func{System.Single,System.Single},System.Action)">
+            <summary>
+            缓动float
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo(System.Object,System.String,UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Func{System.Single,System.Single},System.Action)">
+            <summary>
+            缓动Vector2
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo(System.Object,System.String,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Func{System.Single,System.Single},System.Action)">
+            <summary>
+            缓动Vector3
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo(System.Object,System.String,UnityEngine.Quaternion,UnityEngine.Quaternion,System.Single,System.Func{System.Single,System.Single},System.Action)">
+            <summary>
+            缓动Quaternion
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo(System.Object,System.String,UnityEngine.Color,UnityEngine.Color,System.Single,System.Func{System.Single,System.Single},System.Action)">
+            <summary>
+            缓动Color
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo``1(System.Object,System.String,``0,``0,System.Single,System.Func{System.Single,System.Single},System.Func{``0,``0,System.Single,``0},System.Action)">
+            <summary>
+            缓动一个属性
+            float,Vector3,Quaternion,IOper
+            是否是一个反向运动IsOut
+            </summary>
+        </member>
+        <member name="M:CqTween.BaseTween``1(System.Action{System.Object},``0,``0,System.Single,System.Func{System.Single,System.Single},System.Func{``0,``0,System.Single,``0},System.Action)">
+            <summary>
+            基础缓动函数
+            float,Vector3,Quaternion
+            </summary>
+        </member>
+        <member name="M:CqTween.FromTo2D(System.Object,System.String,UnityEngine.Vector2,UnityEngine.Vector2,System.Single,System.Func{System.Single,System.Single},System.Func{System.Single,System.Single},System.Single,System.Action)">
+            <summary>
+            曲线运动
+            trajectory运动轨迹曲线0~1
+            </summary>
+        </member>
+        <member name="T:UnityDelay">
+            <summary>
+            利用协程实现延迟调用(UnityMainTheard)
+            </summary>
+        </member>
+        <member name="M:UnityDelay.Call(System.Single,System.Action)">
+            <summary>
+            延迟second秒后,执行action
+            </summary>
+        </member>
+        <member name="M:UnityDelay.Call(System.Int32,System.Action)">
+            <summary>
+            延迟frames帧后,执行action
+            </summary>
+        </member>
+        <member name="T:LerpFollow">
+            <summary>
+            插值跟随
+            </summary>
+        </member>
+        <member name="T:GlobalMono">
+            <summary>
+            全局类,在此发送全局Update和协程
+            </summary>
+        </member>
+        <member name="E:GlobalMono.OnUpdate">
+            <summary>
+            更新
+            </summary>
+        </member>
+        <member name="E:GlobalMono.OnDrawGizmosed">
+            <summary>
+            绘制
+            </summary>
+        </member>
+        <member name="T:CqTweenControl">
+            <summary>
+            缓动控制外部调用接口基类
+            </summary>
+        </member>
+        <member name="M:CqTweenControl.Immediately">
+            <summary>
+            立即完成
+            </summary>
+        </member>
+        <member name="T:CqTweenInternal">
+            <summary>
+            循环缓动控制内部实现基类
+            </summary>
+        </member>
+        <member name="T:CqTweenT`1">
+            <summary>
+            缓动泛型基类
+            </summary>
+        </member>
+        <member name="P:CqTweenT`1.TweenToEndOrStart">
+            <summary>
+            将当前关联属性缓动到起始值(true),或者终止值(false)
+            </summary>
+        </member>
+        <member name="P:CqTweenT`1.TweenToStartOrEnd">
+            <summary>
+            将当前关联属性缓动到起始值(true),或者终止值(false)
+            </summary>
+        </member>
+        <member name="P:CqTweenT`1.ToStartOrEnd">
+            <summary>
+            将当前关联属性设置到起始值(true),或者终止值(false)
+            </summary>
+        </member>
+        <member name="M:CqTweenT`1.SetCurrentStartOrEnd(System.Boolean)">
+            <summary>
+            将当前关联属性设置到起始值(true),或者终止值(false)
+            </summary>
+        </member>
+        <member name="T:CqTweenColor">
+            <summary>
+            缓动一个颜色
+            </summary>
+        </member>
+        <member name="T:CqTweenFloat">
+            <summary>
+            缓动一个浮点数
+            </summary>
+        </member>
+        <member name="T:CqTweenVector4">
+            <summary>
+            缓动一个四维向量
+            </summary>
+        </member>
+        <member name="T:CqTweenVector3">
+            <summary>
+            缓动一个三维向量
+            </summary>
+        </member>
+        <member name="T:CqTweenVector2">
+            <summary>
+            缓动一个二维向量
+            </summary>
+        </member>
+        <member name="T:CqTweenQuaternion">
+            <summary>
+            缓动一个四元数
+            </summary>
+        </member>
+        <member name="T:CqTweenGroup">
+            <summary>
+            缓动组
+            </summary>
+        </member>
+        <member name="M:CqTweenGroup.PlayAndDo(System.Action)">
+            <summary>
+            当全部完成后回调完成
+            </summary>
+        </member>
+        <member name="T:CqTweenData">
+            <summary>
+            缓动数据定义基类
+            </summary>
+        </member>
+        <member name="F:CqTweenData.group">
+            <summary>
+            缓动组
+            </summary>
+        </member>
+        <member name="F:CqTweenData.desc">
+            <summary>
+            缓动描述
+            </summary>
+        </member>
+        <member name="F:CqTweenData.mode">
+            <summary>
+            缓动方式
+            0.起始 到 终止
+            1.终止 到 起始
+            2.当前 到 起始
+            3.当前 到 终止
+            </summary>
+        </member>
+        <member name="P:CqTweenData.Mode">
+            <summary>
+            缓动方式
+            0.起始 到 终止
+            1.终止 到 起始
+            2.当前 到 起始
+            3.当前 到 终止
+            </summary>
+        </member>
+        <member name="F:CqTweenData.curve">
+            <summary>
+            缓动曲线
+            </summary>
+        </member>
+        <member name="F:CqTweenData.duration">
+            <summary>
+            缓动时间
+            </summary>
+        </member>
+        <member name="F:CqTweenData.startDelay">
+            <summary>
+            起始延迟
+            </summary>
+        </member>
+        <member name="F:CqTweenData.loopDelay">
+            <summary>
+            间隔时间
+            </summary>
+        </member>
+        <member name="F:CqTweenData.loopTimes">
+            <summary>
+            重复次数
+            </summary>
+        </member>
+        <member name="F:CqTweenData.reverse">
+            <summary>
+            是否对曲线取反 
+            </summary>
+        </member>
+        <member name="F:CqTweenData.pingpong">
+            <summary>
+            往复运动
+            开启这个模式时当执行一次后曲线取反,运动模式切换
+            (起始到终止 变成 终止到起始)
+            (当前到终止 变成 当前到起始)
+            </summary>
+        </member>
+        <member name="P:CqTweenData.TweenType">
+            <summary>
+            缓动属性类型
+            </summary>
+        </member>
+        <member name="F:CqTweenData.comp">
+            <summary>
+            缓动属性
+            </summary>
+        </member>
+        <member name="T:HeapTime">
+            <summary>
+            不定时入队,定时出队,先进先出(常用于滚动公告之类)
+            </summary>
+        </member>
+        <member name="M:HeapTime.#ctor(System.Func{System.Object,System.Single})">
+            <summary>
+            
+            </summary>
+            <param name="Pop">参数传入队列中队员数据 返回本次回调后的流程处理时间，到时间后才能回调一下次</param>
+        </member>
+        <member name="M:HeapTime.onPlayEnd">
+            <summary>
+            当外部不能直接确定回调时间时，在完成时手动调用这个函数
+            </summary>
+        </member>
+        <member name="T:ControlTimeCall`1">
+            <summary>
+            外部随机时间入队列
+            当队列不为空时,间隔固定时间出队列
+            可用于显示打字效果,显示公告,漂浮文字等
+            使用方式
+            ctcGunKill = new ControlTimeCall&lt;object&gt;(Record_Time, OnGunKill);
+            
+            private void OnTick(object it)
+            
+            ctcGunKill.Push(111);
+            </summary>
+        </member>
+        <member name="M:ControlTimeCall`1.#ctor(System.Single,System.Action{`0})">
+            <summary>
+            外部随机时间入队列
+            当队列不为空时,间隔固定时间处理一个,出一个
+            使用方式
+            ctcGunKill = new ControlTimeCall&lt;object&gt;(Record_Time, OnGunKill);
+            
+            private void OnTick(object it)
+            
+            ctcGunKill.Push(111);
+            </summary>
+        </member>
+        <member name="M:GlobalCoroutine.CallCoroutine(System.Collections.IEnumerator)">
+            <summary>
+            执行一个协同程序返回移除函数
+            </summary>
+        </member>
+    </members>
+</doc>
