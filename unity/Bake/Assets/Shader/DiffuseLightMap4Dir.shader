@@ -29,8 +29,8 @@ SubShader {
             struct appdata_t {
                 float4 vertex : POSITION;
                 float2 texcoord : TEXCOORD0;
- 
-                 float2 texcoord3 : TEXCOORD3;
+				 float2 texcoord1 : TEXCOORD1;
+                 //float2 texcoord3 : TEXCOORD2;
                  float3 normal :NORMAL;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -70,7 +70,7 @@ SubShader {
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
-                o.texcoord1 = TRANSFORM_TEX(v.texcoord3, _MainTex) / 2;
+                o.texcoord1 = TRANSFORM_TEX(v.texcoord1, _MainTex) / 2;
                 o.texcoord2 = o.texcoord1 ;
                 o.texcoord1.x += _rotation.x;
                 o.texcoord1.y += _rotation.y;
@@ -98,14 +98,10 @@ SubShader {
                 fixed3 light = tex2D(_LightTex, i.texcoord1).rgb;
                 fixed3 light2 = tex2D(_LightTex, i.texcoord2).rgb;
                 fixed4 ma= tex2D(_Metallic, i.texcoord);
-
-      
                 light.rgb = lerp( light.rgb,light2,_rotDelta);
                 light =  (light - 0.5)*2;
- 
-          
                 fixed3 speColor = texCUBE(_SpecIBL,i.viewReflectDirection).rgb*_SpecIBLPower;
-				float3 indirectSpecular =   speColor.rgb*ma.r  * pow(i.NdotH, 3) ;
+				float3 indirectSpecular =   speColor.rgb*ma.r  * pow(i.NdotH, 3) *col.rgb;
                 col.rgb =  col.rgb +  light.rgb +indirectSpecular;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

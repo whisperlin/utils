@@ -22,7 +22,7 @@ SubShader {
                 float4 vertex : POSITION;
                 float2 texcoord : TEXCOORD0;
  
-                 float2 texcoord3 : TEXCOORD3;
+                 float2 texcoord1 : TEXCOORD1;
                 UNITY_VERTEX_INPUT_INSTANCE_ID 
             };
 
@@ -48,7 +48,7 @@ SubShader {
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
-                o.texcoord1 = TRANSFORM_TEX(v.texcoord3, _MainTex);
+                o.texcoord1 = TRANSFORM_TEX(v.texcoord1, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
