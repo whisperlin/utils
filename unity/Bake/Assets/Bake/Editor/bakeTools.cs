@@ -40,12 +40,23 @@ public class BakeTools :EditorWindow {
 				}
 			}
 		}
-			
 		if (GUILayout.Button ("四方向烘焙")) {
 			if (Selection.activeObject is GameObject) {
 				GameObject g = (GameObject)Selection.activeObject;
-				if ( g.GetComponent<MeshFilter>() != null) {
-					BakeObj4Dir (g,isRootAtParent);
+				MeshFilter [] mfs = g.GetComponentsInChildren<MeshFilter> ();
+				if( mfs.Length > 0 ) 
+				{
+					MeshFilter bakcOject = mfs [0];
+					for (int i = 1; i < mfs.Length; i++) {
+						var b0 = bakcOject.sharedMesh.bounds.size;
+						var b1 = mfs [i].sharedMesh.bounds.size;
+						float t0 = b0.x * b0.x + b0.y * b0.y + b0.z * b0.z;
+						float t1 = b1.x * b1.x + b1.y * b1.y + b1.z * b1.z;
+						if (t1 > t0) {
+							bakcOject = mfs [i];
+						}
+					}
+					BakeObj4Dir (bakcOject,bakcOject.transform);
 				}
 				else
 				{
@@ -91,14 +102,12 @@ public class BakeTools :EditorWindow {
 
 	}
 	 
-	static void BakeObj4Dir(GameObject g,bool isRootAtParent)
+	static void BakeObj4Dir(MeshFilter f0 ,Transform root )
 	{
-		MeshFilter f0 = g.GetComponent<MeshFilter> ();
-		MeshRenderer r0 = g.GetComponent<MeshRenderer> ();
+ 
+		MeshRenderer r0 = f0.gameObject .GetComponent<MeshRenderer> ();
 
-		Transform root = g.transform;
-		if (isRootAtParent)
-			root = g.transform.parent;
+		 
 		Vector3 oldPos = root.position;
 		root.position = Vector3.zero;
 		root.forward = new  Vector3 (0, 0, 1);
@@ -226,15 +235,13 @@ public class BakeTools :EditorWindow {
 		c.rect = new Rect (0.5f, 0.5f, 0.5f, 0.5f);
 		g2.transform.forward = new Vector3 (-1, 0, 0);
 		c.Render ();
-		c.rect = new Rect (0f, 0f, 1f, 1f);
+
 
 		Shader.DisableKeyword ("BAKEMOD_ON");
-		c.clearFlags = CameraClearFlags.SolidColor;
- 
+
+
 		g2.transform.forward = new Vector3 (0, 0, 1);
 		g2.transform.position = oldPos + Vector3.left * 20;
-
- 
 
 		Texture t0 = r0.sharedMaterial.GetTexture ("_Albedo");
 		Texture _SpecIBL = r0.sharedMaterial.GetTexture ("_SpecIBL");
@@ -243,8 +250,6 @@ public class BakeTools :EditorWindow {
 		string path = AssetDatabase.GetAssetPath(t0);
 		path = path.Substring(0,path.Length -4 )+"bake4_dir"+selectedSize.ToString()+".png";
 		 
- 		
-		//SaveRenderToPngAlpha (tex, tex2, path);
 		SaveRenderToPng (tex,path);
 
 		mr.sharedMaterial = new Material (Shader.Find("Unlit/DiffuseLightMap4Dir"));
@@ -259,10 +264,10 @@ public class BakeTools :EditorWindow {
 		mr.sharedMaterial.SetTexture ( "_LightTex",t2); 
 		mr.sharedMaterial.SetTexture ( "_SpecIBL",_SpecIBL); 
 		mr.sharedMaterial.SetTexture ( "_Metallic",_Metallic); 
+		mr.sharedMaterial.SetFloat("_SpecIBLPower", r0.sharedMaterial.GetFloat("_SpecIBLPower"));
+		g2.AddComponent<RotationTest> ();
 
-
-
-		g2.layer = g.layer;
+		g2.layer = f0.gameObject.layer;
 	}
 	static void BakeObj(GameObject g,bool isRootAtParent)
 	{
@@ -330,7 +335,7 @@ public class BakeTools :EditorWindow {
 
 
 		Shader.DisableKeyword ("BAKEMOD_ON");
-	 
+
 		g2.transform.forward = new Vector3 (0, 0, 1);
 		g2.transform.position = oldPos + Vector3.left * 20;
 
@@ -348,11 +353,10 @@ public class BakeTools :EditorWindow {
 
 		AssetDatabase.ImportAsset (path);
 		Texture2D t2 = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-		Texture _Metallic = r0.sharedMaterial.GetTexture ("_Metallic");
-
 		mr.sharedMaterial.SetTexture ( "_MainTex",t0); 
 		mr.sharedMaterial.SetTexture ( "_LightTex",t2); 
-		mr.sharedMaterial.SetTexture ( "_Metallic",_Metallic); 
+		mr.sharedMaterial.SetFloat("_SpecIBLPower", r0.sharedMaterial.GetFloat("_SpecIBLPower"));
+
 		g2.layer = g.layer;
 
 
@@ -396,9 +400,6 @@ public class BakeTools :EditorWindow {
 		target2.SetPixels (ary0);
 		target2.Apply ();
 
-	
-
-		//CreateNewPerfab (target2,path);
 	 
 		byte[] b = target2.EncodeToPNG();
 		System.IO.File.WriteAllBytes (path,b);

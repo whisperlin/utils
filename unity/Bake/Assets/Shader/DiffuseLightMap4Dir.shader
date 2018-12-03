@@ -11,6 +11,7 @@ Properties {
      _rotation  ("_rotation",Vector)= (0,0,0.5,0)
      _SpecIBL ("SpecIBL", Cube) = "_Skybox" {}
       _SpecIBLPower ("SpecIBL Power", Range(0, 10)) =1
+      _Grass ("_Grass", Range(3, 256)) =3
 }
 
 SubShader {
@@ -61,6 +62,7 @@ SubShader {
 
             float4 _rotation;
             float _rotDelta;
+            float _Grass;
             uniform fixed3 DirectionLightDir0;
             uniform fixed3 DirectionLightColor0;
             v2f vert (appdata_t v)
@@ -97,11 +99,11 @@ SubShader {
                 fixed4 col = tex2D(_MainTex, i.texcoord);
                 fixed3 light = tex2D(_LightTex, i.texcoord1).rgb;
                 fixed3 light2 = tex2D(_LightTex, i.texcoord2).rgb;
-                fixed4 ma= tex2D(_Metallic, i.texcoord);
+                fixed4 ma= tex2D(_Metallic, i.texcoord); 
                 light.rgb = lerp( light.rgb,light2,_rotDelta);
                 light =  (light - 0.5)*2;
                 fixed3 speColor = texCUBE(_SpecIBL,i.viewReflectDirection).rgb*_SpecIBLPower;
-				float3 indirectSpecular =   speColor.rgb*ma.r  * pow(i.NdotH, 3) *col.rgb;
+				float3 indirectSpecular =   speColor.rgb*ma.r  * pow(i.NdotH, _Grass) *col.rgb;
                 col.rgb =  col.rgb +  light.rgb +indirectSpecular;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
