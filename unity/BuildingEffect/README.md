@@ -4,5 +4,5 @@
 
 另外一个游戏需要的建筑效果。
 
-![image](https://github.com/whisperlin/utils/blob/master/unity/BuildingEffect/demo1.png)
+![image](https://github.com/whisperlin/utils/blob/master/unity/BuildingEffect/demo1.png) 
 
