@@ -55,6 +55,7 @@
      <Compile Include="Assets\AmplifyImpostors\Plugins\Editor\Inspector\AmplifyImpostorBakePresetEditor.cs" />
      <Compile Include="Assets\AmplifyImpostors\Plugins\Editor\Inspector\AmplifyImpostorInspector.cs" />
      <Compile Include="Assets\AmplifyImpostors\Plugins\Editor\ShaderEditorNode\AmplifyImpostorNode.cs" />
+     <Compile Include="Assets\Res\Bake\Editor\bakeTools.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>F:/Unity/Unity2017_4_2f2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -144,6 +145,15 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityCore">
+ <HintPath>F:/utils/unity/TreeLod/Assets/Plugins/CqPlugin/UnityCore.dll</HintPath>
+ </Reference>
+ <Reference Include="CqCore3.5">
+ <HintPath>F:/utils/unity/TreeLod/Assets/Plugins/CqPlugin/CqCore3.5.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditorCore">
+ <HintPath>F:/utils/unity/TreeLod/Assets/Plugins/CqPlugin/Editor/UnityEditorCore.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>F:/Unity/Unity2017_4_2f2/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

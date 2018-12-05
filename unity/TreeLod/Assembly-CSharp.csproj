@@ -60,10 +60,16 @@
      <Compile Include="Assets\AmplifyImpostors\Plugins\Scripts\ImpostorBakingTools.cs" />
      <Compile Include="Assets\AmplifyImpostors\Plugins\Scripts\Triangulator.cs" />
      <Compile Include="Assets\AmplifyImpostors\Plugins\Scripts\VersionInfo.cs" />
+     <Compile Include="Assets\Res\RotationTest.cs" />
+     <Compile Include="Assets\Res\VirtualLight.cs" />
+     <None Include="Assets\Res\Shader\DiffuseLightMap4Dir.shader" />
      <None Include="Assets\AmplifyImpostors\Examples\Scenes\CustomBaking\CustomImpostor\BakingColoredBarrels.shader" />
      <None Include="Assets\AmplifyImpostors\Plugins\EditorResources\Shaders\Baking\ImpostorDilate.shader" />
+     <None Include="Assets\Res\CGIncludes\shadow.cginc" />
      <None Include="Assets\AmplifyImpostors\ChangeLog.txt" />
      <None Include="Assets\AmplifyImpostors\Plugins\EditorResources\Shaders\Runtime\SphericalImpostor.shader" />
+     <None Include="Assets\Res\CGIncludes\DiffuseInfo.cginc" />
+     <None Include="Assets\Res\Shader\Building-High-Art.shader" />
      <None Include="Assets\AmplifyImpostors\Plugins\EditorResources\Shaders\Runtime\OctahedronImpostor.shader" />
      <None Include="Assets\AmplifyImpostors\Examples\Scenes\CustomBaking\CustomImpostor\RuntimeColoredBarrels.shader" />
      <None Include="Assets\AmplifyImpostors\Readme.txt" />
@@ -72,8 +78,10 @@
      <None Include="Assets\AmplifyImpostors\Plugins\EditorResources\Shaders\Runtime\AmplifyImpostors.cginc" />
      <None Include="Assets\AmplifyImpostors\Plugins\EditorResources\Shaders\Baking\ImpostorBakeTemplate.shader" />
      <None Include="Assets\AmplifyImpostors\Plugins\EditorResources\Shaders\Runtime\AmplifyImpostorsTemplateMetallic.shader" />
+     <None Include="Assets\Res\Shader\DiffuseLightMap.shader" />
      <None Include="Assets\AmplifyImpostors\Examples\Assets\Misc\StandardCrossfade.shader" />
      <None Include="Assets\AmplifyImpostors\Examples\Assets\Misc\ColorByPosition.shader" />
+     <None Include="Assets\Res\CGIncludes\RolantinCG.cginc" />
  <Reference Include="UnityEngine.UI">
  <HintPath>F:/Unity/Unity2017_4_2f2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -112,6 +120,12 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityCore">
+ <HintPath>F:/utils/unity/TreeLod/Assets/Plugins/CqPlugin/UnityCore.dll</HintPath>
+ </Reference>
+ <Reference Include="CqCore3.5">
+ <HintPath>F:/utils/unity/TreeLod/Assets/Plugins/CqPlugin/CqCore3.5.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
