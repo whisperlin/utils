@@ -3,7 +3,17 @@ using UnityEditor;
 using System.Collections;
 
 namespace ShaderForge {
-	
+
+	//billboard.
+	public enum BILLBOARD_TYPE{  
+
+		NONE = 0,  
+
+		Y_AXIS = 1,  
+
+		ALL = 2  
+
+	}  
 	
 	[System.Serializable]
 	public class SFPSC_Geometry : SFPS_Category {
@@ -32,8 +42,10 @@ namespace ShaderForge {
 		public TessellationMode tessellationMode = TessellationMode.Regular;
 		public OutlineMode outlineMode = OutlineMode.VertexNormals;
 		public CullMode cullMode = CullMode.BackfaceCulling;
-			
 
+		//billboard.
+		public BILLBOARD_TYPE billboard = BILLBOARD_TYPE.NONE;
+		public string[] strBillboard = new string[] { "NONE", "Y_AXIS", "ALL" };
 
 		public override string Serialize(){
 			string s = "";
@@ -46,12 +58,16 @@ namespace ShaderForge {
 			s += Serialize( "tesm", ((int)tessellationMode).ToString());
 			s += Serialize( "olmd", ( (int)outlineMode ).ToString() );
 			s += Serialize( "culm", ( (int)cullMode ).ToString() );
+			s += Serialize( "billboard", ( (int)billboard ).ToString() );
 			return s;
 		}
 
 		public override void Deserialize(string key, string value){
 
 			switch( key ) {
+			case "billboard":
+				billboard = (BILLBOARD_TYPE)int.Parse( value );
+				break;
 			case "vtps":
 				vertexPositioning = (VertexPositioning)int.Parse( value );
 				break;
@@ -129,6 +145,10 @@ namespace ShaderForge {
 			showPixelSnap = UndoableToggle( r, showPixelSnap, "Show 2D sprite pixel snap option in material", "show pixel snap", null );
 			r.y += 20;
 
+			//billboard.   
+			billboard = (BILLBOARD_TYPE)UndoableContentScaledToolbar( r, "billboard", (int)billboard, strBillboard, "NONE" );    
+			r.y += 20;
+ 
 			r.y += prevYpos;
 
 			return (int)r.yMax;
