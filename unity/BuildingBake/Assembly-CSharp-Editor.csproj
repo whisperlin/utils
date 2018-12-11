@@ -345,6 +345,15 @@
  <Reference Include="UnityEditorCore">
  <HintPath>F:/utils/unity/BuildingBake/Assets/Plugins/CqPlugin/Editor/UnityEditorCore.dll</HintPath>
  </Reference>
+ <Reference Include="WorldCreatorEngine">
+ <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Engine/WorldCreatorEngine.dll</HintPath>
+ </Reference>
+ <Reference Include="WorldCreatorFilterset01">
+ <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset01.dll</HintPath>
+ </Reference>
+ <Reference Include="WorldCreatorFilterset02">
+ <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset02.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/Users/YW1683/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
@@ -365,15 +374,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/Users/YW1683/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="WorldCreatorEngine">
- <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Engine/WorldCreatorEngine.dll</HintPath>
- </Reference>
- <Reference Include="WorldCreatorFilterset01">
- <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset01.dll</HintPath>
- </Reference>
- <Reference Include="WorldCreatorFilterset02">
- <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset02.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

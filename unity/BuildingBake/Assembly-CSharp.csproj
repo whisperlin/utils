@@ -62,9 +62,11 @@
      <Compile Include="Assets\ShaderForge\Example Assets\Scripts\SoftNormalsToVertexColor.cs" />
      <Compile Include="Assets\VirtualLight.cs" />
      <None Include="Assets\Bake\DiffuseLightMap4Dir.shader" />
+     <None Include="Assets\Art\Resources\Shader\Shader_rich5\Environment-Tree-High-Art-Alpha.shader" />
      <None Include="Assets\Bake\DiffuseLightMap.shader" />
      <None Include="Assets\Art\Resources\Shader\CGIncludes\shadow.cginc" />
      <None Include="Assets\Art\Resources\Shader\CGIncludes\DiffuseInfo.cginc" />
+     <None Include="Assets\Bake\DiffuseLightMap4DirTree.shader" />
      <None Include="Assets\Art\Resources\Shader\Shader_rich5\Building-High-Art.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>F:/Unity/Unity2017_3_1f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
@@ -153,6 +155,15 @@
  <Reference Include="UnityEditorCore">
  <HintPath>F:/utils/unity/BuildingBake/Assets/Plugins/CqPlugin/Editor/UnityEditorCore.dll</HintPath>
  </Reference>
+ <Reference Include="WorldCreatorEngine">
+ <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Engine/WorldCreatorEngine.dll</HintPath>
+ </Reference>
+ <Reference Include="WorldCreatorFilterset01">
+ <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset01.dll</HintPath>
+ </Reference>
+ <Reference Include="WorldCreatorFilterset02">
+ <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset02.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/Users/YW1683/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
@@ -173,15 +184,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/Users/YW1683/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="WorldCreatorEngine">
- <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Engine/WorldCreatorEngine.dll</HintPath>
- </Reference>
- <Reference Include="WorldCreatorFilterset01">
- <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset01.dll</HintPath>
- </Reference>
- <Reference Include="WorldCreatorFilterset02">
- <HintPath>F:/utils/unity/BuildingBake/Assets/Sence_source/scenesdata/sim_city01_lp/WorldCreator/Filters/WorldCreatorFilterset02.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
