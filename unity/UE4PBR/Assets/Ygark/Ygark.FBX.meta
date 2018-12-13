@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: 567eff1c022689a4da97edaad8ca7983
+timeCreated: 1544075416
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: mesh0
+    100002: mesh0 1
+    100004: mesh0 2
+    100006: mesh0 3
+    100008: mesh0 4
+    100010: mesh0 5
+    100012: mesh0 6
+    100014: mesh0 7
+    100016: mesh0 8
+    100018: Text001
+    100020: Text002
+    100022: Text003
+    100024: //RootNode
+    400000: mesh0
+    400002: mesh0 1
+    400004: mesh0 2
+    400006: mesh0 3
+    400008: mesh0 4
+    400010: mesh0 5
+    400012: mesh0 6
+    400014: mesh0 7
+    400016: mesh0 8
+    400018: Text001
+    400020: Text002
+    400022: Text003
+    400024: //RootNode
+    2100000: Smoke
+    2100002: Uv01
+    2100004: Uv02
+    2100006: Blink
+    2300000: mesh0
+    2300002: mesh0 1
+    2300004: mesh0 2
+    2300006: mesh0 3
+    2300008: mesh0 4
+    2300010: mesh0 5
+    2300012: mesh0 6
+    2300014: mesh0 7
+    2300016: mesh0 8
+    3300000: mesh0
+    3300002: mesh0 1
+    3300004: mesh0 2
+    3300006: mesh0 3
+    3300008: mesh0 4
+    3300010: mesh0 5
+    3300012: mesh0 6
+    3300014: mesh0 7
+    3300016: mesh0 8
+    4300000: mesh0
+    4300002: mesh0
+    4300004: mesh0
+    4300006: mesh0
+    4300008: mesh0
+    4300010: mesh0
+    4300012: mesh0
+    4300014: mesh0
+    4300016: mesh0
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blink
+    second: {fileID: 2100000, guid: ff436bf76604a0d4f9235b1ff8665cc3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Smoke
+    second: {fileID: 2100000, guid: 2a5f6f593a6d3644e97e6f20b9ddb6b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Uv01
+    second: {fileID: 2100000, guid: 7980d1a5e2be80e4c818af115f4bbcec, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Uv02
+    second: {fileID: 2100000, guid: f5b57afc47b57e24fb1f161e39e6d454, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

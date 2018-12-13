@@ -1,0 +1,55 @@
+[Header]
+ICOfile = "3DTotal_free_sample_4_Thumb.jpg"
+Name = "3DTotal free sample 4"
+Author = "3DTotal"
+Location = "UK"
+Comment = "industrial, ruins, indoor, burned, girders, pillars, columns, windows, graffiti, scratchwork, dirty, day, dark"
+Link = "http://www.3dtotal.com/"
+Date = "2010:04:25"
+Time = "18:12:48"
+
+[Background]
+BGfile = "3DTotal_free_sample_4_Bg.jpg"
+BGmap = 1
+BGu = 0.000000
+BGv = 0.000000
+BGheight = 4000
+
+[Enviroment]
+EVfile = "3DTotal_free_sample_4_Env.hdr"
+EVmap = 1
+EVu = 0.000000
+EVv = 0.000000
+EVheight = 180
+EVmulti = 1.000000
+EVgamma = 4.800000
+
+[Reflection]
+REFfile = "3DTotal_free_sample_4_Ref.hdr"
+REFmap = 1
+REFu = 0.000000
+REFv = 0.000000
+REFheight = 2000
+REFmulti = 1.000000
+REFgamma = 4.800000
+
+[Sun]
+SUNcolor = 238,255,230
+SUNmulti = 0.400000
+SUNu = 0.932000
+SUNv = 0.390000
+
+[Light1]
+LIGHTname = "Sun Refl 1"
+LIGHTcolor = 236,230,255
+LIGHTmulti = 0.050000
+LIGHTu = 0.412000
+LIGHTv = 0.436000
+
+[Light2]
+LIGHTname = "Sun Refl 2"
+LIGHTcolor = 255,221,230
+LIGHTmulti = 0.032000
+LIGHTu = 0.746000
+LIGHTv = 0.416000
+

@@ -1,0 +1,55 @@
+[Header]
+ICOfile = "3DTotal_free_sample_1_Thumb.jpg"
+Name = "3DTotal free sample 1"
+Author = "3DTotal"
+Location = "UK"
+Comment = "city, medieval, outdoor, back yard, timber-framed, buildings, timber framing, in the morning, cobblestone, road, tendrils, leaves, green, red, yellow"
+Link = "http://www.3dtotal.com/"
+Date = "2010:04:22"
+Time = "22:35:29"
+
+[Background]
+BGfile = "3DTotal_free_sample_1_Bg.jpg"
+BGmap = 1
+BGu = 0.000000
+BGv = 0.000000
+BGheight = 4000
+
+[Enviroment]
+EVfile = "3DTotal_free_sample_1_Env.hdr"
+EVmap = 1
+EVu = 0.000000
+EVv = 0.000000
+EVheight = 180
+EVmulti = 1.000000
+EVgamma = 2.500000
+
+[Reflection]
+REFfile = "3DTotal_free_sample_1_Ref.hdr"
+REFmap = 1
+REFu = 0.000000
+REFv = 0.000000
+REFheight = 2000
+REFmulti = 1.000000
+REFgamma = 2.500000
+
+[Sun]
+SUNcolor = 209,235,255
+SUNmulti = 0.120000
+SUNu = 0.690000
+SUNv = 0.368000
+
+[Light1]
+LIGHTname = "Light_Sky_1"
+LIGHTcolor = 255,237,136
+LIGHTmulti = 0.035000
+LIGHTu = 0.688000
+LIGHTv = 0.040000
+
+[Light2]
+LIGHTname = "Wall_Refl_1"
+LIGHTcolor = 255,237,136
+LIGHTmulti = 0.033000
+LIGHTu = 0.170000
+LIGHTv = 0.356000
+
