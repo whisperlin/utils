@@ -10,7 +10,7 @@ Shader "Physically-Based-Lighting" {
 	_Color ("Main Color", Color) = (1,1,1,1)
 	_SpecularColor ("Specular Color", Color) = (1,1,1,1)
 	_SpecularPower("Specular Power", Range(0,1)) = 1
-	_SpecularRange("Specular Gloss",  Range(1,128)) = 0
+	//_SpecularRange("Specular Gloss",  Range(1,128)) = 0
 	_Glossiness("Glossiness",Range(0,1)) = 1
  
 	_Metallic("Metallicness",Range(0,1)) = 1
@@ -45,6 +45,10 @@ Shader "Physically-Based-Lighting" {
             #include "AutoLight.cginc"
             #include "Lighting.cginc"
             #pragma multi_compile_fwdbase_fullshadows
+             #pragma multi_compile LIGHTMAP_OFF LIGHTMAP_ON
+            #pragma multi_compile DIRLIGHTMAP_OFF DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
+            #pragma multi_compile DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
+
             #pragma multi_compile _NORMALDISTMODEL_BLINNPHONG _NORMALDISTMODEL_PHONG _NORMALDISTMODEL_BECKMANN _NORMALDISTMODEL_GAUSSIAN _NORMALDISTMODEL_GGX _NORMALDISTMODEL_TROWBRIDGEREITZ _NORMALDISTMODEL_TROWBRIDGEREITZANISOTROPIC _NORMALDISTMODEL_WARD
             #pragma multi_compile _GEOSHADOWMODEL_ASHIKHMINSHIRLEY _GEOSHADOWMODEL_ASHIKHMINPREMOZE _GEOSHADOWMODEL_DUER_GEOSHADOWMODEL_NEUMANN _GEOSHADOWMODEL_KELEMAN _GEOSHADOWMODEL_MODIFIEDKELEMEN _GEOSHADOWMODEL_COOK _GEOSHADOWMODEL_WARD _GEOSHADOWMODEL_KURT 
             #pragma multi_compile _SMITHGEOSHADOWMODEL_NONE _SMITHGEOSHADOWMODEL_WALTER _SMITHGEOSHADOWMODEL_BECKMAN _SMITHGEOSHADOWMODEL_GGX _SMITHGEOSHADOWMODEL_SCHLICK _SMITHGEOSHADOWMODEL_SCHLICKBECKMAN _SMITHGEOSHADOWMODEL_SCHLICKGGX _SMITHGEOSHADOWMODEL_IMPLICIT
@@ -61,7 +65,7 @@ Shader "Physically-Based-Lighting" {
 			float4 _Color;
 			float4 _SpecularColor;
 			float _SpecularPower;
-			float _SpecularRange;
+			//float _SpecularRange;
 			float _Glossiness;
 			float _Metallic;
 			float _Anisotropic;
@@ -96,15 +100,26 @@ struct VertexOutput {
     float3 posWorld : TEXCOORD4;          //normal direction   
     float3 tangentDir : TEXCOORD5;
     float3 bitangentDir : TEXCOORD6;
- 
     LIGHTING_COORDS(7,8)                   //this initializes the unity lighting and shadow
     UNITY_FOG_COORDS(9)                    //this initializes the unity fog
+     #if defined(LIGHTMAP_ON) || defined(UNITY_SHOULD_SAMPLE_SH)
+      float4 ambientOrLightmapUV : TEXCOORD10;
+     #endif
 };
 
 VertexOutput vert (VertexInput v) {
      VertexOutput o = (VertexOutput)0;           
      o.uv0 = v.texcoord0;
      o.uv1 = v.texcoord1;
+     #ifdef LIGHTMAP_ON
+        o.ambientOrLightmapUV.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+        o.ambientOrLightmapUV.zw = 0;
+    #elif UNITY_SHOULD_SAMPLE_SH
+    #endif
+    #ifdef DYNAMICLIGHTMAP_ON
+        o.ambientOrLightmapUV.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
+    #endif
+
      o.normalDir = normalize(UnityObjectToWorldNormal(v.normal));
      o.tangentDir = normalize( mul( unity_ObjectToWorld, float4( v.tangent.xyz, 0.0 ) ).xyz );
      o.bitangentDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);
@@ -116,33 +131,53 @@ VertexOutput vert (VertexInput v) {
      TRANSFER_VERTEX_TO_FRAGMENT(o)
      return o;
 }
-
-UnityGI GetUnityGI(float3 lightColor, float3 lightDirection, float3 normalDirection,float3 viewDirection, float3 viewReflectDirection, float attenuation, float roughness, float3 worldPos){
- //Unity light Setup ::
-    UnityLight light;
-    light.color = lightColor;
-    light.dir = lightDirection;
-    light.ndotl = max(0.0h,dot( normalDirection, lightDirection));
-    UnityGIInput d;
-    d.light = light;
-    d.worldPos = worldPos;
-    d.worldViewDir = viewDirection;
-    d.atten = attenuation;
-    d.ambient = 0.0h;
-    d.boxMax[0] = unity_SpecCube0_BoxMax;
-    d.boxMin[0] = unity_SpecCube0_BoxMin;
-    d.probePosition[0] = unity_SpecCube0_ProbePosition;
-    d.probeHDR[0] = unity_SpecCube0_HDR;
-    d.boxMax[1] = unity_SpecCube1_BoxMax;
-    d.boxMin[1] = unity_SpecCube1_BoxMin;
-    d.probePosition[1] = unity_SpecCube1_ProbePosition;
-    d.probeHDR[1] = unity_SpecCube1_HDR;
-    Unity_GlossyEnvironmentData ugls_en_data;
-    ugls_en_data.roughness = roughness;
-    ugls_en_data.reflUVW = viewReflectDirection;
-    UnityGI gi = UnityGlobalIllumination(d, 1.0h, normalDirection, ugls_en_data );
-    return gi;
+////shaderforge mode
+//UnityGI GetUnityGI(float3 lightColor, float3 lightDirection, float3 normalDirection ,float3 viewDirection, float3 viewReflectDirection, float attenuation, float roughness, float3 worldPos)
+UnityGI GetUnityGI(float3 lightColor, float3 lightDirection, float3 normalDirection, float3 viewDirection, float3 viewReflectDirection, float attenuation, float roughness, float3 worldPos, VertexOutput i) {
+ UnityLight light;
+#ifdef LIGHTMAP_OFF
+ light.color = lightColor;
+ light.dir = lightDirection;
+ light.ndotl = LambertTerm(normalDirection, light.dir);
+#else
+ light.color = half3(0.f, 0.f, 0.f);
+ light.ndotl = 0.0f;
+ light.dir = half3(0.f, 0.f, 0.f);
+#endif
+ UnityGIInput d;
+ d.light = light;
+ d.worldPos = worldPos.xyz;
+ d.worldViewDir = viewDirection;
+ d.atten = attenuation;
+#if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON)
+ d.ambient = 0;
+ d.lightmapUV = i.ambientOrLightmapUV;
+#else
+ d.ambient = i.ambientOrLightmapUV;
+#endif
+#if UNITY_SPECCUBE_BLENDING || UNITY_SPECCUBE_BOX_PROJECTION
+ d.boxMin[0] = unity_SpecCube0_BoxMin;
+ d.boxMin[1] = unity_SpecCube1_BoxMin;
+#endif
+#if UNITY_SPECCUBE_BOX_PROJECTION
+ d.boxMax[0] = unity_SpecCube0_BoxMax;
+ d.boxMax[1] = unity_SpecCube1_BoxMax;
+ d.probePosition[0] = unity_SpecCube0_ProbePosition;
+ d.probePosition[1] = unity_SpecCube1_ProbePosition;
+#endif
+ d.probeHDR[0] = unity_SpecCube0_HDR;
+ d.probeHDR[1] = unity_SpecCube1_HDR;
+ Unity_GlossyEnvironmentData ugls_en_data;
+ ugls_en_data.roughness = roughness;
+ ugls_en_data.reflUVW = viewReflectDirection;
+ UnityGI gi = UnityGlobalIllumination(d, 1, normalDirection, ugls_en_data);
+ lightDirection = gi.light.dir;
+ lightColor = gi.light.color;
+ return gi;
 }
+
+ 
+
 
 
 //---------------------------
@@ -396,7 +431,7 @@ float SchlickGGXGeometricShadowingFunction (float NdotL, float NdotV, float roug
 
 //--------------------------
 
-
+ 
 float4 frag(VertexOutput i) : COLOR {
 
 	 float2 uv0 = TRANSFORM_TEX( i.uv0,_Albedo);
@@ -444,10 +479,10 @@ float4 frag(VertexOutput i) : COLOR {
      float RdotV = max(0.0, dot( lightReflectDirection, viewDirection ));
      float attenuation = LIGHT_ATTENUATION(i);
  
-     float3 attenColor =   attenuation*_LightColor0.rgb;
+    
      
      //get Unity Scene lighting data
-     UnityGI gi =  GetUnityGI(_LightColor0.rgb, lightDirection, normalDirection, viewDirection, viewReflectDirection, attenuation, 1- _Glossiness, i.posWorld.xyz);
+     UnityGI gi =  GetUnityGI(_LightColor0.rgb, lightDirection, normalDirection, viewDirection, viewReflectDirection, attenuation, 1- _Glossiness, i.posWorld.xyz,i);
      float3 indirectDiffuse = gi.indirect.diffuse.rgb ;//这个指的是环境光. 
 	 float3 indirectSpecular = gi.indirect.specular.rgb;//
 
@@ -459,26 +494,19 @@ float4 frag(VertexOutput i) : COLOR {
 
 	 float3 albedo = tex2D(_Albedo, uv0 ).rgb;
 
+	 float3 _diffuse =  albedo*_Color.rgb;
  
-    
-    float3 directDiffuse = NdotL* attenColor;
-     float3 diffuseColor = (directDiffuse ) * albedo*_Color.rgb*(1-_Metallic);
-
-      
-     float3 ambient  = indirectDiffuse *albedo*_Color;
-   
- 	 float f0 = F0(NdotL, NdotV, LdotH, roughness);
+     float3 diffuseColor =  _diffuse.rgb*(1-_Metallic);
  	
+ 	 float f0 = F0(NdotL, NdotV, LdotH, roughness);
 	 diffuseColor *= f0;
-     
+
  
-	 //diffuseColor+=albedo*indirectDiffuse;
-	
 
 	//Specular calculations
 
 
-	 float3 specColor = lerp(_SpecularColor.rgb, _Color.rgb, _Metallic * 0.5);
+	 float3 specColor = lerp(_SpecularColor.rgb, _diffuse.rgb, _Metallic );
 
 	 float3 SpecularDistribution = specColor;
 	 float GeometricShadow = 1;
@@ -584,19 +612,23 @@ float4 frag(VertexOutput i) : COLOR {
 	//NdotL有可能是负数.
  	specularity = saturate(specularity) * _SpecularPower;
      float grazingTerm = saturate(roughness + _Metallic);
-	 //float3 unityIndirectSpecularity =  indirectSpecular * FresnelLerp(specColor,grazingTerm,NdotV) * max(0.15,_Metallic) * (1-roughness*roughness* roughness);
+	 
 	 float3 unityIndirectSpecularity =  indirectSpecular * FresnelLerp(specColor,grazingTerm,NdotV) * _Metallic * (1-roughness*roughness* roughness) ;
- 
+ 	 //return float4(specColor,1);
 	 #ifdef _ENABLE_MC_ON
-	 	return float4(unityIndirectSpecularity,1);
+	 	return float4(unityIndirectSpecularity*_UnityLightingContribution,1);
 	 #endif
 
-     float3 lightingModel = diffuseColor + specularity + unityIndirectSpecularity *_UnityLightingContribution;
-     lightingModel *= NdotL;
- 
+	  float3 attenColor =   attenuation*_LightColor0.rgb;
 
-     float4 finalDiffuse = float4(lightingModel +ambient ,1);
-     //return float4(ambient,1);
+	 float3 directDiffuse =  NdotL * attenColor;
+
+     float3 lightingModel = diffuseColor *  directDiffuse  +  indirectDiffuse *diffuseColor + specularity + unityIndirectSpecularity *_UnityLightingContribution  ;
+
+    
+
+     float4 finalDiffuse = float4(lightingModel  ,1);
+
  
      UNITY_APPLY_FOG(i.fogCoord, finalDiffuse);
      return finalDiffuse;
