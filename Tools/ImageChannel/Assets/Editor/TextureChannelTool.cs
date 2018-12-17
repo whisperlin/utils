@@ -11,7 +11,7 @@ public class TextureChannelTool : EditorWindow {
 	{
 		EditorWindow.GetWindow<TextureChannelTool>("图层通道合并工具").Show ();
 	}
-	Texture2D[] editorArray = new Texture2D[3];
+	Texture2D[] editorArray = new Texture2D[4];
 
 
 	void CombineMesh(string savePath)
@@ -49,19 +49,21 @@ public class TextureChannelTool : EditorWindow {
 			temp2 [i].Apply ();
 			RenderTexture.ReleaseTemporary (temp[i] );
 		}
+
 		Texture2D final = new Texture2D (width, height, TextureFormat.RGBA32,false);
+		//不知道为什么转RGBA32通道R和A是反的.
 		for(int i = 0 ; i < width ;i++)
 		{
 			for (int j = 0; j < height; j++) {
-				final.SetPixel (i, j, new Color ( temp2[0].GetPixel(i,j).r ,  temp2[1].GetPixel(i,j).r ,  temp2[2].GetPixel(i,j).r  ));
+				final.SetPixel (i, j, new Color ( temp2[2].GetPixel(i,j).r ,  temp2[1].GetPixel(i,j).r ,  temp2[0].GetPixel(i,j).r ,temp2[3].GetPixel(i,j).r ));
 			}
 		}
 		final.Apply ();
 		for (int i = 0; i < editorArray.Length; i++) {
 			GameObject.DestroyImmediate (temp2 [i]);
 		}
-
-		byte [] date =  final.EncodeToPNG ();
+		byte[] date = TgaUtil.Texture2DEx.EncodeToTGA (final, true);
+		//byte [] date =  final.EncodeToPNG ();
 		System.IO.File.WriteAllBytes (savePath, date);
 		GameObject.DestroyImmediate (final);
 		GameObject.DestroyImmediate (black);
@@ -75,10 +77,12 @@ public class TextureChannelTool : EditorWindow {
 		editorArray [1] = (Texture2D)EditorGUILayout.ObjectField (editorArray [1], typeof(Texture2D));
 		GUILayout.Label ("B通道");
 		editorArray [2] = (Texture2D)EditorGUILayout.ObjectField (editorArray [2], typeof(Texture2D));
+		GUILayout.Label ("A通道");
+		editorArray [3] = (Texture2D)EditorGUILayout.ObjectField (editorArray [3], typeof(Texture2D));
 		 
 		if (GUILayout.Button ("合成")) {
 			bool found = false;
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 4; i++) {
 				if (editorArray[i] != null)
 					found = true;
 			}
@@ -86,7 +90,7 @@ public class TextureChannelTool : EditorWindow {
 				EditorUtility.DisplayDialog ("提示", "没有图片呗选择", "ok");
 				return;
 			}
-			string path = EditorUtility.SaveFilePanelInProject("Save Texture",    "TextureName", "png",
+			string path = EditorUtility.SaveFilePanelInProject("Save Texture",    "TextureName", "tga",
 				"请输入保存文件名");
 			if (path.Length != 0) 
 			{
