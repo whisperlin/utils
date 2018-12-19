@@ -79,7 +79,7 @@ namespace TgaUtil
 		{
 			int width = tex.width;
 			int height = tex.height;
-			Texture2D tex2 = new Texture2D(width,height,tex.format,tex.mipmapCount > 1);
+			Texture2D tex2 = new Texture2D(width,height,tex.format,false);
 			var pixs = tex.GetPixels ();
 			for (int i = 0; i < pixs.Length; i++) {
 				pixs[i] = new Color(pixs[i].b,pixs[i].g,pixs[i].r,pixs[i].a);
@@ -89,7 +89,7 @@ namespace TgaUtil
 			tex2.Apply ();
 			int elementCount = withAlpha ? 4 : 3;
 			byte[] pixels = tex2.GetRawTextureData();
-
+			GameObject.DestroyImmediate (tex2,true);
 			int pixelLength = pixels.Length;
 
 
