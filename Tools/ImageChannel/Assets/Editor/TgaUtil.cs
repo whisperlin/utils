@@ -69,7 +69,7 @@ namespace TgaUtil
 		}
 	}
 #endif
-
+	//不知道为什么转RGBA32通道R和A是反的.
 	public static class Texture2DEx
 	{
 		private static byte[] Footer = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 84, 82, 85, 69, 86, 73, 83, 73, 79, 78, 45, 88, 70, 73, 76, 69, 46, 0 }; // TRUEVISION-XFILE. signature (new TGA format)
