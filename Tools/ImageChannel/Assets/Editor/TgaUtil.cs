@@ -79,7 +79,7 @@ namespace TgaUtil
 		{
 			int width = tex.width;
 			int height = tex.height;
-			Texture2D tex2 = new Texture2D(width,height,tex.format);
+			Texture2D tex2 = new Texture2D(width,height,tex.format,tex.mipmapCount > 1);
 			var pixs = tex.GetPixels ();
 			for (int i = 0; i < pixs.Length; i++) {
 				pixs[i] = new Color(pixs[i].b,pixs[i].g,pixs[i].r,pixs[i].a);
