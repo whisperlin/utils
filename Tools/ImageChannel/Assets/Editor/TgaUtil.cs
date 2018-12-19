@@ -77,13 +77,22 @@ namespace TgaUtil
 		// Uncompressed - TrueColor
 		public static byte[] EncodeToTGA( this Texture2D tex, bool withAlpha = true )
 		{
+			int width = tex.width;
+			int height = tex.height;
+			Texture2D tex2 = new Texture2D(width,height,tex.format);
+			var pixs = tex.GetPixels ();
+			for (int i = 0; i < pixs.Length; i++) {
+				pixs[i] = new Color(pixs[i].b,pixs[i].g,pixs[i].r,pixs[i].a);
+
+			}
+			tex2.SetPixels (pixs);
+			tex2.Apply ();
 			int elementCount = withAlpha ? 4 : 3;
-			byte[] pixels = tex.GetRawTextureData();
+			byte[] pixels = tex2.GetRawTextureData();
 
 			int pixelLength = pixels.Length;
 
-			int width = tex.width;
-			int height = tex.height;
+
 
 			int rawSize = elementCount * ( pixelLength / elementCount );
 

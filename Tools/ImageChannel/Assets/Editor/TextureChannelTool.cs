@@ -51,11 +51,10 @@ public class TextureChannelTool : EditorWindow {
 		}
 
 		Texture2D final = new Texture2D (width, height, TextureFormat.RGBA32,false);
-		//不知道为什么转RGBA32通道R和A是反的.
 		for(int i = 0 ; i < width ;i++)
 		{
 			for (int j = 0; j < height; j++) {
-				final.SetPixel (i, j, new Color ( temp2[2].GetPixel(i,j).r ,  temp2[1].GetPixel(i,j).r ,  temp2[0].GetPixel(i,j).r ,temp2[3].GetPixel(i,j).r ));
+				final.SetPixel (i, j, new Color ( temp2[0].GetPixel(i,j).r ,  temp2[1].GetPixel(i,j).r ,  temp2[2].GetPixel(i,j).r ,temp2[3].GetPixel(i,j).r ));
 			}
 		}
 		final.Apply ();
