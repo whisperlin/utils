@@ -243,6 +243,10 @@ namespace ShaderForge {
 			//AddTemplate( typeof( SFN_StaticBranch ), catBranching + "Static Branch" );
 
 			string catVecOps = "Vector Operations/";
+			AddTemplate( typeof( SFN_ColorChannelR ), 			catVecOps + "Channel R", KeyCode.C );
+			AddTemplate( typeof( SFN_ColorChannelG ), 			catVecOps + "Channel G", KeyCode.C );
+			AddTemplate( typeof( SFN_ColorChannelB ), 			catVecOps + "Channel B", KeyCode.C );
+			AddTemplate( typeof( SFN_ColorChannelA ), 			catVecOps + "Channel A", KeyCode.C );
 			AddTemplate( typeof( SFN_Append ), 			catVecOps + "Append", KeyCode.Q );
 			AddTemplate( typeof( SFN_ChannelBlend ), 	catVecOps + "Channel Blend");
 			AddTemplate( typeof( SFN_ComponentMask ),	catVecOps + "Component Mask", KeyCode.C );

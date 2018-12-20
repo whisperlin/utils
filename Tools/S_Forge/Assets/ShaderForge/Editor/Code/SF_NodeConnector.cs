@@ -921,7 +921,7 @@ namespace ShaderForge {
 
 
 		// This is currenly meant to propagate its value type to its link partner
-		public void SetValueType(ValueType vt){
+		public virtual void SetValueType(ValueType vt){
 			if(conType == ConType.cOutput && this.valueType != vt){
 
 				this.valueType = vt;
@@ -934,7 +934,7 @@ namespace ShaderForge {
 			}
 		}
 
-		public void SetValueTypeAndDefault( ValueType vt ) {
+		public virtual void SetValueTypeAndDefault( ValueType vt ) {
 			SetValueType( vt );
 			valueType = vt;
 			valueTypeDefault = vt;
