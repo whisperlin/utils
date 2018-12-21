@@ -7,8 +7,8 @@ Properties {
       _Metallic ("_Metallic", 2D) = "white" {}
      _LightTex ("Base (RGB)", 2D) = "white" {}
     
-     _rotDelta  ("_rot",Range(0,1))= 0
-     _rotation  ("_rotation",Vector)= (0,0,0.5,0)
+     //_rotDelta  ("_rot",Range(0,1))= 0
+    // _rotation  ("_rotation",Vector)= (0,0,0.5,0)
      _SpecIBL ("SpecIBL", Cube) = "_Skybox" {}
       _SpecIBLPower ("SpecIBL Power", Range(0, 10)) =1
       _Grass ("_Grass", Range(1, 256)) =2
@@ -43,7 +43,8 @@ SubShader {
                 float2 texcoord2 : TEXCOORD2;
                 float NdotH :TEXCOORD3;
                 float3 viewReflectDirection :TEXCOORD4;
-                UNITY_FOG_COORDS(5)
+                float rotDelta  :TEXCOORD5;
+                UNITY_FOG_COORDS(6)
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -60,8 +61,7 @@ SubShader {
             uniform samplerCUBE _SpecIBL;
             uniform float _SpecIBLPower;
 
-            float4 _rotation;
-            float _rotDelta;
+           
             float _Grass;
             uniform fixed3 DirectionLightDir0;
             uniform fixed3 DirectionLightColor0;
@@ -70,6 +70,37 @@ SubShader {
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+                float3  forward = normalize(float3(unity_ObjectToWorld._m02,0,unity_ObjectToWorld._m22));
+
+
+                float4 _rotation;
+            	 
+                float delta = 0;
+
+ 				
+				//if (forward.z >= 0 && forward.x >= 0) {
+					//_rotation =  float4(0,  0 ,  0.5, 0);
+					//delta = dot(float3 (1, 0, 0), forward); 
+				//} else if (forward.z <= 0 && forward.x >= 0) {
+					//_rotation =  float4(0, 0.5, 0.5, 0);
+					//delta = dot ( float3 (1, 0, 0), forward); 
+				//} else if (forward.z <= 0 && forward.x <= 0) {
+		 			//_rotation =  float4(0, 0.5,0.5, 0.5);
+					//delta = dot ( float3 (-1, 0, 0), forward); 
+				//} 
+				//else //  if (forward.z >= 0 && forward.x <= 0)
+				//{
+					//_rotation =  float4(0, 0 ,0.5, 0.5);
+					//delta = dot ( float3 (-1, 0, 0), forward); 
+				//}
+
+				//这两步等价于上面注释部分.
+				_rotation =  float4(0, step(forward.z,0)*0.5 ,  0.5 ,step(forward.x,0)*0.5  );
+				delta = dot ( float3 (-1+step(0,forward.x)*2, 0, 0), forward); 
+
+
+				o.rotDelta = delta;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
                 o.texcoord1 = TRANSFORM_TEX(v.texcoord1, _MainTex) / 2;
@@ -90,6 +121,7 @@ SubShader {
  
                 o. viewReflectDirection = reflect( -viewDirection, normalDirection );
                 //_rotDelta
+               
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -100,7 +132,7 @@ SubShader {
                 fixed3 light = tex2D(_LightTex, i.texcoord1).rgb;
                 fixed3 light2 = tex2D(_LightTex, i.texcoord2).rgb;
                 fixed4 ma= tex2D(_Metallic, i.texcoord); 
-                light.rgb = lerp( light.rgb,light2,_rotDelta);
+                light.rgb = lerp( light.rgb,light2,i.rotDelta);
                 light =  (light - 0.5)*2;
                 fixed3 speColor = texCUBE(_SpecIBL,i.viewReflectDirection).rgb*_SpecIBLPower;
 				float3 indirectSpecular =   speColor.rgb*ma.r  * pow(i.NdotH, _Grass) *col.rgb;

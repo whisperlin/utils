@@ -51,8 +51,8 @@ public class RotationBakeObj : MonoBehaviour {
 			delta = Vector3.Dot (new Vector3 (-1, 0, 0), forward); 
 			debug = 4;
 		}
-		r.sharedMaterial.SetVector ("_rotation",rot);
-		r.sharedMaterial.SetFloat ("_rotDelta", delta);
+		//r.sharedMaterial.SetVector ("_rotation",rot);
+		//r.sharedMaterial.SetFloat ("_rotDelta", delta);
 		//block.SetFloat ("_rotDelta", delta);
 		//block.SetVector ("_rotation",rot);
 		//block.SetFloat ("_rotDelta", delta);
