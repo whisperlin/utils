@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicTex:
-        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 2800000, guid: 5015c7ceecf0d3d48b433702dba4f9c9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -104,10 +104,10 @@ Material:
     - _FresnelModel: 2
     - _GeoShadowModel: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.571
+    - _Glossiness: 0.761
     - _GlossyReflections: 1
     - _Ior: 1
-    - _Metallic: 1
+    - _Metallic: 0.651
     - _MetallicChannel: 0
     - _Mode: 0
     - _NormalDistModel: 4
@@ -116,8 +116,8 @@ Material:
     - _SmithGeoShadowModel: 3
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularPower: 0.92
-    - _SpecularRange: 106.2
+    - _SpecularPower: 0.514
+    - _SpecularRange: 24.3
     - _SrcBlend: 1
     - _UVSec: 0
     - _UnityLightingContribution: 1

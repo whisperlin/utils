@@ -8,9 +8,8 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Uv02Body
   m_Shader: {fileID: 4800000, guid: 8998f70dd965b2e4188d51f7e306a4aa, type: 3}
-  m_ShaderKeywords: _DEBUGMOD_ON _ENABLE_MC_ON _FRESNELMODEL_SCHICHU3D _FRESNELMODEL_SCHLICK
-    _GEOSHADOWMODEL_ASHIKHMINSHIRLEY _METALLICCHANNEL_GLOSS_R _METALLICGLOSSMAP _NORMALDISTMODEL_GGX
-    _NORMALMAP _SMITHGEOSHADOWMODEL_GGX
+  m_ShaderKeywords: _DEBUGMOD_ON _FRESNELMODEL_SCHICHU3D _FRESNELMODEL_SCHLICK _GEOSHADOWMODEL_ASHIKHMINSHIRLEY
+    _METALLICCHANNEL_GLOSS_R _METALLICGLOSSMAP _NORMALDISTMODEL_GGX _NORMALMAP _SMITHGEOSHADOWMODEL_GGX
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -88,7 +87,7 @@ Material:
     - IBL_Blur: 4.6
     - IBL_Intensity: 1
     - SBL_Intensity: 10
-    - _Anisotropic: 1
+    - _Anisotropic: -12.5
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DEBUGMOD: 1
@@ -98,16 +97,16 @@ Material:
     - _ENABLE_F: 0
     - _ENABLE_G: 0
     - _ENABLE_GAMMA: 0
-    - _ENABLE_MC: 1
+    - _ENABLE_MC: 0
     - _ENABLE_NDF: 0
     - _EmissionIntensity: 1
     - _FresnelModel: 0
     - _GeoShadowModel: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.774
+    - _Glossiness: 0.646
     - _GlossyReflections: 1
     - _Ior: 1
-    - _Metallic: 1
+    - _Metallic: 0.544
     - _MetallicChannel: 0
     - _Mode: 0
     - _NormalDistModel: 4
