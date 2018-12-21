@@ -36,7 +36,7 @@ namespace ShaderForge {
 
 		const bool DEBUG = true;
 
-
+		bool canBake = false;
 		public static PassType currentPass = PassType.FwdBase;
 		public static ShaderProgram currentProgram = ShaderProgram.Vert;
 
@@ -658,7 +658,14 @@ namespace ShaderForge {
 			if( ps.catGeometry.showPixelSnap )
 				App( "#pragma multi_compile _ PIXELSNAP_ON" );
 
-			App( "#pragma multi_compile __ BAKEMOD_ON" );
+			int propCount = editor.nodeView.treeStatus.propertyList.Count;
+			for (int i = 0; i < propCount; i++) {
+				if (editor.nodeView.treeStatus.propertyList [i].IsProperty () && editor.nodeView.treeStatus.propertyList [i].property.nameInternal == "_Albedo") {
+					canBake = true;
+				}
+			}
+			if(canBake)
+				App( "#pragma multi_compile __ BAKEMOD_ON" );
 			App( "#include \"UnityCG.cginc\"" );
 
 			if( ShouldUseLightMacros() )
@@ -2277,9 +2284,12 @@ namespace ShaderForge {
 				App( GetUvCompCountString( 1 ) + " texcoord1 : TEXCOORD1;" );
 			else 
 			{
-				App ("#ifdef BAKEMOD_ON");
-				App( GetUvCompCountString( 1 ) + " texcoord1 : TEXCOORD1;" );
-				App ("#endif");
+				if (canBake) {
+					App ("#ifdef BAKEMOD_ON");
+					App( GetUvCompCountString( 1 ) + " texcoord1 : TEXCOORD1;" );
+					App ("#endif");
+				}
+
 			}
 			if( dependencies.uv2 )
 				App( GetUvCompCountString( 2 ) + " texcoord2 : TEXCOORD2;" );
@@ -2672,12 +2682,14 @@ namespace ShaderForge {
 			}
 
 			if (dependencies.uv0) {
-				App ("#ifdef BAKEMOD_ON");
- 
-				App ("o.pos.xy = v.texcoord1*2-float2(1,1);");
-				App ("o.pos.z = 0.5;");
-				App ("o.pos.w = 1;");
-				App ("#endif");
+				if (canBake) {
+					App ("#ifdef BAKEMOD_ON");
+					App ("o.pos.xy = v.texcoord1*2-float2(1,1);");
+					App ("o.pos.z = 0.5;");
+					App ("o.pos.w = 1;");
+					App ("#endif");
+				}
+
 			}
 
 
@@ -2690,7 +2702,7 @@ namespace ShaderForge {
 
 		void Fragment() {
 			currentProgram = ShaderProgram.Frag;
-
+			dependencies.frag_facing = false;
 			if( currentPass == PassType.Meta ) {
 				string vface = "";
 				if( dependencies.frag_facing ) {
@@ -2784,11 +2796,16 @@ namespace ShaderForge {
 				App( "return fixed4(" + ps.n_outlineColor + ",0);" );
 			} else {
 
-				App("#ifdef BAKEMOD_ON");
-				App("float4  res = 1;");
-				App("res.rgb = (finalColor.rgb - _Albedo_var.rgb )*0.5 + 0.5;");
-				App("return res;");
-				App("#endif");
+	 
+
+				if (canBake) {
+					App("#ifdef BAKEMOD_ON");
+					App("float4  res = 1;");
+					App("res.rgb = (finalColor.rgb - _Albedo_var.rgb )*0.5 + 0.5;");
+					App("return res;");
+					App("#endif");
+				}
+
 				 
 				//if(ps.mOut.diffuse.IsConnectedEnabledAndAvailable()){
 				//	AppFinalOutput("lightFinal + " + "diffuse", ps.n_alpha); // This is really weird, it should already be included in the light calcs. Do more research // TODO
