@@ -1,6 +1,1 @@
-﻿# RSM 光照
-rsm光照例子，自己理解着写的，只是学习。代码有很大优化空间。第一张图是有间接光照的，第二张图是没有的。
-![image](https://github.com/whisperlin/utils/blob/master/unity/RSM/demo1.png) 
-![image](https://github.com/whisperlin/utils/blob/master/unity/RSM/demo0.png)
-
-
+http://htmlpreview.github.io/?https://github.com/whisperlin/utils/blob/master/html/Shader%20Forge/Shader%20Forge%20%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.html
