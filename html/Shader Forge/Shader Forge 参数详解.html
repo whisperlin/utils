@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)https://blog.csdn.net/zhaoguanghui2012/article/details/77837238 -->
+<html lang="zh-CN"><head>
+<body>
+<table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">这是您的所有其他节点最终将链接到的节点。它拥有为不同目的服务的多个输入。<br>
+以下动画图像显示所有输入及其随时间变化的行为。大部分输入会在 0 和 1（黑色和白色）之间来回绘制动画。<br><br></span>
+<div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_diffuse.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Diffuse （漫反射）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是着色器的主要颜色。漫反射颜色将根据出光的法线角度接收光线或衰减光线，以及被阴影遮罩。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_diffusepower.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Diffuse Power (漫反射力道)</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是光法线角度衰减的指数。可在使用大于 1 的值时获得额外的金属外观。请注意，无论何时启用，它都相当消耗效能。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_specular.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Specular （镜面反射）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是着色器镜面高光的颜色。值越高就越明亮，黑色完全不受着色器影响。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_gloss.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Gloss （光泽）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是镜面高光的指数。值越高光泽度越高，值趋近于 0 时将变得没有光泽。请注意，如果您取消选中光泽重映射，则应避免使用低于 1 的光泽值。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_normal.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Normal （法线）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是切线空间法线方向，您可在此连接法线贴图或自定义法线向量。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_emission.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Emission （自发光）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是无论光照条件如何始终都会添加到着色器的光线。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_transmission.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Transmission （透射）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项在光源位于当前渲染的表面背后时控制有多少光线可以通过。这对于薄型材料十分有用，例如布料或植被。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_lightwrapping.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Light Wrapping （环绕光）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">这是控制出光法线角度衰减偏移的一种方法，可用于获得与次表面散射相似的效果。对于平滑对象最有用。输入偏红色的值将让红色通道比其他通道更多地“环绕”对象，这样看起来就像是光线传递到网格中并携带红色波长出来，与遮罩皮肤的方法类似。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_diffuseambientlight.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Diffuse Ambient Light （漫反射环境光）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项将光线添加到着色器，受漫反射影响。可以与立方体贴图（使用基于图像的光照 (IBL) 的法线方向）或环境光等一起使用</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_specularambientlight.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Specular Ambient Light （镜面反射环境光）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项将光线添加到着色器，受镜面反射影响。可以与立方体贴图（使用基于图像的光照 (IBL) 的视图反射方向）等一起使用</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_diffuseambientlight.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Diffuse Ambient Occlusion （漫反射环境光遮蔽）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项抑制间接漫反射光线，例如光探头、间接光线和漫反射环境光</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_specularambientlight.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Specular Ambient Occlusion （镜面反射环境光遮蔽）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项可抑制间接镜面反射光线，例如反射探头和镜面反射环境光</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_customlighting.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Custom Lighting （自定义照明）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此输入在着色器设置为不打光时处于活动状态，可让您定义自定义照明行为。您在此处根据光线放置节点。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_alpha.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Opacity （不透明度）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">Opacity（不透明度）控制最终像素的透明度。请注意，部分透明度通常很难设置正确，特别是在使用延迟渲染时。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_alphaclip.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Opacity Clip （不透明度剪切）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">Opacity Clip（不透明度剪切）是控制是否应该绘制当前像素/片段的一种方法。始终对需要透明度的对象使用硬剪切，但不要对部分透明度使用硬剪切，因为 Opacity Clip（不透明度剪切）可以轻松排序，但是 Opacity（不透明度）不可以。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_refraction.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Refraction （反射）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">Refraction（反射）是用于折射背景像素的屏幕空间 UV 偏移。请确保在使用前将 Opacity（不透明度）设置为低于 1 的值，以便折射效果可见。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_outlinewidth.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Outline Width （描边宽度）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项将向着色器添加描边，渲染为具有反面法线的偏移网格。请注意，硬边将损坏描边。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_outlinecolor.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Outline Color （描边颜色）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项控制描边的颜色。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_vertexoffset.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+Vertex Offset （顶点偏移）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项可用于随时间变化对着色器进行动画，或在不同条件下更改对象的形状。您只需插入每个顶点所需偏移量的 XYZ 坐标即可。</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_displacement.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+DX11 Displacement （DX11 位移）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项和 Vertex Offset（顶点偏移）的作用非常类似，但是与 DX11 曲面细分一起使用。（请注意，DirectX 仅适用于 Windows，需要 DX11 GPU 且必须在 Unity 设置中启用）</div>
+</div>
+</div>
+<br><div class="node_desc_main_input">
+<div class="node_desc_inner_img" style="display:inline-block;"><img src="./Shader Forge 参数详解_files/main_input_tessellation.gif" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></div>
+<div class="node_desc_main_input_right" style="display:inline-block;margin-left:4px;vertical-align:top;">
+<div class="node_desc_main_input_title" style="font-size:14px;font-weight:700;vertical-align:top;">
+DX11 Tessellation （DX11 曲面细分）</div>
+<div class="node_desc_main_input_desc" style="display:inline-block;">此选项控制您要将三角形分割为多少个细分。（请注意，DirectX 仅适用于 Windows，需要 DX11 GPU 且必须在 Unity 设置中启用）</div>
+</div>
+</div>
+<br></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="add" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Add (加法)</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>A + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_add.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] + [B] 之和</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="subtract" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Subtract (减法)</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>S + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_subtract.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] - [B] 之差</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="multiply" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Multiply (乘法)</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>M + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_multiply.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] * [B] 之积</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="divide" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Divide (除法)</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>D + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_divide.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] / [B] 之商</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="power" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Power (乘方)</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>E + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_power.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [Val] ^ [Exp] 之幂</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="sqrt" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Sqrt (平方根)</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的平方根</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="log" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Log (对数)</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的对数。您可以在下拉菜单中切换对数底</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="min" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Min (最小值)</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_min.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] 和 [B] 的最小值</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="max" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Max (最大值)</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_max.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] 和 [B] 的最大值</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="abs" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Abs （绝对值）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_abs.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的绝对值。它实质上让负值变为正值</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="sign" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Sign （正负零取值）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_sign.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的符号。<br>
+值大于 0 时输出 1<br>
+值等于 0 时输出 0<br>
+值小于 0 时输出 -1</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="ceil" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Ceil （进位取整）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_ceil.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出时将其输入向上舍入为最近整数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="round" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Round （四舍五入取整）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_round.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出时将其输入四舍五入为最近整数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="floor" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Floor （舍位取整）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_floor.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出时将其输入向下舍入为最近整数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="trunc" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Trunc （取整）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_trunc.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出时将其输入向零四舍五入到最近整数。它实质上去掉小数，留下整数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="stepaltbaltb" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Step (A &lt;= B) （比较 (A &lt;= B)）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_step.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">如果 [A] 小于或等于 [B]，则输出 1，否则输出 0</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="if" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">If （条件）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>I + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">[A] 大于 [B] 时，输出 [A&gt;B] 输入<br>
+[A] 等于 [B] 时，输出 [A=B] 输入<br>
+[A] 小于 [B] 时，输出 [A&lt;B] 输入</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="frac" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Frac （取小数）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_frac.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的小数部分。它实质上移除整数部分，仅保留小数部分。如果输入为 4.32，则会输出 0.32。此节点在与 Time（时间）节点一起使用时非常有用，会随时间变化带来锯齿波</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="fmod" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Fmod （取模）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] 除以 [B] 的余数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="clamp" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Clamp （范围）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其主输入的值，不小于 [Min] 且不大于 [Max]</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="clampsimple" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Clamp (Simple) （范围（简单））</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">跟 Clamp（范围）一样，但为最小值和最大值使用数字输入，而不使用节点接口</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="clamp0-10-1" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Clamp 0-1 （范围 0-1）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_clamp01.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入值，不小于 0 且不大于 1</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="lerp" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Lerp （线性插值）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>L + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_lerp.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Lerp（线性插值）用于混合两个值或颜色。<br>
+如果 [T] 为 0，则将输出 A<br>
+如果 [T] 为 0.5，则将输入 [A] 和 [B] 的分半混合<br>
+如果 [T] 为1，则将输出 B<br>
+如果 [T] 为两者间的任一值，则将输入两者的线性混合。</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="lerpsimple" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Lerp (Simple) （线性插值（简单））</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">与 Lerp（线性插值）一样，但为 [A] 和 [B] 使用数字输入，而不使用节点接口</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="posterize" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Posterize （色调分离）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_posterize.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">基于经过 [Steps] 的值对值进行四舍五入取整。[Steps] 值为 5 时将在 0 到 1 的范围内创建 5 段</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="blend" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Blend （混合）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>B + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_blend.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">使用指定方法混合 [A] 和 [B]</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="remap" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Remap （重映射）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_remaprangeadvanced.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">将值从一个范围重映射到另一个范围。与 Remap (Simple)（重映射（简单））一样，但使用输入而不是数值常数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="remapsimple" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Remap (Simple) （重映射（简单））</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>R + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_remaprange.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">将值从一个范围重映射到另一个范围。例如，如果节点期望 -1 到 1 的值，但您想要它输出 2 到 5 的值，那么您可以在第一行键入-1 和 1，在第二行键入 2 和 5</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="noise" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Noise （噪波）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_noise.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">根据两分量输入（例如 UV 坐标）生成伪随机点</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="oneminus1" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">One Minus （1 减）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>O + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_oneminus.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 1 减去其输入。与颜色输入一起使用时，将反转颜色</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="negate" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Negate （取反）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_negate.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其主输入乘以 -1。实质上让正值变负，让负值变正</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="exp" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Exp （指数）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">选定 Exp（指数）时：输出 e 到其输入的幂<br>
+选定 Exp 2（指数 2）时：输出 2 到其输入的幂</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="value" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Value （值）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>1 + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">数字值，也可称为“Vector 1”（向量 1）。还提供属性版本。值可以与 Append（附加）节点一起用于创建拥有多个分量的向量。值还可以与向量/颜色相乘。例如，向量 (3,1,0) 乘以 0.5 会输出向量 (1.5,0.5,0)</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vector22" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vector 2 （向量 2 ）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>2 + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">具有两个分量/值的向量。通常与 UV 坐标一起使用。将 Vector 2（向量 2） 添加到 UV 坐标会转换 UV 坐标。将 UV 坐标与 Vector 2（向量 2）相乘会缩放 UV</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vector33" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vector 3 （向量 3 ）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>3 + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">具有三个分量/值的向量。通常用作颜色、位置或方向</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vector44" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vector 4 （向量 4 ）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>4 + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">具有四个分量/值的向量。通常用作具有 Alpha 通道的颜色，或用作在第四个通道中有一些额外数据的位置。检视器中有两个参数可供曝光。Color（颜色）和 Vector 4（向量 4）参数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="texture2d2d" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Texture 2D （2D 纹理）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>T + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_tex2d.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">包含对纹理的引用，并将使用特定 MIP 级别在特定 UV 坐标上对纹理进行采样（如果已连接）。如果 [Tex] 输入由 Texture Asset（纹理资源）节点连接，则它将不再是检视器中的参数。输出 [RGB] 以及单独的通道</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="textureasset" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Texture Asset （纹理资源）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_tex2dasset.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">包含对纹理的引用。用于对单个纹理进行多次采样 – 仅可连接到 Texture 2D（2D 纹理）节点的 [Tex] 输入。这也将在材质的检视器中反映出来，因此用户只需要分配一个纹理</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="valueproperty" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Value (Property) （值（属性））</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">数字值；与 Value（值）一样，但在材质检视器中曝光</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vector4property4" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vector 4 (Property) （向量 4（属性））</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">具有四个分量/值的向量，与 Vector 4（向量 4）一样，但在材质检视器中作为 4 个单独的 X、Y、Z 和 W 值曝光</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="color" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Color （颜色）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">具有四个分量/值的向量，与 Vector 4（向量 4）一样，但在材质检视器中作为取色器曝光</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="cubemap" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Cubemap （立方体贴图）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">包含对立方体的引用，并将使用特定 MIP 级别在特定方向对其进行采样（如果已连接）。输出 [RGB] 以及单独的通道</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="slider" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Slider （滑动条）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">让您能够轻松地在最小值和最大值之间调整某个值。也向检视器曝光</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="dotproduct" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Dot Product （点积）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] 和 [B] 之间的点积。对于两个归一化的向量而言，它实质上输出两个向量指向之间的距离。如果它们指向相同方向，则输出 1；如果它们互相垂直，则输出 0；如果它们指向相反方向，则输出 -1。<br>
+下拉选择：<br>
+标准 – 常规点积<br>
+正数 – 让所有负值为 0<br>
+负数 – 让所有正值为 0<br>
+绝对值 – 让所有负值为正<br>
+归一化 – 在 0 到 1（而不是 -1 到 1）的范围内输出<br><br>
+下图显示使用两个归一化向量时不同模式的行为。<br>
+在 X 轴上可以得到其夹角，在 Y 轴上可以得到输出值：<br><img src="./Shader Forge 参数详解_files/sfn_dot.jpg" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="crossproduct" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Cross Product （叉积）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 [A] 和 [B] 的叉积。它实质上输出垂直于两个输入向量的向量</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="reflect" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Reflect （反射）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出入射向量 [I] 的反射向量，就像在具有法线 [N] 的表面上反射/反弹一样</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="normalize" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Normalize （归一化）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>N + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出输入向量的归一化版本。实质上将向量长度设置为 1，并保持相同方向</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="append" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Append （附加）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>Q + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_append.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">从多个输入值/向量输出单个向量。例如，如果 [A] 是向量 2，[B] 是 Value (Vector 1)（值（向量 1）），则节点将输出 Vector 3（向量 3），其中 [A] 在红色和绿色通道中，而 [B] 在蓝色通道中</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="componentmask" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Component Mask （分量遮罩）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>C + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_componentmask.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">分量遮罩可用于重新排序或提取向量的通道</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="desaturate" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Desaturate （去色）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_desaturate.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出输入 [Col] 的去色版本。[Des] 确定去色程度。值为 1 表示完全去色，值为 0.5 表示半去色，值为 0 表示不去色</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="channelblend" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Channel Blend （通道混合）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_channelblend.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出遮罩的每个分量乘以对应颜色输入后的和。对于三平面混合十分有用</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="normalblend" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Normal Blend （法线混合）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">合并两个法线方向，其中基础法线被细节法线扰乱</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="distance" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Distance （距离）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_distance.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出两个输入点 [A] 和 [B] 之间的距离</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="length" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Length （长度）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_length.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入向量的长度/幅度</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="transform" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Transform （转换）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">将向量从一个空间转换到另一个空间。您可以在世界/本地/切线/视图之间切换。内置向量在世界空间中。法线输入的方向在切线空间中。</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vectorprojection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vector Projection （向量投影）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出向量 [A] 到向量 [B] 的投影</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vectorrejection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vector Rejection （向量拒识）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出从向量 [B] 拒识的向量 [A]</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="panner" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Panner （平移器）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>P + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出输入 [UV] 坐标，按 [Dist] 距离，以 U 参数和 V 参数指定的方向/速度进行平移/偏移</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="rotator" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Rotator （旋转器）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_rotator.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出输入 [UV] 坐标，绕轴心点 [Piv] 按 [Ang] 弧度旋转。如果 [Ang] 未连接或连接到时间节点，[Spd] 将控制旋转速度</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="parallax" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Parallax （视差）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出输入 [UV] 坐标，具有从 [Hei] 输入派生的视差偏移，深度为 [Dep]，引用高度为 [Ref]。<br>
+[Ref] 高度为 0 表示其视差效果为高度贴图看似从网格中突出<br>
+[Ref] 高度为 1 表示其视差效果为高度贴图看似向下进入网格中<br></span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="uvcoordinatesuv" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">UV Coordinates （UV 坐标）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>U + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出几何图形该部分的指定 UV 坐标。下拉选择可让您选择 UV 通道 0 或 UV 通道 1。请注意，光照贴图网格为其光照贴图 UV 使用 UV1</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="objectposition" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Object Position （对象位置）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_objectposition.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出对象轴心点的世界位置</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="screenposition" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Screen Position （屏幕位置）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_screenpos.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出网格当前部分的屏幕位置，可在屏幕空间贴图时用作 UV 坐标。在下拉框中，“Normalized”（归一化）会将 {0,0} 放在屏幕中心，将 {1,1} 放在右上方。“Tiled”（平铺）也会将 {0,0} 放在中心，但将根据纵横比在 X 轴上缩放</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="worldposition" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">World Position （世界位置）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_fragmentposition.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">在世界空间中输出网格当前部分的位置</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="vertexcolor" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Vertex Color （顶点颜色）</span>
+<div class="node_desc_title_hotkey" style="font-size:18px;display:inline;">
+<span>&nbsp;</span>V + LMB</div>
+</div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_vertexcolor.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出顶点颜色。如果您在顶点颜色中烘焙了环境光遮蔽，或要使用喷涂颜色为网格染色，或要将顶点颜色用于其他对象，那么这就是您需要的节点</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="fresnel" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Fresnel （菲涅尔）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_fresnel.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出表面法线和视图方向之间的点积。如果想要使用自定义法线，则会使用 [Nrm]。默认使用扰乱法线。[Exp] 更改输出的指数。值越高，菲涅尔越薄。</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="normaldirection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Normal Direction （法线方向）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_normalvector.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">在世界空间中输出网格法线的方向。Perturbed（扰乱）复选框使其在应用 Main（主要）节点的“Normal”（法线）输入后使用法线，例如法线贴图。</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="bitangentdirection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Bitangent Direction （双切线方向）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_binormal.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">在世界空间中输出网格双切线的方向</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="tangentdirection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Tangent Direction （切线方向）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_tangent.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">在世界空间中输出网格切线的方向</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="viewdirection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">View Direction （视图方向）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_viewvector.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">在世界空间中输出从几何图形当前部分到摄像机的方向</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="viewreflection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">View Reflection （视图反射）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_viewreflectionvector.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出视图的方向，就像根据表面法线反弹那样。这可用作完美反射的立方体贴图的输入</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="lightcolor" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Light Color （光色）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_lightcolor.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输入当前要渲染的光线的颜色</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="lightattenuation" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Light Attenuation （光线衰减）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_lightattenuation.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出光线衰减。此节点同时包含光线衰减和阴影</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="ambientlight" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Ambient Light （环境光）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_ambientlight.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出要在其中渲染着色器的场景的环境光</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="lightdirection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Light Direction （光线方向）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_lightvector.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出当前要渲染的光线的方向</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="halfdirection" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Half Direction （折半方向）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_halfvector.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出折半方向。这是指向视图和光线向量中间的方向，通常在 blinn-phong 镜面反射模型中使用</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="lightposition" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Light Position （光线位置）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_lightposition.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出当前要渲染的光线的位置。<br>
+[Pnt] 如果当前要渲染的光线是点光线，则输出 1，否则输出 0</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="time" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Time （时间）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_time.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">以不同速率输出时间。<br>
+[t/20] 以 1/20 倍速率输出时间<br>
+[t] 输出当前时间<br>
+[t*2] 以 2 倍速率输出时间<br>
+[t*3] 以 3 倍速率输出时间</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="viewposition" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">View Position （视图位置）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_viewposition.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出视图/摄像机的当前位置（请注意，使用透视摄像机时，视图位置在屏幕“背后”）</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="projectionparameters" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Projection Parameters （投影参数）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_projectionparameters.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出四个投影参数。<br>
+[Sign] 为 -1，如果当前使用倒装投影矩阵渲染，否则为 1<br>
+[Near] 是当前摄像机的近平面距离<br>
+[Far] 是当前摄像机的远平面距离<br>
+[1/Far] 是远平面距离的倒数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="screenparameters" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Screen Parameters （屏幕参数）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_screenparameters.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出四个屏幕参数。<br>
+[pxW] 是以像素为单位的屏幕宽度<br>
+[pxH] 是以像素为单位的屏幕高度<br>
+[1+1/W] 是 1 加像素宽度的倒数<br>
+[1+1/H] 是 1 加像素高度的倒数</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="scenecolor" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Scene Color （场景颜色）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">包含渲染此对象前的场景渲染的纹理。默认其 UV 位于屏幕空间中，从而让每个像素都代表对象背后的颜色。这可用于更加高级的混合/透明度效果，或作为 UV 改变时形成折射的其中一种手动方法</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="scenedepth" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Scene Depth （场景深度）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">摄像机到当前像素背后的场景的深度。您需要在混合设置中关闭深度缓冲编写,<span>&nbsp;</span><a href="http://docs.unity3d.com/Documentation/Components/SL-CameraDepthTexture.html" rel="nofollow" target="_blank">并且需要使用渲染深度纹理的摄像机</a></span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="depthblend" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Depth Blend （深度混合）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">它根据距离输入输出 0 和 1 之间的值，具体取决于此像素距背景几何图形多近。对于水边缘的淡出或光轴相交几何图形的软化很有用。注意：您需要在混合设置中关闭深度缓冲编写，<a href="http://docs.unity3d.com/Documentation/Components/SL-CameraDepthTexture.html" rel="nofollow" target="_blank">并且需要使用渲染深度纹理的摄像机</a></span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="depth" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Depth （深度）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">这是摄像头近平面到对象的距离</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="pipi" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Pi （π，Pi）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_pi.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 π 的值，圆的周长与直径的比值（约为 3.141593）</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="tautau" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Tau （τ，Tau）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_tau.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 τ 的值，圆的周长与半径的比值（约为 6.283185）</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="phigoldenratiophi" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Phi (Golden ratio) （φ，Phi（黄金比例））</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_phi.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 φ 的值，黄金比例（约为 1.618034）</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="root22" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Root 2 （√2）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_root2.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出 2 的算术平方根（约为 1.414214）</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="eeulersconstante" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">e (Euler's Constant) （e，欧拉常数）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_e.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出欧拉常数e（约为 2.718282）</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="sin" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Sin （正弦）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的正弦</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="cos" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Cos （余弦）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的余弦</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="tan" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Tan （正切）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入的正切</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="arcsin" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">ArcSin （反正弦）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">以弧度输出其输入的反正弦</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="arccos" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">ArcCos （反余弦）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">以弧度输出其输入的反余弦</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="arctan" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">ArcTan （反正切）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td><span style="color:#330033;background-color:rgb(255,255,255);"><br></span></td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">以弧度输出其输入的反正切</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="arctan2" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">ArcTan2 （双变量反正切）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_arctan2.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">以弧度输出其两个输入的反正切。ArcTan2 输出介于 –π 和 π 之间的特定角度</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="code" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Code （代码）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_code.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">用于在着色器内部执行自定义代码的节点。在左侧的示例中，节点与线性插值的工作方式类似，在到达 [end] 之前向 [mid] 弯曲</span></div>
+</td>
+</tr></tbody></table></div></div>
+</div>
+</div>
+<div class="node_desc_wrapper" id="relay" style="font-family:Verdana, Arial, Georgia;font-size:13px;">
+<div class="node_desc_title" style="font-family:&#39;Droid Sans&#39;;font-size:20px;">
+<span style="color:#330033;background-color:rgb(255,255,255);">Relay （中继）</span></div>
+<div class="node_desc">
+<div class="node_desc_inner">
+<div class="table-box"><table><tbody><tr><td>
+<div class="node_desc_inner_img" style="display:inline-block;"><span style="color:#330033;background-color:rgb(255,255,255);"><img src="./Shader Forge 参数详解_files/sfn_relay.png" alt="" style="display:inline-block;vertical-align:middle;border:1px solid rgb(17,17,17);"></span></div>
+</td>
+<td style="vertical-align:top;">
+<div class="node_desc_inner_txt" style="display:inline-block;vertical-align:top;">
+<span style="color:#330033;background-color:rgb(255,255,255);">输出其输入，对于组织节点连接十分有用</span></div>
+</td>
+</tr></tbody></table>
+</body></html>
