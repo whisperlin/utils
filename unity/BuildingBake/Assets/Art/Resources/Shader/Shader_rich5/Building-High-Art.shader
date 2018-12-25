@@ -24,6 +24,7 @@ Shader "DAFUHAO_Editor/Building-High-Art" {
         _AOPower ("AO Power", Range(0, 1)) = 1
         _MetallicIn ("MetallicIn", Range(0, 1.1)) = 1
         _GlossIn ("GlossIn", Range(0, 1)) = 1
+		_Cull ("Culling", Float) = 2
         [HideInInspector]_SrcBlend("", Float) = 1
         [HideInInspector]_DstBlend("", Float) = 0
     }
@@ -36,6 +37,7 @@ Shader "DAFUHAO_Editor/Building-High-Art" {
             Tags {
                 "LightMode"="ForwardBase"
             }
+			 Cull [_Cull]
             //Blend [_SrcBlend][_DstBlend]
             //ZTest Off
             CGPROGRAM

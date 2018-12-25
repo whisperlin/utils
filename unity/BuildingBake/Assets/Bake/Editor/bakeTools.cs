@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class BakeTools :EditorWindow {
 
-	static int selectedSize = 512;
+	public static int selectedSize = 512;
 	static bool addBorder = true;
 	void OnGUI()
 	{
@@ -39,6 +39,8 @@ public class BakeTools :EditorWindow {
 				}
 			}
 		}
+
+		 
 		if (GUILayout.Button ("四方向烘焙")) {
 			if (Selection.activeObject is GameObject) {
 				GameObject g = (GameObject)Selection.activeObject;
@@ -113,13 +115,15 @@ public class BakeTools :EditorWindow {
         Shader.DisableKeyword("BAKEMOD_ON");
     }
 
-    static void BakeTerrain(GameObject g)
+    public static GameObject BakeTerrain(GameObject g)
     {
         MeshFilter f0 = g.GetComponent<MeshFilter>();
         MeshRenderer r0 = g.GetComponent<MeshRenderer>();
         GameObject cam = new GameObject();
         Vector3 oldPos = g.transform.position;
+        Quaternion oldRot = g.transform.rotation;
         g.transform.position = new Vector3(0, -1000, 0);
+        g.transform.rotation = Quaternion.identity;
         Camera c = cam.AddComponent<Camera>();
 
         c.transform.forward = new Vector3(0, -1, 0);
@@ -144,6 +148,7 @@ public class BakeTools :EditorWindow {
 
         g.layer = savelayer;
         g.transform.position = oldPos;
+        g.transform.rotation = oldRot;
         GameObject g2 = new GameObject();
         g2.transform.position = oldPos + Vector3.left * 20;
         MeshFilter f = g2.AddComponent<MeshFilter>();
@@ -167,24 +172,101 @@ public class BakeTools :EditorWindow {
         AssetDatabase.ImportAsset(path);
         Texture2D t2 = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         mr.sharedMaterial.mainTexture = t2;
+        return g2;
     }
+	public static GameObject FixObjMeshRotation(GameObject g)
+	{
+		g.transform.position = Vector3.zero;
+		g.transform.rotation = Quaternion.identity;
+		MeshFilter [] mfs = g.GetComponentsInChildren<MeshFilter> ();
+		if (mfs.Length > 0) {
+			MeshFilter bakcOject = mfs [0];
+			for (int i = 1; i < mfs.Length; i++) {
+				var b0 = bakcOject.sharedMesh.bounds.size;
+				var b1 = mfs [i].sharedMesh.bounds.size;
+				float t0 = b0.x * b0.x + b0.y * b0.y + b0.z * b0.z;
+				float t1 = b1.x * b1.x + b1.y * b1.y + b1.z * b1.z;
+				if (t1 > t0) {
+					bakcOject = mfs [i];
+				}
+			}
+			if (bakcOject.transform.localRotation != Quaternion.identity) {
+				Mesh cMesh = bakcOject.sharedMesh;
 
-	static void BakeObj4Dir(MeshFilter f0 ,Transform root )
+				string path0 = AssetDatabase.GetAssetPath ( bakcOject.sharedMesh);
+				if (string.IsNullOrEmpty(path0))
+				{
+					// 如果直接获得路径失败，尝试获得当前选中对象的关联父Prefab
+					var curSelectedParentPrefab = PrefabUtility.GetPrefabParent(bakcOject.sharedMesh);
+					path0= AssetDatabase.GetAssetPath(curSelectedParentPrefab);
+				}
+				path0 = System.IO.Path.GetDirectoryName(path0) + "/"+ cMesh.name+"_basemesh.asset";
+
+				cMesh = new Mesh ();
+				CombineInstance[] combine = new CombineInstance[1];
+				combine[0].mesh = bakcOject.sharedMesh;
+				combine[0].transform =  bakcOject.transform.localToWorldMatrix;
+				combine[0].transform = bakcOject.transform.localToWorldMatrix ;
+				cMesh.CombineMeshes(combine);
+
+				AssetDatabase.CreateAsset (cMesh,path0);
+
+				bakcOject.sharedMesh = cMesh;
+				bakcOject.transform.localRotation = Quaternion.identity;
+			}
+		}
+		return g;
+	}
+	public static GameObject BakeObj4Dir(GameObject g )
+	{
+		 
+		MeshFilter [] mfs = g.GetComponentsInChildren<MeshFilter> ();
+		if( mfs.Length > 0 ) 
+		{
+			MeshFilter bakcOject = mfs [0];
+			for (int i = 1; i < mfs.Length; i++) {
+				var b0 = bakcOject.sharedMesh.bounds.size;
+				var b1 = mfs [i].sharedMesh.bounds.size;
+				float t0 = b0.x * b0.x + b0.y * b0.y + b0.z * b0.z;
+				float t1 = b1.x * b1.x + b1.y * b1.y + b1.z * b1.z;
+				if (t1 > t0) {
+					bakcOject = mfs [i];
+				}
+			}
+			return BakeObj4Dir (bakcOject,g.transform);
+		}
+		return null;
+	}
+	static GameObject BakeObj4Dir(MeshFilter f0 ,Transform root   )
 	{
 		MeshRenderer r0 = f0.gameObject .GetComponent<MeshRenderer> ();
+		float cull = r0.sharedMaterial.GetFloat("_Cull");
+		r0.sharedMaterial.SetFloat("_Cull",0);
 		Vector3 oldPos = root.position;
 		Vector3 oldForward = root.forward;
 		root.position = Vector3.zero;
 		root.forward = new  Vector3 (0, 0, 1);
 		Mesh cMesh = f0.sharedMesh;
-
 		{
+			string path0 = AssetDatabase.GetAssetPath ( f0.sharedMesh);
+			if (string.IsNullOrEmpty(path0))
+			{
+				// 如果直接获得路径失败，尝试获得当前选中对象的关联父Prefab
+				var curSelectedParentPrefab = PrefabUtility.GetPrefabParent(f0.sharedMesh);
+				path0= AssetDatabase.GetAssetPath(curSelectedParentPrefab);
+
+			}
+			path0 = System.IO.Path.GetDirectoryName(path0) + "/"+ cMesh.name+"_mesh.asset";
+
 			cMesh = new Mesh ();
 			CombineInstance[] combine = new CombineInstance[1];
 			combine[0].mesh = f0.sharedMesh;
 			combine[0].transform =  f0.transform.localToWorldMatrix;
 			combine[0].transform = f0.transform.localToWorldMatrix ;
 			cMesh.CombineMeshes(combine);
+ 
+			AssetDatabase.CreateAsset (cMesh,path0);
+
 		}
 		root.position = oldPos;
 		root.forward = oldForward;
@@ -319,7 +401,7 @@ public class BakeTools :EditorWindow {
 		mr.sharedMaterial.SetTexture ( "_SpecIBL",_SpecIBL); 
 		mr.sharedMaterial.SetTexture ( "_Metallic",_Metallic); 
 		mr.sharedMaterial.SetFloat("_SpecIBLPower", r0.sharedMaterial.GetFloat("_SpecIBLPower"));
-		g2.AddComponent<RotationBakeObj> ();
+		//g2.AddComponent<RotationBakeObj> ();
 
 		g2.layer = f0.gameObject.layer;
 		string assetPath =  AssetDatabase.GetAssetPath (r0.sharedMaterial);
@@ -327,15 +409,24 @@ public class BakeTools :EditorWindow {
 		AssetDatabase.CreateAsset (mr.sharedMaterial, assetPath + "bake" + selectedSize.ToString () + ".mat");
 
 		var t = CopyTreeAndReplay(root,f0,root.parent,g2);
-		t.transform.position += t.transform.right * 5;
+		//t.transform.position += t.transform.right * 5;
+
+		r0.sharedMaterial.SetFloat("_Cull",cull);
+
+		return t.gameObject;
 		//拷贝整颗树.
 	}
 
 
 	static void BakeObj4DirTree(MeshFilter f0  )
 	{
+		
+
 		Transform root = f0.transform;
 		MeshRenderer r0 = f0.gameObject .GetComponent<MeshRenderer> ();
+		float cull = r0.sharedMaterial.GetFloat("_Cull");
+		r0.sharedMaterial.SetFloat("_Cull",0);
+
 		Vector3 oldPos = root.position;
 		Vector3 oldForward = root.forward;
 		root.position = Vector3.zero;
@@ -382,6 +473,10 @@ public class BakeTools :EditorWindow {
 
 		c.transform.parent = g2.transform;
 		Shader.EnableKeyword ("BAKEMOD_ON");
+
+
+		 
+
 
 		g2.transform.position = new Vector3 (0, 10000, 0);
 
@@ -445,7 +540,7 @@ public class BakeTools :EditorWindow {
 			g2.transform.forward = new Vector3 (-1, 0, 0);
 			c.Render ();
 		}
-
+ 
 		c.rect = new Rect (0, 0, 0.5f, 0.5f);
 		g2.transform.forward = new Vector3 (0, 0, 1);
 		c.Render ();
@@ -501,7 +596,7 @@ public class BakeTools :EditorWindow {
 		g2.transform.position += root.transform.right * 5;
 		//拷贝整颗树.
 
-
+		r0.sharedMaterial.SetFloat("_Cull",cull);
 	}
 	static Transform CopyTreeAndReplay(Transform root, MeshFilter f0 ,Transform parent, GameObject g )
 	{
@@ -562,9 +657,7 @@ public class BakeTools :EditorWindow {
 		f.sharedMesh = cMesh;
 		MeshRenderer mr = g2.AddComponent < MeshRenderer> ();
 		mr.sharedMaterial = r0.sharedMaterial;
-
-
-
+ 
 		var bounds = cMesh.bounds ;
 		GameObject cam = new GameObject ();
 		Camera c = cam.AddComponent<Camera> ();
@@ -594,9 +687,13 @@ public class BakeTools :EditorWindow {
 
 		//c.rect = new Rect (0.5f, 0, 0.5f, 0.5f);
 		g2.transform.forward = new Vector3 (1, 0, 0);
+
+
+		float cull = r0.sharedMaterial.GetFloat("_Cull");
+		r0.sharedMaterial.SetFloat("_Cull",0);
 		c.Render ();
-
-
+		r0.sharedMaterial.SetFloat("_Cull",cull);
+ 
 		Shader.DisableKeyword ("BAKEMOD_ON");
 
 		g2.transform.forward = new Vector3 (0, 0, 1);

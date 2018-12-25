@@ -569,6 +569,7 @@ namespace ShaderForge {
 
             if (ps.HasRich5ShadowUsed())
             {
+				App("[HideInInspector]_Cull (\"Culling\", Float) = 2");
                 App("[HideInInspector]_SrcBlend(\"\", Float) = 1");
                 App("[HideInInspector]_DstBlend(\"\", Float) = 0");
             }
@@ -847,6 +848,7 @@ namespace ShaderForge {
             if (ps.HasRich5ShadowUsed() && !ps.catBlending.UseBlending())
             {
                 App("Blend [_SrcBlend][_DstBlend]");
+				App("Cull [_Cull]");
                 return;
             }
 
