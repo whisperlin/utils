@@ -26,6 +26,8 @@ Shader "Physically-Based-Lighting" {
 	[Toggle] _ENABLE_F ("F Fresnel Enabled?", Float) = 0
 	[Toggle] _ENABLE_D ("Diffuse Enabled?", Float) = 0
 	[Toggle] _ENABLE_MC ("Metallic Color?", Float) = 0
+	[Toggle] _ENABLE_DIFF ("diffuse?", Float) = 0
+
 	[Toggle] _DEBUGMOD ("debug mode?", Float) = 0
     }
     SubShader {
@@ -58,7 +60,10 @@ Shader "Physically-Based-Lighting" {
             #pragma multi_compile  _ENABLE_F_OFF _ENABLE_F_ON
             #pragma multi_compile  _ENABLE_D_OFF _ENABLE_D_ON
             #pragma multi_compile  _ENABLE_MC_OFF _ENABLE_MC_ON
+            #pragma multi_compile  _ENABLE_DIFF_OFF _ENABLE_DIFF_ON
             #pragma multi_compile  _DEBUGMOD_OFF _DEBUGMOD_ON
+
+
 
             #pragma target 3.0
             
@@ -616,6 +621,7 @@ float4 frag(VertexOutput i) : COLOR {
 	 float3 unityIndirectSpecularity =  indirectSpecular * FresnelLerp(specColor,grazingTerm,NdotV) * _Metallic * (1-roughness*roughness* roughness) ;
  	 //return float4(specColor,1);
 	 #ifdef _ENABLE_MC_ON
+	 	//return float4(indirectSpecular,1);
 	 	return float4(unityIndirectSpecularity*_UnityLightingContribution,1);
 	 #endif
 
@@ -625,7 +631,11 @@ float4 frag(VertexOutput i) : COLOR {
 
      float3 lightingModel = diffuseColor *  directDiffuse  +  indirectDiffuse *diffuseColor + specularity + unityIndirectSpecularity *_UnityLightingContribution  ;
 
-    
+     #ifdef _ENABLE_DIFF_ON
+	 	//return float4(indirectSpecular,1);
+	 	return float4(diffuseColor *  directDiffuse,1);
+	 #endif
+
 
      float4 finalDiffuse = float4(lightingModel  ,1);
 
