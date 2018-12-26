@@ -5,332 +5,287 @@ Shader "Unlit/WaterEx"
 {
 	Properties
 	{
-		_NormalMap ("_NormalMap", 2D) = "white" {}
-		_MaskMap ("_MaskMap", 2D) = "white" {}
-		_ReflectionTex ("反射贴图", 2D) = "white" {} 
+		_GTexcolor ("全局颜色(A海面贴图透明)", Color) = (1,1,1,0.2)
+		 _Alpha ("透明度",Range(0,1)) = 0
+		_WaterTex ("WaterTex", 2D) = "black" {} 
 
-		_SparklingSpecularWidth ("_SparklingSpecularWidth", Range (0, 256)) = 256
+		_WaveTex ("波浪图", 2D) = "black" {} //海浪
+		_waveIntensity ("波浪亮度" , Range(0,100) ) =1 
+		_WaveColor ("波浪颜色", Color) = (1,1,1,1) 
+		_BumpTex ("法线图", 2D) = "bump" {} 
+		 _DepthMark("深度贴图",2D) = "white"{}
+		 _DepthPower("深度强度",float) = 0.5
+		 _NormalIntensity("法线强度", Range(-3, 3)) = 1 
+
+		//_GTex ("渐变图", 2D) = "white" {} //海水渐变
+		_WaterTexColor ("边缘颜色", Color) = (0.5,0.5,0.5,0.5) 
+		 _DeepColor("海底部颜色", color) = (1, 1, 1, 1)
+		 _TopColor("海顶部颜色", color) = (1, 1, 1, 1)
+
+		_NoiseTex ("噪点图", 2D) = "white" {} //海浪躁波
+		_WaterSpeed("水速度", float) = 0.74  //海水速度
+		_WaveSpeed("波浪速度", float) = -12.64 //海浪速度
+		_WaveRange("波浪范围", float) = 0.3
+		_NoiseRange("噪点范围", float) = 6.43
+		_WaveDelta("波浪时间", float) = 2.43
+		_Refract("反射噪点", float) = 0.07		
+		
+		_Range("范围", vector) = (0.13, 1.53, 0.37, 0.78)
+
+	
+
+		 _cubemapsky("sky" , 2D ) = "white" {} 
+		 skyIntensiy("天空强度",float) = 1
+
  
-		[HideInInspector]_SparklingSpecularPower ("_SparklingSpecularPower", Range (1, 256)) = 1
-		[HideInInspector]_SparklingSpecularScale ("_SparklingSpecularScale", Range (0, 1)) = 1
+	
+		_AmbientLight("环境光", Color) = (0.5, 0.5, 0.5, 1) 
 
-		_SkyColor ("天空颜色", Color) = (1,1,1,1)
- 
-		_SunColor ("湖面深色", Color) = (1,0,0,1)
-		_SunSpecular ("湖面高光色", Color) = (1,1,1,1)
-		_SPPower ("反射强度", Range (0, 3)) = 1
-		[HideInInspector]_SunPower ("_SunPower", Range (0, 1)) = 1
-		[HideInInspector]_MaskTiling ("_MaskTiling", Range (0, 1)) = 1
-		[HideInInspector]_MaskConstrast ("_MaskConstrast", Range (0, 1)) = 1
-		[HideInInspector]_MaskIntensity ("_MaskIntensity", Range (0, 1)) = 1
-
-
-		_Speed ("_Speed",  Range (0, 1)) = 1
-		_Wave1 ("_Wave1", Vector) = (1, 1,1,1)
-		_Wave2 ("_Wave2", Vector) = (0.9,0.6,1,1)
-		_Wave3 ("_Wave3", Vector) = (0.8,0.5,1,1)
-		_Wave4 ("_Wave4", Vector) = (0.7,0.4,1,1)
-		 
+		 _Gama("Gama",Range(-1, 1)) = 0
 	}
-
-		 
- 
-
 	SubShader
 	{
-		Tags {"Queue"="Transparent" "RenderType"="Transparent"  }
+		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 100
+		//Cull Off
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		//GrabPass{}
+		zwrite off
 
 		Pass
-		{
+		{   
 			CGPROGRAM
- 
 			#pragma vertex vert
 			#pragma fragment frag
 			// make fog work
-			#pragma multi_compile_fog
+			#pragma multi_compile_fog		
+			#pragma multi_compile_instancing
 			
-			#include "UnityCG.cginc"
-			#include "AutoLight.cginc"
-            #include "Lighting.cginc"
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float4 color : COLOR;
-				float2 uv0 : TEXCOORD0;
-				float2 uv1 : TEXCOORD1;
+			 #include "UnityCG.cginc"
+			#pragma target 3.0
+
+
+			sampler2D _GTex;
+			sampler2D _WaterTex;
+			float4 _WaterTex_ST;
+			sampler2D _BumpTex;
+			sampler2D _CameraDepthTexture;
+			sampler2D _DepthMark;
+			//sampler2D _GrabTexture;
+			//half4 _GrabTexture_TexelSize;
+			sampler2D _NoiseTex;
+			float4 _NoiseTex_ST;
+			sampler2D _WaveTex;
+			float4 _Range;
+			half _WaterSpeed;
+			half _WaveSpeed;
+			fixed _WaveDelta;
+			half _WaveRange;
+			fixed _Refract;
+			half _Specular;
+			fixed _Glossxx;
+			sampler2D  _cubemapsky;
+			half _NoiseRange;
+			float4 _WaterTex_TexelSize;
+			
+		
+			fixed4 _GTexcolor;
+			fixed4 _WaterTexColor;
+			half _Alpha;
+			half _waveIntensity;
+			float skyIntensiy;
+			float _DepthPower;
+
+			fixed4  _DeepColor;
+			fixed4 _TopColor;
+			fixed4 _WaveColor;
+
+
+			struct VertexInput  
+			{			 
+			    float4 vertex: POSITION;
+                float3 normal: NORMAL;
+				float4 tangent : TANGENT;
+                float2 texcoord0: TEXCOORD0;  
+                float2 texcoord1: TEXCOORD1;
+                float4 color:COLOR;
+ 
 			};
 
-			struct v2f
+			struct  VertexOutput
 			{
+			    float4 pos: SV_POSITION;
+                float2 uv0: TEXCOORD0; 
+                float2 uv1:  TEXCOORD8;            
+                float4 posWorld: TEXCOORD1;
+                float3 normalDir: TEXCOORD2;           
+                float4 proj : TEXCOORD3; 
 
-				float4 xlv0 : TEXCOORD0;
-				float4 uv_1_2 : TEXCOORD1;
-				float4 uv_3_4 : TEXCOORD2;
-				float3 xlv3 : TEXCOORD3;
-				float3 xlv4 : TEXCOORD4;
-				float4 lpos_w : TEXCOORD5;
- 
-				SHADOW_COORDS(6)
+				float4 tSpace0 : TEXCOORD4;
+				float4 tSpace1 : TEXCOORD5;
+				float4 tSpace2 : TEXCOORD6;
+				float4 vcolor : TEXCOORD9;
 				UNITY_FOG_COORDS(7)
-
-				float4 vertex : SV_POSITION;
-				float4 color : COLOR;
+ 
 			};
-
- 
-			sampler2D _NormalMap;
-			sampler2D _MaskMap;
-			sampler2D _ReflectionTex;
-			
- 
-			float4 _NormalMap_ST;
-			float4 _MaskMap_ST;
-			float4 _ReflectionTex_ST;
-
-
-			
-			//vs
-			uniform  float _Speed;
-			uniform  float4 _Wave1;
-			uniform  float4 _Wave2;
-			uniform  float4 _Wave3;
-			uniform  float4 _Wave4;
-
-
-			uniform  float _SparklingSpecularWidth;
- 
-			uniform  float _SparklingSpecularPower;
-			uniform  float _SparklingSpecularScale;
-
-			uniform  float4 _SunColor;
-			uniform  float4 _SkyColor;
-			uniform  float4 _SunSpecular;
-			uniform  float _SunPower;
-			uniform  float _MaskTiling;
-			uniform  float _MaskConstrast;
-			uniform  float _MaskIntensity;
-			uniform float _SPPower;
- 
-
-			
-			v2f vert (appdata v)
-			{
-				v2f o;
-				//o.vertex = UnityObjectToClipPos(v.vertex);
-			 
- 
-			   float4 vertex_2;
- 
- 
-			   float4 uv0_wpos;
-			   float4 _ware1;
-			   float4 _ware2;
-			   float3 _dis;
-			   float4 _lpos_uv1_x;
-
-			  //float4 tmpvar_10;
-			  vertex_2.xzw =v.vertex.xzw;
-
-			   //原来的浪
-			  //vertex_2.y = (v.vertex.y - ((0.2 - 
-			  //  ((sin((
-			 //     (normalize(v.vertex.xyz) * _Time.z)
-			 //   .x * 2.0)) * 0.2) * (1.0 -v.color.w))
-			 //) *v.uv0.y));
-			 //去掉波浪幅度控制
-			 
-			  float v0 =  (v.vertex.x + v.vertex.y + v.vertex.z)*15;
-			  // vertex_2.y = v.vertex.y + sin( _Time.y + v0 ) * 0.2;
-			  vertex_2.y = v.vertex.y;
-
-			  o.vertex = UnityObjectToClipPos(vertex_2);
- 			  //o.vertex = UnityObjectToClipPos(v.vertex);
- 			 
-		 
-			  _lpos_uv1_x.xyz = vertex_2.xyz /vertex_2.w ;
-			  uv0_wpos.xy =v.uv0.xy;
-
-			  _lpos_uv1_x.w =v.uv1.x;
-
-			   float2 _Wave1_w;
-			  _Wave1_w.x = sin(_Wave1.w);
-			  _Wave1_w.y = cos(_Wave1.w);
-			   float2 _normal;
-			  _normal = (v.vertex.xz * _NormalMap_ST.xy);
-			   
-			  _ware1.xy = (((_normal + _NormalMap_ST.zw) * _Wave1.y) + ((_Time.y*_Speed * _Wave1.x) * _Wave1_w));
-			   float2 _wave2_2;
-			  _wave2_2.x = sin(_Wave2.w);
-			  _wave2_2.y = cos(_Wave2.w);
-			  _ware1.zw = (((_normal + _NormalMap_ST.zw) * _Wave2.y) + ((_Time.y*_Speed * _Wave2.x) * _wave2_2));
-			   float2 _wave3_w;
-			  _wave3_w.x = sin(_Wave3.w);
-			  _wave3_w.y = cos(_Wave3.w);
-			  _ware2.xy = (((_normal + _NormalMap_ST.zw) * _Wave3.y) + ((_Time.y*_Speed * _Wave3.x) * _wave3_w));
-			   float2 _wave4_w;
-			  _wave4_w.x = sin(_Wave4.w);
-			  _wave4_w.y = cos(_Wave4.w);
-			  _ware2.zw = (((_normal + _NormalMap_ST.zw) * _Wave4.y) + ((_Time.y*_Speed * _Wave4.x) * _wave4_w));
-			   float3 _distance  = (_WorldSpaceCameraPos - vertex_2.xyz);
-
-			  float4 wpos;
-			  wpos =mul(unity_ObjectToWorld, v.vertex); 
-			  //mul(unity_ObjectToWorld, v.vertex); 
-
-			  uv0_wpos.zw = TRANSFORM_TEX(wpos.xz , _MaskMap);
-			  //uv0_wpos.zw = ((wpos.xz * _MaskMap_ST.xy) + _MaskMap_ST.zw);
-
- 
-			  _dis = mul(UNITY_MATRIX_P , _distance);
-			  _dis.xy = (_dis.xy / _dis.z);
-			  _dis.xy = (((_dis.xy + 
-			    (    _Time.xx)
-			  ) * _ReflectionTex_ST.xy) + _ReflectionTex_ST.zw);
-
-			  //tmpvar_10 = (unity_WorldToShadow[0] * wpos);
-			 
-				o.color =v.color;
-				o.xlv0 = uv0_wpos;
-
-				o.uv_1_2 = _ware1;
-				o.uv_3_4 = _ware2;
-				o.xlv3 = normalize(_distance.zxy);
-				o.xlv4 = _dis;
-				o.lpos_w = _lpos_uv1_x;
-				//o.xlv6 = tmpvar_10;			
-				TRANSFER_SHADOW(o);
-				UNITY_TRANSFER_FOG(o,o.vertex);
-				return o;
+			uniform float _Gama;
+			uniform float _NormalIntensity;
+			uniform float4 _AmbientLight;
+			float4 ColorSpace(float4 col){
+				return pow(col , lerp (1/1.2, 1 / 2.2 , _Gama ));
 			}
-			float2 R_To_SkyUV(float3 r)
-            {
-            	return normalize(r).xz;
-            }
-			fixed4 frag (v2f i) : SV_Target
-			{
- 				;
-				float4 ret_color;
-				float alpha_2;
-				float maskAlpha_3;
-				float3 sun_4;
-				float bright_5;
-				float3 h_6;
-				float3 final_sky_color;
+			 float3 NormalIntensity(float3 NormalMapTex){
 
-				//float4 _normal0  = tex2D (_NormalMap, i.uv_1_2.xy);
-				//return _normal0;
-				float4 _normal1  = ((tex2D (_NormalMap, i.uv_1_2.xy) * 2.0) - 1.0);
+				 // float4 finalNormap = ((NormalMapTex.rgba.rg * _NormalIntensity),NormalMapTex.b,NormalMapTex.a);
 
-				//xlv0
+				 float2 finalNormap = NormalMapTex.rg *_NormalIntensity;
+				 fixed3 o = fixed3(finalNormap.rg, NormalMapTex.b);
+			      return o;
+			}
+			VertexOutput vert(VertexInput v){			  
+				VertexOutput o = (VertexOutput) 0;
+	 
 
-				float4 _normal4 = ((tex2D (_NormalMap, i.uv_1_2.zw) * 2.0) - 1.0);
-				float4 _normal2 = ((tex2D (_NormalMap, i.uv_3_4.xy) * 2.0) - 1.0);
-				float4 _normal3 = ((tex2D (_NormalMap, i.uv_3_4.zw) * 2.0) - 1.0);
- 				//return _normal1;
-				float4 _normal_final;
-				_normal_final = normalize(((
-				((_normal1 * _Wave1.z) + (_normal4 * _Wave2.z))
-				+ 
-				(_normal2 * _Wave3.z)
-				) + (_normal3 * _Wave4.z)));
+				o.uv0 = TRANSFORM_TEX ( v.texcoord0 , _WaterTex) ;
+				o.uv1 = v.texcoord1;
+			    o.normalDir = UnityObjectToWorldNormal(v.normal);          
+                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
+                o.proj = ComputeScreenPos(UnityObjectToClipPos(v.vertex));
+             
+				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
+				fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);
+				fixed tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+				o.vcolor = v.color;  
+				fixed3 worldBinormal = cross(worldNormal, worldTangent) * tangentSign;
+
+				o.tSpace0 = float4(worldTangent.x, worldBinormal.x, worldNormal.x, o.posWorld.x);
+				o.tSpace1 = float4(worldTangent.y, worldBinormal.y, worldNormal.y, o.posWorld.y);
+				o.tSpace2 = float4(worldTangent.z, worldBinormal.z, worldNormal.z, o.posWorld.z);
+				UNITY_TRANSFER_FOG(o,o.pos);
 
 
+                COMPUTE_EYEDEPTH(o.proj.z);
 
+				 return o;
+			}
 
-				float _distance;
-				_distance = normalize((i.lpos_w.xyz - _WorldSpaceCameraPos)).z;
-				float3 tmpvar_18;
-				tmpvar_18.x = _SparklingSpecularWidth;
-				tmpvar_18.y = _SparklingSpecularWidth;
-				tmpvar_18.z = 1;
-
-			
-				float4 _sky_color;
-
-				// my begin
-				float3 posEyeSpace = mul(UNITY_MATRIX_MV,float4(i.lpos_w.xyz,1)).xyz;
-				float3 dir = posEyeSpace - float3(0,0,0);
-				float3 N = mul((float3x3)UNITY_MATRIX_MV,_normal_final);
-                N = normalize(N);
-                float3 R = reflect(dir,N);
-               // o.uv2 = R_To_UV(R);
-                _sky_color =  tex2D (_ReflectionTex, R_To_SkyUV(R));
-                // my ....... end
-
-               float3 dir2 = mul( unity_WorldToObject, _WorldSpaceLightPos0.xyz);
-               dir2 = normalize(dir);
-                float3 R2 = reflect(dir2,N);
-
-               //高光波纹.
-               float sp_ware = pow (  clamp (  dot (_normal_final.xyz, tmpvar_18) , 0.0, 1.0) ,  _SparklingSpecularPower);
-               
-				//return _sky_color;
-
-				//按照距离来融合天空盒.
-				//final_sky_color = (i.color.xyz + ((_sky_color.xyz * i.xlv0.x) * pow ((_distance + 0.15), 8.0)));
-				final_sky_color = _sky_color.xyz * _SkyColor;
-
-				float3 tmpvar_22;
-				tmpvar_22 = normalize((float3(0.8374783, 0.1570272, 0.5234239) + i.xlv3));
-				h_6 = tmpvar_22;
-				bright_5 = max (0.0, h_6.z);
-				float _p1 = pow (bright_5, _SunPower);
-				float _p2 = pow ((_distance + 0.1), 16.0) ;
-
-				sun_4 = ((float3(  _p1,_p1,_p1  ) * (_SunColor.xyz + ((sp_ware * _SunSpecular) * (100.0 * _SunSpecular.w)).xyz)) * float3(   _p2,_p2,_p2   ));
-				//return float4(sun_4.xyz,1);
-				 
-				float2 P_24;
-				P_24 = (i.xlv0.zw * _MaskTiling);
-				float tmpvar_25;
-				tmpvar_25 = tex2D (_MaskMap, P_24).x;
-				maskAlpha_3 = tmpvar_25;
-				alpha_2 = i.color.w;
-				if ((i.color.w < 1.0)) {
-				maskAlpha_3 = (((maskAlpha_3 - 0.5) * (_MaskConstrast + 1.0)) + 0.5);
-				maskAlpha_3 = (maskAlpha_3 * _MaskIntensity);
-				 float tmpvar_26;
-				tmpvar_26 = (1.0 - clamp (pow (
-				  (1.0 - i.color.w)
-				, 
-				  (8.0 * i.lpos_w.w)
-				), 0.0, 1.0));
-				alpha_2 = (clamp ((tmpvar_26 * i.xlv0.y), 0.0, 1.0) + (clamp (
-				  (maskAlpha_3 * tmpvar_26)
-				, 0.0, 1.0) * (1.0 - i.xlv0.y)));
-				};
-				_distance = clamp(_distance,0,1);
-				float _distance_power = min (1.0, pow (_distance, 12.0));
-
-				//return float4(sun_4,1);
-				float3 final_color;
-				 
-				float3 _final_sum =  clamp (sun_4, 0.0, 1.0) ;
-				float3 _sky1 = final_sky_color * _distance_power ;
-				float3 _sky2 =  final_sky_color * (1.0 - _distance_power) * dot (_normal_final.xyz, i.xlv3);
-				float3 _final_ware_color =  clamp ((sp_ware * _SparklingSpecularScale), 0.0, 1.0)*_distance*_SPPower;
-				final_color =    clamp (sun_4, 0.0, 1.0)   +  ( _sky1 +_sky2)   +_final_ware_color  ;
-			 
-
-				//final_color =final_sky_color;
-				//final_color = ((clamp (sun_4, 0.0, 1.0) + ((final_sky_color * _distance_power) +  ((final_sky_color * (1.0 - _distance_power)) * dot (_normal_final.xyz, i.xlv3))  ))  );
-				//final_color = clamp (sun_4, 0.0, 1.0)   * _distance_power  ;
-
-				//final_color =final_sky_color * _distance_power;
- 				
-				float4 _col;
+			float4 frag (VertexOutput i):COLOR{
+		
+ 				fixed2 UV = i.uv0;
+				float4 proj = i.proj;
  
-				_col.xyz = final_color;
-				_col.w = alpha_2;
-				//return lerp(_col,float4(final_sky_color,1),_SPPower);
-				return _col;
+
+				float2 uv = proj.xy/proj.w;
+				#if UNITY_UV_STARTS_AT_TOP
+				if(_WaterTex_TexelSize.y<0)
+					uv.y = 1 - uv.y;
+					#endif
+
+
+				
+
+
+				float4 water = (tex2D(_WaterTex,UV + float2 (_WaterSpeed * _Time.x,0)) + tex2D( _WaterTex, float2 (1- UV.y , UV.x ) + float2 (_WaterSpeed * _Time.x ,0)))/2 * _WaterTexColor;
+			
+			    float4 offsetColor = (tex2D(_BumpTex,UV + float2(_WaterSpeed*_Time.x,0))+tex2D(_BumpTex, float2(1- UV.y,UV.x) + float2(_WaterSpeed*_Time.x,0)))/2;
+			    half2 offset = UnpackNormal(offsetColor).xy * _Refract;
+
+			   half deltaDepth =pow ((tex2D(_DepthMark, i.uv1).r *_DepthPower ),2);
+
+			   // half deltaDepth =pow  ((i.vcolor *_DepthPower ),2) ;
+
+
+
+
+
+			//    half m_depth = LinearEyeDepth(tex2Dproj (_CameraDepthTexture, proj).r);
+
+
+
+			 //  half deltaDepth = m_depth - proj.z;
+
+			    fixed4 noiseColor = tex2D(_NoiseTex, TRANSFORM_TEX(i.uv0, _NoiseTex));
+
+			 
+			   // half4 bott = tex2D(_GrabTexture, uv+offset);
+
+			 //   fixed4 waterColor = ColorSpace (tex2D(_GTex, float2(min(_Range.y, deltaDepth)/_Range.y,1)) * _GTexcolor);
+
+
+			    float3 gradient = ColorSpace (lerp(_TopColor,_DeepColor,min(_Range.y, deltaDepth)/_Range.y) * _GTexcolor);
+
+
+			    fixed4 waveColor = tex2D(_WaveTex, float2(1-min(_Range.z, deltaDepth)/_Range.z+_WaveRange*sin(_Time.x*_WaveSpeed+noiseColor.r*_NoiseRange),1)+offset);
+			    waveColor.rgb *= (1-(sin(_Time.x*_WaveSpeed+noiseColor.r*_NoiseRange)+1)/2)*noiseColor.r* _waveIntensity * _WaveColor;
+
+			    fixed4 waveColor2 = tex2D(_WaveTex, float2(1-min(_Range.z, deltaDepth)/_Range.z+_WaveRange*sin(_Time.x*_WaveSpeed+_WaveDelta+noiseColor.r*_NoiseRange),1)+offset);
+			    waveColor2.rgb *= (1-(sin(_Time.x*_WaveSpeed+_WaveDelta+noiseColor.r*_NoiseRange)+1)/2)*noiseColor.r * _waveIntensity * _WaveColor;
+			
+			    half water_A = 1-min(_Range.z, deltaDepth)/_Range.z;
+		    	half water_B = min(_Range.w, deltaDepth)/_Range.w;
+
+/////////Normal
+				float4 bumpColor = (tex2D(_BumpTex, UV + offset + float2(_WaterSpeed*_Time.x, 0)) + tex2D(_BumpTex,  offset + float2(_WaterSpeed*_Time.x, 0))) / 2;
+		
+				float3 normal = UnpackNormal(bumpColor).rgb;
+				float3 newnormal =  NormalIntensity(normal);
+
+
+
+
+				float3 worldN = 0;
+				worldN.x = dot(i.tSpace0.xyz, newnormal);
+				worldN.y = dot(i.tSpace1.xyz, newnormal);
+				worldN.z = dot(i.tSpace2.xyz, newnormal);
+				worldN = normalize(worldN);
+////////Albedo				
+			    float3 albedo =  gradient * water_B ;	
+			    albedo = albedo * (1 - water.a * water_A) + water.rgb * water.a*water_A ;
+			    albedo =albedo + (waveColor.rgb+waveColor2.rgb) * water_A;
+			    albedo = albedo * _AmbientLight;
+////////Lighting
+			    //fixed3 Light = DirectionalLight(worldN)[0];
+////////Specular	
+			     float3 worldRefl = _WorldSpaceCameraPos - i.posWorld; 
+
+
+			    float3 _ref =reflect(-worldRefl ,  worldN);
+
+            //    fixed3 sbl = SBL(_Cubemap,worldN ,fixed3(1,1,1));
+
+                float3 sbl = tex2Dbias (_cubemapsky,float4 (normalize(_ref).xz,100,0));
+              
+
+           //     fixed3 sbl = texCUBE (_Cubemap , )
+			
+			 //   sbl =  texCUBE(_Cubemap,IN.worldRefl).rgb;
+           //    float3 blendsp = RolanWaterLight(worldN,LightDir0) ;		    				 
+				float3 specLight =lerp( albedo ,sbl ,skyIntensiy ) ;
+
+			//	fixed3 SPL = SBL( _Cubemap,worldN, fixed3(1,1,1));
+
+				float alpha = ((min(_Range.x, deltaDepth)/_Range.x)  ) * _Alpha  ;
+
+				//float3 final = albedo * Light * ( Light * 0.8 + 0.2 )  + sbl + (water* _GTexcolor.a) ;
+				float3 final = albedo  + specLight + (water* _GTexcolor.a) ;
+				fixed4 ending = fixed4 (final,alpha );
+				UNITY_APPLY_FOG(i.fogCoord, ending);
+
+				return ending;
+
+			//	return float4 (deltaDepth ,deltaDepth ,deltaDepth ,1);
 				 
-
-
+				 //return specLight * _Linear + float4(albedo * _AddAlbedo, 0);
 
 			}
+
+		
 			ENDCG
 		}
+
+
 	}
+//	FallBack "Diffuse"
 }
