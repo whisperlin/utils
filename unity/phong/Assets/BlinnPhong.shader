@@ -85,8 +85,8 @@
                 float3 diff = _LightColor0.rgb * _Diffuse.rgb * nl ;
 
                 float3 c = ambient + spec + diff  ;
-
-           
+                float ndh = dot(halfDir, worldNormal);
+           		return fixed4(ndh,ndh,ndh,1);
                 return fixed4(c, 1);
             }
             ENDCG

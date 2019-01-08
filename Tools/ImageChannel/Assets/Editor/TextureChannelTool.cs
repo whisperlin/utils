@@ -6,13 +6,22 @@ using UnityEditor;
 public class TextureChannelTool : EditorWindow {
 
 
+
+	public enum OPTIONS
+	{
+		R = 0,
+		G = 1,
+		B = 2,
+		A = 3,
+	}
+
 	[MenuItem("Tools/图层通道合并")]
 	static void Init()
 	{
 		EditorWindow.GetWindow<TextureChannelTool>("图层通道合并工具").Show ();
 	}
 	Texture2D[] editorArray = new Texture2D[4];
-
+	OPTIONS [] types = new OPTIONS[]{OPTIONS.R,OPTIONS.R,OPTIONS.R,OPTIONS.R};
 
 	void CombineMesh(string savePath)
 	{
@@ -51,10 +60,30 @@ public class TextureChannelTool : EditorWindow {
 		}
 
 		Texture2D final = new Texture2D (width, height, TextureFormat.RGBA32,false);
+		float [] _cols = new float[4];
 		for(int i = 0 ; i < width ;i++)
 		{
 			for (int j = 0; j < height; j++) {
-				final.SetPixel (i, j, new Color ( temp2[0].GetPixel(i,j).r ,  temp2[1].GetPixel(i,j).r ,  temp2[2].GetPixel(i,j).r ,temp2[3].GetPixel(i,j).r ));
+				for(int k = 0 ; k < 4 ; k++)
+				{
+					switch (types [k]) {
+					case OPTIONS.R:
+						_cols[k] = temp2 [k].GetPixel (i, j).r;
+						break;
+					case OPTIONS.G:
+						_cols[k] = temp2 [k].GetPixel (i, j).g;
+						break;
+					case OPTIONS.B:
+						_cols[k] = temp2 [k].GetPixel (i, j).b;
+						break;
+					default:
+						_cols[k] = temp2 [k].GetPixel (i, j).a;
+						break;	
+					}
+				}
+
+				 
+				final.SetPixel (i, j, new Color(_cols[0] ,  _cols[1] ,  _cols[2] ,_cols[3] ));
 			}
 		}
 		final.Apply ();
@@ -68,16 +97,22 @@ public class TextureChannelTool : EditorWindow {
 		GameObject.DestroyImmediate (black);
 
 	}
+	int toolBar = 0;
 	void OnGUI()
 	{
+		
 		GUILayout.Label ("R通道");
 		editorArray [0] = (Texture2D)EditorGUILayout.ObjectField (editorArray [0], typeof(Texture2D));
+		types[0] = (OPTIONS)EditorGUILayout.EnumPopup("来自通道:", types[0] );
 		GUILayout.Label ("G通道");
 		editorArray [1] = (Texture2D)EditorGUILayout.ObjectField (editorArray [1], typeof(Texture2D));
+		types[1] = (OPTIONS)EditorGUILayout.EnumPopup("来自通道:", types[1] );
 		GUILayout.Label ("B通道");
 		editorArray [2] = (Texture2D)EditorGUILayout.ObjectField (editorArray [2], typeof(Texture2D));
+		types[2] = (OPTIONS)EditorGUILayout.EnumPopup("来自通道:", types[2] );
 		GUILayout.Label ("A通道");
 		editorArray [3] = (Texture2D)EditorGUILayout.ObjectField (editorArray [3], typeof(Texture2D));
+		types[3] = (OPTIONS)EditorGUILayout.EnumPopup("来自通道:", types[3] );
 		 
 		if (GUILayout.Button ("合成")) {
 			bool found = false;

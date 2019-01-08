@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Uv01body
   m_Shader: {fileID: 4800000, guid: 8998f70dd965b2e4188d51f7e306a4aa, type: 3}
-  m_ShaderKeywords: _DEBUGMOD_ON _ENABLE_GAMMA_ON _FRESNELMODEL_SPHERICALGAUSSIAN
+  m_ShaderKeywords: _DEBUGMOD_ON _ENABLE_GAMMA_ON _ENABLE_MC_ON _FRESNELMODEL_SPHERICALGAUSSIAN
     _GEOSHADOWMODEL_ASHIKHMINPREMOZE _METALLICCHANNEL_GLOSS_R _METALLICGLOSSMAP _NORMALDISTMODEL_GGX
     _NORMALMAP _SMITHGEOSHADOWMODEL_GGX _SPECGLOSSMAP
   m_LightmapFlags: 4
@@ -95,19 +95,20 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _ENABLE_D: 0
+    - _ENABLE_DIFF: 0
     - _ENABLE_F: 0
     - _ENABLE_G: 0
     - _ENABLE_GAMMA: 1
-    - _ENABLE_MC: 0
+    - _ENABLE_MC: 1
     - _ENABLE_NDF: 0
     - _EmissionIntensity: 0.88
     - _FresnelModel: 2
     - _GeoShadowModel: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.761
+    - _Glossiness: 0.7
     - _GlossyReflections: 1
     - _Ior: 1
-    - _Metallic: 0.651
+    - _Metallic: 1
     - _MetallicChannel: 0
     - _Mode: 0
     - _NormalDistModel: 4
@@ -116,7 +117,7 @@ Material:
     - _SmithGeoShadowModel: 3
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularPower: 0.514
+    - _SpecularPower: 1
     - _SpecularRange: 24.3
     - _SrcBlend: 1
     - _UVSec: 0

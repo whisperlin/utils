@@ -163,7 +163,7 @@ Shader "Shader Forge/PBR" {
                 specularMonochrome = 1.0-specularMonochrome;
                 float NdotV = abs(dot( normalDirection, viewDirection ));
                 float NdotH = saturate(dot( normalDirection, halfDirection ));
-                float VdotH = saturate(dot( viewDirection, halfDirection ));
+ 
                 float visTerm = SmithJointGGXVisibilityTerm( NdotL, NdotV, roughness );
                 float normTerm = GGXTerm(NdotH, roughness);
                 float specularPBL = (visTerm*normTerm) * UNITY_PI;
@@ -186,18 +186,18 @@ Shader "Shader Forge/PBR" {
                 float3 indirectSpecular = (gi.indirect.specular);
 
                 indirectSpecular *= FresnelLerp (specularColor, grazingTerm, NdotV);
-
                 indirectSpecular *= surfaceReduction;
-     
                 float3 specular = (directSpecular + indirectSpecular);
                
 /////// Diffuse:
                 NdotL = max(0.0,dot( normalDirection, lightDirection ));
-                half fd90 = 0.5 + 2 * LdotH * LdotH * (1-gloss);
-                float nlPow5 = Pow5(1-NdotL);
-                float nvPow5 = Pow5(1-NdotV);
+                //half fd90 = 0.5 + 2 * LdotH * LdotH * (1-gloss);
+                //float nlPow5 = Pow5(1-NdotL);
+                //float nvPow5 = Pow5(1-NdotV);
+
+
+                //
                 float3 directDiffuse =  NdotL * attenColor;
-             
                 float3 indirectDiffuse = float3(0,0,0);
                 indirectDiffuse += gi.indirect.diffuse;
 
