@@ -1,0 +1,16 @@
+#ifdef HIGHPRECISION
+	precision highp float;
+#else
+	precision mediump float;
+#endif
+
+
+uniform vec4 u_DiffuseColor;
+uniform vec4 u_Diffuse2Color;
+
+void main() {
+
+	//gl_FragColor = vec4(1,0,0,1);
+    gl_FragColor = u_Diffuse2Color;
+
+}
