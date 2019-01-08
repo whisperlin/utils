@@ -1,0 +1,49 @@
+{
+	"0000": "LayaAir3D_2.0不支持Animation组件。",
+
+	"1001": "该节点的MeshFilter组件中Mesh数据不能为空。",
+	"1002": "该节点的Amimator组件中的AnimatorController不能为空。",
+
+	"2000": "该节点必须使用LayaAir3D内置Shader,否则会造成LayaAir中与Unity渲染效果不一致。已经自动转换为BlinnPhong材质",
+	"2001": "该节点属于网格类型节点,只能使用BlinnPhong,PBR(Standard),PBR(Specular),Unlit类型的Shader。已经自动转换为BlinnPhong材质",
+	"2002": "该节点属于粒子特效节点,只能使用ShurikenParticle类型的Shader。已经自动转换为ShurikenParticle材质",
+	"2003": "该节点属于拖尾特效节点,只能使用Trail类型的Shader。已经自动转换为Trail材质",
+	"2004": "该节点属于拖尾特效节点,只能使用Line类型的Shader。已经自动转换为Line材质",
+	"2005": "该材质不能使用Unity中内置的纹理贴图",
+	"2006": "该CubeMap必须设置为可读，否则无法读取数据",
+
+	"3000": "Base模块",
+	"3010": "Emission模块",
+	"3020": "Shape模块",
+	"3030": "Velocity Over Lifetime模块",
+	"3040": "该节点的ParticleSystem组件暂时不支持Limit Velocity over Lifetime模块",
+	"3050": "该节点的ParticleSystem组件暂时不支持Inherit Velocity模块",
+	"3060": "该节点的ParticleSystem组件暂时不支持Force Over Lifetime模块",
+	"3070": "Color Over Lifetime模块",
+	"3080": "该节点的ParticleSystem组件暂时不支持Color By Speed模块",
+	"3090": "Size Over Lifetime模块",
+	"3100": "该节点的ParticleSystem组件暂时不支持Size By Speed模块",
+	"3110": "Rotation Over Lifetime模块",
+	"3120": "该节点的ParticleSystem组件暂时不支持Rotation By Speed模块",
+	"3130": "该节点的ParticleSystem组件暂时不支持External Forces模块",
+	"3140": "该节点的ParticleSystem组件暂时不支持Noise模块",
+	"3150": "该节点的ParticleSystem组件暂时不支持Collision模块",
+	"3160": "该节点的ParticleSystem组件暂时不支持Trigger模块",
+	"3170": "该节点的ParticleSystem组件暂时不支持SubEmitters模块",
+	"3180": "TextureSheetAnimatione模块",
+	"3190": "该节点的ParticleSystem组件暂时不支持Lights模块",
+	"3200": "该节点的ParticleSystem组件暂时不支持Trails模块",
+	"3210": "该节点的ParticleSystem组件暂时不支持CustomData模块",
+	"3220": "Renderer模块"
+
+
+
+
+
+
+
+
+
+
+
+}
