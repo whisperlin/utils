@@ -1,0 +1,32 @@
+{
+	"version":"LAYAMATERIAL:02",
+	"props":{
+		"type":"Laya.ShurikenParticleMaterial",
+		"renderStates":[
+			{
+				"cull":0,
+				"blend":0,
+				"srcBlend":1,
+				"dstBlend":0,
+				"depthWrite":true,
+				"depthTest":515
+			}
+		],
+		"name":"eff_add_blood_001",
+		"alphaTest":false,
+		"renderQueue":3000,
+		"textures":[],
+		"vectors":[
+			{
+				"name":"tilingOffset",
+				"value":[
+					1,
+					1,
+					0,
+					0
+				]
+			}
+		],
+		"defines":[]
+	}
+}

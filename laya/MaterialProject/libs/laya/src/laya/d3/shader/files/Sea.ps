@@ -1,0 +1,293 @@
+uniform highp vec4 _Time;
+uniform highp vec3 _WorldSpaceCameraPos;
+uniform lowp vec3 LightDir0;
+//uniform lowp vec3 LightDir1;
+//uniform lowp vec3 LightDir2;
+uniform lowp vec3 LightColor0;
+//uniform lowp vec3 LightColor1;
+//uniform lowp vec3 LightColor2;
+uniform lowp float LightIntensity0;
+//uniform lowp float LightIntensity1;
+//uniform lowp float LightIntensity2;
+uniform highp float partZ;
+uniform highp float sceneZ;
+uniform highp vec4 fresnelColor;
+uniform sampler2D foamTexture;
+uniform highp vec4 foamTexture_ST;
+uniform highp float foamScale;
+uniform highp float foamSpeed;
+uniform highp float shoreLineOpacity;
+uniform highp vec3 objScale;
+uniform highp vec4 waterColor;
+uniform sampler2D normalTexture;
+uniform highp vec4 normalTexture_ST;
+uniform highp float wavesSpeed;
+uniform highp float wavesScale;
+uniform highp float normalIntensity;
+uniform highp float waterDensity;
+uniform highp float spec;
+uniform highp float reflectionFresnel;
+uniform highp float gloss;
+uniform highp float shoreWaterOpacity;
+uniform sampler2D wavesTexture;
+uniform highp vec4 wavesTexture_ST;
+uniform sampler2D maskWavesDisplacement;
+uniform highp vec4 maskWavesDisplacement_ST;
+uniform sampler2D displacement;
+uniform highp vec4 displacement_ST;
+//uniform highp float _UseMask;
+uniform highp float radialWaves;
+uniform highp float wavesAmount;
+uniform highp float wavesDisplacementSpeed;
+uniform highp float displacementScale;
+uniform highp float savesDisplacementFoamIntensity;
+uniform highp float displacementSpeed;
+uniform highp float displacementFoamIntensity;
+uniform highp float reflectionIntensity;
+uniform highp float shoreFoamIntensity;
+uniform highp float shoreFoamDistance;
+uniform highp float fadeLevel;
+uniform sampler2D spltex;
+varying highp vec2 xlv_TEXCOORD0;
+varying highp vec3 xlv_TEXCOORD3;
+varying highp vec4 xlv_TEXCOORD2;
+varying highp vec3 xlv_TEXCOORD5;
+varying highp vec3 xlv_TEXCOORD6;
+void main ()
+{
+  lowp vec4 finalRGBA_1;
+  highp vec4 node_7404_2;
+  highp vec4 node_2033_3;
+  highp vec4 wavesTexture_var_4;
+  highp vec4 maskWavesDisplacement_var_5;
+  highp vec4 deepmap_6;
+  highp vec4 node_2220_7;
+  highp vec4 node_837_8;
+  highp vec3 lightDirection_9;
+  highp vec3 node_2963_10;
+  highp vec3 node_3810_11;
+  highp vec3 node_7755_12;
+  highp vec3 node_6123_13;
+  highp float tmpvar_14;
+  highp float tmpvar_15;
+  tmpvar_15 = (_Time.y / 20.0);
+  tmpvar_14 = ((wavesSpeed * tmpvar_15) * 1.618034);
+  highp vec2 tmpvar_16;
+  tmpvar_16 = ((xlv_TEXCOORD0 * objScale.xz) * wavesScale);
+  highp vec2 P_17;
+  P_17 = (((tmpvar_16 + 
+    (tmpvar_14 * vec2(1.0, -1.0))
+  ) * normalTexture_ST.xy) + normalTexture_ST.zw);
+  lowp vec3 tmpvar_18;
+  tmpvar_18 = ((texture2D (normalTexture, P_17).xyz * 2.0) - 1.0);
+  node_6123_13 = tmpvar_18;
+  highp vec2 tmpvar_19;
+  tmpvar_19 = ((tmpvar_16 + vec2(0.5, 0.5)) * 0.8);
+  highp vec2 P_20;
+  P_20 = (((tmpvar_19 + 
+    (tmpvar_14 * vec2(-1.0, 1.0))
+  ) * normalTexture_ST.xy) + normalTexture_ST.zw);
+  lowp vec3 tmpvar_21;
+  tmpvar_21 = ((texture2D (normalTexture, P_20).xyz * 2.0) - 1.0);
+  node_7755_12 = tmpvar_21;
+  highp float tmpvar_22;
+  tmpvar_22 = (tmpvar_14 * 0.6);
+  highp vec2 P_23;
+  P_23 = (((
+    (0.1 * tmpvar_16)
+   + 
+    (tmpvar_22 * vec2(-1.0, 1.0))
+  ) * normalTexture_ST.xy) + normalTexture_ST.zw);
+  lowp vec3 tmpvar_24;
+  tmpvar_24 = ((texture2D (normalTexture, P_23).xyz * 2.0) - 1.0);
+  node_3810_11 = tmpvar_24;
+  highp vec2 P_25;
+  P_25 = (((
+    (0.1 * tmpvar_19)
+   + 
+    (tmpvar_22 * vec2(1.0, -1.0))
+  ) * normalTexture_ST.xy) + normalTexture_ST.zw);
+  lowp vec3 tmpvar_26;
+  tmpvar_26 = ((texture2D (normalTexture, P_25).xyz * 2.0) - 1.0);
+  node_2963_10 = tmpvar_26;
+  highp vec3 tmpvar_27;
+  tmpvar_27.xy = ((node_6123_13.xy + node_7755_12.xy) + ((node_3810_11.xy + node_2963_10.xy) * 0.5));
+  tmpvar_27.z = 1.0;
+  highp vec3 tmpvar_28;
+  tmpvar_28 = normalize(xlv_TEXCOORD3);
+  highp mat3 tmpvar_29;
+  tmpvar_29[0].x = xlv_TEXCOORD5.x;
+  tmpvar_29[0].y = xlv_TEXCOORD6.x;
+  tmpvar_29[0].z = tmpvar_28.x;
+  tmpvar_29[1].x = xlv_TEXCOORD5.y;
+  tmpvar_29[1].y = xlv_TEXCOORD6.y;
+  tmpvar_29[1].z = tmpvar_28.y;
+  tmpvar_29[2].x = xlv_TEXCOORD5.z;
+  tmpvar_29[2].y = xlv_TEXCOORD6.z;
+  tmpvar_29[2].z = tmpvar_28.z;
+  highp vec3 tmpvar_30;
+  tmpvar_30 = normalize((_WorldSpaceCameraPos - xlv_TEXCOORD2.xyz));
+  highp vec3 tmpvar_31;
+  tmpvar_31 = normalize((mix (vec3(0.0, 0.0, 1.0), tmpvar_27, vec3(normalIntensity)) * tmpvar_29));
+  highp vec3 I_32;
+  I_32 = -(tmpvar_30);
+  lowp vec3 tmpvar_33;
+  lowp vec3 tmpvar_34;
+  tmpvar_34 = -(LightDir0);
+  tmpvar_33 = normalize(tmpvar_34);
+  lightDirection_9 = tmpvar_33;
+  highp float tmpvar_35;
+  tmpvar_35 = (foamSpeed * tmpvar_15);
+  highp vec2 tmpvar_36;
+  tmpvar_36 = ((objScale.xz * xlv_TEXCOORD0) * foamScale);
+  lowp vec4 tmpvar_37;
+  highp vec2 P_38;
+  P_38 = (((tmpvar_36 + 
+    (tmpvar_35 * vec2(-1.0, 1.0))
+  ) * foamTexture_ST.xy) + foamTexture_ST.zw);
+  tmpvar_37 = texture2D (foamTexture, P_38);
+  node_837_8 = tmpvar_37;
+  lowp vec4 tmpvar_39;
+  highp vec2 P_40;
+  P_40 = (((
+    ((tmpvar_36 + vec2(0.5, 0.5)) * 0.8)
+   + 
+    (tmpvar_35 * vec2(1.0, -1.0))
+  ) * foamTexture_ST.xy) + foamTexture_ST.zw);
+  tmpvar_39 = texture2D (foamTexture, P_40);
+  node_2220_7 = tmpvar_39;
+  highp vec3 tmpvar_41;
+  tmpvar_41 = normalize(tmpvar_31);
+  highp vec3 tmpvar_42;
+  tmpvar_42 = ((vec3(max (0.0, 
+    dot (tmpvar_41, tmpvar_34)
+  )) ) * LightColor0);
+ 
+ 
+  highp vec4 tmpvar_47;
+  highp vec4 tmpvar_48;
+  highp vec4 tmpvar_49;
+  highp vec4 tmpvar_50;
+  tmpvar_47 = tmpvar_42.xyzz;
+ 
+  tmpvar_50 = (tmpvar_42).xyzz;
+  highp vec4 tmpvar_51;
+  highp vec4 tmpvar_52;
+  highp vec4 tmpvar_53;
+  highp vec4 tmpvar_54;
+  tmpvar_51.x = tmpvar_47.x;
+  tmpvar_51.y = tmpvar_48.x;
+  tmpvar_51.z = tmpvar_49.x;
+  tmpvar_51.w = tmpvar_50.x;
+  tmpvar_52.x = tmpvar_47.y;
+  tmpvar_52.y = tmpvar_48.y;
+  tmpvar_52.z = tmpvar_49.y;
+  tmpvar_52.w = tmpvar_50.y;
+  tmpvar_53.x = tmpvar_47.z;
+  tmpvar_53.y = tmpvar_48.z;
+  tmpvar_53.z = tmpvar_49.z;
+  tmpvar_53.w = tmpvar_50.z;
+  tmpvar_54.x = tmpvar_47.w;
+  tmpvar_54.y = tmpvar_48.w;
+  tmpvar_54.z = tmpvar_49.w;
+  tmpvar_54.w = tmpvar_50.w;
+  highp vec4 v_55;
+  v_55.x = tmpvar_51.x;
+  v_55.y = tmpvar_52.x;
+  v_55.z = tmpvar_53.x;
+  v_55.w = tmpvar_54.x;
+  highp vec3 tmpvar_56;
+  tmpvar_56 = ((node_837_8.xyz * node_2220_7.xyz) * v_55.xyz);
+  highp vec2 x_57;
+  x_57 = ((xlv_TEXCOORD0 * 2.0) + -1.0);
+  highp float tmpvar_58;
+  tmpvar_58 = (1.0 - sqrt(dot (x_57, x_57)));
+  lowp vec4 tmpvar_59;
+  tmpvar_59 = texture2D (maskWavesDisplacement, xlv_TEXCOORD0);
+  deepmap_6 = tmpvar_59;
+  lowp vec4 tmpvar_60;
+  highp vec2 P_61;
+  P_61 = ((-(xlv_TEXCOORD0) * maskWavesDisplacement_ST.xy) + maskWavesDisplacement_ST.zw);
+  tmpvar_60 = texture2D (maskWavesDisplacement, P_61);
+  maskWavesDisplacement_var_5 = tmpvar_60;
+  lowp vec4 tmpvar_62;
+  highp vec2 P_63;
+  P_63 = (((
+    (((mix (xlv_TEXCOORD0, 
+      mix (vec2(tmpvar_58), (vec2(tmpvar_58) * dot (maskWavesDisplacement_var_5.xyz, vec3(0.3, 0.59, 0.11))), vec2(1.0,1.0))
+    , vec2(radialWaves)) * objScale.xz) * wavesAmount) * 0.1)
+   + vec2(
+    (wavesDisplacementSpeed * tmpvar_15)
+  )) * wavesTexture_ST.xy) + wavesTexture_ST.zw);
+  tmpvar_62 = texture2D (wavesTexture, P_63);
+  wavesTexture_var_4 = tmpvar_62;
+  highp vec3 tmpvar_64;
+  lowp vec4 tmpvar_65;
+  highp vec2 P_66;
+  P_66 = ((I_32 - (2.0 * 
+    (dot (tmpvar_31, I_32) * tmpvar_31)
+  )).xy * 0.5);
+  tmpvar_65 = texture2D (spltex, P_66);
+  tmpvar_64 = tmpvar_65.xyz;
+  highp float tmpvar_67;
+  tmpvar_67 = (displacementSpeed * tmpvar_15);
+  highp vec2 tmpvar_68;
+  tmpvar_68 = ((objScale.xz * displacementScale) * (xlv_TEXCOORD0 * 0.1));
+  lowp vec4 tmpvar_69;
+  highp vec2 P_70;
+  P_70 = (((tmpvar_68 + 
+    (tmpvar_67 * vec2(-1.0, 1.0))
+  ) * displacement_ST.xy) + displacement_ST.zw);
+  tmpvar_69 = texture2D (displacement, P_70);
+  node_2033_3 = tmpvar_69;
+  lowp vec4 tmpvar_71;
+  highp vec2 P_72;
+  P_72 = (((
+    ((tmpvar_68 + vec2(0.5, 0.5)) * 0.75)
+   + 
+    (tmpvar_67 * vec2(1.0, -1.0))
+  ) * displacement_ST.xy) + displacement_ST.zw);
+  tmpvar_71 = texture2D (displacement, P_72);
+  node_7404_2 = tmpvar_71;
+  highp float tmpvar_73;
+  tmpvar_73 = (sceneZ - partZ);
+  highp vec4 tmpvar_74;
+  tmpvar_74.w = 1.0;
+  tmpvar_74.xyz = mix (tmpvar_64, ((
+    clamp ((1.0 - ((1.0 - 
+      clamp ((1.0 - ((1.0 - 
+        ((pow (clamp (
+          (1.0 + ((shoreWaterOpacity - clamp (
+            (deepmap_6 / waterDensity)
+          , 0.0, 1.0)).xyz / ((
+            (waterColor.xyz * 9.0)
+           + 1.0) - shoreWaterOpacity)))
+        , 0.0, 1.0), vec3(fadeLevel)) * tmpvar_64) * (((1.0 - 
+          clamp (((deepmap_6 * tmpvar_73) / (waterDensity * 3.3)), 0.0, 1.0)
+        ) * 0.75) + 0.25).xyz)
+      ) * (1.0 - 
+        (tmpvar_64 * ((pow (
+          (1.0 - max (0.0, dot (tmpvar_31, tmpvar_30)))
+        , 
+          (reflectionFresnel * 5.0)
+        ) * reflectionIntensity) * fresnelColor).xyz)
+      ))), 0.0, 1.0)
+    ) * (1.0 - 
+      ((((
+        (1.0 - clamp (((deepmap_6 * tmpvar_73) / shoreFoamDistance), 0.0, 1.0))
+      .xyz * tmpvar_56) * shoreFoamIntensity) + ((
+        dot (wavesTexture_var_4.xyz, vec3(0.3, 0.59, 0.11))
+       * tmpvar_56) * savesDisplacementFoamIntensity)) + ((tmpvar_56 * dot (
+        mix (node_2033_3.xyz, node_7404_2.xyz, vec3(0.5, 0.5, 0.5))
+      , vec3(0.3, 0.59, 0.11))) * displacementFoamIntensity))
+    ))), 0.0, 1.0)
+   * v_55.xyz) + (
+    (spec * pow (max (0.0, dot (tmpvar_31, 
+      normalize((lightDirection_9 + tmpvar_30))
+    )), (gloss * 10.0)))
+   * v_55.xyz)), clamp ((
+    (deepmap_6 * tmpvar_73)
+   / shoreLineOpacity), 0.0, 1.0).xxx);
+  finalRGBA_1 = tmpvar_74;
+  gl_FragData[0] = finalRGBA_1;
+}
