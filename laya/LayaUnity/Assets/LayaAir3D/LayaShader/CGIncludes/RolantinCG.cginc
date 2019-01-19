@@ -16,16 +16,16 @@ float rcp_fun(float x)
 
  
 
-uniform fixed3 LightDir0;
+uniform fixed4 LightDir0;
 //uniform fixed3 LightDir1;
 //uniform fixed3 LightDir2;
 
 
-uniform fixed3 LightColor0;
+uniform fixed4 LightColor0;
 //uniform fixed3 LightColor1;
 //uniform fixed3 LightColor2;
 
-//uniform fixed LightIntensity0;
+uniform fixed4 LightIntensity0;
 //uniform fixed LightIntensity1;
 //uniform fixed LightIntensity2;
 
@@ -559,9 +559,9 @@ float3 PBR_SP(float3 normalDirection ,float3 lightDirection ,float3 Light,
 inline float4x4 DirectionalLight(float3 normalDirection) {   
     float3 NorDir = normalize(normalDirection);
 
-    float3 dir0 = max(0.0,dot( NorDir, -LightDir0 ));
+    float3 dir0 = max(0.0,dot( NorDir, -LightDir0.xyz ));
     //float3 DIR0 = dir0 * LightIntensity0 * LightColor0;
-     float3 DIR0 = dir0  * LightColor0;
+     float3 DIR0 = dir0  * LightColor0.xyz * LightIntensity0.xyz;
     //float3 dir1 = max(0.0,dot( NorDir, -LightDir1 ));
     //float3 DIR1 = dir1 * LightIntensity1 * LightColor1 ;
 

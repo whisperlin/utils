@@ -1,15 +1,21 @@
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
-#include "UnityCG.cginc" 
 
 float4 _Color;
 sampler2D _MainTex;
-half _AlbedoIntensity;
+float _AlbedoIntensity;
 float4 _MainTex_ST;
 sampler2D _BumpMap;
 sampler2D _SpecGlossMap;
 half _Shininess;
 half _Cutoff;
+sampler2D _DetailMap;
+float4 _DetailMap_ST;
+float uvtile2;
+float uvtile1;
+
+sampler2D _vertexMap;
+float4 _vertexMap_ST;
 
 struct a2v {
 	float4 vertex : POSITION;
@@ -17,17 +23,20 @@ struct a2v {
 	float4 tangent : TANGENT;
 	float4 texcoord : TEXCOORD0;
 	float4 texcoord1: TEXCOORD1;
+	float4 texcoord2: TEXCOORD2;
 	float4 color : COLOR;
 };
 			
 struct v2f {
 	float4 pos : SV_POSITION;
 	float2 uv : TEXCOORD0;
-	float2 uv2: TEXCOORD1;  
+	float2 uv2: TEXCOORD1;
+	float2 uv3:  TEXCOORD7;
 	float3 worldPos : TEXCOORD2;
 	float3 lightDir: TEXCOORD3;
 	float3 viewDir : TEXCOORD4;
 	float4 color : COLOR;
+
 	SHADOW_COORDS(5)
 	UNITY_FOG_COORDS(6)
 };
@@ -58,6 +67,7 @@ v2f vert(a2v v) {
 	o.uv2 = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;  
 
 	o.color = v.color;
+	//o.uv3 =TRANSFORM_TEX ( v. texcoord2,_DetailMap);
 
 	fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);  
 	fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);  
@@ -66,6 +76,7 @@ v2f vert(a2v v) {
 	o.lightDir = mul(worldToTangent, WorldSpaceLightDir(v.vertex));
 	o.viewDir = mul(worldToTangent, WorldSpaceViewDir(v.vertex));
 
+	// Pass shadow coordinates to pixel shader
 	TRANSFER_SHADOW(o);
 	UNITY_TRANSFER_FOG(o, o.pos);
 
@@ -75,7 +86,10 @@ v2f vert(a2v v) {
 fixed4 frag(v2f i) : SV_Target {
 
 	fixed4 mainTexColor = tex2D(_MainTex, i.uv);
-	fixed4 albedo = mainTexColor * _Color * _AlbedoIntensity;
+	fixed4 detailColor = tex2D ( _DetailMap,i.uv * uvtile1);
+	fixed4 vertexMap = tex2D (_vertexMap,i.uv *uvtile2); 
+
+	fixed4 albedo = lerp ((lerp (detailColor,mainTexColor ,1-mainTexColor.r) *  (detailColor.r/0.5)  ),vertexMap ,1.0- i.color )  * _Color * _AlbedoIntensity;
 	
 	#if EnableAlphaCutoff
 		clip (albedo.a - _Cutoff);
@@ -90,7 +104,7 @@ fixed4 frag(v2f i) : SV_Target {
 	fixed4 diffuse;
 	fixed4 specular;
 
-	#if defined(EnableLighting)
+	#if EnableLighting
 		#if defined(LIGHTMAP_ON)
 			diffuse = fixed4(0.0,0.0,0.0,0.0);
 			specular = fixed4(0.0,0.0,0.0,0.0);
@@ -100,13 +114,13 @@ fixed4 frag(v2f i) : SV_Target {
 			fixed3 normal = UnpackNormal(tex2D(_BumpMap, i.uv));
 			layaBlinnPhongLighting(lightDir, viewDir, normal, diffuse, specular);
 		#endif
-		
 
 	#else
 		diffuse = fixed4(0.0,0.0,0.0,0.0);
 		specular = fixed4(0.0,0.0,0.0,0.0);
 	#endif
 				
+	fixed4 ambient = (lightMapColor + UNITY_LIGHTMODEL_AMBIENT) * albedo;
 	diffuse = diffuse * albedo;
 
 	#if defined(SpecularTexture)
@@ -114,16 +128,15 @@ fixed4 frag(v2f i) : SV_Target {
 	#else
 		specular = specular * mainTexColor.a * _SpecColor;
 	#endif
-
-	UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
 	
-	fixed4 color;
+	UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
 
-	#if ENABLEVERTEXCOLOR
-	color = fixed4((diffuse + specular).rgb * atten, albedo.a)*i.color;
-	#else
-	color = fixed4((diffuse + specular).rgb * atten, albedo.a);
-	#endif
+	fixed4 color;
+#if ENABLEVERTEXCOLOR
+	color = fixed4(ambient.rgb + (diffuse + specular).rgb * atten, albedo.a)*i.color;
+#else
+	color = fixed4(ambient.rgb + (diffuse + specular).rgb * atten, albedo.a);
+#endif
 
 	UNITY_APPLY_FOG(i.fogCoord, color);
 	color = clamp(color, 0, 1);

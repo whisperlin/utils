@@ -14,6 +14,30 @@ public class LayaAirShaderToMaterial  {
 			type = t;
 		}
 	}
+	//Blend [_SrcBlend] [_DstBlend]
+
+ 
+	[MenuItem("LayaAir3D/Print Blend")]
+	static void PrintBlend () {
+		string txt = "";
+		 
+		txt += UnityEngine.Rendering.BlendMode.Zero.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.Zero) + "\n";
+
+		txt += UnityEngine.Rendering.BlendMode.One.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.One) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.DstColor.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.DstColor) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.SrcColor.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.SrcColor) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.OneMinusDstColor.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.OneMinusDstColor) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.SrcAlpha.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.SrcAlpha) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.OneMinusSrcColor.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.OneMinusSrcColor) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.DstAlpha.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.DstAlpha) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.OneMinusDstAlpha.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.OneMinusDstAlpha) + "\n";
+		txt += UnityEngine.Rendering.BlendMode.SrcAlphaSaturate.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.SrcAlphaSaturate) + "\n";
+
+		txt += UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha.ToString () + "\t" + (int)(UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha) + "\n";
+
+  
+		Debug.Log (txt);
+	}
 	[MenuItem("LayaAir3D/Shader To Mat")]
 	static void shaderToMat () {
  
@@ -125,7 +149,7 @@ public class LayaAirShaderToMaterial  {
 					appln2 ("}");
 					appln ("");
 					appln2 ("public function set "+p.name+"(value:Number):void {");
-					appln3 ("_shaderValues.setNumber("+matName+"."+p.name.ToUpper()+" value);");
+					appln3 ("_shaderValues.setNumber("+matName+"."+p.name.ToUpper()+", value);");
 					appln2 ("}");
 					appln ("");
 				}
@@ -159,6 +183,36 @@ public class LayaAirShaderToMaterial  {
 			}	
 		}
 
+		appln2 ("public function set eventRenderMode(event:int):void {");
+		appln3 ("var renderState:RenderState = getRenderState();");
+		appln3 ("renderQueue = BaseMaterial.RENDERQUEUE_TRANSPARENT;");
+		appln3 ("alphaTest = false;");
+		appln3 ("renderState.depthWrite = false;");
+		appln3 ("renderState.cull = RenderState.CULL_BACK;");
+		appln3 ("renderState.blend = RenderState.BLEND_ENABLE_ALL;");
+		appln3 ("renderState.srcBlend = RenderState.BLENDPARAM_SRC_ALPHA;");
+		appln3 ("renderState.dstBlend = RenderState.BLENDPARAM_ONE_MINUS_SRC_ALPHA;");
+		appln3 ("renderState.depthTest = RenderState.DEPTHTEST_LESS;");
+		appln3 ("");
+		appln3 ("/*alphaTest = false;");
+		appln3 ("renderQueue = BaseMaterial.RENDERQUEUE_OPAQUE;");
+		appln3 ("renderState.depthWrite = true;");
+		appln3 ("renderState.cull = RenderState.CULL_BACK;");
+		appln3 ("renderState.blend = RenderState.BLEND_DISABLE;");
+		appln3 ("renderState.depthTest = RenderState.DEPTHTEST_LESS;");
+		appln3 ("");
+		appln3 ("renderQueue = BaseMaterial.RENDERQUEUE_ALPHATEST;");
+		appln3 ("alphaTest = true;");
+		appln3 ("renderState.depthWrite = true;");
+		appln3 ("renderState.cull = RenderState.CULL_BACK;");
+		appln3 ("renderState.blend = RenderState.BLEND_DISABLE;");
+		appln3 ("renderState.depthTest = RenderState.DEPTHTEST_LESS;");
+		appln3 ("*/");
+		appln2 ("}");
+		appln3 ("");
+
+ 
+			
 
 		appln2 ("public function "+matName+"() {");
  
@@ -180,7 +234,7 @@ public class LayaAirShaderToMaterial  {
 		appln5 ("'_glesNormal': VertexMesh.MESH_NORMAL0,");
 		appln5 ("'_glesMultiTexCoord0': VertexMesh.MESH_TEXTURECOORDINATE0,");
 		appln5 ("'_glesTANGENT': VertexMesh.MESH_TANGENT0");
-		appln4 ("}");
+		appln4 ("};");
 
 		appln4 ("uniformMap = {");
 
@@ -191,12 +245,19 @@ public class LayaAirShaderToMaterial  {
 		appln5 ("");
 		appln5 ("");
 
+		//appln5 ("'LightColor0': [Scene3D.LIGHTDIRCOLOR, Shader3D.PERIOD_SCENE],");
+		appln5 ("'LightDir0': [Scene3D.LIGHTDIRECTION, Shader3D.PERIOD_SCENE], ");
+		
+
 		appln5 ("'unity_MatrixVP': [Sprite3D.VPMATRIX, Shader3D.PERIOD_SPRITE], ");
 		appln5 ("'unity_ObjectToWorld': [Sprite3D.WORLDMATRIX, Shader3D.PERIOD_SPRITE],");
 		appln5 ("'unity_WorldToObject': [Sprite3D.LOCALMATRIX, Shader3D.PERIOD_SPRITE],");
-		appln5 ("'_WorldSpaceCameraPos': [BaseCamera.CAMERAPOS, Shader3D.PERIOD_CAMERA],");
+		appln5 ("'UNITY_MATRIX_P': [BaseCamera.PROJECTMATRIX, Shader3D.PERIOD_CAMERA],");
+		appln5 ("'UNITY_MATRIX_V': [BaseCamera.VIEWMATRIX, Shader3D.PERIOD_CAMERA],");		appln5 ("'_WorldSpaceCameraPos': [BaseCamera.CAMERAPOS, Shader3D.PERIOD_CAMERA],");
 		appln5 ("'_Time': [Scene3D.UNITY_TIME, Shader3D.PERIOD_SCENE] ");
 		appln4 ("};");
+
+				
 
 		appln4 ("vs = __INCLUDESTR__(\"files/"+name+".vs\");");
 		appln4 ("ps = __INCLUDESTR__(\"files/"+name+".ps\");");

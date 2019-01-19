@@ -199,7 +199,7 @@ namespace LayaExport
 			string fileName = "";
 			if (DataManager.Type == 0)
 			{
-					fileName = DataManager.SAVEPATH + "/" + DataManager.sceneName + ".ls";
+				fileName = DataManager.SAVEPATH + "/" + DataManager.sceneName + ".ls";
 			}
 			else if (DataManager.Type == 1)
 			{
@@ -558,6 +558,8 @@ namespace LayaExport
 			}
 			if (list.IndexOf(DataManager.ComponentType.Rigidbody3D) != -1)
 			{
+
+
 				node.SetField("type", "Sprite3D");
 			}
 			if (list.IndexOf(DataManager.ComponentType.Animator) != -1)
@@ -904,18 +906,18 @@ namespace LayaExport
 			{
 				string str = DataManager.cleanIllegalChar(sharedMesh.name, true);
 				string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(sharedMesh.GetInstanceID()).Split(new char[]
-				{
-					'.'
-				})[0], false) + "-" + str;
+					{
+						'.'
+					})[0], false) + "-" + str;
 				if (!DataManager.OptimizeMeshName)
 				{
 					text = string.Concat(new object[]
-					{
-						text,
-						"[",
-						sharedMesh.GetInstanceID(),
-						"].lm"
-					});
+						{
+							text,
+							"[",
+							sharedMesh.GetInstanceID(),
+							"].lm"
+						});
 				}
 				else
 				{
@@ -1002,18 +1004,18 @@ namespace LayaExport
 			{
 				string str = DataManager.cleanIllegalChar(sharedMesh.name, true);
 				string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(sharedMesh.GetInstanceID()).Split(new char[]
-				{
-					'.'
-				})[0], false) + "-" + str;
+					{
+						'.'
+					})[0], false) + "-" + str;
 				if (!DataManager.OptimizeMeshName)
 				{
 					text = string.Concat(new object[]
-					{
-						text,
-						"[",
-						sharedMesh.GetInstanceID(),
-						"].lm"
-					});
+						{
+							text,
+							"[",
+							sharedMesh.GetInstanceID(),
+							"].lm"
+						});
 				}
 				else
 				{
@@ -1042,17 +1044,17 @@ namespace LayaExport
 			{
 				string assetPath = AssetDatabase.GetAssetPath(avatar.GetInstanceID());
 				string text = string.Concat(new string[]
-				{
-					DataManager.cleanIllegalChar(assetPath.Split(new char[]
 					{
-						'.'
-					})[0], false),
-					"-",
-					DataManager.cleanIllegalChar(gameObject.name, true),
-					"-",
-					avatar.name,
-					".lav"
-				});
+						DataManager.cleanIllegalChar(assetPath.Split(new char[]
+							{
+								'.'
+							})[0], false),
+						"-",
+						DataManager.cleanIllegalChar(gameObject.name, true),
+						"-",
+						avatar.name,
+						".lav"
+					});
 				string fileName = DataManager.SAVEPATH + "/" + text;
 				JSONObject jsonobject5 = new JSONObject(JSONObject.Type.ARRAY);
 				DataManager.getLavData(gameObject, jsonobject5, gameObject);
@@ -1834,9 +1836,9 @@ namespace LayaExport
 			if (sharedMaterial != null)
 			{
 				string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(sharedMaterial.GetInstanceID()).Split(new char[]
-				{
-					'.'
-				})[0], false) + ".lmat";
+					{
+						'.'
+					})[0], false) + ".lmat";
 				string savePath = DataManager.SAVEPATH + "/" + text;
 				JSONObject jsonobject7 = new JSONObject(JSONObject.Type.OBJECT);
 				jsonobject7.AddField("type", "Laya.ShurikenParticleMaterial");
@@ -1847,13 +1849,13 @@ namespace LayaExport
 				if (name != "LayaAir3D/ShurikenParticle")
 				{
 					Debug.LogWarning(string.Concat(new string[]
-					{
-						"LayaAir3D Warning(Code:2002) : ",
-						gameObject.name,
-						" dose's match ",
-						name,
-						" Shader, Must use ShurikenParticle Shader！"
-					}));
+						{
+							"LayaAir3D Warning(Code:2002) : ",
+							gameObject.name,
+							" dose's match ",
+							name,
+							" Shader, Must use ShurikenParticle Shader！"
+						}));
 				}
 				DataManager.saveLayaEffectLmatFile(sharedMaterial, savePath, "ShurikenParticle");
 			}
@@ -1864,9 +1866,9 @@ namespace LayaExport
 				{
 					string str = DataManager.cleanIllegalChar(mesh.name, true);
 					string text2 = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(mesh.GetInstanceID()).Split(new char[]
-					{
-						'.'
-					})[0], false) + "-" + str + ".lm";
+						{
+							'.'
+						})[0], false) + "-" + str + ".lm";
 					string text3 = DataManager.SAVEPATH + "/" + text2;
 					props.AddField("meshPath", text2);
 					if (!File.Exists(text3))
@@ -2082,21 +2084,21 @@ namespace LayaExport
 				if (!(material == null))
 				{
 					string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(material.GetInstanceID()).Split(new char[]
-					{
-						'.'
-					})[0], false) + ".lmat";
+						{
+							'.'
+						})[0], false) + ".lmat";
 					string savePath = DataManager.SAVEPATH + "/" + text;
 					string name = material.shader.name;
 					if (name != "LayaAir3D/Trail")
 					{
 						Debug.LogWarning(string.Concat(new string[]
-						{
-							"LayaAir3D Warning(Code:2003) : ",
-							gameObject.name,
-							" dose's match ",
-							name,
-							"Shader, Must use Trail Shader！"
-						}));
+							{
+								"LayaAir3D Warning(Code:2003) : ",
+								gameObject.name,
+								" dose's match ",
+								name,
+								"Shader, Must use Trail Shader！"
+							}));
 					}
 					JSONObject jsonobject10 = new JSONObject(JSONObject.Type.OBJECT);
 					jsonobject10.AddField("type", "Laya.TrailMaterial");
@@ -2255,21 +2257,21 @@ namespace LayaExport
 				if (!(material == null))
 				{
 					string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(material.GetInstanceID()).Split(new char[]
-					{
-						'.'
-					})[0], false) + ".lmat";
+						{
+							'.'
+						})[0], false) + ".lmat";
 					string savePath = DataManager.SAVEPATH + "/" + text;
 					string name = material.shader.name;
 					if (name != "LayaAir3D/Line")
 					{
 						Debug.LogWarning(string.Concat(new string[]
-						{
-							"LayaAir3D Warning(Code:2004) : ",
-							gameObject.name,
-							" dose's match ",
-							name,
-							"Shader, Must use Line Shader！"
-						}));
+							{
+								"LayaAir3D Warning(Code:2004) : ",
+								gameObject.name,
+								" dose's match ",
+								name,
+								"Shader, Must use Line Shader！"
+							}));
 					}
 					JSONObject jsonobject13 = new JSONObject(JSONObject.Type.OBJECT);
 					jsonobject13.AddField("type", "Laya.LineMaterial");
@@ -2350,18 +2352,18 @@ namespace LayaExport
 				{
 					string str = DataManager.cleanIllegalChar(sharedMesh.name, true);
 					string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(sharedMesh.GetInstanceID()).Split(new char[]
-					{
-						'.'
-					})[0], false) + "-" + str;
+						{
+							'.'
+						})[0], false) + "-" + str;
 					if (!DataManager.OptimizeMeshName)
 					{
 						text = string.Concat(new object[]
-						{
-							text,
-							"[",
-							sharedMesh.GetInstanceID(),
-							"].lm"
-						});
+							{
+								text,
+								"[",
+								sharedMesh.GetInstanceID(),
+								"].lm"
+							});
 					}
 					else
 					{
@@ -2395,28 +2397,33 @@ namespace LayaExport
 				if (!(material == null))
 				{
 					string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(material.GetInstanceID()).Split(new char[]
-					{
-						'.'
-					})[0], false) + ".lmat";
+						{
+							'.'
+						})[0], false) + ".lmat";
 					string savePath = DataManager.SAVEPATH + "/" + text;
 					string name = material.shader.name;
 					if (name.Split(new char[]
-					{
-						'/'
-					})[0] == "LayaAir3D")
-					{
-						if (name.Split(new char[]
 						{
 							'/'
-						}).Length == 2)
+						})[0] == "LayaAir3D")
+					{
+						if (name.Split(new char[]
+							{
+								'/'
+							}).Length == 2)
 						{
 							JSONObject jsonobject = new JSONObject(JSONObject.Type.OBJECT);
 							materialsNode.Add(jsonobject);
 							string text2 = name.Split(new char[]
-							{
-								'/'
-							})[1];
+								{
+									'/'
+								})[1];
 							if (text2 == "BlinnPhong")
+							{
+								jsonobject.AddField("path", text);
+								DataManager.saveLayaLmatFile(material, savePath, text2);
+							}
+							if (text2 == "LayaBlinnPhongDetail")
 							{
 								jsonobject.AddField("path", text);
 								DataManager.saveLayaLmatFile(material, savePath, text2);
@@ -2446,13 +2453,13 @@ namespace LayaExport
 								jsonobject.AddField("path", text);
 								DataManager.saveLayaLmatFile(material, savePath, "BlinnPhong");
 								Debug.LogWarning(string.Concat(new string[]
-								{
-									"LayaAir3D Warning(Code:2001) : ",
-									gameObject.name,
-									" dose's match ",
-									name,
-									"Shader!"
-								}));
+									{
+										"LayaAir3D Warning(Code:2001) : ",
+										gameObject.name,
+										" dose's match ",
+										name,
+										"Shader!"
+									}));
 							}
 						}
 						else if (name.Split(new char[]{'/'}).Length == 3)
@@ -2468,9 +2475,9 @@ namespace LayaExport
 							else if (name.Split(new char[]{'/'})[1] == "Water")
 							{
 								if (name.Split(new char[]
-								{
-									'/'
-								})[2] == "Water (Primary)")
+									{
+										'/'
+									})[2] == "Water (Primary)")
 								{
 									jsonobject2.AddField("type", "Laya.WaterPrimaryMaterial");
 									jsonobject2.AddField("path", text);
@@ -2480,6 +2487,18 @@ namespace LayaExport
 								else
 								{
 									Debug.LogWarning(string.Concat(new string[]
+										{
+											"LayaAir3D Warning(Code:2001) : ",
+											gameObject.name,
+											" dose's match ",
+											name,
+											"Shader!"
+										}));
+								}
+							}
+							else
+							{
+								Debug.LogWarning(string.Concat(new string[]
 									{
 										"LayaAir3D Warning(Code:2001) : ",
 										gameObject.name,
@@ -2487,18 +2506,6 @@ namespace LayaExport
 										name,
 										"Shader!"
 									}));
-								}
-							}
-							else
-							{
-								Debug.LogWarning(string.Concat(new string[]
-								{
-									"LayaAir3D Warning(Code:2001) : ",
-									gameObject.name,
-									" dose's match ",
-									name,
-									"Shader!"
-								}));
 							}
 
 						}
@@ -2579,9 +2586,9 @@ namespace LayaExport
 		public static void getSkyBoxData(Material skyBoxMaterial, JSONObject props)
 		{
 			string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(skyBoxMaterial.GetInstanceID()).Split(new char[]
-			{
-				'.'
-			})[0], false) + ".lmat";
+				{
+					'.'
+				})[0], false) + ".lmat";
 			string text2 = DataManager.SAVEPATH + "/" + text;
 			if (skyBoxMaterial.shader.name == "Skybox/Cubemap")
 			{
@@ -2673,9 +2680,9 @@ namespace LayaExport
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			long position3 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)num2
-			});
+				{
+					(ushort)num2
+				});
 			for (int i = 0; i < num2; i++)
 			{
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -2686,18 +2693,18 @@ namespace LayaExport
 			Util.FileUtil.WriteData(fileStream, new ushort[1]);
 			long position5 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list.IndexOf("MESH")
-			});
+				{
+					(ushort)list.IndexOf("MESH")
+				});
 			list.Add(item);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list.IndexOf(item)
-			});
+				{
+					(ushort)list.IndexOf(item)
+				});
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				1
-			});
+				{
+					1
+				});
 			long position6 = fileStream.Position;
 			for (int i = 0; i < 1; i++)
 			{
@@ -2705,9 +2712,9 @@ namespace LayaExport
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				list.Add(text);
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list.IndexOf(text)
-				});
+					{
+						(ushort)list.IndexOf(text)
+					});
 			}
 			long position7 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -2723,18 +2730,18 @@ namespace LayaExport
 			{
 				array3[i] = fileStream.Position;
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list.IndexOf("SUBMESH")
-				});
+					{
+						(ushort)list.IndexOf("SUBMESH")
+					});
 				Util.FileUtil.WriteData(fileStream, new ushort[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					1
-				});
+					{
+						1
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -2753,60 +2760,60 @@ namespace LayaExport
 			{
 				Vector3 vector = vertices[j];
 				Util.FileUtil.WriteData(fileStream, new float[]
-				{
-					vector.x * -1f,
-					vector.y,
-					vector.z
-				});
+					{
+						vector.x * -1f,
+						vector.y,
+						vector.z
+					});
 				if (DataManager.VertexStructure[1] == 1)
 				{
 					Vector3 vector2 = normals[j];
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						vector2.x * -1f,
-						vector2.y,
-						vector2.z
-					});
+						{
+							vector2.x * -1f,
+							vector2.y,
+							vector2.z
+						});
 				}
 				if (DataManager.VertexStructure[2] == 1)
 				{
 					Color color = colors[j];
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						color.r,
-						color.g,
-						color.b,
-						color.a
-					});
+						{
+							color.r,
+							color.g,
+							color.b,
+							color.a
+						});
 				}
 				if (DataManager.VertexStructure[3] == 1)
 				{
 					Vector2 vector3 = uv[j];
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						vector3.x,
-						vector3.y * -1f + 1f
-					});
+						{
+							vector3.x,
+							vector3.y * -1f + 1f
+						});
 				}
 				if (DataManager.VertexStructure[4] == 1)
 				{
 					Vector2 vector4 = uv2[j];
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						vector4.x,
-						vector4.y * -1f + 1f
-					});
+						{
+							vector4.x,
+							vector4.y * -1f + 1f
+						});
 				}
 				if (DataManager.VertexStructure[6] == 1)
 				{
 					Vector4 vector5 = tangents[j];
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						vector5.x * -1f,
-						vector5.y,
-						vector5.z,
-						vector5.w
-					});
+						{
+							vector5.x * -1f,
+							vector5.y,
+							vector5.z,
+							vector5.w
+						});
 				}
 			}
 			long num6 = fileStream.Position - position10;
@@ -2815,9 +2822,9 @@ namespace LayaExport
 			for (int j = 0; j < triangles.Length; j++)
 			{
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)triangles[j]
-				});
+					{
+						(ushort)triangles[j]
+					});
 			}
 			long num7 = fileStream.Position - position11;
 			uint num8 = 0u;
@@ -2857,86 +2864,86 @@ namespace LayaExport
 					num12 = (uint)array2[i];
 				}
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num9
-				});
+					{
+						num9
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num10
-				});
+					{
+						num10
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num11
-				});
+					{
+						num11
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num12
-				});
+					{
+						num12
+					});
 				num8 += num12;
 				fileStream.Position += 2L;
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num11
-				});
+					{
+						num11
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num12
-				});
+					{
+						num12
+					});
 			}
 			fileStream.Position = position6;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position10 - position9)
-			});
+				{
+					(uint)(position10 - position9)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num6
-			});
+				{
+					(uint)num6
+				});
 			fileStream.Position = position7;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position11 - position9)
-			});
+				{
+					(uint)(position11 - position9)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num7
-			});
+				{
+					(uint)num7
+				});
 			fileStream.Position = position4;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list.Count
-			});
+				{
+					(ushort)list.Count
+				});
 			long position12 = fileStream.Position;
 			fileStream.Position = position3 + 2L;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)position5
-			});
+				{
+					(uint)position5
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num4
-			});
+				{
+					(uint)num4
+				});
 			for (int i = 0; i < (int)num; i++)
 			{
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)array3[i]
-				});
+					{
+						(uint)array3[i]
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)array5[i]
-				});
+					{
+						(uint)array5[i]
+					});
 			}
 			fileStream.Position = position2;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)position9
-			});
+				{
+					(uint)position9
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position9 + num5 + num6 + num7 + array5[0])
-			});
+				{
+					(uint)(position9 + num5 + num6 + num7 + array5[0])
+				});
 			fileStream.Close();
 		}
 
@@ -3137,9 +3144,9 @@ namespace LayaExport
 			long position3 = fileStream.Position;
 			int num13 = (int)(num3 + 1);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)num13
-			});
+				{
+					(ushort)num13
+				});
 			for (int i = 0; i < num13; i++)
 			{
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -3150,41 +3157,41 @@ namespace LayaExport
 			Util.FileUtil.WriteData(fileStream, new ushort[1]);
 			long position5 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list8.IndexOf("MESH")
-			});
+				{
+					(ushort)list8.IndexOf("MESH")
+				});
 			list8.Add(item);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list8.IndexOf(item)
-			});
+				{
+					(ushort)list8.IndexOf(item)
+				});
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				num2
-			});
+				{
+					num2
+				});
 			long position6 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			list8.Add(text);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list8.IndexOf(text)
-			});
+				{
+					(ushort)list8.IndexOf(text)
+				});
 			long position7 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			long position8 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list.Count
-			});
+				{
+					(ushort)list.Count
+				});
 			for (int i = 0; i < list.Count; i++)
 			{
 				list8.Add(list[i].name);
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list8.IndexOf(list[i].name)
-				});
+					{
+						(ushort)list8.IndexOf(list[i].name)
+					});
 			}
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -3195,18 +3202,18 @@ namespace LayaExport
 			{
 				array6[i] = fileStream.Position;
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list8.IndexOf("SUBMESH")
-				});
+					{
+						(ushort)list8.IndexOf("SUBMESH")
+					});
 				Util.FileUtil.WriteData(fileStream, new ushort[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)array2[i].Count
-				});
+					{
+						(ushort)array2[i].Count
+					});
 				for (int j = 0; j < array2[i].Count; j++)
 				{
 					Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -3229,79 +3236,79 @@ namespace LayaExport
 				DataManager.VertexData vertexData = list2[j];
 				Vector3 vertice = vertexData.vertice;
 				Util.FileUtil.WriteData(fileStream, new float[]
-				{
-					vertice.x * -1f,
-					vertice.y,
-					vertice.z
-				});
+					{
+						vertice.x * -1f,
+						vertice.y,
+						vertice.z
+					});
 				if (DataManager.VertexStructure[1] == 1)
 				{
 					Vector3 normal = vertexData.normal;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						normal.x * -1f,
-						normal.y,
-						normal.z
-					});
+						{
+							normal.x * -1f,
+							normal.y,
+							normal.z
+						});
 				}
 				if (DataManager.VertexStructure[2] == 1)
 				{
 					Color color = vertexData.color;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						color.r,
-						color.g,
-						color.b,
-						color.a
-					});
+						{
+							color.r,
+							color.g,
+							color.b,
+							color.a
+						});
 				}
 				if (DataManager.VertexStructure[3] == 1)
 				{
 					Vector2 uv = vertexData.uv;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						uv.x,
-						uv.y * -1f + 1f
-					});
+						{
+							uv.x,
+							uv.y * -1f + 1f
+						});
 				}
 				if (DataManager.VertexStructure[4] == 1)
 				{
 					Vector2 uv2 = vertexData.uv2;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						uv2.x,
-						uv2.y * -1f
-					});
+						{
+							uv2.x,
+							uv2.y * -1f
+						});
 				}
 				if (DataManager.VertexStructure[5] == 1)
 				{
 					Vector4 boneWeight = vertexData.boneWeight;
 					Vector4 boneIndex = vertexData.boneIndex;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						boneWeight.x,
-						boneWeight.y,
-						boneWeight.z,
-						boneWeight.w
-					});
+						{
+							boneWeight.x,
+							boneWeight.y,
+							boneWeight.z,
+							boneWeight.w
+						});
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						boneIndex.x,
-						boneIndex.y,
-						boneIndex.z,
-						boneIndex.w
-					});
+						{
+							boneIndex.x,
+							boneIndex.y,
+							boneIndex.z,
+							boneIndex.w
+						});
 				}
 				if (DataManager.VertexStructure[6] == 1)
 				{
 					Vector4 tangent = vertexData.tangent;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						tangent.x * -1f,
-						tangent.y,
-						tangent.z,
-						tangent.w
-					});
+						{
+							tangent.x * -1f,
+							tangent.y,
+							tangent.z,
+							tangent.w
+						});
 				}
 			}
 			long num16 = fileStream.Position - position10;
@@ -3309,9 +3316,9 @@ namespace LayaExport
 			for (int j = 0; j < list5.Count; j++)
 			{
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list5[j]
-				});
+					{
+						(ushort)list5[j]
+					});
 			}
 			long num17 = fileStream.Position - position11;
 			if (sharedMesh.bindposes != null && sharedMesh.bindposes.Length != 0)
@@ -3337,9 +3344,9 @@ namespace LayaExport
 					for (int j = 0; j < 16; j++)
 					{
 						Util.FileUtil.WriteData(fileStream, new float[]
-						{
-							matrix4x[j]
-						});
+							{
+								matrix4x[j]
+							});
 					}
 				}
 				num11 = fileStream.Position;
@@ -3349,9 +3356,9 @@ namespace LayaExport
 					for (int j = 0; j < 16; j++)
 					{
 						Util.FileUtil.WriteData(fileStream, new float[]
-						{
-							inverse[j]
-						});
+							{
+								inverse[j]
+							});
 					}
 				}
 				num12 = fileStream.Position;
@@ -3362,9 +3369,9 @@ namespace LayaExport
 						for (int k = 0; k < array2[i][j].Count; k++)
 						{
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								(ushort)array2[i][j][k]
-							});
+								{
+									(ushort)array2[i][j][k]
+								});
 						}
 					}
 				}
@@ -3408,117 +3415,117 @@ namespace LayaExport
 					num23 = (uint)array5[i];
 				}
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num20
-				});
+					{
+						num20
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num21
-				});
+					{
+						num21
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num22
-				});
+					{
+						num22
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num23
-				});
+					{
+						num23
+					});
 				num18 += num23;
 				fileStream.Position += 2L;
 				int num24 = 0;
 				for (int j = 0; j < array2[i].Count; j++)
 				{
 					Util.FileUtil.WriteData(fileStream, new uint[]
-					{
-						(uint)(num24 + (int)num22)
-					});
+						{
+							(uint)(num24 + (int)num22)
+						});
 					Util.FileUtil.WriteData(fileStream, new uint[]
-					{
-						(uint)(array3[i][j] - num24)
-					});
+						{
+							(uint)(array3[i][j] - num24)
+						});
 					num24 = array3[i][j];
 					Util.FileUtil.WriteData(fileStream, new uint[]
-					{
-						(uint)num19
-					});
+						{
+							(uint)num19
+						});
 					Util.FileUtil.WriteData(fileStream, new uint[]
-					{
-						(uint)(array2[i][j].Count * 2)
-					});
+						{
+							(uint)(array2[i][j].Count * 2)
+						});
 					num19 += (long)(array2[i][j].Count * 2);
 				}
 			}
 			fileStream.Position = position6;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position10 - position9)
-			});
+				{
+					(uint)(position10 - position9)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num16
-			});
+				{
+					(uint)num16
+				});
 			fileStream.Position = position7;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position11 - position9)
-			});
+				{
+					(uint)(position11 - position9)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num17
-			});
+				{
+					(uint)num17
+				});
 			fileStream.Position = position8 + (long)((list.Count + 1) * 2);
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(num10 - position9)
-			});
+				{
+					(uint)(num10 - position9)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(num11 - num10)
-			});
+				{
+					(uint)(num11 - num10)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(num11 - position9)
-			});
+				{
+					(uint)(num11 - position9)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(num12 - num11)
-			});
+				{
+					(uint)(num12 - num11)
+				});
 			fileStream.Position = position4;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list8.Count
-			});
+				{
+					(ushort)list8.Count
+				});
 			long position13 = fileStream.Position;
 			fileStream.Position = position3 + 2L;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)position5
-			});
+				{
+					(uint)position5
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num14
-			});
+				{
+					(uint)num14
+				});
 			for (int i = 0; i < (int)num3; i++)
 			{
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)array6[i]
-				});
+					{
+						(uint)array6[i]
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)array8[i]
-				});
+					{
+						(uint)array8[i]
+					});
 			}
 			fileStream.Position = position2;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)position9
-			});
+				{
+					(uint)position9
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position9 + num15 + num16 + num17 + array8[0])
-			});
+				{
+					(uint)(position9 + num15 + num16 + num17 + array8[0])
+				});
 			fileStream.Close();
 		}
 
@@ -3672,9 +3679,9 @@ namespace LayaExport
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			long position3 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)num17
-			});
+				{
+					(ushort)num17
+				});
 			for (int num19 = 0; num19 < num17; num19++)
 			{
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -3685,18 +3692,18 @@ namespace LayaExport
 			Util.FileUtil.WriteData(fileStream, new ushort[1]);
 			long position5 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list9.IndexOf("MESH")
-			});
+				{
+					(ushort)list9.IndexOf("MESH")
+				});
 			list9.Add(text);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list9.IndexOf(text)
-			});
+				{
+					(ushort)list9.IndexOf(text)
+				});
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list4.Count
-			});
+				{
+					(ushort)list4.Count
+				});
 			list9.Add(item2);
 			for (int num19 = 0; num19 < list4.Count; num19++)
 			{
@@ -3704,9 +3711,9 @@ namespace LayaExport
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list9.IndexOf(item2)
-				});
+					{
+						(ushort)list9.IndexOf(item2)
+					});
 			}
 			long position6 = fileStream.Position;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -3722,18 +3729,18 @@ namespace LayaExport
 			{
 				array7[num19] = fileStream.Position;
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)list9.IndexOf("SUBMESH")
-				});
+					{
+						(ushort)list9.IndexOf("SUBMESH")
+					});
 				Util.FileUtil.WriteData(fileStream, new ushort[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					1
-				});
+					{
+						1
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
 				Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -3757,24 +3764,24 @@ namespace LayaExport
 					DataManager.TerrainVertexData terrainVertexData = list10[num22];
 					Vector3 vertice = terrainVertexData.vertice;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						vertice.x * -1f,
-						vertice.y,
-						vertice.z
-					});
+						{
+							vertice.x * -1f,
+							vertice.y,
+							vertice.z
+						});
 					Vector3 normal = terrainVertexData.normal;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						normal.x * -1f,
-						normal.y,
-						normal.z
-					});
+						{
+							normal.x * -1f,
+							normal.y,
+							normal.z
+						});
 					Vector2 uv = terrainVertexData.uv;
 					Util.FileUtil.WriteData(fileStream, new float[]
-					{
-						uv.x,
-						uv.y * -1f + 1f
-					});
+						{
+							uv.x,
+							uv.y * -1f + 1f
+						});
 				}
 			}
 			long num23 = fileStream.Position - position9;
@@ -3785,9 +3792,9 @@ namespace LayaExport
 				for (int num22 = 0; num22 < list11.Count; num22++)
 				{
 					Util.FileUtil.WriteData(fileStream, new ushort[]
-					{
-						(ushort)list11[num22]
-					});
+						{
+							(ushort)list11[num22]
+						});
 				}
 			}
 			long num24 = fileStream.Position - position10;
@@ -3797,98 +3804,98 @@ namespace LayaExport
 			{
 				fileStream.Position = array7[num19] + 2L;
 				Util.FileUtil.WriteData(fileStream, new ushort[]
-				{
-					(ushort)num19
-				});
+					{
+						(ushort)num19
+					});
 				uint num27 = num25;
 				uint count2 = (uint)list4[num19].Count;
 				uint num28 = num26;
 				uint count3 = (uint)list6[num19].Count;
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num27
-				});
+					{
+						num27
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					count2
-				});
+					{
+						count2
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num28
-				});
+					{
+						num28
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					count3
-				});
+					{
+						count3
+					});
 				num25 += count2;
 				num26 += count3;
 				fileStream.Position += 2L;
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					num28
-				});
+					{
+						num28
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					count3
-				});
+					{
+						count3
+					});
 			}
 			for (int num19 = 0; num19 < list4.Count; num19++)
 			{
 				fileStream.Position = array5[num19];
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)(array6[num19] - position8)
-				});
+					{
+						(uint)(array6[num19] - position8)
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)(list4[num19].Count * (int)num18)
-				});
+					{
+						(uint)(list4[num19].Count * (int)num18)
+					});
 			}
 			fileStream.Position = position6;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position10 - position8)
-			});
+				{
+					(uint)(position10 - position8)
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num24
-			});
+				{
+					(uint)num24
+				});
 			fileStream.Position = position4;
 			Util.FileUtil.WriteData(fileStream, new uint[1]);
 			Util.FileUtil.WriteData(fileStream, new ushort[]
-			{
-				(ushort)list9.Count
-			});
+				{
+					(ushort)list9.Count
+				});
 			long position11 = fileStream.Position;
 			fileStream.Position = position3 + 2L;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)position5
-			});
+				{
+					(uint)position5
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)num20
-			});
+				{
+					(uint)num20
+				});
 			for (int num19 = 0; num19 < count; num19++)
 			{
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)array7[num19]
-				});
+					{
+						(uint)array7[num19]
+					});
 				Util.FileUtil.WriteData(fileStream, new uint[]
-				{
-					(uint)array9[num19]
-				});
+					{
+						(uint)array9[num19]
+					});
 			}
 			fileStream.Position = position2;
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)position8
-			});
+				{
+					(uint)position8
+				});
 			Util.FileUtil.WriteData(fileStream, new uint[]
-			{
-				(uint)(position8 + num21 + num23 + num24 + array9[0])
-			});
+				{
+					(uint)(position8 + num21 + num23 + num24 + array9[0])
+				});
 			fileStream.Close();
 		}
 
@@ -4018,6 +4025,10 @@ namespace LayaExport
 			jsonobject.AddField("version", DataManager.LmatVersion);
 			jsonobject.AddField("props", jsonobject2);
 			if (shaderType == "BlinnPhong")
+			{
+				jsonobject2.AddField("type", "Laya.BlinnPhongMaterial");
+			}
+			else if (shaderType == "LayaBlinnPhongDetail")
 			{
 				jsonobject2.AddField("type", "Laya.BlinnPhongMaterial");
 			}
@@ -4306,6 +4317,52 @@ namespace LayaExport
 				jsonobject10.Add(textureOffset.y);
 				jsonobject9.AddField("value", jsonobject10);
 				jsonobject5.Add(jsonobject9);
+			}
+			if (material.HasProperty("_DetailMap"))
+			{
+				Texture2D texture2D = (Texture2D)material.GetTexture("_DetailMap");
+				if (texture2D != null)
+				{
+					JSONObject jsonobject8 = new JSONObject(JSONObject.Type.OBJECT);
+					jsonobject8.AddField("name", "detailMap");
+					DataManager.saveTextureFile(jsonobject8, texture2D, DataManager.Platformindex, savePath, name, "path");
+					jsonobject4.Add(jsonobject8);
+				}
+				JSONObject jsonobject9 = new JSONObject(JSONObject.Type.OBJECT);
+				jsonobject9.AddField("name", "detailMapOffset");
+				JSONObject jsonobject10 = new JSONObject(JSONObject.Type.ARRAY);
+				Vector2 textureScale = material.GetTextureScale("_DetailMap");
+				Vector2 textureOffset = material.GetTextureOffset("_DetailMap");
+				jsonobject10.Add(textureScale.x);
+				jsonobject10.Add(textureScale.y);
+				jsonobject10.Add(textureOffset.x);
+				jsonobject10.Add(textureOffset.y);
+				jsonobject9.AddField("value", jsonobject10);
+				jsonobject5.Add(jsonobject9);
+				jsonobject2.AddField("uvtile1", material.GetFloat("uvtile1"));
+			}
+			if (material.HasProperty("_vertexMap"))
+			{
+				Texture2D texture2D = (Texture2D)material.GetTexture("_vertexMap");
+				if (texture2D != null)
+				{
+					JSONObject jsonobject8 = new JSONObject(JSONObject.Type.OBJECT);
+					jsonobject8.AddField("name", "vertexMap");
+					DataManager.saveTextureFile(jsonobject8, texture2D, DataManager.Platformindex, savePath, name, "path");
+					jsonobject4.Add(jsonobject8);
+				}
+				JSONObject jsonobject9 = new JSONObject(JSONObject.Type.OBJECT);
+				jsonobject9.AddField("name", "vertexMapOffset");
+				JSONObject jsonobject10 = new JSONObject(JSONObject.Type.ARRAY);
+				Vector2 textureScale = material.GetTextureScale("_vertexMap");
+				Vector2 textureOffset = material.GetTextureOffset("_vertexMap");
+				jsonobject10.Add(textureScale.x);
+				jsonobject10.Add(textureScale.y);
+				jsonobject10.Add(textureOffset.x);
+				jsonobject10.Add(textureOffset.y);
+				jsonobject9.AddField("value", jsonobject10);
+				jsonobject5.Add(jsonobject9);
+				jsonobject2.AddField("uvtile2", material.GetFloat("uvtile2"));
 			}
 			if (material.HasProperty("_MetallicGlossMap"))
 			{
@@ -4758,7 +4815,7 @@ namespace LayaExport
 			jsonobject4.AddField("name", name);
 			jsonobject4.AddField("renderQueue", material.renderQueue);
 
-		 
+
 			{
 				List<string> list = material.shaderKeywords.ToList<string>();
 				jsonobject4.AddField("renderStates", jsonobject13);
@@ -4927,7 +4984,7 @@ namespace LayaExport
 				{
 					jsonobject7.AddField("depthTest", 515);
 				}
-			
+
 
 				/*if (list.IndexOf("_ALPHATEST_ON") != -1)
 				{
@@ -4939,7 +4996,7 @@ namespace LayaExport
 				}
 				*/
 			}
-;
+			;
 			int c = ShaderUtil.GetPropertyCount (material.shader);
 			for(int i = 0 ; i < c; i++ )
 			{
@@ -4996,16 +5053,32 @@ namespace LayaExport
 					break;
 				case ShaderUtil.ShaderPropertyType.Vector:
 					{
-						JSONObject jsonobject9 = new JSONObject(JSONObject.Type.OBJECT);
-						JSONObject jsonobject10 = new JSONObject(JSONObject.Type.ARRAY);	
-						Vector4 color2 = material.GetVector(pname);
-						jsonobject10.Add(color2.x);
-						jsonobject10.Add(color2.y);
-						jsonobject10.Add(color2.z);
-						jsonobject10.Add(color2.w);
-						jsonobject9.AddField ("name", pname);
-						jsonobject9.AddField("value", jsonobject10);
-						jsonobject3.Add(jsonobject9);
+						if (pname == "LightDir0") {
+							JSONObject jsonobject9 = new JSONObject(JSONObject.Type.OBJECT);
+							JSONObject jsonobject10 = new JSONObject(JSONObject.Type.ARRAY);	
+							Vector4 color2 = material.GetVector(pname);
+							jsonobject10.Add(-color2.x);
+							jsonobject10.Add(color2.y);
+							jsonobject10.Add(color2.z);
+							jsonobject10.Add(color2.w);
+							jsonobject9.AddField ("name", pname);
+							jsonobject9.AddField("value", jsonobject10);
+							jsonobject3.Add(jsonobject9);
+						} 
+						else 
+						{
+							JSONObject jsonobject9 = new JSONObject(JSONObject.Type.OBJECT);
+							JSONObject jsonobject10 = new JSONObject(JSONObject.Type.ARRAY);	
+							Vector4 color2 = material.GetVector(pname);
+							jsonobject10.Add(color2.x);
+							jsonobject10.Add(color2.y);
+							jsonobject10.Add(color2.z);
+							jsonobject10.Add(color2.w);
+							jsonobject9.AddField ("name", pname);
+							jsonobject9.AddField("value", jsonobject10);
+							jsonobject3.Add(jsonobject9);
+						}
+
 
 					}
 					break;
@@ -5014,6 +5087,7 @@ namespace LayaExport
 			jsonobject4.AddField("textures", jsonobject2);
 			jsonobject4.AddField("vectors", jsonobject3);
 			jsonobject4.AddField("defines", obj);
+			jsonobject4.AddField ("eventRenderMode", 2);
 			Util.FileUtil.saveFile(savePath, jsonobject);
 		}
 
@@ -5167,9 +5241,9 @@ namespace LayaExport
 								new BinaryWriter(fileStream).Write(lightmapColor.EncodeToPNG());
 								fileStream.Close();
 								jsonobject2.AddField("path", assetPath.Split(new char[]
-								{
-									'.'
-								})[0] + ".png");
+									{
+										'.'
+									})[0] + ".png");
 							}
 						}
 					}
@@ -5375,9 +5449,9 @@ namespace LayaExport
 			}
 			string text = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(cubemap.GetInstanceID()), false);
 			text = text.Split(new char[]
-			{
-				'.'
-			})[0];
+				{
+					'.'
+				})[0];
 			if (isMaterial)
 			{
 				string relativePath = Util.FileUtil.getRelativePath(materialPath, DataManager.SAVEPATH + "/" + text + ".ltc");
@@ -5520,9 +5594,9 @@ namespace LayaExport
 						string text = DataManager.cleanIllegalChar(animationClip.name, true);
 						list6.Add(text);
 						string text2 = DataManager.cleanIllegalChar(AssetDatabase.GetAssetPath(animationClip.GetInstanceID()).Split(new char[]
-						{
-							'.'
-						})[0], false) + "-" + text + ".lani";
+							{
+								'.'
+							})[0], false) + "-" + text + ".lani";
 						string fileName = DataManager.SAVEPATH + "/" + text2;
 						jsonobject3.AddField("clipPath", text2);
 						EditorCurveBinding[] curveBindings = AnimationUtility.GetCurveBindings(animationClip);
@@ -5736,16 +5810,16 @@ namespace LayaExport
 													else
 													{
 														Debug.LogWarning(string.Concat(new string[]
-														{
-															gameObject.name,
-															"'s Animator ",
-															gameObject.name,
-															"/",
-															list9[num12].path,
-															" ",
-															list9[num12].propertyName,
-															" keyFrame data can't be null!"
-														}));
+															{
+																gameObject.name,
+																"'s Animator ",
+																gameObject.name,
+																"/",
+																list9[num12].path,
+																" ",
+																list9[num12].propertyName,
+																" keyFrame data can't be null!"
+															}));
 													}
 												}
 											}
@@ -5773,9 +5847,9 @@ namespace LayaExport
 							DataManager.CustomAnimationClipCurveData customAnimationClipCurveData = list10[num21];
 							List<ushort> list17 = new List<ushort>();
 							string[] array2 = customAnimationClipCurveData.path.Split(new char[]
-							{
-								'/'
-							});
+								{
+									'/'
+								});
 							for (int num22 = 0; num22 < array2.Length; num22++)
 							{
 								if (list6.IndexOf(array2[num22]) == -1)
@@ -5794,9 +5868,9 @@ namespace LayaExport
 							}
 							aniNodeData.conpomentTypeIndex = (ushort)list6.IndexOf(text5);
 							string[] array3 = customAnimationClipCurveData.propertyName.Split(new char[]
-							{
-								'.'
-							});
+								{
+									'.'
+								});
 							List<ushort> list18 = new List<ushort>();
 							string text6 = array3[0];
 							text6 = dictionary2[text6];
@@ -6003,9 +6077,9 @@ namespace LayaExport
 						long position2 = fileStream.Position;
 						int num26 = 1;
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)num26
-						});
+							{
+								(ushort)num26
+							});
 						for (int num27 = 0; num27 < num26; num27++)
 						{
 							Util.FileUtil.WriteData(fileStream, new uint[1]);
@@ -6016,168 +6090,168 @@ namespace LayaExport
 						Util.FileUtil.WriteData(fileStream, new ushort[1]);
 						long position4 = fileStream.Position;
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)list6.IndexOf("ANIMATIONS")
-						});
+							{
+								(ushort)list6.IndexOf("ANIMATIONS")
+							});
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)list5.Count
-						});
+							{
+								(ushort)list5.Count
+							});
 						for (int num28 = 0; num28 < list5.Count; num28++)
 						{
 							Util.FileUtil.WriteData(fileStream, new float[]
-							{
-								(float)list5[num28]
-							});
+								{
+									(float)list5[num28]
+								});
 						}
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)list6.IndexOf(text)
-						});
+							{
+								(ushort)list6.IndexOf(text)
+							});
 						float num29 = (list5.Count == 0) ? 0f : ((float)list5[list5.Count - 1]);
 						Util.FileUtil.WriteData(fileStream, new float[]
-						{
-							num29
-						});
+							{
+								num29
+							});
 						Util.FileUtil.WriteData(fileStream, new bool[]
-						{
-							animationClip.isLooping
-						});
+							{
+								animationClip.isLooping
+							});
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)num2
-						});
+							{
+								(ushort)num2
+							});
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)list16.Count
-						});
+							{
+								(ushort)list16.Count
+							});
 						for (int num30 = 0; num30 < list16.Count; num30++)
 						{
 							DataManager.AniNodeData aniNodeData = list16[num30];
 							Util.FileUtil.WriteData(fileStream, new byte[]
-							{
-								aniNodeData.type
-							});
+								{
+									aniNodeData.type
+								});
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								aniNodeData.pathLength
-							});
+								{
+									aniNodeData.pathLength
+								});
 							for (int num31 = 0; num31 < (int)aniNodeData.pathLength; num31++)
 							{
 								Util.FileUtil.WriteData(fileStream, new ushort[]
-								{
-									aniNodeData.pathIndex[num31]
-								});
+									{
+										aniNodeData.pathIndex[num31]
+									});
 							}
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								aniNodeData.conpomentTypeIndex
-							});
+								{
+									aniNodeData.conpomentTypeIndex
+								});
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								aniNodeData.propertyNameLength
-							});
+								{
+									aniNodeData.propertyNameLength
+								});
 							for (int num32 = 0; num32 < (int)aniNodeData.propertyNameLength; num32++)
 							{
 								Util.FileUtil.WriteData(fileStream, new ushort[]
-								{
-									aniNodeData.propertyNameIndex[num32]
-								});
+									{
+										aniNodeData.propertyNameIndex[num32]
+									});
 							}
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								aniNodeData.keyFrameCount
-							});
+								{
+									aniNodeData.keyFrameCount
+								});
 							for (int num33 = 0; num33 < (int)aniNodeData.keyFrameCount; num33++)
 							{
 								Util.FileUtil.WriteData(fileStream, new ushort[]
-								{
-									aniNodeData.aniNodeFrameDatas[num33].startTimeIndex
-								});
+									{
+										aniNodeData.aniNodeFrameDatas[num33].startTimeIndex
+									});
 								List<float> valueNumbers = aniNodeData.aniNodeFrameDatas[num33].valueNumbers;
 								List<float> inTangentNumbers = aniNodeData.aniNodeFrameDatas[num33].inTangentNumbers;
 								List<float> outTangentNumbers = aniNodeData.aniNodeFrameDatas[num33].outTangentNumbers;
 								for (int num34 = 0; num34 < inTangentNumbers.Count; num34++)
 								{
 									Util.FileUtil.WriteData(fileStream, new float[]
-									{
-										inTangentNumbers[num34]
-									});
+										{
+											inTangentNumbers[num34]
+										});
 								}
 								for (int num35 = 0; num35 < outTangentNumbers.Count; num35++)
 								{
 									Util.FileUtil.WriteData(fileStream, new float[]
-									{
-										outTangentNumbers[num35]
-									});
+										{
+											outTangentNumbers[num35]
+										});
 								}
 								for (int num36 = 0; num36 < valueNumbers.Count; num36++)
 								{
 									Util.FileUtil.WriteData(fileStream, new float[]
-									{
-										valueNumbers[num36]
-									});
+										{
+											valueNumbers[num36]
+										});
 								}
 							}
 						}
 						AnimationEvent[] events = animationClip.events;
 						int num37 = events.Length;
 						Util.FileUtil.WriteData(fileStream, new short[]
-						{
-							(short)num37
-						});
+							{
+								(short)num37
+							});
 						for (int num38 = 0; num38 < num37; num38++)
 						{
 							AnimationEvent animationEvent = events[num38];
 							Util.FileUtil.WriteData(fileStream, new float[]
-							{
-								animationEvent.time
-							});
+								{
+									animationEvent.time
+								});
 							string functionName = animationEvent.functionName;
 							if (list6.IndexOf(functionName) == -1)
 							{
 								list6.Add(functionName);
 							}
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								(ushort)list6.IndexOf(functionName)
-							});
+								{
+									(ushort)list6.IndexOf(functionName)
+								});
 							ushort num39 = 3;
 							Util.FileUtil.WriteData(fileStream, new ushort[]
-							{
-								num39
-							});
+								{
+									num39
+								});
 							for (int num40 = 0; num40 < 1; num40++)
 							{
 								Util.FileUtil.WriteData(fileStream, new byte[]
-								{
-									2
-								});
+									{
+										2
+									});
 								Util.FileUtil.WriteData(fileStream, new float[]
-								{
-									animationEvent.floatParameter
-								});
+									{
+										animationEvent.floatParameter
+									});
 								Util.FileUtil.WriteData(fileStream, new byte[]
-								{
-									1
-								});
+									{
+										1
+									});
 								Util.FileUtil.WriteData(fileStream, new int[]
-								{
-									animationEvent.intParameter
-								});
+									{
+										animationEvent.intParameter
+									});
 								Util.FileUtil.WriteData(fileStream, new byte[]
-								{
-									3
-								});
+									{
+										3
+									});
 								string stringParameter = animationEvent.stringParameter;
 								if (list6.IndexOf(stringParameter) == -1)
 								{
 									list6.Add(stringParameter);
 								}
 								Util.FileUtil.WriteData(fileStream, new ushort[]
-								{
-									(ushort)list6.IndexOf(stringParameter)
-								});
+									{
+										(ushort)list6.IndexOf(stringParameter)
+									});
 							}
 						}
 						long position5 = fileStream.Position;
@@ -6188,23 +6262,23 @@ namespace LayaExport
 						long position6 = fileStream.Position;
 						fileStream.Position = position3 + 4L;
 						Util.FileUtil.WriteData(fileStream, new ushort[]
-						{
-							(ushort)list6.Count
-						});
+							{
+								(ushort)list6.Count
+							});
 						fileStream.Position = position2 + 2L + 4L;
 						Util.FileUtil.WriteData(fileStream, new uint[]
-						{
-							(uint)(position5 - position4)
-						});
+							{
+								(uint)(position5 - position4)
+							});
 						fileStream.Position = position;
 						Util.FileUtil.WriteData(fileStream, new uint[]
-						{
-							(uint)position5
-						});
+							{
+								(uint)position5
+							});
 						Util.FileUtil.WriteData(fileStream, new uint[]
-						{
-							(uint)(position6 - position5)
-						});
+							{
+								(uint)(position6 - position5)
+							});
 						fileStream.Close();
 					}
 				}
@@ -6906,6 +6980,17 @@ namespace LayaExport
 				textureImporter.isReadable = true;
 				textureImporter.textureCompression = 0;
 				AssetDatabase.ImportAsset(path);
+
+				//Debug.LogWarning ("Path:"+path);
+				Debug.LogWarning ("Save path:"+savePath);
+
+				if (path.ToLower ().EndsWith (".png") || path.ToLower ().EndsWith (".jpg")) {
+					if (File.Exists (savePath))
+						File.Delete (savePath);
+					File.Copy (path, savePath);
+					continue;
+				}
+
 				if (texture.format == (UnityEngine.TextureFormat)10 || texture.format == (UnityEngine.TextureFormat)12 || texture.format == (UnityEngine.TextureFormat)28 || texture.format == (UnityEngine.TextureFormat)29)
 				{
 					Debug.LogError("LayaAie: Texture " + textureImporter.assetPath + " can't Readable,maybe you should cancel  Override for PC,MAC&Linux Standalone  checkbox.");
@@ -6942,15 +7027,15 @@ namespace LayaExport
 				Texture2D texture = keyValuePair.Value.texture;
 				int num = Mathf.Max(texture.width, texture.height);
 				HTTPClient.OtherSetting = string.Concat(new string[]
-				{
-					" -m ",
-					keyValuePair.Value.MipMap.ToString(),
-					" -r ",
-					num.ToString(),
-					",",
-					num.ToString(),
-					" -q pvrtcfastest "
-				});
+					{
+						" -m ",
+						keyValuePair.Value.MipMap.ToString(),
+						" -r ",
+						num.ToString(),
+						",",
+						num.ToString(),
+						" -q pvrtcfastest "
+					});
 				if (keyValuePair.Value.format == 0)
 				{
 					HTTPClient.format = "PVRTC1_4_RGB";

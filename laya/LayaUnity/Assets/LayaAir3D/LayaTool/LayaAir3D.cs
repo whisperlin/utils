@@ -664,11 +664,11 @@ public partial class LayaAir3D : EditorWindow
     {
 #if UNITY_STANDALONE_OSX
             Application.OpenURL(Application.dataPath + "/StreamingAssets/startServer_mac.sh"); 
+#else
+		Application.OpenURL(Application.dataPath + "/StreamingAssets/startServer_win.bat");
 #endif
 
-#if UNITY_STANDALONE_WIN
-        Application.OpenURL(Application.dataPath + "/StreamingAssets/startServer_win.bat");
-        #endif
+ 
 
         Application.OpenURL("http://127.0.0.1:9999");
     }

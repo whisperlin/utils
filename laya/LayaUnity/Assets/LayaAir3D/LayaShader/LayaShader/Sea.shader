@@ -2,6 +2,10 @@ Shader "LayaAir3D/Addition/Sea"
 {
     Properties
     {     
+        
+        LightDir0("LightDir0", Vector) = (1,1,1,1)
+        LightColor0("LightColor0",Color ) = (1,1,1,1)
+        LightIntensity0("LightIntensity0",Float) = 1
 
         spltex("_SPL",2D) =  "blue" {}
         displacement("displacement",2D) = "White" {}
@@ -9,7 +13,7 @@ Shader "LayaAir3D/Addition/Sea"
         foamTexture("foamTexture",2D) = "White" {}
         reflectionTex("reflectionTex",2D) = "White"{}
         wavesTexture("wavesTexture",2D) = "White" {}
-        maskWavesDisplacement("maskWavesDisplacement",2D) = "black" {}
+        maskWavesDisplacement("maskWavesDisplacement",2D) = "White" {}
 
         spec("specular",Float) = 0.7
         reflectionIntensity("reflectionIntensity",Float) =0.4
@@ -47,12 +51,13 @@ Shader "LayaAir3D/Addition/Sea"
         foamSpeed("foamSpeed",Float) =1.43
         skyBlur("skyBlur",Range(0,10))=2.09
         reflectionmapColor("reflectionmapColor",Color) = (1,1,1,1)
-        
+      
         
         
     }
     SubShader
     {
+    // [HideInInspector] 
           Tags {
             "IgnoreProjector"="True"
             "Queue"="Transparent"
@@ -61,7 +66,7 @@ Shader "LayaAir3D/Addition/Sea"
 
         Pass
         {
-
+        	//Blend [_SrcBlend] [_DstBlend]
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
             
@@ -72,7 +77,7 @@ Shader "LayaAir3D/Addition/Sea"
             #pragma multi_compile_fog
             
             #include "UnityCG.cginc"
-            #include "../CGIncludes/RolantinCG.cginc" 
+ 
 
 
             struct vertexin
@@ -119,7 +124,7 @@ Shader "LayaAir3D/Addition/Sea"
 
      
  		 	float shoreLineOpacity;
-            uniform float3 objScale;
+            uniform float4 objScale;
 
             uniform float4 waterColor;
             uniform float3 lightcolor;
@@ -151,7 +156,6 @@ Shader "LayaAir3D/Addition/Sea"
             uniform sampler2D maskWavesDisplacement;float4 maskWavesDisplacement_ST;
             uniform sampler2D displacement;float4 displacement_ST;
 
-            uniform float _UseMask;
             uniform float radialWaves;
             uniform float wavesAmount;
             uniform float wavesDisplacementSpeed;
@@ -164,8 +168,18 @@ Shader "LayaAir3D/Addition/Sea"
             uniform float shoreFoamIntensity;
             uniform float shoreFoamDistance;
             uniform float fadeLevel;
+
             //uniform samplerCUBE  _SPL;
             uniform sampler2D spltex;
+
+           // uniform float4 LightDir;
+
+
+            uniform fixed4 LightDir0;
+            uniform fixed4 LightColor0;
+            uniform fixed LightIntensity0;
+
+         
             
             vertexout vert (vertexin v)
             {  
@@ -176,53 +190,58 @@ Shader "LayaAir3D/Addition/Sea"
                 o.bitangentDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);
 
 
-       			float uTime =  _Time.y;
-               
-                float mytime = uTime * wavesDisplacementSpeed;
+               float4 node_9630 = _Time ;
+              float node_9000 = (displacementSpeed*node_9630.r)/ 50;
 
-
-                //float t = _TimeEditor.x;
+     
                 float2 uv = v.uv;
                 ///scale obj x z coordinate
                 float2 ScaleOBJ = (float2(objScale.r,objScale.b)*displacementScale * uv*0.1);
 
-                float4 _Displacement_var2 = tex2Dlod(displacement, float4(ScaleOBJ+displacementSpeed*mytime.r*float2(-1,1),0,0));
+                float4 _Displacement_var2 = tex2Dlod(displacement, float4(ScaleOBJ+ node_9000*float2(-1,1),0,0));
 
-                float2 node_1716 = ((ScaleOBJ+float2(0.5,0.5))*0.75) +displacementSpeed*mytime.r*float2(1.0,-1.0);
+                float2 node_1716 = ((ScaleOBJ+float2(0.5,0.5))*0.75) +node_9000*float2(1.0,-1.0);
 
                 float4 _Displacement_var = tex2Dlod(displacement,float4(TRANSFORM_TEX(node_1716,displacement),0,0));
             
 
-                float3 lerpdis = lerp(_Displacement_var2.rgb,_Displacement_var2.rgb,0.5);
+                float3 lerpdis = lerp(_Displacement_var2.rgb,_Displacement_var.rgb,0.5);
 
                 float node_4826 = (1.0 - length((uv*2.0-1.0)));
                 float2 node_3934 = float2(node_4826,node_4826);
 
                 
 ////water mask vertex anim range
-                float4 maskWavesDisplacement_var= tex2Dlod(maskWavesDisplacement,float4(TRANSFORM_TEX(float2(uv * -1.0),maskWavesDisplacement),0.0,0)) ;
+                float4 _MaskWavesDisplacement_var= tex2Dlod(maskWavesDisplacement,float4(TRANSFORM_TEX(float2(uv * -1.0),maskWavesDisplacement),0.0,0)) ;
                
-                float2 node_2367 = ((lerp( uv, lerp( node_3934, (node_3934*dot(maskWavesDisplacement_var.rgb,float3(0.3,0.59,0.11))), 1 ),
+                float2 node_2367 = ((lerp( uv, lerp( node_3934, (node_3934*dot(_MaskWavesDisplacement_var.rgb,float3(0.3,0.59,0.11))), 1 ),
                      radialWaves )*float2(objScale.r,objScale.b)*wavesAmount*0.1)
-                    +(wavesDisplacementSpeed*mytime.r*(0*2.0-1.0))
+                    +(node_9000 *(2.0-1.0))
                     *float2(1,1));
 
-                 float4 wavesTexture_var = tex2Dlod(wavesTexture,float4(TRANSFORM_TEX(node_2367, wavesTexture),0.0,0));
+                 float4 _WavesTexture_var = tex2Dlod(wavesTexture,float4(TRANSFORM_TEX(node_2367, wavesTexture),0.0,0));
                
 
-                float node_8869 = dot(wavesTexture_var.rgb,float3(0.3,0.59,0.11));
-        
-         float node_3527 = cos(mytime+2) + sin(mytime+1);
+                float node_8869 = dot(_WavesTexture_var.rgb,float3(0.3,0.59,0.11));
+
+
+    
+        node_9630 = 10;
+        // float node_3527 = cos(mytime+2) + sin(mytime+1);
              //  float3 vertex = v.vertex+ node_6532;
-                 v.vertex.xyz += ((lerpdis+(node_8869*wavesIntensity))*float3(0,1,0)*displacementIntensity);
+                 v.vertex.xyz += ((lerpdis+(node_8869*wavesIntensity))*float3(0,1,0)*(displacementIntensity/200))
+                 // +(cos(objScale.g *  v.vertex.y + node_9000 * 0.9) * objScale.a) + 
+   // ( cos(objScale.g * 2.0 *  v.vertex.x + node_9000 * -.3) * sin(objScale.g * 4.0 *  v.vertex.y + node_9000 * 3.9) * ( objScale.a / 2.0 )
+   // ) ;
+    ;
                 o.uv = uv;
-              //  v.vertex.xyz += maskWavesDisplacement_var.xyz;
+              //  v.vertex.xyz += _MaskWavesDisplacement_var.xyz;
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 o.vertex = UnityObjectToClipPos(  v.vertex);
                  o.normalDir = UnityObjectToWorldNormal(v.normal);
 
                 
-                //UNITY_TRANSFER_FOG(o,o.vertex);
+                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
 
@@ -246,31 +265,46 @@ Shader "LayaAir3D/Addition/Sea"
                 }
                 float3 SBLSky2(sampler2D texIBL,float3 viewReflectDirection ){
                
-                return tex2D(texIBL,viewReflectDirection.xy*0.5).rgb;
+                return tex2D(texIBL,viewReflectDirection.xz).rgb;
                 }
+
+
+
+inline float4x4 DirectionalLight(float3 normalDirection) {   
+    float3 NorDir = normalize(normalDirection);
+
+    float3 dir0 = max(0.0,dot( NorDir, -LightDir0.xyz ));
+    //float3 DIR0 = dir0 * LightIntensity0 * LightColor0;
+     float3 DIR0 = dir0  * LightColor0.rgb * LightIntensity0;
+    //float3 dir1 = max(0.0,dot( NorDir, -LightDir1 ));
+    //float3 DIR1 = dir1 * LightIntensity1 * LightColor1 ;
+
+    //float3 dir2 = max(dot( NorDir, -LightDir2 ) ,0.0);
+    //float3 DIR2 = dir2 * LightIntensity2 * LightColor2 ;
+    float3 finalLighing = DIR0 ;//+ DIR1 + DIR2 ;
+
+    //float4x4 Full = float4x4((DIR0.xyzz),(DIR1.xyzz),(DIR2.xyzz),(finalLighing.xyzz));
+    float4x4 Full = float4x4((DIR0.xyzz),(DIR0.xyzz),(DIR0.xyzz),(finalLighing.xyzz));
+    return  Full;
+}
+
+
+
 
 
 
             fixed4 frag (vertexout i) : SV_Target
             {  
-              float uTime =  _Time.y;
-               // float3 recipObjScale = float3( length(unity_WorldToObject[0].xyz), length(unity_WorldToObject[1].xyz), length(unity_WorldToObject[2].xyz) );
-                // objScale = 1.0/recipObjScale;
-               
+ 
+              
                 float3 normalDir = normalize(i.normalDir);
-              //  i.screenPos = float4( i.screenPos.xy / i.screenPos.w, 0, 0 );
-               // i.screenPos.y *= _ProjectionParams.x;
-
-               // float sceneZ = max(0,LinearEyeDepth (UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos)))) - _ProjectionParams.g);
-               //  float sceneZ = 
-              //  float partZ = max(0,i.projPos.z - _ProjectionParams.g);
+               
 
 
 
-           ///////////////////////////////////     
-                float node_2375 = uTime/20 ;
+ 
 
-                float node_8229 = (wavesSpeed*node_2375*1.61803398875);
+                float node_8229 = (wavesSpeed*_Time.x*1.61803398875);
 
                 float2 node_5986 = (i.uv*float2(objScale.r,objScale.b)*wavesScale);
 
@@ -316,13 +350,17 @@ Shader "LayaAir3D/Addition/Sea"
 
 
 /////// Vectors:
+				//return float4( i.posWorld.xyz,1);
+				//return float4(_WorldSpaceCameraPos,1);
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
                 float3 normalLocal = node_6060;
                 float3 normalDirection = normalize(mul( normalLocal, tangentTransform )); // Perturbed normals
-           
+
+                //return float4(normalDirection,1);
                 float3 viewReflectDirection = reflect( -viewDirection, normalDirection );
                 float3 lightDirection = normalize(-LightDir0.xyz);
-              
+                //diff
+               // return float4(viewReflectDirection,1);
 ////// Lighting:
 
 
@@ -333,12 +371,9 @@ Shader "LayaAir3D/Addition/Sea"
                 /////////////////////
                 float4 node_7838 = tex2Dbias(reflectionTex,float4(normalize(h).xz,100,skyBlur));
 
+ 
 
-
-
-                float node_9204 = uTime/20 ;
-
-                float node_827 = (foamSpeed*node_9204);
+                float node_827 = (foamSpeed*_Time.x);
                 /////////////////////////
 
                 float2 node_2254 = (float2(objScale.r,objScale.b)*i.uv*foamScale);
@@ -356,19 +391,20 @@ Shader "LayaAir3D/Addition/Sea"
              
 
          
-                float3 mylight = DirectionalLight(normalDirection)[0];
+                float3 mylight = DirectionalLight(normalDirection)[0] * 1.5;
 
 
 
                 float3 node_6257 = (node_837.rgb*node_2220.rgb*mylight);
-                float node_3527 = uTime /20;
+ 
                 float node_4826 = (1.0 - length((i.uv*2.0+-1.0)));
                 float2 node_3934 = float2(node_4826,node_4826);
                 float2 node_3646 = (i.uv*(-1.0));
                 float _InverseDirection = 1;
-                float4 deepmap = tex2D(maskWavesDisplacement,i.uv);
+                float4 deepmap = tex2D(maskWavesDisplacement,i.uv) - 0.2;
                 float4 maskWavesDisplacement_var = tex2D(maskWavesDisplacement,TRANSFORM_TEX(node_3646, maskWavesDisplacement));
-                float2 node_2367 = ((lerp( i.uv, lerp( node_3934, (node_3934*dot(maskWavesDisplacement_var.rgb,float3(0.3,0.59,0.11))), _UseMask ), radialWaves )*float2(objScale.r,objScale.b)*wavesAmount*0.1)+(wavesDisplacementSpeed*node_3527*(_InverseDirection*2.0+-1.0))*float2(1,1));
+                float2 node_2367 = ((lerp( i.uv, lerp( node_3934, (node_3934*dot(maskWavesDisplacement_var.rgb,float3(0.3,0.59,0.11))), 1 ), 
+                    radialWaves )*float2(objScale.r,objScale.b)*wavesAmount*0.1)+(wavesDisplacementSpeed*_Time.x*(_InverseDirection*2.0+-1.0))*float2(1,1));
                 float4 wavesTexture_var = tex2D(wavesTexture,TRANSFORM_TEX(node_2367, wavesTexture));
                
 
@@ -378,15 +414,15 @@ Shader "LayaAir3D/Addition/Sea"
 
                 float noh = dot(normalDirection,h) ;
 
-                float3 SPLMap = SBLSky2(spltex,viewReflectDirection);
+                float3 SPLMap = SBLSky2(spltex,viewReflectDirection + normalDirection);
                  //float3 SPLMap = SBLsky(_SPL, viewReflectDirection);
 
                   float4 sceneColor = tex2Dbias(reflectionTex, float4(normalize(viewDirection).xz,100,skyBlur))*reflectionmapColor;
-                  sceneColor.rgb = SPLMap;
-                 node_7838.rgb = SPLMap;
-               //  return float4 (SPLMap,1);
+ 
+ 
+ 
                   
-                float node_9630 = uTime/20 ;
+                float node_9630 = _Time.x ;
                 float node_9000 = (displacementSpeed*node_9630);
 
                 float2 node_3654 = (float2(objScale.r,objScale.b)*displacementScale*i.uv*0.1);
@@ -399,21 +435,21 @@ Shader "LayaAir3D/Addition/Sea"
                 float3 mixdis = lerp(node_2033.rgb,node_7404.rgb,0.5);
                 float _UseReflection = 1;
      /////sp highlight
-                float3 sp = (spec*pow(max(0,noh),gloss*10)*mylight);
+                float3 sp = (spec*pow(max(0,noh),gloss*10)*mylight)  ;
     /////fresnel
                 float3 waterFresnel = pow(1.0-max(0,dot(normalDirection, viewDirection)),reflectionFresnel*5)*reflectionIntensity * fresnelColor;
 
                 float3 finalColor = ((saturate((1.0-(1.0-saturate((1.0-(1.0-(pow(saturate((node_8267 + ( (saturate((deepmap)/waterDensity)
                  - shoreWaterOpacity) * (0.0 - node_8267) ) / ((waterColor.rgb*9.0+1.0) - shoreWaterOpacity))),fadeLevel)*sceneColor.rgb*
            ((1.0 - saturate((deepmap*(sceneZ-partZ))/(waterDensity*3.3)))*0.75+0.25)))*
-                (1.0-(lerp( reflectionColor.rgb, node_7838.rgb, _UseReflection )*waterFresnel)))))
+                (1.0-(lerp( reflectionColor.rgb, SPLMap.rgb, _UseReflection )*waterFresnel)))))
                 *(1.0-((((1.0 - saturate((deepmap*(sceneZ-partZ))/shoreFoamDistance))*node_6257*shoreFoamIntensity)
                 +(node_8869*node_6257*savesDisplacementFoamIntensity))+(node_6257*dot(mixdis,float3(0.3,0.59,0.11))*displacementFoamIntensity)))))
                 *mylight)+sp);
 
                 float t = saturate((deepmap*(sceneZ-partZ))/shoreLineOpacity);
-                fixed4 finalRGBA = fixed4(lerp(sceneColor.rgb, finalColor,t),1);
-                UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
+                fixed4 finalRGBA = fixed4(lerp(sceneColor.rgb, finalColor,t), deepmap.r);
+                //UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                 return finalRGBA;
             }
             ENDCG

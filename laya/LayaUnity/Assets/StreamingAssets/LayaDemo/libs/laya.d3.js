@@ -15300,6 +15300,12 @@ var ShaderInit3D=(function(){
 			'u_LightmapScaleOffset':[RenderableSprite3D.LIGHTMAPSCALEOFFSET,/*laya.d3.shader.Shader3D.PERIOD_SPRITE*/2],
 			'u_LightMap':[RenderableSprite3D.LIGHTMAP,/*laya.d3.shader.Shader3D.PERIOD_SPRITE*/2],
 			'u_CameraPos':[ /*laya.d3.core.BaseCamera.CAMERAPOS*/0,/*laya.d3.shader.Shader3D.PERIOD_CAMERA*/3],
+			'detailMap':[9,1],
+			'vertexMap':[11,1],
+			'detailMapOffset':[10,1],
+			'vertexMapOffset':[12,1],
+			'uvtile1':[13,1],
+			'uvtile2':[14,1],
 			'u_ReflectTexture':[ /*laya.d3.core.scene.Scene3D.REFLECTIONTEXTURE*/22,/*laya.d3.shader.Shader3D.PERIOD_SCENE*/4],
 			'u_ReflectIntensity':[ /*laya.d3.core.scene.Scene3D.REFLETIONINTENSITY*/23,/*laya.d3.shader.Shader3D.PERIOD_SCENE*/4],
 			'u_FogStart':[ /*laya.d3.core.scene.Scene3D.FOGSTART*/1,/*laya.d3.shader.Shader3D.PERIOD_SCENE*/4],
@@ -15322,8 +15328,8 @@ var ShaderInit3D=(function(){
 			'u_shadowPSSMDistance':[ /*laya.d3.core.scene.Scene3D.SHADOWDISTANCE*/15,/*laya.d3.shader.Shader3D.PERIOD_SCENE*/4],
 			'u_lightShadowVP':[ /*laya.d3.core.scene.Scene3D.SHADOWLIGHTVIEWPROJECT*/16,/*laya.d3.shader.Shader3D.PERIOD_SCENE*/4],
 			'u_shadowPCFoffset':[ /*laya.d3.core.scene.Scene3D.SHADOWMAPPCFOFFSET*/17,/*laya.d3.shader.Shader3D.PERIOD_SCENE*/4]};
-		vs="#include \"Lighting.glsl\";\n\nattribute vec4 a_Position;\nuniform mat4 u_MvpMatrix;\n\n#if defined(DIFFUSEMAP)||((defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&(defined(SPECULARMAP)||defined(NORMALMAP)))||(defined(LIGHTMAP)&&defined(UV))\n	attribute vec2 a_Texcoord0;\n	varying vec2 v_Texcoord0;\n#endif\n\n#if defined(LIGHTMAP)&&defined(UV1)\n	attribute vec2 a_Texcoord1;\n#endif\n\n#ifdef LIGHTMAP\n	uniform vec4 u_LightmapScaleOffset;\n	varying vec2 v_LightMapUV;\n#endif\n\n#ifdef COLOR\n	attribute vec4 a_Color;\n	varying vec4 v_Color;\n#endif\n\n#ifdef BONE\n	const int c_MaxBoneCount = 24;\n	attribute vec4 a_BoneIndices;\n	attribute vec4 a_BoneWeights;\n	uniform mat4 u_Bones[c_MaxBoneCount];\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)\n	attribute vec3 a_Normal;\n	varying vec3 v_Normal; \n	uniform vec3 u_CameraPos;\n	varying vec3 v_ViewDir; \n#endif\n\n#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n	attribute vec4 a_Tangent0;\n	varying vec3 v_Tangent;\n	varying vec3 v_Binormal;\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)||defined(RECEIVESHADOW)\n	uniform mat4 u_WorldMat;\n	varying vec3 v_PositionWorld;\n#endif\n\nvarying float v_posViewZ;\n#ifdef RECEIVESHADOW\n  #ifdef SHADOWMAP_PSSM1 \n  varying vec4 v_lightMVPPos;\n  uniform mat4 u_lightShadowVP[4];\n  #endif\n#endif\n\n#ifdef TILINGOFFSET\n	uniform vec4 u_TilingOffset;\n#endif\n\nvoid main_castShadow()\n{\n	#ifdef BONE\n		mat4 skinTransform = u_Bones[int(a_BoneIndices.x)] * a_BoneWeights.x;\n		skinTransform += u_Bones[int(a_BoneIndices.y)] * a_BoneWeights.y;\n		skinTransform += u_Bones[int(a_BoneIndices.z)] * a_BoneWeights.z;\n		skinTransform += u_Bones[int(a_BoneIndices.w)] * a_BoneWeights.w;\n		vec4 position=skinTransform*a_Position;\n		gl_Position = u_MvpMatrix * position;\n	#else\n		gl_Position = u_MvpMatrix * a_Position;\n	#endif\n	 \n	//TODO没考虑UV动画呢\n	#if defined(DIFFUSEMAP)&&defined(ALPHATEST)\n		v_Texcoord0=a_Texcoord0;\n	#endif\n		v_posViewZ = gl_Position.z;\n}\n\nmat3 inverse(mat3 m) {\n  float a00 = m[0][0], a01 = m[0][1], a02 = m[0][2];\n  float a10 = m[1][0], a11 = m[1][1], a12 = m[1][2];\n  float a20 = m[2][0], a21 = m[2][1], a22 = m[2][2];\n\n  float b01 = a22 * a11 - a12 * a21;\n  float b11 = -a22 * a10 + a12 * a20;\n  float b21 = a21 * a10 - a11 * a20;\n\n  float det = a00 * b01 + a01 * b11 + a02 * b21;\n\n  return mat3(b01, (-a22 * a01 + a02 * a21), (a12 * a01 - a02 * a11),\n              b11, (a22 * a00 - a02 * a20), (-a12 * a00 + a02 * a10),\n              b21, (-a21 * a00 + a01 * a20), (a11 * a00 - a01 * a10)) / det;\n}\n\nvoid main_normal()\n{\n	#ifdef BONE\n		mat4 skinTransform = u_Bones[int(a_BoneIndices.x)] * a_BoneWeights.x;\n		skinTransform += u_Bones[int(a_BoneIndices.y)] * a_BoneWeights.y;\n		skinTransform += u_Bones[int(a_BoneIndices.z)] * a_BoneWeights.z;\n		skinTransform += u_Bones[int(a_BoneIndices.w)] * a_BoneWeights.w;\n		vec4 position=skinTransform*a_Position;\n		gl_Position = u_MvpMatrix * position;\n	#else\n		gl_Position = u_MvpMatrix * a_Position;\n	#endif\n\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)\n		mat3 worldInvMat;\n		#ifdef BONE\n			worldInvMat=inverse(mat3(u_WorldMat*skinTransform));\n		#else\n			worldInvMat=inverse(mat3(u_WorldMat));\n		#endif  \n		v_Normal=a_Normal*worldInvMat;\n		#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n			v_Tangent=a_Tangent0.xyz*worldInvMat;\n			v_Binormal=cross(v_Normal,v_Tangent)*a_Tangent0.w;\n		#endif\n	#endif\n\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)||defined(RECEIVESHADOW)\n		#ifdef BONE\n			v_PositionWorld=(u_WorldMat*position).xyz;\n		#else\n			v_PositionWorld=(u_WorldMat*a_Position).xyz;\n		#endif\n	#endif\n	\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)\n		v_ViewDir=u_CameraPos-v_PositionWorld;\n	#endif\n\n	#if defined(DIFFUSEMAP)||((defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&(defined(SPECULARMAP)||defined(NORMALMAP)))\n		v_Texcoord0=a_Texcoord0;\n		#ifdef TILINGOFFSET\n			v_Texcoord0=TransformUV(v_Texcoord0,u_TilingOffset);\n		#endif\n	#endif\n\n	#ifdef LIGHTMAP\n		#ifdef SCALEOFFSETLIGHTINGMAPUV\n			#ifdef UV1\n				v_LightMapUV=vec2(a_Texcoord1.x,1.0-a_Texcoord1.y)*u_LightmapScaleOffset.xy+u_LightmapScaleOffset.zw;\n			#else\n				v_LightMapUV=vec2(a_Texcoord0.x,1.0-a_Texcoord0.y)*u_LightmapScaleOffset.xy+u_LightmapScaleOffset.zw;\n			#endif \n			v_LightMapUV.y=1.0-v_LightMapUV.y;\n		#else\n			#ifdef UV1\n				v_LightMapUV=a_Texcoord1;\n			#else\n				v_LightMapUV=a_Texcoord0;\n			#endif \n		#endif \n	#endif\n\n	#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n		v_Color=a_Color;\n	#endif\n\n	#ifdef RECEIVESHADOW\n		v_posViewZ = gl_Position.w;\n		#ifdef SHADOWMAP_PSSM1 \n			v_lightMVPPos = u_lightShadowVP[0] * vec4(v_PositionWorld,1.0);\n		#endif\n	#endif\n}\n\nvoid main()\n{\n	#ifdef CASTSHADOW\n		main_castShadow();\n	#else\n		main_normal();\n	#endif\n}";
-		ps="#ifdef HIGHPRECISION\n	precision highp float;\n#else\n	precision mediump float;\n#endif\n\n#include \"Lighting.glsl\";\n\nuniform vec4 u_DiffuseColor;\n\n#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n	varying vec4 v_Color;\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n	varying vec3 v_ViewDir; \n#endif\n\n#ifdef ALPHATEST\n	uniform float u_AlphaTestValue;\n#endif\n\n#ifdef DIFFUSEMAP\n	uniform sampler2D u_DiffuseTexture;\n#endif\n\n\n\n#if defined(DIFFUSEMAP)||((defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&(defined(SPECULARMAP)||defined(NORMALMAP)))\n	varying vec2 v_Texcoord0;\n#endif\n\n#ifdef LIGHTMAP\n	varying vec2 v_LightMapUV;\n	uniform sampler2D u_LightMap;\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n	uniform vec3 u_MaterialSpecular;\n	uniform float u_Shininess;\n	#ifdef SPECULARMAP \n		uniform sampler2D u_SpecularTexture;\n	#endif\n#endif\n\n#ifdef FOG\n	uniform float u_FogStart;\n	uniform float u_FogRange;\n	uniform vec3 u_FogColor;\n#endif\n\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n	varying vec3 v_Normal;\n#endif\n\n#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n	uniform sampler2D u_NormalTexture;\n	varying vec3 v_Tangent;\n	varying vec3 v_Binormal;\n#endif\n\n#ifdef DIRECTIONLIGHT\n	uniform DirectionLight u_DirectionLight;\n#endif\n\n#ifdef POINTLIGHT\n	uniform PointLight u_PointLight;\n#endif\n\n#ifdef SPOTLIGHT\n	uniform SpotLight u_SpotLight;\n#endif\n\nuniform vec3 u_AmbientColor;\n\n\n#if defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(RECEIVESHADOW)\n	varying vec3 v_PositionWorld;\n#endif\n\n#include \"ShadowHelper.glsl\"\nvarying float v_posViewZ;\n#ifdef RECEIVESHADOW\n	#if defined(SHADOWMAP_PSSM2)||defined(SHADOWMAP_PSSM3)\n		uniform mat4 u_lightShadowVP[4];\n	#endif\n	#ifdef SHADOWMAP_PSSM1 \n		varying vec4 v_lightMVPPos;\n	#endif\n#endif\n\nvoid main_castShadow()\n{\n	//gl_FragColor=vec4(v_posViewZ,0.0,0.0,1.0);\n	gl_FragColor=packDepth(v_posViewZ);\n	#if defined(DIFFUSEMAP)&&defined(ALPHATEST)\n		float alpha = texture2D(u_DiffuseTexture,v_Texcoord0).w;\n		if( alpha < u_AlphaTestValue )\n		{\n			discard;\n		}\n	#endif\n}\nvoid main_normal()\n{\n	vec3 globalDiffuse=u_AmbientColor;\n	#ifdef LIGHTMAP	\n		globalDiffuse += DecodeLightmap(texture2D(u_LightMap, v_LightMapUV));\n	#endif\n	\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n		vec3 normal;\n		#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n			vec3 normalMapSample = texture2D(u_NormalTexture, v_Texcoord0).rgb;\n			normal = normalize(NormalSampleToWorldSpace(normalMapSample, v_Normal, v_Tangent,v_Binormal));\n		#else\n			normal = normalize(v_Normal);\n		#endif\n		vec3 viewDir= normalize(v_ViewDir);\n	#endif\n	\n	vec4 mainColor=u_DiffuseColor;\n	#ifdef DIFFUSEMAP\n		vec4 difTexColor=texture2D(u_DiffuseTexture, v_Texcoord0);\n		mainColor=mainColor*difTexColor;\n	#endif \n	#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n		mainColor=mainColor*v_Color;\n	#endif \n    \n	#ifdef ALPHATEST\n		if(mainColor.a<u_AlphaTestValue)\n			discard;\n	#endif\n  \n	\n	vec3 diffuse = vec3(0.0);\n	vec3 specular= vec3(0.0);\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n		vec3 dif,spe;\n		#ifdef SPECULARMAP\n			vec3 gloss=texture2D(u_SpecularTexture, v_Texcoord0).rgb;\n		#else\n			#ifdef DIFFUSEMAP\n				vec3 gloss=vec3(difTexColor.a);\n			#else\n				vec3 gloss=vec3(1.0);\n			#endif\n		#endif\n	#endif\n\n	\n	#ifdef DIRECTIONLIGHT\n		LayaAirBlinnPhongDiectionLight(u_MaterialSpecular,u_Shininess,normal,gloss,viewDir,u_DirectionLight,dif,spe);\n		diffuse+=dif;\n		specular+=spe;\n	#endif\n \n	#ifdef POINTLIGHT\n		LayaAirBlinnPhongPointLight(v_PositionWorld,u_MaterialSpecular,u_Shininess,normal,gloss,viewDir,u_PointLight,dif,spe);\n		diffuse+=dif;\n		specular+=spe;\n	#endif\n\n	#ifdef SPOTLIGHT\n		LayaAirBlinnPhongSpotLight(v_PositionWorld,u_MaterialSpecular,u_Shininess,normal,gloss,viewDir,u_SpotLight,dif,spe);\n		diffuse+=dif;\n		specular+=spe;\n	#endif\n\n	#ifdef RECEIVESHADOW\n		float shadowValue = 1.0;\n		#ifdef SHADOWMAP_PSSM3\n			shadowValue = getShadowPSSM3( u_shadowMap1,u_shadowMap2,u_shadowMap3,u_lightShadowVP,u_shadowPSSMDistance,u_shadowPCFoffset,v_PositionWorld,v_posViewZ,0.001);\n		#endif\n		#ifdef SHADOWMAP_PSSM2\n			shadowValue = getShadowPSSM2( u_shadowMap1,u_shadowMap2,u_lightShadowVP,u_shadowPSSMDistance,u_shadowPCFoffset,v_PositionWorld,v_posViewZ,0.001);\n		#endif \n		#ifdef SHADOWMAP_PSSM1\n			shadowValue = getShadowPSSM1( u_shadowMap1,v_lightMVPPos,u_shadowPSSMDistance,u_shadowPCFoffset,v_posViewZ,0.001);\n		#endif\n		gl_FragColor =vec4(mainColor.rgb*(globalDiffuse + diffuse)*shadowValue,mainColor.a);\n	#else\n		gl_FragColor =vec4(mainColor.rgb*(globalDiffuse + diffuse),mainColor.a);\n	#endif\n\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n		#ifdef RECEIVESHADOW\n			gl_FragColor.rgb+=specular*shadowValue;\n		#else\n			gl_FragColor.rgb+=specular;\n		#endif\n	#endif\n	  \n	#ifdef FOG\n		float lerpFact=clamp((1.0/gl_FragCoord.w-u_FogStart)/u_FogRange,0.0,1.0);\n		gl_FragColor.rgb=mix(gl_FragColor.rgb,u_FogColor,lerpFact);\n	#endif\n}\n\nvoid main()\n{\n	#ifdef CASTSHADOW		\n		main_castShadow();\n	#else\n		main_normal();\n	#endif  \n}\n\n";
+		vs="#include \"Lighting.glsl\";\n\nattribute vec4 a_Position;\nuniform mat4 u_MvpMatrix;\n\n#if defined(DIFFUSEMAP)||((defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&(defined(SPECULARMAP)||defined(NORMALMAP)))||(defined(LIGHTMAP)&&defined(UV))\n	attribute vec2 a_Texcoord0;\n	varying vec2 v_Texcoord0;\n#endif\n\n#if defined(LIGHTMAP)&&defined(UV1)\n	attribute vec2 a_Texcoord1;\n#endif\n\n#ifdef LIGHTMAP\n	uniform vec4 u_LightmapScaleOffset;\n	varying vec2 v_LightMapUV;\n#endif\n\n#ifdef COLOR\n	attribute vec4 a_Color;\n	varying vec4 v_Color;\n#endif\n\n#ifdef BONE\n	const int c_MaxBoneCount = 24;\n	attribute vec4 a_BoneIndices;\n	attribute vec4 a_BoneWeights;\n	uniform mat4 u_Bones[c_MaxBoneCount];\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)\n	attribute vec3 a_Normal;\n	varying vec3 v_Normal; \n	uniform vec3 u_CameraPos;\n	varying vec3 v_ViewDir; \n#endif\n\n#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n	attribute vec4 a_Tangent0;\n	varying vec3 v_Tangent;\n	varying vec3 v_Binormal;\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)||defined(RECEIVESHADOW)\n	uniform mat4 u_WorldMat;\n	varying vec3 v_PositionWorld;\n#endif\n\nvarying float v_posViewZ;\n#ifdef RECEIVESHADOW\n  #ifdef SHADOWMAP_PSSM1 \n  varying vec4 v_lightMVPPos;\n  uniform mat4 u_lightShadowVP[4];\n  #endif\n#endif\n\n#ifdef TILINGOFFSET\n	uniform vec4 u_TilingOffset;\n#endif\n\nvoid main_castShadow()\n{\n	#ifdef BONE\n		mat4 skinTransform = u_Bones[int(a_BoneIndices.x)] * a_BoneWeights.x;\n		skinTransform += u_Bones[int(a_BoneIndices.y)] * a_BoneWeights.y;\n		skinTransform += u_Bones[int(a_BoneIndices.z)] * a_BoneWeights.z;\n		skinTransform += u_Bones[int(a_BoneIndices.w)] * a_BoneWeights.w;\n		vec4 position=skinTransform*a_Position;\n		gl_Position = u_MvpMatrix * position;\n	#else\n		gl_Position = u_MvpMatrix * a_Position;\n	#endif\n	 \n	//TODO没考虑UV动画呢\n	#if defined(DIFFUSEMAP)&&defined(ALPHATEST)\n		v_Texcoord0=a_Texcoord0;\n	#endif\n		v_posViewZ = gl_Position.z;\n}\n\nmat3 inverse(mat3 m) {\n  float a00 = m[0][0], a01 = m[0][1], a02 = m[0][2];\n  float a10 = m[1][0], a11 = m[1][1], a12 = m[1][2];\n  float a20 = m[2][0], a21 = m[2][1], a22 = m[2][2];\n\n  float b01 = a22 * a11 - a12 * a21;\n  float b11 = -a22 * a10 + a12 * a20;\n  float b21 = a21 * a10 - a11 * a20;\n\n  float det = a00 * b01 + a01 * b11 + a02 * b21;\n\n  return mat3(b01, (-a22 * a01 + a02 * a21), (a12 * a01 - a02 * a11),\n              b11, (a22 * a00 - a02 * a20), (-a12 * a00 + a02 * a10),\n              b21, (-a21 * a00 + a01 * a20), (a11 * a00 - a01 * a10)) / det;\n}\n\nvoid main_normal()\n{\n	#ifdef BONE\n		mat4 skinTransform = u_Bones[int(a_BoneIndices.x)] * a_BoneWeights.x;\n		skinTransform += u_Bones[int(a_BoneIndices.y)] * a_BoneWeights.y;\n		skinTransform += u_Bones[int(a_BoneIndices.z)] * a_BoneWeights.z;\n		skinTransform += u_Bones[int(a_BoneIndices.w)] * a_BoneWeights.w;\n		vec4 position=skinTransform*a_Position;\n		gl_Position = u_MvpMatrix * position;\n	#else\n		gl_Position = u_MvpMatrix * a_Position;\n	#endif\n\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)\n		mat3 worldInvMat;\n		#ifdef BONE\n			worldInvMat=inverse(mat3(u_WorldMat*skinTransform));\n		#else\n			worldInvMat=inverse(mat3(u_WorldMat));\n		#endif  \n		v_Normal=a_Normal*worldInvMat;\n		#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n			v_Tangent=a_Tangent0.xyz*worldInvMat;\n			v_Binormal=cross(v_Normal,v_Tangent)*a_Tangent0.w;\n		#endif\n	#endif\n\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)||defined(RECEIVESHADOW)\n		#ifdef BONE\n			v_PositionWorld=(u_WorldMat*position).xyz;\n		#else\n			v_PositionWorld=(u_WorldMat*a_Position).xyz;\n		#endif\n	#endif\n	\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(REFLECTMAP)\n		v_ViewDir=u_CameraPos-v_PositionWorld;\n	#endif\n\n	#if defined(DIFFUSEMAP)||((defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&(defined(SPECULARMAP)||defined(NORMALMAP)))\n		v_Texcoord0=a_Texcoord0;\n		#ifdef TILINGOFFSET\n			v_Texcoord0=TransformUV(v_Texcoord0,u_TilingOffset);\n		#endif\n	#endif\n\n	#ifdef LIGHTMAP\n		#ifdef SCALEOFFSETLIGHTINGMAPUV\n			#ifdef UV1\n				v_LightMapUV=vec2(a_Texcoord1.x,1.0-a_Texcoord1.y)*u_LightmapScaleOffset.xy+u_LightmapScaleOffset.zw;\n			#else\n				v_LightMapUV=vec2(a_Texcoord0.x,1.0-a_Texcoord0.y)*u_LightmapScaleOffset.xy+u_LightmapScaleOffset.zw;\n			#endif \n			v_LightMapUV.y=1.0-v_LightMapUV.y;\n		#else\n			#ifdef UV1\n				v_LightMapUV=a_Texcoord1;\n			#else\n				v_LightMapUV=a_Texcoord0;\n			#endif \n		#endif \n	#endif\n\n	\n	#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n		v_Color=a_Color;\n	#endif\n\n	#ifdef RECEIVESHADOW\n		v_posViewZ = gl_Position.w;\n		#ifdef SHADOWMAP_PSSM1 \n			v_lightMVPPos = u_lightShadowVP[0] * vec4(v_PositionWorld,1.0);\n		#endif\n	#endif\n}\n\nvoid main()\n{\n	#ifdef CASTSHADOW\n		main_castShadow();\n	#else\n		main_normal();\n	#endif\n}";
+		ps="#ifdef HIGHPRECISION\n	precision highp float;\n#else\n	precision mediump float;\n#endif\n\n#include \"Lighting.glsl\";\n\nuniform vec4 u_DiffuseColor;\n\n#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n	varying vec4 v_Color;\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n	varying vec3 v_ViewDir; \n#endif\n\n#ifdef ALPHATEST\n	uniform float u_AlphaTestValue;\n#endif\n\n#ifdef DIFFUSEMAP\n	uniform sampler2D u_DiffuseTexture;\n#endif\n\n#ifdef DETAILMAP\n	uniform sampler2D detailMap;\n#endif\n#ifdef VERTEXMAP\n	uniform sampler2D vertexMap;\n#endif\nuniform vec4 detailMapOffset;\nuniform vec4 vertexMapOffset;\nuniform float uvtile1;\nuniform float uvtile2;\n\n\n#if defined(DIFFUSEMAP)||((defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&(defined(SPECULARMAP)||defined(NORMALMAP)))\n	varying vec2 v_Texcoord0;\n#endif\n\n#ifdef LIGHTMAP\n	varying vec2 v_LightMapUV;\n	uniform sampler2D u_LightMap;\n#endif\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n	uniform vec3 u_MaterialSpecular;\n	uniform float u_Shininess;\n	#ifdef SPECULARMAP \n		uniform sampler2D u_SpecularTexture;\n	#endif\n#endif\n\n#ifdef FOG\n	uniform float u_FogStart;\n	uniform float u_FogRange;\n	uniform vec3 u_FogColor;\n#endif\n\n\n#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n	varying vec3 v_Normal;\n#endif\n\n#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n	uniform sampler2D u_NormalTexture;\n	varying vec3 v_Tangent;\n	varying vec3 v_Binormal;\n#endif\n\n#ifdef DIRECTIONLIGHT\n	uniform DirectionLight u_DirectionLight;\n#endif\n\n#ifdef POINTLIGHT\n	uniform PointLight u_PointLight;\n#endif\n\n#ifdef SPOTLIGHT\n	uniform SpotLight u_SpotLight;\n#endif\n\nuniform vec3 u_AmbientColor;\n\n\n#if defined(POINTLIGHT)||defined(SPOTLIGHT)||defined(RECEIVESHADOW)\n	varying vec3 v_PositionWorld;\n#endif\n\n#include \"ShadowHelper.glsl\"\nvarying float v_posViewZ;\n#ifdef RECEIVESHADOW\n	#if defined(SHADOWMAP_PSSM2)||defined(SHADOWMAP_PSSM3)\n		uniform mat4 u_lightShadowVP[4];\n	#endif\n	#ifdef SHADOWMAP_PSSM1 \n		varying vec4 v_lightMVPPos;\n	#endif\n#endif\n\nvoid main_castShadow()\n{\n	//gl_FragColor=vec4(v_posViewZ,0.0,0.0,1.0);\n	gl_FragColor=packDepth(v_posViewZ);\n	#if defined(DIFFUSEMAP)&&defined(ALPHATEST)\n		float alpha = texture2D(u_DiffuseTexture,v_Texcoord0).w;\n		if( alpha < u_AlphaTestValue )\n		{\n			discard;\n		}\n	#endif\n}\nvec4 lerp(vec4 s,vec4 d,float t)\n{\n  return s * (1.0-t) + d* t;\n}\nvoid main_normal()\n{\n	vec3 globalDiffuse=u_AmbientColor;\n	#ifdef LIGHTMAP	\n		globalDiffuse += DecodeLightmap(texture2D(u_LightMap, v_LightMapUV));\n	#endif\n	\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n		vec3 normal;\n		#if (defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT))&&defined(NORMALMAP)\n			vec3 normalMapSample = texture2D(u_NormalTexture, v_Texcoord0).rgb;\n			normal = normalize(NormalSampleToWorldSpace(normalMapSample, v_Normal, v_Tangent,v_Binormal));\n		#else\n			normal = normalize(v_Normal);\n		#endif\n		vec3 viewDir= normalize(v_ViewDir);\n	#endif\n	\n	vec4 mainColor=u_DiffuseColor;\n	#ifdef DIFFUSEMAP\n		vec4 difTexColor=texture2D(u_DiffuseTexture, v_Texcoord0);\n	#else\n		vec4 difTexColor = vec4(1,1,1,1);\n	#endif \n	\n\n	#ifdef DETAILMAP\n		vec4 detailMapColor=texture2D(detailMap, v_Texcoord0*uvtile1);\n		difTexColor = lerp( detailMapColor, difTexColor,1.0-difTexColor.r) *  (detailMapColor.r/0.5);\n		 \n	#endif\n	#ifdef VERTEXMAP\n		\n		#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n			vec4 vertexMapColor=texture2D(vertexMap, v_Texcoord0*uvtile2);\n			difTexColor = lerp ( difTexColor ,vertexMapColor ,1.0 - v_Color.r ) ;\n			//difTexColor = vec4(1,0,0,1);\n		#else\n			\n		#endif\n		\n	#endif\n\n	mainColor= difTexColor * u_DiffuseColor;\n\n	#if defined(COLOR)&&defined(ENABLEVERTEXCOLOR)\n		//mainColor=mainColor*v_Color;\n	#endif \n    \n	#ifdef ALPHATEST\n		if(mainColor.a<u_AlphaTestValue)\n			discard;\n	#endif\n  \n	\n	vec3 diffuse = vec3(0.0);\n	vec3 specular= vec3(0.0);\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n		vec3 dif,spe;\n		#ifdef SPECULARMAP\n			vec3 gloss=texture2D(u_SpecularTexture, v_Texcoord0).rgb;\n		#else\n			#ifdef DIFFUSEMAP\n				vec3 gloss=vec3(difTexColor.a);\n			#else\n				vec3 gloss=vec3(1.0);\n			#endif\n		#endif\n	#endif\n\n	#ifndef LIGHTMAP\n\n		#ifdef DIRECTIONLIGHT\n			LayaAirBlinnPhongDiectionLight(u_MaterialSpecular,u_Shininess,normal,gloss,viewDir,u_DirectionLight,dif,spe);\n			diffuse+=dif;\n			specular+=spe;\n		#endif\n	\n		#ifdef POINTLIGHT\n			LayaAirBlinnPhongPointLight(v_PositionWorld,u_MaterialSpecular,u_Shininess,normal,gloss,viewDir,u_PointLight,dif,spe);\n			diffuse+=dif;\n			specular+=spe;\n		#endif\n\n		#ifdef SPOTLIGHT\n			LayaAirBlinnPhongSpotLight(v_PositionWorld,u_MaterialSpecular,u_Shininess,normal,gloss,viewDir,u_SpotLight,dif,spe);\n			diffuse+=dif;\n			specular+=spe;\n		#endif\n	#endif\n	\n	#ifdef RECEIVESHADOW\n		float shadowValue = 1.0;\n		#ifdef SHADOWMAP_PSSM3\n			shadowValue = getShadowPSSM3( u_shadowMap1,u_shadowMap2,u_shadowMap3,u_lightShadowVP,u_shadowPSSMDistance,u_shadowPCFoffset,v_PositionWorld,v_posViewZ,0.001);\n		#endif\n		#ifdef SHADOWMAP_PSSM2\n			shadowValue = getShadowPSSM2( u_shadowMap1,u_shadowMap2,u_lightShadowVP,u_shadowPSSMDistance,u_shadowPCFoffset,v_PositionWorld,v_posViewZ,0.001);\n		#endif \n		#ifdef SHADOWMAP_PSSM1\n			shadowValue = getShadowPSSM1( u_shadowMap1,v_lightMVPPos,u_shadowPSSMDistance,u_shadowPCFoffset,v_posViewZ,0.001);\n		#endif\n		gl_FragColor =vec4(mainColor.rgb*(globalDiffuse + diffuse)*shadowValue,mainColor.a);\n	#else\n		gl_FragColor =vec4(mainColor.rgb*(globalDiffuse + diffuse),mainColor.a);\n	#endif\n\n	#if defined(DIRECTIONLIGHT)||defined(POINTLIGHT)||defined(SPOTLIGHT)\n		#ifdef RECEIVESHADOW\n			gl_FragColor.rgb+=specular*shadowValue;\n		#else\n			gl_FragColor.rgb+=specular;\n		#endif\n	#endif\n	  \n	#ifdef FOG\n		float lerpFact=clamp((1.0/gl_FragCoord.w-u_FogStart)/u_FogRange,0.0,1.0);\n		gl_FragColor.rgb=mix(gl_FragColor.rgb,u_FogColor,lerpFact);\n	#endif\n}\n\nvoid main()\n{\n	#ifdef CASTSHADOW		\n		main_castShadow();\n	#else\n		main_normal();\n	#endif  \n}\n\n";
 		var shader=Shader3D.add("BLINNPHONG",attributeMap,uniformMap,SkinnedMeshSprite3D.shaderDefines,BlinnPhongMaterial.shaderDefines);
 		shader.addShaderPass(vs,ps);
 		attributeMap={
@@ -15748,7 +15754,8 @@ var ShaderInit3D=(function(){
 		ps="#ifdef FSHIGHPRECISION\n	precision highp float;\n#else\n	precision mediump float;\n#endif\n\n#ifdef MAINTEXTURE\n	uniform sampler2D u_MainTexture;\n#endif\n\n#ifdef NORMALTEXTURE\n	uniform sampler2D u_NormalTexture;\n#endif\n\nuniform vec4 u_HorizonColor;\n\nvarying vec3 v_Normal;\nvarying vec3 v_Tangent;\nvarying vec3 v_Binormal;\nvarying vec3 v_ViewDir;\nvarying vec2 v_Texcoord0;\nvarying vec2 v_Texcoord1;\n\n#include \"Lighting.glsl\"\n\nvoid main()\n{\n	vec4 bumpColor1 = texture2D(u_NormalTexture, v_Texcoord0);\n	vec4 bumpColor2 = texture2D(u_NormalTexture, v_Texcoord1);\n	\n	vec3 normal1 = NormalSampleToWorldSpace1(bumpColor1, v_Tangent, v_Binormal, v_Normal);\n	vec3 normal2 = NormalSampleToWorldSpace1(bumpColor2, v_Tangent, v_Binormal, v_Normal);\n	\n	vec3 normal = normalize((normal1 + normal2) * 0.5);\n	vec3 viewDir = normalize(v_ViewDir);\n	float fresnel = dot(viewDir, normal);\n	\n	vec4 waterColor = texture2D(u_MainTexture, vec2(fresnel, fresnel));\n	\n	vec4 color;\n	color.rgb = mix(waterColor.rgb, u_HorizonColor.rgb, vec3(waterColor.a));\n	color.a = u_HorizonColor.a;\n	\n	gl_FragColor = color;\n}\n\n";
 		shader=Shader3D.add("WaterPrimary",attributeMap,uniformMap,null,WaterPrimaryMaterial.shaderDefines);
 		shader.addShaderPass(vs,ps);
-		
+
+				
 		attributeMap={
 			'_glesVertex':0,
 			'_glesNormal':3,
@@ -15756,68 +15763,69 @@ var ShaderInit3D=(function(){
 			'_glesTANGENT':5
 		};
 		uniformMap={
+			'LightDir0' :[0,1],
+			'LightColor0' :[1,1],
+			'LightIntensity0' :[2,1],
+			'spltex' :[3,1],
+			'spltex_ST' :[4,1],
+			'displacement' :[5,1],
+			'displacement_ST' :[6,1],
+			'normalTexture' :[7,1],
+			'normalTexture_ST' :[8,1],
+			'foamTexture' :[9,1],
+			'foamTexture_ST' :[10,1],
+			'reflectionTex' :[11,1],
+			'reflectionTex_ST' :[12,1],
+			'wavesTexture' :[13,1],
+			'wavesTexture_ST' :[14,1],
+			'maskWavesDisplacement' :[15,1],
+			'maskWavesDisplacement_ST' :[16,1],
+			'spec' :[17,1],
+			'reflectionIntensity' :[18,1],
+			'reflectionFresnel' :[19,1],
+			'gloss' :[20,1],
+			'fresnelColor' :[21,1],
+			'objScale' :[22,1],
+			'waterColor' :[23,1],
+			'displacementSpeed' :[24,1],
+			'displacementScale' :[25,1],
+			'displacementIntensity' :[26,1],
+			'normalIntensity' :[27,1],
+			'wavesScale' :[28,1],
+			'wavesDisplacementSpeed' :[29,1],
+			'sceneZ' :[30,1],
+			'partZ' :[31,1],
+			'displacementFoamIntensity' :[32,1],
+			'shoreFoamIntensity' :[33,1],
+			'shoreLineOpacity' :[34,1],
+			'savesDisplacementFoamIntensity' :[35,1],
+			'fadeLevel' :[36,1],
+			'shoreFoamDistance' :[37,1],
+			'reflectionColor' :[38,1],
+			'wavesAmount' :[39,1],
+			'wavesSpeed' :[40,1],
+			'wavesIntensity' :[41,1],
+			'radialWaves' :[42,1],
+			'waterDensity' :[43,1],
+			'shoreWaterOpacity' :[44,1],
+			'waveHeight' :[45,1],
+			'vHeight' :[46,1],
+			'foamScale' :[47,1],
+			'foamSpeed' :[48,1],
+			'skyBlur' :[49,1],
+			'reflectionmapColor' :[50,1],
 			'unity_MatrixVP':[Sprite3D.VPMATRIX,2],
 			'unity_ObjectToWorld':[Sprite3D.WORLDMATRIX,2],
 			'unity_WorldToObject':[Sprite3D.LOCALMATRIX,2],
+			'UNITY_MATRIX_P':[2,3],
+			'UNITY_MATRIX_V':[1,3],
 			'_WorldSpaceCameraPos':[0,3],
-			'_Time':[25,4],
-			'spltex_ST' :[47,1],
-			'displacement_ST' :[46,1],
-			'normalTexture_ST' :[45,1],
-			'foamTexture_ST' :[44,1],
-			'reflectionTex_ST' :[43,1],
-			'wavesTexture_ST' :[42,1],
-			'maskWavesDisplacement_ST' :[41,1],
-			'fresnelColor' :[10,1],
-			'objScale' :[11,1],
-			'waterColor' :[12,1],
-			'reflectionColor' :[27,1],
-			'spltex' :[0,1],
-			'displacement' :[1,1],
-			'normalTexture' :[2,1],
-			'foamTexture' :[3,1],
-			'reflectionTex' :[4,1],
-			'wavesTexture' :[5,1],
-			'maskWavesDisplacement' :[6,1],
-			'spec' :[7,1],
-			'reflectionIntensity' :[8,1],
-			'reflectionFresnel' :[9,1],
-			'gloss' :[40,1],
-			'displacementSpeed':[13,1],
-			'displacementScale':[14,1],
-			'displacementIntensity':[15,1],
-			'normalIntensity':[16,1],
-			'wavesScale':[17,1],
-			'wavesDisplacementSpeed':[18,1],
-			'sceneZ':[19,1],
-			'partZ':[20,1],
-			'displacementFoamIntensity':[21,1],
-			'shoreFoamIntensity':[22,1],
-			'shoreLineOpacity':[23,1],
-			'savesDisplacementFoamIntensity':[24,1],
-			'fadeLevel':[25,1],
-			'shoreFoamDistance':[26,1],
-			'wavesAmount':[28,1],
-			'wavesSpeed':[29,1],
-			'wavesIntensity':[30,1],
-			'radialWaves':[31,1],
-			'waterDensity':[32,1],
-			'shoreWaterOpacity':[33,1],
-			'waveHeight':[34,1],
-			'vHeight':[35,1],
-			'foamScale':[36,1],
-			'foamSpeed':[37,1],
-			'skyBlur':[38,1],
-			'LightColor0':[4,4],
-			'LightDir0':[3,4],
-			'reflectionmapColor' :[27,1]
+			'_Time':[29,4]
 		};
-		console.log("add sea");
-		vs="attribute vec4 _glesTANGENT;\nattribute vec4 _glesVertex;\nattribute vec3 _glesNormal;\nattribute vec4 _glesMultiTexCoord0;\nuniform highp vec4 _Time;\nuniform highp mat4 unity_ObjectToWorld;\nuniform highp mat4 unity_WorldToObject;\nuniform highp mat4 unity_MatrixVP;\n\nuniform highp vec3 objScale;\nuniform highp float wavesIntensity;\nuniform highp float displacementIntensity;\nuniform sampler2D wavesTexture;\nuniform highp vec4 wavesTexture_ST;\nuniform sampler2D maskWavesDisplacement;\nuniform highp vec4 maskWavesDisplacement_ST;\nuniform sampler2D displacement;\nuniform highp float radialWaves;\nuniform highp float wavesAmount;\nuniform highp float wavesDisplacementSpeed;\nuniform highp float displacementScale;\nuniform highp float displacementSpeed;\nvarying highp vec2 xlv_TEXCOORD0;\nvarying highp vec3 xlv_TEXCOORD3;\nvarying highp vec4 xlv_TEXCOORD2;\nvarying highp vec3 xlv_TEXCOORD5;\nvarying highp vec3 xlv_TEXCOORD6;\nvoid main ()\n{\n\n  \n  highp vec4 tmpvar_1;\n  tmpvar_1.w = _glesVertex.w;\n  highp mat3 tmpvar_2;\n  tmpvar_2[0] = unity_WorldToObject[0].xyz;\n  tmpvar_2[1] = unity_WorldToObject[1].xyz;\n  tmpvar_2[2] = unity_WorldToObject[2].xyz;\n  highp vec3 tmpvar_3;\n  tmpvar_3 = normalize((_glesNormal * tmpvar_2));\n  highp vec4 tmpvar_4;\n  tmpvar_4.w = 0.0;\n  tmpvar_4.xyz = _glesTANGENT.xyz;\n  highp vec3 tmpvar_5;\n  tmpvar_5 = normalize((unity_ObjectToWorld * tmpvar_4).xyz);\n  highp float tmpvar_6;\n  tmpvar_6 = (_Time.y * wavesDisplacementSpeed);\n  highp vec4 tmpvar_7;\n  tmpvar_7.zw = vec2(0.0, 0.0);\n  tmpvar_7.xy = (((objScale.xz * displacementScale) * (_glesMultiTexCoord0.xy * 0.1)) + ((displacementSpeed * tmpvar_6) * vec2(-1.0, 1.0)));\n  lowp vec4 tmpvar_8;\n  tmpvar_8 = texture2DLod (displacement, tmpvar_7.xy, 0.0);\n  highp vec4 tmpvar_9;\n  tmpvar_9 = tmpvar_8;\n  highp vec2 x_10;\n  x_10 = ((_glesMultiTexCoord0.xy * 2.0) - 1.0);\n  highp vec4 tmpvar_11;\n  tmpvar_11.zw = vec2(0.0, 0.0);\n  tmpvar_11.xy = ((-(_glesMultiTexCoord0.xy) * maskWavesDisplacement_ST.xy) + maskWavesDisplacement_ST.zw);\n  lowp vec4 tmpvar_12;\n  tmpvar_12 = texture2DLod (maskWavesDisplacement, tmpvar_11.xy, 0.0);\n  highp vec4 tmpvar_13;\n  tmpvar_13 = tmpvar_12;\n  highp vec4 tmpvar_14;\n  tmpvar_14.zw = vec2(0.0, 0.0);\n  tmpvar_14.xy = (((\n    (((mix (_glesMultiTexCoord0.xy, \n      (vec2((1.0 - sqrt(dot (x_10, x_10)))) * dot (tmpvar_13.xyz, vec3(0.3, 0.59, 0.11)))\n    , vec2(radialWaves)) * objScale.xz) * wavesAmount) * 0.1)\n   + vec2(\n    -((wavesDisplacementSpeed * tmpvar_6))\n  )) * wavesTexture_ST.xy) + wavesTexture_ST.zw);\n  lowp vec4 tmpvar_15;\n  tmpvar_15 = texture2DLod (wavesTexture, tmpvar_14.xy, 0.0);\n  highp vec4 tmpvar_16;\n  tmpvar_16 = tmpvar_15;\n  tmpvar_1.xyz = (_glesVertex.xyz + ((\n    (tmpvar_9.xyz + (dot (tmpvar_16.xyz, vec3(0.3, 0.59, 0.11)) * wavesIntensity))\n   * vec3(0.0, 1.0, 0.0)) * displacementIntensity));\n  highp vec4 tmpvar_17;\n  tmpvar_17.w = 1.0;\n  tmpvar_17.xyz = tmpvar_1.xyz;\n  highp mat3 tmpvar_18;\n  tmpvar_18[0] = unity_WorldToObject[0].xyz;\n  tmpvar_18[1] = unity_WorldToObject[1].xyz;\n  tmpvar_18[2] = unity_WorldToObject[2].xyz;\n  xlv_TEXCOORD0 = _glesMultiTexCoord0.xy;\n  gl_Position = (unity_MatrixVP * (unity_ObjectToWorld * tmpvar_17));\n  xlv_TEXCOORD3 = normalize((_glesNormal * tmpvar_18));\n  xlv_TEXCOORD2 = (unity_ObjectToWorld * tmpvar_1);\n  xlv_TEXCOORD5 = tmpvar_5;\n  xlv_TEXCOORD6 = normalize(((\n    (tmpvar_3.yzx * tmpvar_5.zxy)\n   - \n    (tmpvar_3.zxy * tmpvar_5.yzx)\n  ) * _glesTANGENT.w));\n}\n";
-		ps="uniform highp vec4 _Time;\nuniform highp vec3 _WorldSpaceCameraPos;\nuniform lowp vec3 LightDir0;\n//uniform lowp vec3 LightDir1;\n//uniform lowp vec3 LightDir2;\nuniform lowp vec3 LightColor0;\n//uniform lowp vec3 LightColor1;\n//uniform lowp vec3 LightColor2;\nuniform lowp float LightIntensity0;\n//uniform lowp float LightIntensity1;\n//uniform lowp float LightIntensity2;\nuniform highp float partZ;\nuniform highp float sceneZ;\nuniform highp vec4 fresnelColor;\nuniform sampler2D foamTexture;\nuniform highp vec4 foamTexture_ST;\nuniform highp float foamScale;\nuniform highp float foamSpeed;\nuniform highp float shoreLineOpacity;\nuniform highp vec3 objScale;\nuniform highp vec4 waterColor;\nuniform sampler2D normalTexture;\nuniform highp vec4 normalTexture_ST;\nuniform highp float wavesSpeed;\nuniform highp float wavesScale;\nuniform highp float normalIntensity;\nuniform highp float waterDensity;\nuniform highp float spec;\nuniform highp float reflectionFresnel;\nuniform highp float gloss;\nuniform highp float shoreWaterOpacity;\nuniform sampler2D wavesTexture;\nuniform highp vec4 wavesTexture_ST;\nuniform sampler2D maskWavesDisplacement;\nuniform highp vec4 maskWavesDisplacement_ST;\nuniform sampler2D displacement;\nuniform highp vec4 displacement_ST;\n//uniform highp float _UseMask;\nuniform highp float radialWaves;\nuniform highp float wavesAmount;\nuniform highp float wavesDisplacementSpeed;\nuniform highp float displacementScale;\nuniform highp float savesDisplacementFoamIntensity;\nuniform highp float displacementSpeed;\nuniform highp float displacementFoamIntensity;\nuniform highp float reflectionIntensity;\nuniform highp float shoreFoamIntensity;\nuniform highp float shoreFoamDistance;\nuniform highp float fadeLevel;\nuniform sampler2D spltex;\nvarying highp vec2 xlv_TEXCOORD0;\nvarying highp vec3 xlv_TEXCOORD3;\nvarying highp vec4 xlv_TEXCOORD2;\nvarying highp vec3 xlv_TEXCOORD5;\nvarying highp vec3 xlv_TEXCOORD6;\nvoid main ()\n{\n  lowp vec4 finalRGBA_1;\n  highp vec4 node_7404_2;\n  highp vec4 node_2033_3;\n  highp vec4 wavesTexture_var_4;\n  highp vec4 maskWavesDisplacement_var_5;\n  highp vec4 deepmap_6;\n  highp vec4 node_2220_7;\n  highp vec4 node_837_8;\n  highp vec3 lightDirection_9;\n  highp vec3 node_2963_10;\n  highp vec3 node_3810_11;\n  highp vec3 node_7755_12;\n  highp vec3 node_6123_13;\n  highp float tmpvar_14;\n  highp float tmpvar_15;\n  tmpvar_15 = (_Time.y / 20.0);\n  tmpvar_14 = ((wavesSpeed * tmpvar_15) * 1.618034);\n  highp vec2 tmpvar_16;\n  tmpvar_16 = ((xlv_TEXCOORD0 * objScale.xz) * wavesScale);\n  highp vec2 P_17;\n  P_17 = (((tmpvar_16 + \n    (tmpvar_14 * vec2(1.0, -1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_18;\n  tmpvar_18 = ((texture2D (normalTexture, P_17).xyz * 2.0) - 1.0);\n  node_6123_13 = tmpvar_18;\n  highp vec2 tmpvar_19;\n  tmpvar_19 = ((tmpvar_16 + vec2(0.5, 0.5)) * 0.8);\n  highp vec2 P_20;\n  P_20 = (((tmpvar_19 + \n    (tmpvar_14 * vec2(-1.0, 1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_21;\n  tmpvar_21 = ((texture2D (normalTexture, P_20).xyz * 2.0) - 1.0);\n  node_7755_12 = tmpvar_21;\n  highp float tmpvar_22;\n  tmpvar_22 = (tmpvar_14 * 0.6);\n  highp vec2 P_23;\n  P_23 = (((\n    (0.1 * tmpvar_16)\n   + \n    (tmpvar_22 * vec2(-1.0, 1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_24;\n  tmpvar_24 = ((texture2D (normalTexture, P_23).xyz * 2.0) - 1.0);\n  node_3810_11 = tmpvar_24;\n  highp vec2 P_25;\n  P_25 = (((\n    (0.1 * tmpvar_19)\n   + \n    (tmpvar_22 * vec2(1.0, -1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_26;\n  tmpvar_26 = ((texture2D (normalTexture, P_25).xyz * 2.0) - 1.0);\n  node_2963_10 = tmpvar_26;\n  highp vec3 tmpvar_27;\n  tmpvar_27.xy = ((node_6123_13.xy + node_7755_12.xy) + ((node_3810_11.xy + node_2963_10.xy) * 0.5));\n  tmpvar_27.z = 1.0;\n  highp vec3 tmpvar_28;\n  tmpvar_28 = normalize(xlv_TEXCOORD3);\n  highp mat3 tmpvar_29;\n  tmpvar_29[0].x = xlv_TEXCOORD5.x;\n  tmpvar_29[0].y = xlv_TEXCOORD6.x;\n  tmpvar_29[0].z = tmpvar_28.x;\n  tmpvar_29[1].x = xlv_TEXCOORD5.y;\n  tmpvar_29[1].y = xlv_TEXCOORD6.y;\n  tmpvar_29[1].z = tmpvar_28.y;\n  tmpvar_29[2].x = xlv_TEXCOORD5.z;\n  tmpvar_29[2].y = xlv_TEXCOORD6.z;\n  tmpvar_29[2].z = tmpvar_28.z;\n  highp vec3 tmpvar_30;\n  tmpvar_30 = normalize((_WorldSpaceCameraPos - xlv_TEXCOORD2.xyz));\n  highp vec3 tmpvar_31;\n  tmpvar_31 = normalize((mix (vec3(0.0, 0.0, 1.0), tmpvar_27, vec3(normalIntensity)) * tmpvar_29));\n  highp vec3 I_32;\n  I_32 = -(tmpvar_30);\n  lowp vec3 tmpvar_33;\n  lowp vec3 tmpvar_34;\n  tmpvar_34 = -(LightDir0);\n  tmpvar_33 = normalize(tmpvar_34);\n  lightDirection_9 = tmpvar_33;\n  highp float tmpvar_35;\n  tmpvar_35 = (foamSpeed * tmpvar_15);\n  highp vec2 tmpvar_36;\n  tmpvar_36 = ((objScale.xz * xlv_TEXCOORD0) * foamScale);\n  lowp vec4 tmpvar_37;\n  highp vec2 P_38;\n  P_38 = (((tmpvar_36 + \n    (tmpvar_35 * vec2(-1.0, 1.0))\n  ) * foamTexture_ST.xy) + foamTexture_ST.zw);\n  tmpvar_37 = texture2D (foamTexture, P_38);\n  node_837_8 = tmpvar_37;\n  lowp vec4 tmpvar_39;\n  highp vec2 P_40;\n  P_40 = (((\n    ((tmpvar_36 + vec2(0.5, 0.5)) * 0.8)\n   + \n    (tmpvar_35 * vec2(1.0, -1.0))\n  ) * foamTexture_ST.xy) + foamTexture_ST.zw);\n  tmpvar_39 = texture2D (foamTexture, P_40);\n  node_2220_7 = tmpvar_39;\n  highp vec3 tmpvar_41;\n  tmpvar_41 = normalize(tmpvar_31);\n  highp vec3 tmpvar_42;\n  tmpvar_42 = ((vec3(max (0.0, \n    dot (tmpvar_41, tmpvar_34)\n  )) ) * LightColor0);\n \n \n  highp vec4 tmpvar_47;\n  highp vec4 tmpvar_48;\n  highp vec4 tmpvar_49;\n  highp vec4 tmpvar_50;\n  tmpvar_47 = tmpvar_42.xyzz;\n \n  tmpvar_50 = (tmpvar_42).xyzz;\n  highp vec4 tmpvar_51;\n  highp vec4 tmpvar_52;\n  highp vec4 tmpvar_53;\n  highp vec4 tmpvar_54;\n  tmpvar_51.x = tmpvar_47.x;\n  tmpvar_51.y = tmpvar_48.x;\n  tmpvar_51.z = tmpvar_49.x;\n  tmpvar_51.w = tmpvar_50.x;\n  tmpvar_52.x = tmpvar_47.y;\n  tmpvar_52.y = tmpvar_48.y;\n  tmpvar_52.z = tmpvar_49.y;\n  tmpvar_52.w = tmpvar_50.y;\n  tmpvar_53.x = tmpvar_47.z;\n  tmpvar_53.y = tmpvar_48.z;\n  tmpvar_53.z = tmpvar_49.z;\n  tmpvar_53.w = tmpvar_50.z;\n  tmpvar_54.x = tmpvar_47.w;\n  tmpvar_54.y = tmpvar_48.w;\n  tmpvar_54.z = tmpvar_49.w;\n  tmpvar_54.w = tmpvar_50.w;\n  highp vec4 v_55;\n  v_55.x = tmpvar_51.x;\n  v_55.y = tmpvar_52.x;\n  v_55.z = tmpvar_53.x;\n  v_55.w = tmpvar_54.x;\n  highp vec3 tmpvar_56;\n  tmpvar_56 = ((node_837_8.xyz * node_2220_7.xyz) * v_55.xyz);\n  highp vec2 x_57;\n  x_57 = ((xlv_TEXCOORD0 * 2.0) + -1.0);\n  highp float tmpvar_58;\n  tmpvar_58 = (1.0 - sqrt(dot (x_57, x_57)));\n  lowp vec4 tmpvar_59;\n  tmpvar_59 = texture2D (maskWavesDisplacement, xlv_TEXCOORD0);\n  deepmap_6 = tmpvar_59;\n  lowp vec4 tmpvar_60;\n  highp vec2 P_61;\n  P_61 = ((-(xlv_TEXCOORD0) * maskWavesDisplacement_ST.xy) + maskWavesDisplacement_ST.zw);\n  tmpvar_60 = texture2D (maskWavesDisplacement, P_61);\n  maskWavesDisplacement_var_5 = tmpvar_60;\n  lowp vec4 tmpvar_62;\n  highp vec2 P_63;\n  P_63 = (((\n    (((mix (xlv_TEXCOORD0, \n      mix (vec2(tmpvar_58), (vec2(tmpvar_58) * dot (maskWavesDisplacement_var_5.xyz, vec3(0.3, 0.59, 0.11))), vec2(1.0,1.0))\n    , vec2(radialWaves)) * objScale.xz) * wavesAmount) * 0.1)\n   + vec2(\n    (wavesDisplacementSpeed * tmpvar_15)\n  )) * wavesTexture_ST.xy) + wavesTexture_ST.zw);\n  tmpvar_62 = texture2D (wavesTexture, P_63);\n  wavesTexture_var_4 = tmpvar_62;\n  highp vec3 tmpvar_64;\n  lowp vec4 tmpvar_65;\n  highp vec2 P_66;\n  P_66 = ((I_32 - (2.0 * \n    (dot (tmpvar_31, I_32) * tmpvar_31)\n  )).xy * 0.5);\n  tmpvar_65 = texture2D (spltex, P_66);\n  tmpvar_64 = tmpvar_65.xyz;\n  highp float tmpvar_67;\n  tmpvar_67 = (displacementSpeed * tmpvar_15);\n  highp vec2 tmpvar_68;\n  tmpvar_68 = ((objScale.xz * displacementScale) * (xlv_TEXCOORD0 * 0.1));\n  lowp vec4 tmpvar_69;\n  highp vec2 P_70;\n  P_70 = (((tmpvar_68 + \n    (tmpvar_67 * vec2(-1.0, 1.0))\n  ) * displacement_ST.xy) + displacement_ST.zw);\n  tmpvar_69 = texture2D (displacement, P_70);\n  node_2033_3 = tmpvar_69;\n  lowp vec4 tmpvar_71;\n  highp vec2 P_72;\n  P_72 = (((\n    ((tmpvar_68 + vec2(0.5, 0.5)) * 0.75)\n   + \n    (tmpvar_67 * vec2(1.0, -1.0))\n  ) * displacement_ST.xy) + displacement_ST.zw);\n  tmpvar_71 = texture2D (displacement, P_72);\n  node_7404_2 = tmpvar_71;\n  highp float tmpvar_73;\n  tmpvar_73 = (sceneZ - partZ);\n  highp vec4 tmpvar_74;\n  tmpvar_74.w = 1.0;\n  tmpvar_74.xyz = mix (tmpvar_64, ((\n    clamp ((1.0 - ((1.0 - \n      clamp ((1.0 - ((1.0 - \n        ((pow (clamp (\n          (1.0 + ((shoreWaterOpacity - clamp (\n            (deepmap_6 / waterDensity)\n          , 0.0, 1.0)).xyz / ((\n            (waterColor.xyz * 9.0)\n           + 1.0) - shoreWaterOpacity)))\n        , 0.0, 1.0), vec3(fadeLevel)) * tmpvar_64) * (((1.0 - \n          clamp (((deepmap_6 * tmpvar_73) / (waterDensity * 3.3)), 0.0, 1.0)\n        ) * 0.75) + 0.25).xyz)\n      ) * (1.0 - \n        (tmpvar_64 * ((pow (\n          (1.0 - max (0.0, dot (tmpvar_31, tmpvar_30)))\n        , \n          (reflectionFresnel * 5.0)\n        ) * reflectionIntensity) * fresnelColor).xyz)\n      ))), 0.0, 1.0)\n    ) * (1.0 - \n      ((((\n        (1.0 - clamp (((deepmap_6 * tmpvar_73) / shoreFoamDistance), 0.0, 1.0))\n      .xyz * tmpvar_56) * shoreFoamIntensity) + ((\n        dot (wavesTexture_var_4.xyz, vec3(0.3, 0.59, 0.11))\n       * tmpvar_56) * savesDisplacementFoamIntensity)) + ((tmpvar_56 * dot (\n        mix (node_2033_3.xyz, node_7404_2.xyz, vec3(0.5, 0.5, 0.5))\n      , vec3(0.3, 0.59, 0.11))) * displacementFoamIntensity))\n    ))), 0.0, 1.0)\n   * v_55.xyz) + (\n    (spec * pow (max (0.0, dot (tmpvar_31, \n      normalize((lightDirection_9 + tmpvar_30))\n    )), (gloss * 10.0)))\n   * v_55.xyz)), clamp ((\n    (deepmap_6 * tmpvar_73)\n   / shoreLineOpacity), 0.0, 1.0).xxx);\n  finalRGBA_1 = tmpvar_74;\n  gl_FragData[0] = finalRGBA_1;\n}\n";
+		vs="attribute vec4 _glesTANGENT;\nattribute vec4 _glesVertex;\nattribute vec3 _glesNormal;\nattribute vec4 _glesMultiTexCoord0;\nuniform highp vec4 _Time;\nuniform highp mat4 unity_ObjectToWorld;\nuniform highp mat4 unity_WorldToObject;\nuniform highp mat4 unity_MatrixVP;\nuniform highp vec4 objScale;\nuniform highp float wavesIntensity;\nuniform highp float displacementIntensity;\nuniform sampler2D wavesTexture;\nuniform highp vec4 wavesTexture_ST;\nuniform sampler2D maskWavesDisplacement;\nuniform highp vec4 maskWavesDisplacement_ST;\nuniform sampler2D displacement;\nuniform highp vec4 displacement_ST;\nuniform highp float radialWaves;\nuniform highp float wavesAmount;\nuniform highp float displacementScale;\nuniform highp float displacementSpeed;\nvarying highp vec2 xlv_TEXCOORD0;\nvarying highp vec3 xlv_TEXCOORD3;\nvarying highp vec4 xlv_TEXCOORD2;\nvarying highp vec3 xlv_TEXCOORD5;\nvarying highp vec3 xlv_TEXCOORD6;\nvoid main ()\n{\n  highp vec4 tmpvar_1;\n  tmpvar_1.w = _glesVertex.w;\n  highp mat3 tmpvar_2;\n  tmpvar_2[0] = unity_WorldToObject[0].xyz;\n  tmpvar_2[1] = unity_WorldToObject[1].xyz;\n  tmpvar_2[2] = unity_WorldToObject[2].xyz;\n  highp vec3 tmpvar_3;\n  tmpvar_3 = normalize((_glesNormal * tmpvar_2));\n  highp vec4 tmpvar_4;\n  tmpvar_4.w = 0.0;\n  tmpvar_4.xyz = _glesTANGENT.xyz;\n  highp vec3 tmpvar_5;\n  tmpvar_5 = normalize((unity_ObjectToWorld * tmpvar_4).xyz);\n  highp float tmpvar_6;\n  tmpvar_6 = ((displacementSpeed * _Time.x) / 50.0);\n  highp vec2 tmpvar_7;\n  tmpvar_7 = ((objScale.xz * displacementScale) * (_glesMultiTexCoord0.xy * 0.1));\n  highp vec4 tmpvar_8;\n  tmpvar_8.zw = vec2(0.0, 0.0);\n  tmpvar_8.xy = (tmpvar_7 + (tmpvar_6 * vec2(-1.0, 1.0)));\n  lowp vec4 tmpvar_9;\n  tmpvar_9 = texture2DLod (displacement, tmpvar_8.xy, 0.0);\n  highp vec4 tmpvar_10;\n  tmpvar_10 = tmpvar_9;\n  highp vec4 tmpvar_11;\n  tmpvar_11.zw = vec2(0.0, 0.0);\n  tmpvar_11.xy = (((\n    ((tmpvar_7 + vec2(0.5, 0.5)) * 0.75)\n   + \n    (tmpvar_6 * vec2(1.0, -1.0))\n  ) * displacement_ST.xy) + displacement_ST.zw);\n  lowp vec4 tmpvar_12;\n  tmpvar_12 = texture2DLod (displacement, tmpvar_11.xy, 0.0);\n  highp vec4 tmpvar_13;\n  tmpvar_13 = tmpvar_12;\n  highp vec2 x_14;\n  x_14 = ((_glesMultiTexCoord0.xy * 2.0) - 1.0);\n  highp vec4 tmpvar_15;\n  tmpvar_15.zw = vec2(0.0, 0.0);\n  tmpvar_15.xy = ((-(_glesMultiTexCoord0.xy) * maskWavesDisplacement_ST.xy) + maskWavesDisplacement_ST.zw);\n  lowp vec4 tmpvar_16;\n  tmpvar_16 = texture2DLod (maskWavesDisplacement, tmpvar_15.xy, 0.0);\n  highp vec4 tmpvar_17;\n  tmpvar_17 = tmpvar_16;\n  highp vec4 tmpvar_18;\n  tmpvar_18.zw = vec2(0.0, 0.0);\n  tmpvar_18.xy = (((\n    (((mix (_glesMultiTexCoord0.xy, \n      (vec2((1.0 - sqrt(dot (x_14, x_14)))) * dot (tmpvar_17.xyz, vec3(0.3, 0.59, 0.11)))\n    , vec2(radialWaves)) * objScale.xz) * wavesAmount) * 0.1)\n   + vec2(tmpvar_6)) * wavesTexture_ST.xy) + wavesTexture_ST.zw);\n  lowp vec4 tmpvar_19;\n  tmpvar_19 = texture2DLod (wavesTexture, tmpvar_18.xy, 0.0);\n  highp vec4 tmpvar_20;\n  tmpvar_20 = tmpvar_19;\n  tmpvar_1.xyz = (_glesVertex.xyz + ((\n    (mix (tmpvar_10.xyz, tmpvar_13.xyz, vec3(0.5, 0.5, 0.5)) + (dot (tmpvar_20.xyz, vec3(0.3, 0.59, 0.11)) * wavesIntensity))\n   * vec3(0.0, 1.0, 0.0)) * (displacementIntensity / 200.0)));\n  highp vec4 tmpvar_21;\n  tmpvar_21.w = 1.0;\n  tmpvar_21.xyz = tmpvar_1.xyz;\n  highp mat3 tmpvar_22;\n  tmpvar_22[0] = unity_WorldToObject[0].xyz;\n  tmpvar_22[1] = unity_WorldToObject[1].xyz;\n  tmpvar_22[2] = unity_WorldToObject[2].xyz;\n  xlv_TEXCOORD0 = _glesMultiTexCoord0.xy;\n  gl_Position = (unity_MatrixVP * (unity_ObjectToWorld * tmpvar_21));\n  xlv_TEXCOORD3 = normalize((_glesNormal * tmpvar_22));\n  xlv_TEXCOORD2 = (unity_ObjectToWorld * tmpvar_1);\n  xlv_TEXCOORD5 = tmpvar_5;\n  xlv_TEXCOORD6 = normalize(((\n    (tmpvar_3.yzx * tmpvar_5.zxy)\n   - \n    (tmpvar_3.zxy * tmpvar_5.yzx)\n  ) * _glesTANGENT.w));\n}\n";
+		ps="uniform highp vec4 _Time;\nuniform highp vec3 _WorldSpaceCameraPos;\nuniform highp float partZ;\nuniform highp float sceneZ;\nuniform highp float skyBlur;\nuniform highp vec4 fresnelColor;\nuniform sampler2D foamTexture;\nuniform highp vec4 foamTexture_ST;\nuniform highp float foamScale;\nuniform highp float foamSpeed;\nuniform sampler2D reflectionTex;\nuniform highp vec4 reflectionmapColor;\nuniform highp float shoreLineOpacity;\nuniform highp vec4 objScale;\nuniform highp vec4 waterColor;\nuniform sampler2D normalTexture;\nuniform highp vec4 normalTexture_ST;\nuniform highp float wavesSpeed;\nuniform highp float wavesScale;\nuniform highp float normalIntensity;\nuniform highp float waterDensity;\nuniform highp float spec;\nuniform highp float reflectionFresnel;\nuniform highp float gloss;\nuniform highp float shoreWaterOpacity;\nuniform sampler2D wavesTexture;\nuniform highp vec4 wavesTexture_ST;\nuniform sampler2D maskWavesDisplacement;\nuniform highp vec4 maskWavesDisplacement_ST;\nuniform sampler2D displacement;\nuniform highp vec4 displacement_ST;\nuniform highp float radialWaves;\nuniform highp float wavesAmount;\nuniform highp float wavesDisplacementSpeed;\nuniform highp float displacementScale;\nuniform highp float savesDisplacementFoamIntensity;\nuniform highp float displacementSpeed;\nuniform highp float displacementFoamIntensity;\nuniform highp float reflectionIntensity;\nuniform highp float shoreFoamIntensity;\nuniform highp float shoreFoamDistance;\nuniform highp float fadeLevel;\nuniform sampler2D spltex;\nuniform lowp vec4 LightDir0;\nuniform lowp vec4 LightColor0;\nuniform lowp float LightIntensity0;\nvarying highp vec2 xlv_TEXCOORD0;\nvarying highp vec3 xlv_TEXCOORD3;\nvarying highp vec4 xlv_TEXCOORD2;\nvarying highp vec3 xlv_TEXCOORD5;\nvarying highp vec3 xlv_TEXCOORD6;\nvoid main ()\n{\n  lowp vec4 finalRGBA_1;\n  highp vec4 node_7404_2;\n  highp vec4 node_2033_3;\n  highp vec4 wavesTexture_var_4;\n  highp vec4 maskWavesDisplacement_var_5;\n  highp vec4 deepmap_6;\n  highp vec4 node_2220_7;\n  highp vec4 node_837_8;\n  highp vec3 lightDirection_9;\n  highp vec3 node_2963_10;\n  highp vec3 node_3810_11;\n  highp vec3 node_7755_12;\n  highp vec3 node_6123_13;\n  highp float tmpvar_14;\n  tmpvar_14 = ((wavesSpeed * _Time.x) * 1.618034);\n  highp vec2 tmpvar_15;\n  tmpvar_15 = ((xlv_TEXCOORD0 * objScale.xz) * wavesScale);\n  highp vec2 P_16;\n  P_16 = (((tmpvar_15 + \n    (tmpvar_14 * vec2(-1.0, -1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_17;\n  tmpvar_17 = ((texture2D (normalTexture, P_16).xyz * 2.0) - 1.0);\n  node_6123_13 = tmpvar_17;\n  highp vec2 tmpvar_18;\n  tmpvar_18 = ((tmpvar_15 + vec2(0.5, 0.5)) * 0.8);\n  highp vec2 P_19;\n  P_19 = (((tmpvar_18 + \n    (tmpvar_14 * vec2(1.0, 1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_20;\n  tmpvar_20 = ((texture2D (normalTexture, P_19).xyz * 2.0) - 1.0);\n  node_7755_12 = tmpvar_20;\n  highp float tmpvar_21;\n  tmpvar_21 = (tmpvar_14 * 0.6);\n  highp vec2 P_22;\n  P_22 = (((\n    (0.1 * tmpvar_15)\n   + \n    (tmpvar_21 * vec2(-1.0, 1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_23;\n  tmpvar_23 = ((texture2D (normalTexture, P_22).xyz * 2.0) - 1.0);\n  node_3810_11 = tmpvar_23;\n  highp vec2 P_24;\n  P_24 = (((\n    (0.1 * tmpvar_18)\n   + \n    (tmpvar_21 * vec2(1.0, -1.0))\n  ) * normalTexture_ST.xy) + normalTexture_ST.zw);\n  lowp vec3 tmpvar_25;\n  tmpvar_25 = ((texture2D (normalTexture, P_24).xyz * 2.0) - 1.0);\n  node_2963_10 = tmpvar_25;\n  highp vec3 tmpvar_26;\n  tmpvar_26.xy = ((node_6123_13.xy + node_7755_12.xy) + ((node_3810_11.xy + node_2963_10.xy) * 0.5));\n  tmpvar_26.z = 1.0;\n  highp vec3 tmpvar_27;\n  tmpvar_27 = normalize(xlv_TEXCOORD3);\n  highp mat3 tmpvar_28;\n  tmpvar_28[0].x = xlv_TEXCOORD5.x;\n  tmpvar_28[0].y = xlv_TEXCOORD6.x;\n  tmpvar_28[0].z = tmpvar_27.x;\n  tmpvar_28[1].x = xlv_TEXCOORD5.y;\n  tmpvar_28[1].y = xlv_TEXCOORD6.y;\n  tmpvar_28[1].z = tmpvar_27.y;\n  tmpvar_28[2].x = xlv_TEXCOORD5.z;\n  tmpvar_28[2].y = xlv_TEXCOORD6.z;\n  tmpvar_28[2].z = tmpvar_27.z;\n  highp vec3 tmpvar_29;\n  tmpvar_29 = normalize((_WorldSpaceCameraPos - xlv_TEXCOORD2.xyz));\n  highp vec3 tmpvar_30; \n  tmpvar_26.x = -tmpvar_26.x;\n  tmpvar_30 = normalize((mix (vec3(0.0, 0.0, 1.0), tmpvar_26, vec3(normalIntensity)) * tmpvar_28));\n  highp vec3 I_31;\n  I_31 = -(tmpvar_29);\n  lowp vec3 tmpvar_32;\n  lowp vec3 tmpvar_33;\n  tmpvar_33 = -(LightDir0.xyz);\n  tmpvar_32 = normalize(tmpvar_33);\n  lightDirection_9 = tmpvar_32;\n  highp float tmpvar_34;\n  tmpvar_34 = (foamSpeed * _Time.x);\n  highp vec2 tmpvar_35;\n  tmpvar_35 = ((objScale.xz * xlv_TEXCOORD0) * foamScale);\n  lowp vec4 tmpvar_36;\n  highp vec2 P_37;\n  P_37 = (((tmpvar_35 + \n    (tmpvar_34 * vec2(-1.0, 1.0))\n  ) * foamTexture_ST.xy) + foamTexture_ST.zw);\n  tmpvar_36 = texture2D (foamTexture, P_37);\n  node_837_8 = tmpvar_36;\n  lowp vec4 tmpvar_38;\n  highp vec2 P_39;\n  P_39 = (((\n    ((tmpvar_35 + vec2(0.5, 0.5)) * 0.8)\n   + \n    (tmpvar_34 * vec2(1.0, -1.0))\n  ) * foamTexture_ST.xy) + foamTexture_ST.zw);\n  tmpvar_38 = texture2D (foamTexture, P_39);\n  node_2220_7 = tmpvar_38;\n  highp vec3 tmpvar_40;\n  tmpvar_40 = ((vec3(max (0.0, \n    dot (normalize(tmpvar_30), tmpvar_33)\n  )) * LightColor0.xyz) * LightIntensity0);\n  highp vec4 tmpvar_41;\n  highp vec4 tmpvar_42;\n  highp vec4 tmpvar_43;\n  highp vec4 tmpvar_44;\n  tmpvar_41 = tmpvar_40.xyzz;\n  tmpvar_42 = tmpvar_40.xyzz;\n  tmpvar_43 = tmpvar_40.xyzz;\n  tmpvar_44 = tmpvar_40.xyzz;\n  highp vec4 tmpvar_45;\n  highp vec4 tmpvar_46;\n  highp vec4 tmpvar_47;\n  highp vec4 tmpvar_48;\n  tmpvar_45.x = tmpvar_41.x;\n  tmpvar_45.y = tmpvar_42.x;\n  tmpvar_45.z = tmpvar_43.x;\n  tmpvar_45.w = tmpvar_44.x;\n  tmpvar_46.x = tmpvar_41.y;\n  tmpvar_46.y = tmpvar_42.y;\n  tmpvar_46.z = tmpvar_43.y;\n  tmpvar_46.w = tmpvar_44.y;\n  tmpvar_47.x = tmpvar_41.z;\n  tmpvar_47.y = tmpvar_42.z;\n  tmpvar_47.z = tmpvar_43.z;\n  tmpvar_47.w = tmpvar_44.z;\n  tmpvar_48.x = tmpvar_41.w;\n  tmpvar_48.y = tmpvar_42.w;\n  tmpvar_48.z = tmpvar_43.w;\n  tmpvar_48.w = tmpvar_44.w;\n  highp vec4 v_49;\n  v_49.x = tmpvar_45.x;\n  v_49.y = tmpvar_46.x;\n  v_49.z = tmpvar_47.x;\n  v_49.w = tmpvar_48.x;\n  highp vec3 tmpvar_50;\n  tmpvar_50 = (v_49 * 1.5).xyz;\n  highp vec3 tmpvar_51;\n  tmpvar_51 = ((node_837_8.xyz * node_2220_7.xyz) * tmpvar_50);\n  highp vec2 x_52;\n  x_52 = ((xlv_TEXCOORD0 * 2.0) + -1.0);\n  lowp vec4 tmpvar_53;\n  tmpvar_53 = (texture2D (maskWavesDisplacement, xlv_TEXCOORD0) - 0.2);\n  deepmap_6 = tmpvar_53;\n  lowp vec4 tmpvar_54;\n  highp vec2 P_55;\n  P_55 = ((-(xlv_TEXCOORD0) * maskWavesDisplacement_ST.xy) + maskWavesDisplacement_ST.zw);\n  tmpvar_54 = texture2D (maskWavesDisplacement, P_55);\n  maskWavesDisplacement_var_5 = tmpvar_54;\n  lowp vec4 tmpvar_56;\n  highp vec2 P_57;\n  P_57 = (((\n    (((mix (xlv_TEXCOORD0, \n      (vec2((1.0 - sqrt(dot (x_52, x_52)))) * dot (maskWavesDisplacement_var_5.xyz, vec3(0.3, 0.59, 0.11)))\n    , vec2(radialWaves)) * objScale.xz) * wavesAmount) * 0.1)\n   + vec2(\n    (wavesDisplacementSpeed * _Time.x)\n  )) * wavesTexture_ST.xy) + wavesTexture_ST.zw);\n  tmpvar_56 = texture2D (wavesTexture, P_57);\n  wavesTexture_var_4 = tmpvar_56;\n  highp vec3 tmpvar_58;\n  highp vec3 viewReflectDirection_59;\n  viewReflectDirection_59 = ((I_31 - (2.0 * \n    (dot (tmpvar_30, I_31) * tmpvar_30)\n  )) + tmpvar_30);\n  lowp vec4 tmpvar_60;\n  tmpvar_60 = texture2D (spltex, viewReflectDirection_59.xz);\n  tmpvar_58 = tmpvar_60.xyz;\n  highp vec4 tmpvar_61;\n  tmpvar_61.z = 100.0;\n  tmpvar_61.xy = normalize(tmpvar_29).xz;\n  tmpvar_61.w = skyBlur;\n  lowp vec4 tmpvar_62;\n  tmpvar_62 = texture2D (reflectionTex, tmpvar_61.xy, skyBlur);\n  highp vec4 tmpvar_63;\n  tmpvar_63 = (tmpvar_62 * reflectionmapColor);\n  highp float tmpvar_64;\n  tmpvar_64 = (displacementSpeed * _Time.x);\n  highp vec2 tmpvar_65;\n  tmpvar_65 = ((objScale.xz * displacementScale) * (xlv_TEXCOORD0 * 0.1));\n  lowp vec4 tmpvar_66;\n  highp vec2 P_67;\n  P_67 = (((tmpvar_65 + \n    (tmpvar_64 * vec2(-1.0, 1.0))\n  ) * displacement_ST.xy) + displacement_ST.zw);\n  tmpvar_66 = texture2D (displacement, P_67);\n  node_2033_3 = tmpvar_66;\n  lowp vec4 tmpvar_68;\n  highp vec2 P_69;\n  P_69 = (((\n    ((tmpvar_65 + vec2(0.5, 0.5)) * 0.75)\n   + \n    (tmpvar_64 * vec2(1.0, -1.0))\n  ) * displacement_ST.xy) + displacement_ST.zw);\n  tmpvar_68 = texture2D (displacement, P_69);\n  node_7404_2 = tmpvar_68;\n  highp float tmpvar_70;\n  tmpvar_70 = (sceneZ - partZ);\n  highp vec4 tmpvar_71;\n  tmpvar_71.xyz = mix (tmpvar_63.xyz, ((\n    clamp ((1.0 - ((1.0 - \n      clamp ((1.0 - ((1.0 - \n        ((pow (clamp (\n          (1.0 + ((shoreWaterOpacity - clamp (\n            (deepmap_6 / waterDensity)\n          , 0.0, 1.0)).xyz / ((\n            (waterColor.xyz * 9.0)\n           + 1.0) - shoreWaterOpacity)))\n        , 0.0, 1.0), vec3(fadeLevel)) * tmpvar_63.xyz) * (((1.0 - \n          clamp (((deepmap_6 * tmpvar_70) / (waterDensity * 3.3)), 0.0, 1.0)\n        ) * 0.75) + 0.25).xyz)\n      ) * (1.0 - \n        (tmpvar_58 * ((pow (\n          (1.0 - max (0.0, dot (tmpvar_30, tmpvar_29)))\n        , \n          (reflectionFresnel * 5.0)\n        ) * reflectionIntensity) * fresnelColor).xyz)\n      ))), 0.0, 1.0)\n    ) * (1.0 - \n      ((((\n        (1.0 - clamp (((deepmap_6 * tmpvar_70) / shoreFoamDistance), 0.0, 1.0))\n      .xyz * tmpvar_51) * shoreFoamIntensity) + ((\n        dot (wavesTexture_var_4.xyz, vec3(0.3, 0.59, 0.11))\n       * tmpvar_51) * savesDisplacementFoamIntensity)) + ((tmpvar_51 * dot (\n        mix (node_2033_3.xyz, node_7404_2.xyz, vec3(0.5, 0.5, 0.5))\n      , vec3(0.3, 0.59, 0.11))) * displacementFoamIntensity))\n    ))), 0.0, 1.0)\n   * tmpvar_50) + (\n    (spec * pow (max (0.0, dot (tmpvar_30, \n      normalize((lightDirection_9 + tmpvar_29))\n    )), (gloss * 10.0)))\n   * tmpvar_50)), clamp ((\n    (deepmap_6 * tmpvar_70)\n   / shoreLineOpacity), 0.0, 1.0).xxx);\n  tmpvar_71.w = (deepmap_6.x - 0.00);\n  finalRGBA_1 = tmpvar_71;\n  gl_FragData[0] = finalRGBA_1;\n}\n";
 		shader=Shader3D.add("Sea",attributeMap,uniformMap,null,SeaMaterial.shaderDefines);
 		shader.addShaderPass(vs,ps);
-		console.log("add sea finish");
 	}
 
 	return ShaderInit3D;
@@ -26363,9 +26371,9 @@ var ShurikenParticleSystem=(function(_super){
 	*/
 	__proto.destroy=function(){
 		_super.prototype.destroy.call(this);
-		this._vertexBuffer.destroy();
-		this._indexBuffer.destroy();
-		this._emission.destroy();
+		this._vertexBuffer && this._vertexBuffer.destroy();
+		this._indexBuffer && this._indexBuffer.destroy();
+		this._emission && this._emission.destroy();
 		this._owner=null;
 		this._vertices=null;
 		this._indexBuffer=null;
@@ -28714,7 +28722,7 @@ var ShaderInstance=(function(_super){
 						throw new Error("Shader3D: period is unkonw.");
 					}
 				}else {
-				console.log("Shader3D:can't find uinform name:"+this._uniformMap[one.name]+" in shader file.");
+				console.log("Shader3D:can't find uinform name:"+one.name+" in shader file.");
 			}
 		}
 		this._sceneUniformParamsMap=LayaGL.instance.createCommandEncoder(sceneParms.length *4 *5+4,64,true);
@@ -30581,7 +30589,7 @@ var Scene3D=(function(_super){
 		this._unity_time.x=this._unity_time.y/20;
 		this._unity_time.z=this._unity_time.y*2;
 		this._unity_time.w=this._unity_time.y*3;
-		this._shaderValues.setVector(/*CLASS CONST:laya.d3.core.scene.Scene3D.UNITY_TIME*/25,this._unity_time);
+		this._shaderValues.setVector(/*CLASS CONST:laya.d3.core.scene.Scene3D.UNITY_TIME*/29,this._unity_time);
 		this._shaderValues.setNumber(/*CLASS CONST:laya.d3.core.scene.Scene3D.TIME*/24,this._time);
 		var simulation=this._physicsSimulation;
 		if (Laya3D._enbalePhysics && !PhysicsSimulation.disableSimulation){
@@ -32358,369 +32366,408 @@ var SkyProceduralMaterial=(function(_super){
 })(BaseMaterial)
 
 
-
 /**
 *...
 *@author
 */
 //class laya.d3.core.material.SeaMaterial extends laya.d3.core.material.BaseMaterial
 var SeaMaterial=(function(_super){
+	/*alphaTest=false;
+	renderQueue=BaseMaterial.RENDERQUEUE_OPAQUE;
+	renderState.depthWrite=true;
+	renderState.cull=RenderState.CULL_BACK;
+	renderState.blend=RenderState.BLEND_DISABLE;
+	renderState.depthTest=RenderState.DEPTHTEST_LESS;
+	renderQueue=BaseMaterial.RENDERQUEUE_ALPHATEST;
+	alphaTest=true;
+	renderState.depthWrite=true;
+	renderState.cull=RenderState.CULL_BACK;
+	renderState.blend=RenderState.BLEND_DISABLE;
+	renderState.depthTest=RenderState.DEPTHTEST_LESS;
+	*/
 	function SeaMaterial(){
-		SeaMaterial.__super.call(this,48);
+		SeaMaterial.__super.call(this,51);
 		this.setShaderName("Sea");
 	}
 
 	__class(SeaMaterial,'laya.d3.core.material.SeaMaterial',_super);
 	var __proto=SeaMaterial.prototype;
-	__getset(0,__proto,'spltex',function(){
-		return this._shaderValues.getTexture(0);
+	__getset(0,__proto,'wavesIntensity',function(){
+		return this._shaderValues.getNumber(41);
 		},function(value){
-		this._shaderValues.setTexture(0 ,value);
+		this._shaderValues.setNumber(41,value);
 	});
 
-	//spltexOffset
-	__getset(0,__proto,'spltex_ST',function(){
-		return this._shaderValues.getVector(47);
-		},function(value){
-		this._shaderValues.setVector(47,value);
-	});
-
-	__getset(0,__proto,'wavesTexture',function(){
-		return this._shaderValues.getTexture(5);
-		},function(value){
-		this._shaderValues.setTexture(5,value);
-	});
-
-	__getset(0,__proto,'displacementScale',function(){
-		return this._shaderValues.getNumber(14);
-		},function(value){
-		this._shaderValues.setNumber(14,value);
-	});
-
-	//displacementOffset
-	__getset(0,__proto,'displacement_ST',function(){
-		return this._shaderValues.getVector(46);
-		},function(value){
-		this._shaderValues.setVector(46,value);
-	});
-
-	__getset(0,__proto,'gloss',function(){
-		return this._shaderValues.getNumber(40);
-		},function(value){
-		this._shaderValues.setNumber(40,value);
-	});
-
-	//reflectionTexOffset
-	__getset(0,__proto,'reflectionTex_ST',function(){
-		return this._shaderValues.getVector(43);
-		},function(value){
-		this._shaderValues.setVector(43,value);
-	});
-
-	//normalTextureOffset
-	__getset(0,__proto,'normalTexture_ST',function(){
-		return this._shaderValues.getVector(45);
-		},function(value){
-		this._shaderValues.setVector(45,value);
-	});
-
-	//foamTextureOffset
-	__getset(0,__proto,'foamTexture_ST',function(){
-		return this._shaderValues.getVector(44);
-		},function(value){
-		this._shaderValues.setVector(44,value);
-	});
-
-	__getset(0,__proto,'displacement',function(){
-		return this._shaderValues.getTexture(1);
-		},function(value){
-		this._shaderValues.setTexture(1,value);
-	});
-
-	__getset(0,__proto,'foamScale',function(){
-		return this._shaderValues.getNumber(36);
-		},function(value){
-		this._shaderValues.setNumber(36,value);
-	});
-
-	//wavesTextureOffset
-	__getset(0,__proto,'wavesTexture_ST',function(){
-		return this._shaderValues.getVector(42);
-		},function(value){
-		this._shaderValues.setVector(42,value);
-	});
-
-	//maskWavesDisplacementOffset
-	__getset(0,__proto,'maskWavesDisplacement_ST',function(){
-		return this._shaderValues.getVector(41);
-		},function(value){
-		this._shaderValues.setVector(41,value);
-	});
-
-	__getset(0,__proto,'reflectionmapColor',function(){
-		return this._shaderValues.getVector(39);
-		},function(value){
-		this._shaderValues.setVector(39,value);
-	});
-
-	__getset(0,__proto,'foamSpeed',function(){
-		return this._shaderValues.getNumber(37);
-		},function(value){
-		this._shaderValues.setNumber(37,value);
-	});
-
-	__getset(0,__proto,'skyBlur',function(){
-		return this._shaderValues.getNumber(38);
-		},function(value){
-		this._shaderValues.setNumber(38,value);
-	});
-
-	__getset(0,__proto,'spec',function(){
-		return this._shaderValues.getNumber(7);
-		},function(value){
-		this._shaderValues.setNumber(7,value);
-	});
-
-	__getset(0,__proto,'vHeight',function(){
-		return this._shaderValues.getNumber(35);
-		},function(value){
-		this._shaderValues.setNumber(35,value);
-	});
-
-	__getset(0,__proto,'waterColor',function(){
-		return this._shaderValues.getVector(12);
-		},function(value){
-		this._shaderValues.setVector(12,value);
-	});
-
-	__getset(0,__proto,'displacementIntensity',function(){
-		return this._shaderValues.getNumber(15);
-		},function(value){
-		this._shaderValues.setNumber(15,value);
-	});
-
-	__getset(0,__proto,'waveHeight',function(){
-		return this._shaderValues.getNumber(34);
-		},function(value){
-		this._shaderValues.setNumber(34,value);
-	});
-
-	__getset(0,__proto,'shoreWaterOpacity',function(){
-		return this._shaderValues.getNumber(33);
-		},function(value){
-		this._shaderValues.setNumber(33,value);
-	});
-
-	__getset(0,__proto,'objScale',function(){
-		return this._shaderValues.getVector(11);
-		},function(value){
-		this._shaderValues.setVector(11,value);
-	});
-
-	__getset(0,__proto,'waterDensity',function(){
-		return this._shaderValues.getNumber(32);
-		},function(value){
-		this._shaderValues.setNumber(32,value);
-	});
-
-	__getset(0,__proto,'shoreFoamIntensity',function(){
-		return this._shaderValues.getNumber(22);
-		},function(value){
-		this._shaderValues.setNumber(22,value);
-	});
-
-	__getset(0,__proto,'radialWaves',function(){
+	__getset(0,__proto,'partZ',function(){
 		return this._shaderValues.getNumber(31);
 		},function(value){
 		this._shaderValues.setNumber(31,value);
 	});
 
-	__getset(0,__proto,'partZ',function(){
-		return this._shaderValues.getNumber(20);
+	__getset(0,__proto,'LightColor0',function(){
+		return this._shaderValues.getVector(1);
 		},function(value){
-		this._shaderValues.setNumber(20,value);
+		this._shaderValues.setVector(1,value);
 	});
 
-	__getset(0,__proto,'wavesIntensity',function(){
+	__getset(0,__proto,'LightDir0',function(){
+		return this._shaderValues.getVector(0);
+		},function(value){
+		this._shaderValues.setVector(0,value);
+	});
+
+	__getset(0,__proto,'displacementScale',function(){
+		return this._shaderValues.getNumber(25);
+		},function(value){
+		this._shaderValues.setNumber(25,value);
+	});
+
+	__getset(0,__proto,'wavesTexture',function(){
+		return this._shaderValues.getTexture(13);
+		},function(value){
+		this._shaderValues.setTexture(13,value);
+	});
+
+	__getset(0,__proto,'LightIntensity0',function(){
+		return this._shaderValues.getNumber(2);
+		},function(value){
+		this._shaderValues.setNumber(2,value);
+	});
+
+	__getset(0,__proto,'displacement_ST',function(){
+		return this._shaderValues.getVector(6);
+		},function(value){
+		this._shaderValues.setVector(6,value);
+	});
+
+	__getset(0,__proto,'spltex',function(){
+		return this._shaderValues.getTexture(3);
+		},function(value){
+		this._shaderValues.setTexture(3,value);
+	});
+
+	__getset(0,__proto,'spltex_ST',function(){
+		return this._shaderValues.getVector(4);
+		},function(value){
+		this._shaderValues.setVector(4,value);
+	});
+
+	__getset(0,__proto,'foamScale',function(){
+		return this._shaderValues.getNumber(47);
+		},function(value){
+		this._shaderValues.setNumber(47,value);
+	});
+
+	__getset(0,__proto,'wavesTexture_ST',function(){
+		return this._shaderValues.getVector(14);
+		},function(value){
+		this._shaderValues.setVector(14,value);
+	});
+
+	__getset(0,__proto,'displacement',function(){
+		return this._shaderValues.getTexture(5);
+		},function(value){
+		this._shaderValues.setTexture(5,value);
+	});
+
+	__getset(0,__proto,'normalTexture',function(){
+		return this._shaderValues.getTexture(7);
+		},function(value){
+		this._shaderValues.setTexture(7,value);
+	});
+
+	__getset(0,__proto,'normalTexture_ST',function(){
+		return this._shaderValues.getVector(8);
+		},function(value){
+		this._shaderValues.setVector(8,value);
+	});
+
+	__getset(0,__proto,'foamTexture',function(){
+		return this._shaderValues.getTexture(9);
+		},function(value){
+		this._shaderValues.setTexture(9,value);
+	});
+
+	__getset(0,__proto,'foamTexture_ST',function(){
+		return this._shaderValues.getVector(10);
+		},function(value){
+		this._shaderValues.setVector(10,value);
+	});
+
+	__getset(0,__proto,'reflectionTex',function(){
+		return this._shaderValues.getTexture(11);
+		},function(value){
+		this._shaderValues.setTexture(11,value);
+	});
+
+	__getset(0,__proto,'reflectionTex_ST',function(){
+		return this._shaderValues.getVector(12);
+		},function(value){
+		this._shaderValues.setVector(12,value);
+	});
+
+	__getset(0,__proto,'maskWavesDisplacement',function(){
+		return this._shaderValues.getTexture(15);
+		},function(value){
+		this._shaderValues.setTexture(15,value);
+	});
+
+	__getset(0,__proto,'maskWavesDisplacement_ST',function(){
+		return this._shaderValues.getVector(16);
+		},function(value){
+		this._shaderValues.setVector(16,value);
+	});
+
+	__getset(0,__proto,'vHeight',function(){
+		return this._shaderValues.getNumber(46);
+		},function(value){
+		this._shaderValues.setNumber(46,value);
+	});
+
+	__getset(0,__proto,'spec',function(){
+		return this._shaderValues.getNumber(17);
+		},function(value){
+		this._shaderValues.setNumber(17,value);
+	});
+
+	__getset(0,__proto,'shoreLineOpacity',function(){
+		return this._shaderValues.getNumber(34);
+		},function(value){
+		this._shaderValues.setNumber(34,value);
+	});
+
+	__getset(0,__proto,'reflectionIntensity',function(){
+		return this._shaderValues.getNumber(18);
+		},function(value){
+		this._shaderValues.setNumber(18,value);
+	});
+
+	__getset(0,__proto,'reflectionColor',function(){
+		return this._shaderValues.getVector(38);
+		},function(value){
+		this._shaderValues.setVector(38,value);
+	});
+
+	__getset(0,__proto,'sceneZ',function(){
 		return this._shaderValues.getNumber(30);
 		},function(value){
 		this._shaderValues.setNumber(30,value);
 	});
 
-	__getset(0,__proto,'wavesSpeed',function(){
+	__getset(0,__proto,'reflectionFresnel',function(){
+		return this._shaderValues.getNumber(19);
+		},function(value){
+		this._shaderValues.setNumber(19,value);
+	});
+
+	__getset(0,__proto,'gloss',function(){
+		return this._shaderValues.getNumber(20);
+		},function(value){
+		this._shaderValues.setNumber(20,value);
+	});
+
+	__getset(0,__proto,'fresnelColor',function(){
+		return this._shaderValues.getVector(21);
+		},function(value){
+		this._shaderValues.setVector(21,value);
+	});
+
+	__getset(0,__proto,'waterDensity',function(){
+		return this._shaderValues.getNumber(43);
+		},function(value){
+		this._shaderValues.setNumber(43,value);
+	});
+
+	__getset(0,__proto,'objScale',function(){
+		return this._shaderValues.getVector(22);
+		},function(value){
+		this._shaderValues.setVector(22,value);
+	});
+
+	__getset(0,__proto,'waveHeight',function(){
+		return this._shaderValues.getNumber(45);
+		},function(value){
+		this._shaderValues.setNumber(45,value);
+	});
+
+	__getset(0,__proto,'displacementIntensity',function(){
+		return this._shaderValues.getNumber(26);
+		},function(value){
+		this._shaderValues.setNumber(26,value);
+	});
+
+	__getset(0,__proto,'waterColor',function(){
+		return this._shaderValues.getVector(23);
+		},function(value){
+		this._shaderValues.setVector(23,value);
+	});
+
+	__getset(0,__proto,'wavesAmount',function(){
+		return this._shaderValues.getNumber(39);
+		},function(value){
+		this._shaderValues.setNumber(39,value);
+	});
+
+	__getset(0,__proto,'wavesDisplacementSpeed',function(){
 		return this._shaderValues.getNumber(29);
 		},function(value){
 		this._shaderValues.setNumber(29,value);
 	});
 
 	__getset(0,__proto,'displacementSpeed',function(){
-		return this._shaderValues.getNumber(13);
-		},function(value){
-		this._shaderValues.setNumber(13,value);
-	});
-
-	__getset(0,__proto,'wavesDisplacementSpeed',function(){
-		return this._shaderValues.getNumber(18);
-		},function(value){
-		this._shaderValues.setNumber(18,value);
-	});
-
-	__getset(0,__proto,'wavesAmount',function(){
-		return this._shaderValues.getNumber(28);
-		},function(value){
-		this._shaderValues.setNumber(28,value);
-	});
-
-	__getset(0,__proto,'reflectionFresnel',function(){
-		return this._shaderValues.getNumber(9);
-		},function(value){
-		this._shaderValues.setNumber(9,value);
-	});
-
-	__getset(0,__proto,'sceneZ',function(){
-		return this._shaderValues.getNumber(19);
-		},function(value){
-		this._shaderValues.setNumber(19,value);
-	});
-
-	__getset(0,__proto,'reflectionColor',function(){
-		return this._shaderValues.getVector(27);
-		},function(value){
-		this._shaderValues.setVector(27,value);
-	});
-
-	__getset(0,__proto,'displacementFoamIntensity',function(){
-		return this._shaderValues.getNumber(21);
-		},function(value){
-		this._shaderValues.setNumber(21,value);
-	});
-
-	__getset(0,__proto,'shoreFoamDistance',function(){
-		return this._shaderValues.getNumber(26);
-		},function(value){
-		this._shaderValues.setNumber(26,value);
-	});
-
-	__getset(0,__proto,'fadeLevel',function(){
-		return this._shaderValues.getNumber(25);
-		},function(value){
-		this._shaderValues.setNumber(25,value);
-	});
-
-	__getset(0,__proto,'savesDisplacementFoamIntensity',function(){
 		return this._shaderValues.getNumber(24);
 		},function(value){
 		this._shaderValues.setNumber(24,value);
 	});
 
-	__getset(0,__proto,'reflectionIntensity',function(){
-		return this._shaderValues.getNumber(8);
+	__getset(0,__proto,'normalIntensity',function(){
+		return this._shaderValues.getNumber(27);
 		},function(value){
-		this._shaderValues.setNumber(8,value);
-	});
-
-	__getset(0,__proto,'shoreLineOpacity',function(){
-		return this._shaderValues.getNumber(23);
-		},function(value){
-		this._shaderValues.setNumber(23,value);
+		this._shaderValues.setNumber(27,value);
 	});
 
 	__getset(0,__proto,'wavesScale',function(){
-		return this._shaderValues.getNumber(17);
+		return this._shaderValues.getNumber(28);
 		},function(value){
-		this._shaderValues.setNumber(17,value);
+		this._shaderValues.setNumber(28,value);
 	});
 
-	__getset(0,__proto,'normalIntensity',function(){
-		return this._shaderValues.getNumber(16);
+	__getset(0,__proto,'shoreFoamDistance',function(){
+		return this._shaderValues.getNumber(37);
 		},function(value){
-		this._shaderValues.setNumber(16,value);
+		this._shaderValues.setNumber(37,value);
 	});
 
-	__getset(0,__proto,'fresnelColor',function(){
-		return this._shaderValues.getVector(10);
+	__getset(0,__proto,'displacementFoamIntensity',function(){
+		return this._shaderValues.getNumber(32);
 		},function(value){
-		this._shaderValues.setVector(10,value);
+		this._shaderValues.setNumber(32,value);
 	});
 
-	__getset(0,__proto,'maskWavesDisplacement',function(){
-		return this._shaderValues.getTexture(6);
+	__getset(0,__proto,'radialWaves',function(){
+		return this._shaderValues.getNumber(42);
 		},function(value){
-		this._shaderValues.setTexture(6,value);
+		this._shaderValues.setNumber(42,value);
 	});
 
-	__getset(0,__proto,'reflectionTex',function(){
-		return this._shaderValues.getTexture(4);
+	__getset(0,__proto,'shoreFoamIntensity',function(){
+		return this._shaderValues.getNumber(33);
 		},function(value){
-		this._shaderValues.setTexture(4,value);
+		this._shaderValues.setNumber(33,value);
 	});
 
-	__getset(0,__proto,'foamTexture',function(){
-		return this._shaderValues.getTexture(3);
+	__getset(0,__proto,'savesDisplacementFoamIntensity',function(){
+		return this._shaderValues.getNumber(35);
 		},function(value){
-		this._shaderValues.setTexture(3,value);
+		this._shaderValues.setNumber(35,value);
 	});
 
-	__getset(0,__proto,'normalTexture',function(){
-		return this._shaderValues.getTexture(2);
+	__getset(0,__proto,'fadeLevel',function(){
+		return this._shaderValues.getNumber(36);
 		},function(value){
-		this._shaderValues.setTexture(2,value);
+		this._shaderValues.setNumber(36,value);
+	});
+
+	__getset(0,__proto,'wavesSpeed',function(){
+		return this._shaderValues.getNumber(40);
+		},function(value){
+		this._shaderValues.setNumber(40,value);
+	});
+
+	__getset(0,__proto,'shoreWaterOpacity',function(){
+		return this._shaderValues.getNumber(44);
+		},function(value){
+		this._shaderValues.setNumber(44,value);
+	});
+
+	__getset(0,__proto,'skyBlur',function(){
+		return this._shaderValues.getNumber(49);
+		},function(value){
+		this._shaderValues.setNumber(49,value);
+	});
+
+	__getset(0,__proto,'foamSpeed',function(){
+		return this._shaderValues.getNumber(48);
+		},function(value){
+		this._shaderValues.setNumber(48,value);
+	});
+
+	__getset(0,__proto,'reflectionmapColor',function(){
+		return this._shaderValues.getVector(50);
+		},function(value){
+		this._shaderValues.setVector(50,value);
+	});
+
+	__getset(0,__proto,'eventRenderMode',null,function(event){
+		var renderState=this.getRenderState();
+		this.renderQueue=3000;
+		this.alphaTest=false;
+		renderState.depthWrite=false;
+		renderState.cull=2;
+		renderState.blend=1;
+		renderState.srcBlend=0x0302;
+		renderState.dstBlend=0x0303;
+		renderState.depthTest=0x0201;
 	});
 
 	SeaMaterial.__init__=function(){}
-	SeaMaterial.SPLTEX=0;
-	SeaMaterial.DESTEXTURE=1;
-	SeaMaterial.NORMALTEXTURE=2;
-	SeaMaterial.FOAMTEXTURE=3;
-	SeaMaterial.REFLECTTEXTURE=4;
-	SeaMaterial.WAVESTEXTURE=5;
-	SeaMaterial.MASKWAVESTEXTURE=6;
-	SeaMaterial.SPECNUM=7;
-	SeaMaterial.REFINVNUM=8;
-	SeaMaterial.REFFRENUM=9;
-	SeaMaterial.FRESNELCOLOR=10;
-	SeaMaterial.OBJSCALE=11;
-	SeaMaterial.WATERCOLOR=12;
-	SeaMaterial.DISPLACEMENTSPEED=13;
-	SeaMaterial.DISPLACEMENTSCALE=14;
-	SeaMaterial.DISPLACEMENTINTENSITY=15;
-	SeaMaterial.NORMALINTENSITY=16;
-	SeaMaterial.WAVESCALE=17;
-	SeaMaterial.WAVESDISPLACEMENTSPEED=18;
-	SeaMaterial.SCENEZ=19;
-	SeaMaterial.PARTZ=20;
-	SeaMaterial.DISPLACEMENTFOAMINTENSITY=21;
-	SeaMaterial.SHOREFOAMINTENSITY=22;
-	SeaMaterial.SHORELINEOPACITY=23;
-	SeaMaterial.SAVEDISPLACEMENTFOAMINTENSITY=24;
-	SeaMaterial.FADELEVEL=25;
-	SeaMaterial.SHOREFOAMDISTANCE=26;
-	SeaMaterial.REFLECTIONCOLOR=27;
-	SeaMaterial.WAVESAMOUNT=28;
-	SeaMaterial.WAVESSPEED=29;
-	SeaMaterial.WAVESINTENSITY=30;
-	SeaMaterial.RADIALWAVES=31;
-	SeaMaterial.WATERDENSITY=32;
-	SeaMaterial.SHOREWATEROPACITY=33;
-	SeaMaterial.WAVEHEIGHT=34;
-	SeaMaterial.VHEIGHT=35;
-	SeaMaterial.FOAMSCALE=36;
-	SeaMaterial.FOAMSPEED=37;
-	SeaMaterial.SKYBLUR=38;
-	SeaMaterial.REFLECTIONMAPCOLOR=39;
-	SeaMaterial.GLOSS=40;
-	SeaMaterial.MVDOFFSET=41;
-	SeaMaterial.WTOFFSET=42;
-	SeaMaterial.REFTEXOFFSET=43;
-	SeaMaterial.FOAMTEXOFFSET=44;
-	SeaMaterial.NORMALTEXOFFSET=45;
-	SeaMaterial.DISPLACEOFFSET=46;
-	SeaMaterial.SPLTEXOFFSET=47;
+	SeaMaterial.LIGHTDIR0=0;
+	SeaMaterial.LIGHTCOLOR0=1;
+	SeaMaterial.LIGHTINTENSITY0=2;
+	SeaMaterial.SPLTEX=3;
+	SeaMaterial.SPLTEX_ST=4;
+	SeaMaterial.DISPLACEMENT=5;
+	SeaMaterial.DISPLACEMENT_ST=6;
+	SeaMaterial.NORMALTEXTURE=7;
+	SeaMaterial.NORMALTEXTURE_ST=8;
+	SeaMaterial.FOAMTEXTURE=9;
+	SeaMaterial.FOAMTEXTURE_ST=10;
+	SeaMaterial.REFLECTIONTEX=11;
+	SeaMaterial.REFLECTIONTEX_ST=12;
+	SeaMaterial.WAVESTEXTURE=13;
+	SeaMaterial.WAVESTEXTURE_ST=14;
+	SeaMaterial.MASKWAVESDISPLACEMENT=15;
+	SeaMaterial.MASKWAVESDISPLACEMENT_ST=16;
+	SeaMaterial.SPEC=17;
+	SeaMaterial.REFLECTIONINTENSITY=18;
+	SeaMaterial.REFLECTIONFRESNEL=19;
+	SeaMaterial.GLOSS=20;
+	SeaMaterial.FRESNELCOLOR=21;
+	SeaMaterial.OBJSCALE=22;
+	SeaMaterial.WATERCOLOR=23;
+	SeaMaterial.DISPLACEMENTSPEED=24;
+	SeaMaterial.DISPLACEMENTSCALE=25;
+	SeaMaterial.DISPLACEMENTINTENSITY=26;
+	SeaMaterial.NORMALINTENSITY=27;
+	SeaMaterial.WAVESSCALE=28;
+	SeaMaterial.WAVESDISPLACEMENTSPEED=29;
+	SeaMaterial.SCENEZ=30;
+	SeaMaterial.PARTZ=31;
+	SeaMaterial.DISPLACEMENTFOAMINTENSITY=32;
+	SeaMaterial.SHOREFOAMINTENSITY=33;
+	SeaMaterial.SHORELINEOPACITY=34;
+	SeaMaterial.SAVESDISPLACEMENTFOAMINTENSITY=35;
+	SeaMaterial.FADELEVEL=36;
+	SeaMaterial.SHOREFOAMDISTANCE=37;
+	SeaMaterial.REFLECTIONCOLOR=38;
+	SeaMaterial.WAVESAMOUNT=39;
+	SeaMaterial.WAVESSPEED=40;
+	SeaMaterial.WAVESINTENSITY=41;
+	SeaMaterial.RADIALWAVES=42;
+	SeaMaterial.WATERDENSITY=43;
+	SeaMaterial.SHOREWATEROPACITY=44;
+	SeaMaterial.WAVEHEIGHT=45;
+	SeaMaterial.VHEIGHT=46;
+	SeaMaterial.FOAMSCALE=47;
+	SeaMaterial.FOAMSPEED=48;
+	SeaMaterial.SKYBLUR=49;
+	SeaMaterial.REFLECTIONMAPCOLOR=50;
 	__static(SeaMaterial,
 	['defaultMaterial',function(){return this.defaultMaterial=new SeaMaterial();},'shaderDefines',function(){return this.shaderDefines=new ShaderDefines(BaseMaterial.shaderDefines);}
 	]);
 	return SeaMaterial;
 })(BaseMaterial)
+
 /**
 *<code>BlinnPhongMaterial</code> 类用于实现Blinn-Phong材质。
 */
@@ -32735,7 +32782,7 @@ var BlinnPhongMaterial=(function(_super){
 		//this._enableLighting=false;
 		/**@private */
 		this._enableVertexColor=false;
-		BlinnPhongMaterial.__super.call(this,12);
+		BlinnPhongMaterial.__super.call(this,18);
 		this.setShaderName("BLINNPHONG");
 		this._albedoIntensity=1.0;
 		this._albedoColor=new Vector4(1.0,1.0,1.0,1.0);
@@ -32846,7 +32893,16 @@ var BlinnPhongMaterial=(function(_super){
 		},function(value){
 		this._shaderValues.getVector(6).elements[2]=value;
 	});
-
+	
+	__getset(0,__proto,'detailMap',function(){
+		return this._shaderValues.getTexture(9);
+		},function(value){
+		if (value)
+			this._defineDatas.add(laya.d3.core.material.BlinnPhongMaterial.SHADERDEFINE_DETAILMAP);
+		else
+		this._defineDatas.remove(laya.d3.core.material.BlinnPhongMaterial.SHADERDEFINE_DETAILMAP);
+		this._shaderValues.setTexture(9,value);
+	});
 	/**
 	*设置渲染模式。
 	*@return 渲染模式。
@@ -33125,7 +33181,13 @@ var BlinnPhongMaterial=(function(_super){
 		},function(x){
 		this._MainTex_STX=x;
 	});
-
+	
+	__getset(0,__proto,'vertexMapOffset',function(){
+		return this._shaderValues.getVector(12);
+		},function(value){
+		this._shaderValues.setVector(12,value);
+	});
+	
 	/**
 	*获取纹理平铺和偏移Y分量。
 	*@param y 纹理平铺和偏移Y分量。
@@ -33308,7 +33370,36 @@ var BlinnPhongMaterial=(function(_super){
 		},function(value){
 		this._Shininess=value;
 	});
+	
+	__getset(0,__proto,'vertexMap',function(){
+		return this._shaderValues.getTexture(11);
+		},function(value){
+		if (value)
+			this._defineDatas.add(laya.d3.core.material.BlinnPhongMaterial.SHADERDEFINE_VERTEXMAP);
+		else
+		this._defineDatas.remove(laya.d3.core.material.BlinnPhongMaterial.SHADERDEFINE_VERTEXMAP);
+		this._shaderValues.setTexture(11,value);
+	});
 
+	__getset(0,__proto,'detailMapOffset',function(){
+		return this._shaderValues.getVector(10);
+		},function(value){
+		this._shaderValues.setVector(10,value);
+	});
+
+	__getset(0,__proto,'uvtile1',function(){
+		return this._shaderValues.getNumber(13);
+		},function(value){
+		this._shaderValues.setNumber(13,value);
+	});
+
+	__getset(0,__proto,'uvtile2',function(){
+		return this._shaderValues.getNumber(14);
+		},function(value){
+		this._shaderValues.setNumber(14,value);
+	});
+	
+	
 	/**
 	*设置法线贴图。
 	*@param value 法线贴图。
@@ -33351,6 +33442,8 @@ var BlinnPhongMaterial=(function(_super){
 		BlinnPhongMaterial.SHADERDEFINE_SPECULARMAP=BlinnPhongMaterial.shaderDefines.registerDefine("SPECULARMAP");
 		BlinnPhongMaterial.SHADERDEFINE_TILINGOFFSET=BlinnPhongMaterial.shaderDefines.registerDefine("TILINGOFFSET");
 		BlinnPhongMaterial.SHADERDEFINE_ENABLEVERTEXCOLOR=BlinnPhongMaterial.shaderDefines.registerDefine("ENABLEVERTEXCOLOR");
+		BlinnPhongMaterial.SHADERDEFINE_DETAILMAP=BlinnPhongMaterial.shaderDefines.registerDefine("DETAILMAP");
+		BlinnPhongMaterial.SHADERDEFINE_VERTEXMAP=BlinnPhongMaterial.shaderDefines.registerDefine("VERTEXMAP");
 	}
 
 	BlinnPhongMaterial.SPECULARSOURCE_DIFFUSEMAPALPHA=0;
@@ -33363,6 +33456,8 @@ var BlinnPhongMaterial=(function(_super){
 	BlinnPhongMaterial.SHADERDEFINE_SPECULARMAP=0;
 	BlinnPhongMaterial.SHADERDEFINE_TILINGOFFSET=0;
 	BlinnPhongMaterial.SHADERDEFINE_ENABLEVERTEXCOLOR=0;
+	BlinnPhongMaterial.SHADERDEFINE_DETAILMAP=0;
+	BlinnPhongMaterial.SHADERDEFINE_VERTEXMAP=0;
 	BlinnPhongMaterial.ALBEDOTEXTURE=1;
 	BlinnPhongMaterial.NORMALTEXTURE=2;
 	BlinnPhongMaterial.SPECULARTEXTURE=3;
@@ -33371,6 +33466,12 @@ var BlinnPhongMaterial=(function(_super){
 	BlinnPhongMaterial.MATERIALSPECULAR=6;
 	BlinnPhongMaterial.SHININESS=7;
 	BlinnPhongMaterial.TILINGOFFSET=8;
+	BlinnPhongMaterial.DERAILMAP=9;
+	BlinnPhongMaterial.DERAILMAP_ST=10;
+	BlinnPhongMaterial.VERTEXMAP=11;
+	BlinnPhongMaterial.VERTEXMAP_ST=12;
+	BlinnPhongMaterial.UVTILE1=13;
+	BlinnPhongMaterial.UVTILE2=14;
 	__static(BlinnPhongMaterial,
 	['defaultMaterial',function(){return this.defaultMaterial=new BlinnPhongMaterial();},'shaderDefines',function(){return this.shaderDefines=new ShaderDefines(BaseMaterial.shaderDefines);}
 	]);
@@ -38121,7 +38222,6 @@ var SkinnedMeshRenderer=(function(_super){
 			var aniOwnerTransParent=(this._cacheAnimator.owner)._transform._parent;
 			var worldMat=aniOwnerTransParent ? aniOwnerTransParent.worldMatrix :Matrix4x4.DEFAULT;
 			Matrix4x4.multiply(projectionView,worldMat,this._projectionViewWorldMatrix);
-			
 			}else {
 			Matrix4x4.multiply(projectionView,transform.worldMatrix,this._projectionViewWorldMatrix);
 		}

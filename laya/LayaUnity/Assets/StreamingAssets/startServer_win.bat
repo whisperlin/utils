@@ -1,2 +1,3 @@
-cd /D %~dp0 
-node httpSever.js
+cd /D %~dp0/LayaDemo
+python server.py
+::node httpSever.js
