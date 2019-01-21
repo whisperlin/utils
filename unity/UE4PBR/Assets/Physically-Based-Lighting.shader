@@ -444,8 +444,8 @@ float4 frag(VertexOutput i) : COLOR {
 	 float4 control_var =   tex2D(  _MetallicTex ,  uv0 );
 
 	 #ifdef _DEBUGMOD_OFF
-	_Metallic = _Metallic*control_var.r;
-	_Glossiness = _Glossiness*control_var.g;
+	_Metallic =  control_var.r;
+	_Glossiness =  control_var.g;
  
 	#endif
 //normal direction calculations
@@ -614,14 +614,15 @@ float4 frag(VertexOutput i) : COLOR {
 	 //PBR //* (  NdotL * NdotV)
 	float3 specularity = ( SpecularDistribution * FresnelFunction * GeometricShadow) / (4  * (  NdotL * NdotV) );
  
-	//NdotL有可能是负数.
- 	specularity = saturate(specularity) * _SpecularPower;
+	 //NdotL有可能是负数.
+ 	 specularity = saturate(specularity) * _SpecularPower;
      float grazingTerm = saturate(roughness + _Metallic);
 	 
 	 float3 unityIndirectSpecularity =  indirectSpecular * FresnelLerp(specColor,grazingTerm,NdotV) * _Metallic * (1-roughness*roughness* roughness) ;
- 	 //return float4(specColor,1);
+ 
 	 #ifdef _ENABLE_MC_ON
-	 	//return float4(indirectSpecular,1);
+	 	//return float4(1,1,1,1);
+ 		//return float4(indirectSpecular,1);
 	 	return float4(unityIndirectSpecularity*_UnityLightingContribution,1);
 	 #endif
 
@@ -632,7 +633,7 @@ float4 frag(VertexOutput i) : COLOR {
      float3 lightingModel = diffuseColor *  directDiffuse  +  indirectDiffuse *diffuseColor + specularity + unityIndirectSpecularity *_UnityLightingContribution  ;
 
      #ifdef _ENABLE_DIFF_ON
-	 	//return float4(indirectSpecular,1);
+ 
 	 	return float4(diffuseColor *  directDiffuse,1);
 	 #endif
 
