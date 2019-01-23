@@ -137,7 +137,7 @@ public class EditMeshVertex : MonoBehaviour {
         #endregion
 
         #region 重构网格
-        Transform _obj = transform.FindChild(transform.name + "(Clone)");
+        Transform _obj = transform.Find(transform.name + "(Clone)");
         if(_obj != null) DestroyImmediate(_obj.gameObject);
         _obj = null;
 
