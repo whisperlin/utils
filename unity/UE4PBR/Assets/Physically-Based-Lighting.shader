@@ -207,6 +207,14 @@ float sqr(float x){
 
 //------------------------------------------------
 //schlick functions
+
+
+inline half3 UnityFresnelTerm (half3 F0, half cosA)
+{
+    half t = Pow5 (1 - cosA);   // ala Schlick interpoliation
+    return F0 + (1-F0) * t;
+}
+
 float SchlickFresnel(float i){
     float x = clamp(1.0-i, 0.0, 1.0);
     float x2 = x*x;
@@ -621,8 +629,7 @@ float4 frag(VertexOutput i) : COLOR {
 	 float3 unityIndirectSpecularity =  indirectSpecular * FresnelLerp(specColor,grazingTerm,NdotV) * _Metallic * (1-roughness*roughness* roughness) ;
  
 	 #ifdef _ENABLE_MC_ON
-	 	//return float4(1,1,1,1);
- 		//return float4(indirectSpecular,1);
+	 
 	 	return float4(unityIndirectSpecularity*_UnityLightingContribution,1);
 	 #endif
 

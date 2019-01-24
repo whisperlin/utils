@@ -9,7 +9,7 @@ Material:
   m_Name: Uv01body
   m_Shader: {fileID: 4800000, guid: 8998f70dd965b2e4188d51f7e306a4aa, type: 3}
   m_ShaderKeywords: _ENABLE_GAMMA_ON _ENABLE_NDF_ON _FRESNELMODEL_SPHERICALGAUSSIAN
-    _GEOSHADOWMODEL_DUER _METALLICCHANNEL_GLOSS_R _METALLICGLOSSMAP _NORMALDISTMODEL_BLINNPHONG
+    _GEOSHADOWMODEL_ASHIKHMINSHIRLEY _METALLICCHANNEL_GLOSS_R _METALLICGLOSSMAP _NORMALDISTMODEL_BLINNPHONG
     _NORMALMAP _SMITHGEOSHADOWMODEL_GGX _SPECGLOSSMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -103,7 +103,7 @@ Material:
     - _ENABLE_NDF: 1
     - _EmissionIntensity: 0.88
     - _FresnelModel: 2
-    - _GeoShadowModel: 2
+    - _GeoShadowModel: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.971
     - _GlossyReflections: 1

@@ -7,9 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Uv01bodyDiff
-  m_Shader: {fileID: 4800000, guid: 83d19b45b5df93a4d89d3bf7ea3ee416, type: 3}
-  m_ShaderKeywords: _ENABLE_GAMMA_ON _FRESNELMODEL_SCHLICK _GEOSHADOWMODEL_COOK _METALLICCHANNEL_GLOSS_R
-    _NORMALDISTMODEL_TROWBRIDGEREITZ _SMITHGEOSHADOWMODEL_GGX
+  m_Shader: {fileID: 4800000, guid: 9347ae9f3f97c3f469ee5b5b14786640, type: 3}
+  m_ShaderKeywords: _ENABLE_GAMMA_ON _FRESNELMODEL_SPHERICALGAUSSIAN _GEOSHADOWMODEL_NEUMANN
+    _METALLICCHANNEL_GLOSS_R _NORMALDISTMODEL_UNITY _SMITHGEOSHADOWMODEL_IMPLICIT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -87,7 +87,8 @@ Material:
     - IBL_Blur: 0
     - IBL_Intensity: 1
     - SBL_Intensity: 5.8
-    - _Anisotropic: -0
+    - UNITY_DEFAULT_GEO: 0
+    - _Anisotropic: -0.4
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -98,20 +99,22 @@ Material:
     - _ENABLE_GAMMA: 1
     - _ENABLE_NDF: 0
     - _EmissionIntensity: 0.88
-    - _FresnelModel: 0
-    - _GeoShadowModel: 6
-    - _Gloss: 0.483
+    - _FresnelModel: 2
+    - _GeoShadowFun: 0
+    - _GeoShadowModel: 3
+    - _Gloss: 0.801
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossyReflections: 1
     - _Ior: 1
     - _Metallic: 1
     - _MetallicChannel: 0
+    - _MetallicType: 0
     - _Mode: 0
-    - _NormalDistModel: 5
+    - _NormalDistModel: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _SmithGeoShadowModel: 3
+    - _SmithGeoShadowModel: 7
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SpecularPower: 1
