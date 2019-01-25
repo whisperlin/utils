@@ -519,6 +519,7 @@ float4 frag(VertexOutput i) : COLOR {
 
 	 //PBR
 	 float3 specularity = (SpecularDistribution * FresnelFunction * GeometricShadow) / (4 * (  NdotL * NdotV));
+
      float grazingTerm = saturate(roughness + _Metallic);
 	 float3 unityIndirectSpecularity =  indirectSpecular * FresnelLerp(specColor,grazingTerm,NdotV) * max(0.15,_Metallic) * (1-roughness*roughness* roughness);
 

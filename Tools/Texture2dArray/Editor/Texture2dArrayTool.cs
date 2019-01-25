@@ -55,10 +55,17 @@ public class Texture2dArrayTool : EditorWindow {
 	static Texture2DArray CreateTextureArray2D(Texture2D []layerTextures, string TexturePath,bool minMap )
 	{
 		int layerCount = layerTextures.Length;
-		int layerTextureSize = layerTextures[0].width;
-		string formatString = layerTextures[0].format.ToString();
+		int layerTextureSize = 1024;
+		TextureFormat format = TextureFormat.RGBA32;
+		for (int i = 0; i <layerCount; i++)
+		{
+			if (null == layerTextures [i])
+				continue;
+			layerTextureSize = layerTextures[i].width;
+			format = layerTextures[i].format ;
+		}
 		Texture2DArray textureArray = new Texture2DArray(layerTextureSize, layerTextureSize,
-			layerCount, layerTextures[0].format, minMap);
+			layerCount, format, minMap);
 
 		for (int i = 0; i < layerTextures.Length; i++)
 		{
@@ -75,14 +82,18 @@ public class Texture2dArrayTool : EditorWindow {
 		return textureArray;
 	}
 	bool bMiniMap = false;
+	Texture2D tt;
 	void OnConbine()
 	{
 		GUILayout.Label ("图片合成");
 		bMiniMap = GUILayout.Toggle (bMiniMap, "min map");
 		if (editorArray.Count == 0)
 			editorArray.Add (null);
+		 
 		for (int i = 0; i < editorArray.Count; i++) {
-			editorArray [i] = (Texture2D)EditorGUILayout.ObjectField (editorArray [i], typeof(Texture2D));
+			//tt = (Texture2D)EditorGUILayout.ObjectField("读入贴图贴图",tt,typeof(Texture2D)); 
+			editorArray [i]  = (Texture2D)EditorGUILayout.ObjectField(i.ToString(),editorArray [i],typeof(Texture2D)); 
+			//editorArray [i] = (Texture2D)EditorGUILayout.ObjectField (editorArray [i], typeof(Texture2D));
 		}
 
 		GUILayout.BeginHorizontal ();
@@ -132,6 +143,29 @@ public class Texture2dArrayTool : EditorWindow {
 
 		}
 	}
+ 
+	void ReadTextureFromArray()
+	{
+		if (null == tex)
+			return;
+		editorArray.Clear ();
+
+		bMiniMap =  tex.mipMapBias > 0;
+		for (int i = 0; i < tex.depth; i++) {
+			var cols = tex.GetPixels (i);
+			if (null == cols || cols.Length< 1) {
+				editorArray.Add (null);
+			}
+			else
+			{
+				Debug.Log (tex.format);
+				Texture2D temp = new Texture2D (tex.width, tex.height, TextureFormat.RGBA32, bMiniMap);
+				temp.SetPixels(cols);
+				temp.Apply ();
+				editorArray.Add( temp);
+			}
+		}
+	}
 	void OnPerview()
 	{
  
@@ -148,35 +182,13 @@ public class Texture2dArrayTool : EditorWindow {
 		}
 
 
-		tex = (Texture2DArray)EditorGUILayout.ObjectField("预览贴图",tex,typeof(Texture2DArray)); 
-		showIndex = EditorGUILayout.IntSlider (showIndex, 0, 20);
-
-		PrimitiveType op1 = (PrimitiveType)EditorGUILayout.EnumPopup("预览类型", op);
-		if (op1 != op) {
-			GameObject.DestroyImmediate (obj);
-			obj = GameObject.CreatePrimitive (op1);
-			obj.hideFlags = HideFlags.HideAndDontSave;
-			r = obj.GetComponent<Renderer> ();
-			gameObjectEditor = Editor.CreateEditor (obj);
-			r.sharedMaterial = mat;
-			op = op1;
+		tex = (Texture2DArray)EditorGUILayout.ObjectField("读入贴图贴图",tex,typeof(Texture2DArray)); 
+		 
+		if (GUILayout.Button ("读入")) {
+			ReadTextureFromArray ();
 		}
-		//obj = (GameObject)EditorGUILayout.ObjectField("预览贴图",obj,typeof(GameObject)); 
 
-		if (tex) {
-			mat.SetTexture ("_TextureArray", tex);
-			mat.SetInt ("_Index", showIndex);
-			r.sharedMaterial = mat;
-		}
-		GUIStyle bgColor = new GUIStyle();
-
-		if (tex) {
-			gameObjectEditor.OnInteractivePreviewGUI (GUILayoutUtility.GetRect (256, 256), bgColor);
-		} else {
-			 
-			gameObjectEditor.OnInteractivePreviewGUI (GUILayoutUtility.GetRect (256, 256), bgColor);
-
-		}
+		 
 	}
 
 	void OnGUI()
@@ -184,7 +196,7 @@ public class Texture2dArrayTool : EditorWindow {
 		toolBar = GUILayout.Toolbar(toolBar, new GUIContent[]
 			{
 				new GUIContent("合成"),
-				new GUIContent("预览"),
+				new GUIContent("读入"),
 			});
 		switch (toolBar) {
 		case 0:
