@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Uv02Body
-  m_Shader: {fileID: 4800000, guid: 8998f70dd965b2e4188d51f7e306a4aa, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9a727ac690d2f9c48be77626e2688213, type: 3}
   m_ShaderKeywords: _DEBUGMOD_ON _FRESNELMODEL_SCHICHU3D _FRESNELMODEL_SCHLICK _GEOSHADOWMODEL_ASHIKHMINSHIRLEY
     _METALLICCHANNEL_GLOSS_R _METALLICGLOSSMAP _NORMALDISTMODEL_GGX _NORMALMAP _SMITHGEOSHADOWMODEL_GGX
   m_LightmapFlags: 4
@@ -94,6 +94,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _ENABLE_D: 0
+    - _ENABLE_DIFF: 0
     - _ENABLE_F: 0
     - _ENABLE_G: 0
     - _ENABLE_GAMMA: 0

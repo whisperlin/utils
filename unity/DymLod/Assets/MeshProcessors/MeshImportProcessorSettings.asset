@@ -11,5 +11,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053f1dcf571c7cf458e257566412d5fd, type: 3}
   m_Name: MeshImportProcessorSettings
   m_EditorClassIdentifier: 
-  programs: []
-  masterImportRevision: 1
+  programs:
+  - {fileID: 114282393604907970}
+  masterImportRevision: 2
+--- !u!114 &114282393604907970
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e00848573d8f5447ca99d169b3cc9f50, type: 3}
+  m_Name: KMProcessorProgram[shadow3/default/default]
+  m_EditorClassIdentifier: 
+  inAssetGUID: d046a3d30aab9bc4e8f7600bad77861e
+  inMeshPath: default/default
+  inContainerName: shadow3
+  inMeshDescription: 893 verts, 904 tris   uv
+  inputTolerance: 0
+  unityOptimizeMesh: 1
+  bypass: 0
+  targetPath: replace
+  importTriggeredByInspector: 0
+  importRevision: 2
+  processors: []

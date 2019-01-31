@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 2c73935537e12a94895bcea5de8dedc3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 74dcdb6320ca0964db28b3c500c1c1b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
@@ -92,7 +92,7 @@ Material:
     - _EmissionIntensity: 1
     - _FresnelModel: 3
     - _GeoShadowModel: 6
-    - _GlossMapScale: 1
+    - _GlossMapScale: 0.343
     - _Glossiness: 1
     - _GlossyReflections: 1
     - _Ior: 1
