@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Character_03_F_face
+  m_Shader: {fileID: 4800000, guid: 6a88ad5e38828aa4bbf6647e95a11143, type: 3}
+  m_ShaderKeywords: _EMISSION _ENABLE_CUT _METALLICGLOSSMAP _NORMALMAP _SPECGLOSSMAP
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 48bf2f5a7159c524bb88b8d81c73c3bf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveMap:
+        m_Texture: {fileID: 2800000, guid: bdbe94d7623ec3940947b62544306f1c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 2800000, guid: b5be1d76e7ed9db4098adcfab55fdf82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmssionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IBL:
+        m_Texture: {fileID: 8900000, guid: e4582b088d4b80d4fae73bd6203513cd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IBL_Diffuse:
+        m_Texture: {fileID: 8900000, guid: f80122fb6a119bd4ba4440fe08c122b0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 78ebab0ce21df4240a4dfea538a2c4bf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 2800000, guid: 3e86c722fe37bc04f9cb6904a5e6c2a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 400173e3319cff549a82c61267aab3d8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap:
+        m_Texture: {fileID: 2800000, guid: fe7ec6711ba3a1d43a69bc387c63d146, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SPL:
+        m_Texture: {fileID: 8900000, guid: b0a4a9425b475de4596960a99b123440, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinMap:
+        m_Texture: {fileID: 2800000, guid: 78ebab0ce21df4240a4dfea538a2c4bf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 332fb7a82f997b042a2a0b71c15645cb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - AOpower: 0
+    - GlobeLight: 0.65
+    - IBL_Blur: 10
+    - IBL_Intensity: 0.9
+    - SBL_Intensity: 0
+    - _BP_Gloss: 0.8
+    - _BlinnPhongSP: 0
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DISABLE_IBL_DIFFUSE: 0
+    - _DetailNormalMapScale: 1
+    - _DissolveAmount: 0
+    - _DstBlend: 0
+    - _ENABLE_CUT: 1
+    - _EmissionIntensity: 0.9
+    - _Gama: -0.83
+    - _Gloss: 1
+    - _GlossMapScale: 1
+    - _GlossPower: 0.6
+    - _Glossiness: 1
+    - _GlossyReflections: 1
+    - _IBLIntensity: 1.51
+    - _IBLMIP: 48.8
+    - _Metallic: 0
+    - _MetallicPower: 0.7
+    - _Mode: 0
+    - _NormalIntensity: 0.5
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SPLIntensity: 1
+    - _SPLMIP: 45.9
+    - _SkinIntensity: 2.15
+    - _SkinPower: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _VertexAnim: 0.02
+    - _ZWrite: 1
+    - pointatten1: 0
+    m_Colors:
+    - _AmbientLight: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0.21323532, g: 0.023518598, b: 0.023518598, a: 1}
+    - _IBLColor: {r: 1, g: 1, b: 1, a: 1}
+    - _IBL_Color: {r: 0.25, g: 0.25, b: 0.25, a: 1}
+    - _SkinColor: {r: 0.31617647, g: 0, b: 0, a: 1}

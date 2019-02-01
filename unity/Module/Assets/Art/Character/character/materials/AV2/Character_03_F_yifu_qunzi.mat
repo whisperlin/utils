@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Character_03_F_yifu_qunzi
+  m_Shader: {fileID: 4800000, guid: 3f2e3d58f2478594b8cfe62cfa025150, type: 3}
+  m_ShaderKeywords: _ENABLE_CUT _METALLICGLOSSMAP _NORMALMAP _SPECGLOSSMAP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 63bb50fd465dfc34480542ed4bd84749, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveMap:
+        m_Texture: {fileID: 2800000, guid: bdbe94d7623ec3940947b62544306f1c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmssionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IBL:
+        m_Texture: {fileID: 8900000, guid: e4582b088d4b80d4fae73bd6203513cd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IBL_Diffuse:
+        m_Texture: {fileID: 8900000, guid: b17f4dcd5fc2f1649ab21ab6deb8b590, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7cdb8365ee05b5a439478b1412c415b8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 2800000, guid: 924e6a1b436220144afdfa4b1b15ab01, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 02c8f61eb166cc34780387e548d0d92e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MianTex:
+        m_Texture: {fileID: 2800000, guid: 84181469e4383e5438813e644b082fc6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: 7db3a51b67018964ea2ee39479956aee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap:
+        m_Texture: {fileID: 2800000, guid: fe7ec6711ba3a1d43a69bc387c63d146, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SPL:
+        m_Texture: {fileID: 8900000, guid: b0a4a9425b475de4596960a99b123440, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: abc9232b06382ff45a4d98c98b49ae51, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - AOpower: 0
+    - GlobeLight: 0.695
+    - IBL_Blur: 10
+    - IBL_Intensity: 1
+    - SBL_Intensity: 0.3
+    - _Angle: 50
+    - _BP_Gloss: 1
+    - _BlinnPhongSP: 0.35
+    - _BumpScale: 1
+    - _Cutoff: 0.57
+    - _DISABLE_IBL_DIFFUSE: 0
+    - _DetailNormalMapScale: 1
+    - _DissolveAmount: 0
+    - _DstBlend: 0
+    - _ENABLE_CUT: 1
+    - _EmissionIntensity: 1.009
+    - _Gama: -1
+    - _Gloss: 1
+    - _GlossMapScale: 1
+    - _GlossPower: 0.82
+    - _Glossiness: 0.585
+    - _GlossyReflections: 1
+    - _IBLIntensity: 1
+    - _IBLMIP: 53.3
+    - _Metallic: 0
+    - _MetallicPower: 0.63
+    - _Mode: 0
+    - _NormalIntensity: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SPLIntensity: 1
+    - _SPLMIP: 15.3
+    - _SkinIntensity: 0
+    - _SkinPower: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _Speed: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _VertexAnim: 0.02
+    - _ZWrite: 1
+    - pointatten1: 12.4
+    m_Colors:
+    - _AmbientLight: {r: 0.9852941, g: 0.9852941, b: 0.9852941, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _IBLColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NoiseColor: {r: 0.6911765, g: 0.3635336, b: 0.06606832, a: 1}
+    - _SkinColor: {r: 0.78823537, g: 0.34509805, b: 0.34117648, a: 1}
