@@ -191,8 +191,7 @@ uniform fixed LightIntensity4;
                 /////// Diffuse:
                 //   NdotL = dot( normalDirection, LightDir1 );
                 float4 _SkinMap_var = tex2D(_SkinMap, TRANSFORM_TEX(i.uv0, _SkinMap));
-                //float3 IBLColor = IBL(_IBL_Diffuse, normalDirection);
-              //  float3 Skin = _SkinMap_var.rgb * ( (DirectionalLight(-normalDirection)[1] ) +PointLight(-normalDirection ,LightDir2))  * _SkinIntensity * _SkinColor;
+            
                     float3 Skin = _SkinMap_var.rgb *  (DirectionalLight(-normalDirection)[1] ) * _SkinIntensity * _SkinColor;
                 // Light wrapping
                 //  float3 NdotLWrap = NdotL * ( 1.0 - Skin );
