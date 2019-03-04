@@ -204,7 +204,6 @@
 			float t1 = step(0,uv0.y )*step(0, uv0.x)*step(uv0.x, 1);
 			float4 color2 = tex2D(_MainTex2, TRANSFORM_TEX(uv0, _MainTex2));
 			 
-			 
 			float tf = step(_Progress , 0.5);
 			float t = t0*tf + t1*(1-tf);
 			float4 final = tf*color1 + (1 - tf)*color2;
