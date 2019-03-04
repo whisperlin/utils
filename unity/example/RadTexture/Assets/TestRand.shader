@@ -1,4 +1,4 @@
-﻿Shader "Hidden/TestRand"
+﻿Shader "Hidden/Spe2RandTex"
 {
 	Properties
 	{

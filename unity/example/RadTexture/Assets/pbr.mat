@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: phong
-  m_Shader: {fileID: 4800000, guid: c107a0fb055e1bb4d9b82e1a8ae221fd, type: 3}
-  m_ShaderKeywords: 
+  m_Name: pbr
+  m_Shader: {fileID: 4800000, guid: b6ead1b4abc3a6043bcb677a0e142083, type: 3}
+  m_ShaderKeywords: _ENABLE_RAD_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -38,12 +38,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _HGTex:
-        m_Texture: {fileID: 8400000, guid: 824ff61af84de204fa1b80ddd312aceb, type: 2}
+    - _IndirSP:
+        m_Texture: {fileID: 2800000, guid: 35ffa0972301a33448acd7232616bb94, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b5af87a7a1980d743a68a4a2a2cf05ae, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,22 +63,20 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Gloss: 108
+    - _ENABLE_Rad: 1
+    - _Gloss: 0.7
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.661
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularStrength: 0.708
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Diffuse: {r: 0.19472617, g: 0.13235293, b: 0.35294116, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Specular: {r: 0.5147059, g: 0.19679932, b: 0.19679932, a: 1}
