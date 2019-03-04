@@ -18,6 +18,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BrdfRad:
+        m_Texture: {fileID: 8400000, guid: 1bc880cad4602ba49a545567914a86a1, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -39,7 +43,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _IndirSP:
-        m_Texture: {fileID: 2800000, guid: 35ffa0972301a33448acd7232616bb94, type: 3}
+        m_Texture: {fileID: 8400000, guid: 055841df7e84dcd49927b75a8e71f32c, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -64,11 +68,11 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _ENABLE_Rad: 1
-    - _Gloss: 0.7
+    - _Gloss: 0.907
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0.661
+    - _Metallic: 0.875
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02

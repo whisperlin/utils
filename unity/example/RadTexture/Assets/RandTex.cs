@@ -7,11 +7,12 @@ public class RandTex : MonoBehaviour {
     public RenderTexture rt;
 	// Use this for initialization
 	void Start () {
-        Graphics.Blit(rt, rt, mat);
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        Graphics.Blit(rt, rt, mat);
+
+    }
 }
