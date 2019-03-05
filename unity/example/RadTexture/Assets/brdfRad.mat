@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pbr
-  m_Shader: {fileID: 4800000, guid: b6ead1b4abc3a6043bcb677a0e142083, type: 3}
-  m_ShaderKeywords: _ENABLE_RAD_ON _UNITY_BRDF_ON
+  m_Name: brdfRad
+  m_Shader: {fileID: 4800000, guid: 91230fcd8ec6b0645a621947c755948f, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -18,10 +18,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BrdfRad:
-        m_Texture: {fileID: 8400000, guid: 1bc880cad4602ba49a545567914a86a1, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -42,12 +38,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _IndirSP:
-        m_Texture: {fileID: 8400000, guid: 055841df7e84dcd49927b75a8e71f32c, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b5af87a7a1980d743a68a4a2a2cf05ae, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -67,19 +59,16 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _ENABLE_Rad: 1
-    - _Gloss: 0.725
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0.778
+    - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _UNITY_BRDF: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
