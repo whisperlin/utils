@@ -12,8 +12,7 @@ Shader "Shader Forge/PBR" {
         _Gloss ("Gloss", Range(0, 1)) = 0.8
 
 		[Toggle] _ENABLE_Rad("ENABLE_Rad", Float) = 0
-
-		[Toggle] _UNITY_BRDF("unity brdf", Float) = 1
+ 
 		_IndirSP("_IndirSP", 2D) = "white" {}
 
 		_BrdfRad("_BrdfRad", 2D) = "white" {}
@@ -48,7 +47,7 @@ Shader "Shader Forge/PBR" {
             #pragma multi_compile_fog
 
 			#pragma multi_compile  _ENABLE_RAD_OFF _ENABLE_RAD_ON
-			#pragma multi_compile   _UNITY_BRDF_ON _UNITY_BRDF_OFF
+ 
 		
             #pragma only_renderers d3d9 d3d11 glcore gles 
             #pragma target 3.0
@@ -191,7 +190,8 @@ Shader "Shader Forge/PBR" {
 #ifdef _ENABLE_RAD_ON 
 				
 				float4 _BrdfRad_var = tex2D(_BrdfRad, float2( (LdotH+1)*0.5 , gloss));
-
+#else 
+				 
  
 #endif
 
@@ -212,7 +212,7 @@ Shader "Shader Forge/PBR" {
 #else
 				float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
 #endif
-#ifdef _UNITY_BRDF_ON
+ 
 
 				float specularPBL = (GeometricShadow*NormalDistribution) * UNITY_PI;
 				#ifdef UNITY_COLORSPACE_GAMMA
@@ -226,11 +226,14 @@ Shader "Shader Forge/PBR" {
 				specularPBL *= any(specularColor) ? 1.0 : 0.0;
 
 				float3 directSpecular = attenColor*specularPBL*FresnelFunction;
-#else
-				float3 SpecularDistribution = specularColor *NormalDistribution;
-				float3 brdf = saturate( (SpecularDistribution * FresnelFunction * GeometricShadow) / (4 * (NdotL * NdotV)) );
+ 
+				/**
+				float3 brdf =   (specularColor *NormalDistribution * FresnelFunction * GeometricShadow) / (4 * (NdotL * NdotV))  ;
+			 
+				brdf = max(0, brdf);
 				float3 directSpecular = attenColor*brdf;
-#endif
+				*/
+ 
 				 
 
 #ifdef _ENABLE_RAD_ON 
