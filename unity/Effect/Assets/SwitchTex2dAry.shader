@@ -39,16 +39,17 @@
 	{
 		Name "Default"
 		CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag
-#pragma target 2.0
+		#pragma vertex vert
+		#pragma fragment frag
+		#pragma target 2.0
 
-#include "UnityCG.cginc"
-#include "UnityUI.cginc"
+		#include "UnityCG.cginc"
+		#include "UnityUI.cginc"
 
 
-#pragma multi_compile _SWITCH_BYC _SWITCH_NORMAL _SWITCH_BROKEN _SWITCH_ANIM _SWITCH_FY _SWITCH_FY2
-#pragma multi_compile _DIR_TYPE1 _DIR_TYPE2
+		#pragma multi_compile _SWITCH_BYC _SWITCH_NORMAL _SWITCH_BROKEN _SWITCH_ANIM _SWITCH_FY _SWITCH_FY2
+		#pragma multi_compile _DIR_TYPE1 _DIR_TYPE2
+		#pragma multi_compile_instancing
 
 		struct appdata_t
 	{
@@ -65,6 +66,7 @@
 		float2 texcoord  : TEXCOORD0;
 		float4 worldPosition : TEXCOORD1;
 		UNITY_VERTEX_OUTPUT_STEREO
+		UNITY_VERTEX_INPUT_INSTANCE_ID
 	};
 
 	v2f vert(appdata_t v)
@@ -81,20 +83,30 @@
 		return OUT;
 	}
 	
+	
 	UNITY_DECLARE_TEX2DARRAY(_TextureArray);
 	uniform float4 _TextureArray_ST;
-	float _Index0;
-	float _Index1;
+
+
+
+	UNITY_INSTANCING_BUFFER_START(Props)
+		UNITY_DEFINE_INSTANCED_PROP(float, _Index0)
+		UNITY_DEFINE_INSTANCED_PROP(float, _Index1)
+		UNITY_DEFINE_INSTANCED_PROP(float4, _BackgroundColor)
+	UNITY_INSTANCING_BUFFER_END(Props)
+
+	//float _Index0;
+	//float _Index1;
  
 	sampler2D _AnimMark; uniform float4 _AnimMark_ST;
-	uniform float4 _BackgroundColor;
+	//uniform float4 _BackgroundColor;
 
 	float _Lan;
 	float _Progress;
 
 	float4 frag(v2f IN): SV_Target
 	{
-
+		UNITY_SETUP_INSTANCE_ID(IN); 
 #ifdef _SWITCH_BYC
 
 #ifdef _DIR_TYPE1
@@ -112,9 +124,9 @@
 		uv = mul(qiebian,uv);
 		uv -= float2(-0.5,-0.5);
 		uv.x += x1;
-
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(IN.texcoord, _TextureArray).xy, _Index0));
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(uv, _Index1));
+		
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(IN.texcoord, _TextureArray).xy, UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(uv,   UNITY_ACCESS_INSTANCED_PROP(Props, _Index1)  ));
 
 		
 		color2 = lerp(color2, color1, needDiscard);
@@ -133,8 +145,8 @@
 		uv -= float2(-0.5, -0.5);
 		uv.y += y1;
 
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(IN.texcoord, _TextureArray).xy, _Index0));
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(uv, _Index1));
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(IN.texcoord, _TextureArray).xy, UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(uv,   UNITY_ACCESS_INSTANCED_PROP(Props, _Index1) ));
  
 		color2 = lerp(color2, color1, needDiscard);
 		return color2;
@@ -149,8 +161,8 @@
 		float2 uv0 = IN.texcoord - float2(0, _Progress);
 		float t = step(uv0.y, 0);
 #endif
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray).xy, _Index0));
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray).xy, _Index1));
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray).xy, UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray).xy, UNITY_ACCESS_INSTANCED_PROP(Props, _Index1)));
 	 
 	 
 		return color2*t + (1 - t)*color1;
@@ -161,8 +173,8 @@
 		float4 _AnimMark_var = tex2D(_AnimMark, TRANSFORM_TEX(uv0, _AnimMark));
 		_AnimMark_var.r = _AnimMark_var.r*0.9 + 0.1;
 
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),_Index0));
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),_Index1));
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray), UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),UNITY_ACCESS_INSTANCED_PROP(Props, _Index1)));
 
  
 		float t = step(_AnimMark_var.r, _Progress);
@@ -174,8 +186,8 @@
 		float t = (_AnimMark_var.r + 1)*(1 - _Progress);
 		float2 uv1 = uv0;
 		uv1.x += t;
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),_Index0));
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv1, _TextureArray),_Index1));
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray), UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv1, _TextureArray),UNITY_ACCESS_INSTANCED_PROP(Props, _Index1)));
  
 
 		float t1 = step(uv1.x , 1);
@@ -186,7 +198,7 @@
 
 		float2 uv1 = IN.texcoord;
 		float2 uv0 = uv1;
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv1, _TextureArray),_Index1));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv1, _TextureArray),UNITY_ACCESS_INSTANCED_PROP(Props, _Index1)));
  
 		float a = IN.texcoord.x;
 		float b = IN.texcoord.y;
@@ -196,7 +208,7 @@
 		float y0 = s - a;
 		float x0 = a - b + y0;
 		uv0 = t1*float2(x0, y0) + (1 - t1)*uv0;
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),_Index0));
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray), UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
 		 
 		return t * color2 + (1 - t)* color1;
 
@@ -209,20 +221,20 @@
 		uv0.x = (uv0.x - 0.5)*    lerp(1, 2, uv0.y *_Progress * 2) + 0.5;
 		float t0 = step(uv0.y, 1) *step(0,uv0.x)*step(uv0.x,1);
  
-		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),_Index0));
+		float4 color1 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray), UNITY_ACCESS_INSTANCED_PROP(Props, _Index0)));
 		uv0 = IN.texcoord;
 		uv0.y -= f0;
 		uv0.y /= _Progress;
 		uv0.x = (uv0.x - 0.5)* lerp(1 / _Progress,1 , uv0.y) + 0.5;
 		float t1 = step(0,uv0.y)*step(0, uv0.x)*step(uv0.x, 1);
-		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),_Index1));
+		float4 color2 = UNITY_SAMPLE_TEX2DARRAY(_TextureArray, float3(TRANSFORM_TEX(uv0, _TextureArray),UNITY_ACCESS_INSTANCED_PROP(Props, _Index1)));
 	
 
 
 	float tf = step(_Progress , 0.5);
 	float t = t0*tf + t1*(1 - tf);
 	float4 final = tf*color1 + (1 - tf)*color2;
-	return _BackgroundColor *(1 - t) + final*t;
+	return UNITY_ACCESS_INSTANCED_PROP(Props, _BackgroundColor) *(1 - t) + final*t;
 
 #endif
 
