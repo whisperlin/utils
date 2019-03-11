@@ -145,12 +145,8 @@
 
 		 
 			float3 DirDiff = DirectionalLightColor.rgb*DirectionalLight(worldNormal, lightDir)*DirectionalLightIntensity*_Diffuse.rgb;
-			float3 PointLightDiff = PointLightColor*PointLight(worldNormal,PointLightPosition,i.worldPos,PointLightRange)*PointLightIntensity *_Diffuse.rgb *0.1;
-
-
-			 
-
-			float3 SportLightDiff = Spotlight(worldNormal, SpotLightPosition, i.worldPos, SpotLightRange, -SpotDirection,  SpotlightSpotAngle0, SpotlightSpotAngle1)*SpotlightColor*SpotLightIntensity*_Diffuse.rgb*0.1 ;
+			float3 PointLightDiff = PointLightColor*PointLight(worldNormal,PointLightPosition,i.worldPos,PointLightRange)*PointLightIntensity *_Diffuse.rgb ;
+			float3 SportLightDiff = Spotlight(worldNormal, SpotLightPosition, i.worldPos, SpotLightRange, -SpotDirection,  SpotlightSpotAngle0, SpotlightSpotAngle1)*SpotlightColor*SpotLightIntensity*_Diffuse.rgb ;
 			
 			//return float4(SportLightDiff, 1);
 			float3 c = ambient + DirDiff + PointLightDiff +SportLightDiff;
