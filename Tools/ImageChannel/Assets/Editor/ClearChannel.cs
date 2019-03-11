@@ -12,6 +12,7 @@ public class ClearChannel : EditorWindow {
 	}
 	bool [] cha = new bool[4];
 	Texture2D  editorTex ;
+
 	void OnGUI()
 	{
  

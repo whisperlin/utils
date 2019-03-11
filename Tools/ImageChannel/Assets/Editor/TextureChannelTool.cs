@@ -97,8 +97,91 @@ public class TextureChannelTool : EditorWindow {
 		GameObject.DestroyImmediate (black);
 
 	}
-	int toolBar = 0;
-	void OnGUI()
+
+    void CombineMesh2(string savePath)
+    {
+        Texture2D black = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+        black.SetPixel(0, 0, Color.black);
+        black.Apply();
+        int width = 0;
+        int height = 0;
+        for (int i = 0; i < editorArray.Length; i++)
+        {
+            if (null == editorArray[i])
+            {
+                editorArray[i] = black;
+                continue;
+            }
+            width = Mathf.Max(width, editorArray[i].width);
+            height = Mathf.Max(height, editorArray[i].height);
+        }
+        if (width == 0)
+            return;
+        RenderTexture[] temp = new RenderTexture[editorArray.Length];
+        Texture2D[] temp2 = new Texture2D[editorArray.Length];
+
+        for (int i = 0; i < editorArray.Length; i++)
+        {
+            temp[i] = RenderTexture.GetTemporary(width, height);
+
+            if (null != editorArray[i])
+            {
+                Graphics.Blit(editorArray[i], temp[i]);
+            }
+
+
+            temp2[i] = new Texture2D(width, height, TextureFormat.RGBA32, false);
+
+            RenderTexture.active = temp[i];
+            temp2[i].ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            temp2[i].Apply();
+            RenderTexture.ReleaseTemporary(temp[i]);
+        }
+
+        Texture2D final = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        float[] _cols = new float[4];
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    switch (types[k])
+                    {
+                        case OPTIONS.R:
+                            _cols[k] = temp2[k].GetPixel(i, j).r;
+                            break;
+                        case OPTIONS.G:
+                            _cols[k] = temp2[k].GetPixel(i, j).g;
+                            break;
+                        case OPTIONS.B:
+                            _cols[k] = temp2[k].GetPixel(i, j).b;
+                            break;
+                        default:
+                            _cols[k] = temp2[k].GetPixel(i, j).a;
+                            break;
+                    }
+                }
+
+                final.SetPixel(i, j, new Color(_cols[0], _cols[1], _cols[2], _cols[3]));
+            }
+        }
+        final.Apply();
+        for (int i = 0; i < editorArray.Length; i++)
+        {
+            GameObject.DestroyImmediate(temp2[i]);
+        }
+        byte[] date = final.EncodeToPNG();
+        //byte [] date =  final.EncodeToPNG ();
+        System.IO.File.WriteAllBytes(savePath, date);
+        GameObject.DestroyImmediate(final);
+        GameObject.DestroyImmediate(black);
+
+    }
+    int toolBar = 0;
+    bool isTGA = true;
+
+    void OnGUI()
 	{
 		
 		GUILayout.Label ("R通道");
@@ -113,8 +196,9 @@ public class TextureChannelTool : EditorWindow {
 		GUILayout.Label ("A通道");
 		editorArray [3] = (Texture2D)EditorGUILayout.ObjectField (editorArray [3], typeof(Texture2D));
 		types[3] = (OPTIONS)EditorGUILayout.EnumPopup("来自通道:", types[3] );
-		 
-		if (GUILayout.Button ("合成")) {
+
+        isTGA = EditorGUILayout.Toggle("tga", isTGA);
+        if (GUILayout.Button ("合成")) {
 			bool found = false;
 			for (int i = 0; i < 4; i++) {
 				if (editorArray[i] != null)
@@ -124,12 +208,25 @@ public class TextureChannelTool : EditorWindow {
 				EditorUtility.DisplayDialog ("提示", "没有图片呗选择", "ok");
 				return;
 			}
-			string path = EditorUtility.SaveFilePanelInProject("Save Texture",    "TextureName", "tga",
-				"请输入保存文件名");
-			if (path.Length != 0) 
-			{
-				CombineMesh (path);
-			}
+            if (isTGA)
+            {
+                string path = EditorUtility.SaveFilePanelInProject("Save Texture", "TextureName", "tga",
+                "请输入保存文件名");
+                if (path.Length != 0)
+                {
+                    CombineMesh(path);
+                }
+            }
+            else
+            {
+                string path = EditorUtility.SaveFilePanelInProject("Save Texture", "TextureName", "png",
+                "请输入保存文件名");
+                if (path.Length != 0)
+                {
+                    CombineMesh2(path);
+                }
+            }
+			
 		}
 	}
 }
