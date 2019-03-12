@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: PhoneMod5
+  m_Shader: {fileID: 4800000, guid: 729d2f55a0f31344d9607c93014405b6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 801839271cf01b44aaac81cbde03a387, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: 31c6ef1b57ea93e44b6cfa724f977394, type: 3}
+        m_Scale: {x: 1000, y: 1000}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - FUR_MULTIPLIER: 0
+    - _Cutoff: 0
+    - _CutoffEnd: 0.747
+    - _EdgeFade: 0.313
+    - _FurLength: 0.049
+    - _Gloss: 256
+    - _GravityStrength: 0.2
+    - _LodLevelDistance: 8.5
+    - _MinMapPower: 1
+    - _SpecularStrength: 0.164
+    - _Speed: 2.02
+    m_Colors:
+    - _Ambient: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Gravity: {r: 2, g: 0, b: 2, a: 0}
+    - _Specular: {r: 1, g: 1, b: 1, a: 1}
