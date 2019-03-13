@@ -6,11 +6,11 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pbr
-  m_Shader: {fileID: 4800000, guid: b6ead1b4abc3a6043bcb677a0e142083, type: 3}
+  m_Name: pbr_arm
+  m_Shader: {fileID: 4800000, guid: d4146d71308899e46a2182f0c589415a, type: 3}
   m_ShaderKeywords: _UNITY_BRDF_ON
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -67,13 +67,14 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _ENABLE_ARM: 0
     - _ENABLE_Rad: 0
     - _ENABLE_Unity: 0
-    - _Gloss: 0
+    - _Gloss: 0.565
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02

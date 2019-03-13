@@ -1,5 +1,5 @@
 
-Shader "Shader Forge/PBR" {
+Shader "Arm/PBR" {
     Properties {
         _BumpMap ("Normal Map", 2D) = "bump" {}
         _Color ("Color", Color) = (0.5019608,0.5019608,0.5019608,1)
@@ -7,11 +7,9 @@ Shader "Shader Forge/PBR" {
         _Metallic ("Metallic", Range(0, 1)) = 0
         _Gloss ("Gloss", Range(0, 1)) = 0.8
 
-		[Toggle] _ENABLE_Rad("ENABLE_Rad", Float) = 0
+		[Toggle] _ENABLE_ARM("ENABLE_Rad", Float) = 0
  
-		_IndirSP("_IndirSP", 2D) = "white" {}
-
-		_BrdfRad("_BrdfRad", 2D) = "white" {}
+ 
 
     }
     SubShader {
@@ -42,7 +40,7 @@ Shader "Shader Forge/PBR" {
             #pragma multi_compile DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
             #pragma multi_compile_fog
 
-			#pragma multi_compile  _ENABLE_RAD_OFF _ENABLE_RAD_ON
+			#pragma multi_compile  _ENABLE_ARM_OFF _ENABLE_ARM_ON
  
 		
             #pragma only_renderers d3d9 d3d11 glcore gles 
@@ -50,8 +48,8 @@ Shader "Shader Forge/PBR" {
             uniform float4 _Color;
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform sampler2D _BumpMap; uniform float4 _BumpMap_ST;
-			uniform sampler2D _IndirSP;
-			uniform sampler2D _BrdfRad;
+ 
+ 
 			
             uniform float _Metallic;
             uniform float _Gloss;
@@ -113,6 +111,28 @@ Shader "Shader Forge/PBR" {
 				return (1.0 / 3.1415926535) * sqr(roughness / (NdotHSqr * (roughnessSqr + TanNdotHSqr)));
 			}
 
+
+			float ArmBRDF(float roughness ,float NdotH ,float LdotH)
+			{
+				float n4 = roughness*roughness*roughness*roughness;
+				float c = NdotH*NdotH   *   (n4-1) +1;
+				float b = 4*3.14*       c*c  *     LdotH*LdotH     *(roughness+0.5);
+				return n4/b;
+
+			}
+			float ArmBRDFEnv(float roughness ,float NdotV )
+			{
+				float a1 = (1-max(roughness,NdotV));
+				return a1*a1*a1;
+
+			}
+
+			inline half3 DiffuseAndSpecularFromMetallic2 (half3 albedo, half metallic, out half3 specColor, out half oneMinusReflectivity)
+			{
+			    specColor = lerp (float3(0,0,0), albedo, metallic);
+			    oneMinusReflectivity = OneMinusReflectivityFromMetallic(metallic);
+			    return albedo * oneMinusReflectivity;
+			}
             float4 frag(VertexOutput i) : COLOR {
                 i.normalDir = normalize(i.normalDir);
                 float3x3 tangentTransform = float3x3( i.tangentDir, i.bitangentDir, i.normalDir);
@@ -183,34 +203,25 @@ Shader "Shader Forge/PBR" {
 
 				float NdotV = abs(dot(normalDirection, viewDirection));
 				float NdotH = saturate(dot(normalDirection, halfDirection));
-#ifdef _ENABLE_RAD_ON 
-				
-				float4 _BrdfRad_var = tex2D(_BrdfRad, float2( (LdotH+1)*0.5 , gloss));
-#else 
-				 
  
-#endif
 
                 float3 diffuseColor = (_MainTex_var.rgb*_Color.rgb); // Need this for specular when using metallic
-                diffuseColor = DiffuseAndSpecularFromMetallic( diffuseColor, specularColor, specularColor, specularMonochrome );
+                diffuseColor = DiffuseAndSpecularFromMetallic2( diffuseColor, specularColor, specularColor, specularMonochrome );
                 specularMonochrome = 1.0-specularMonochrome;
                
- 
-
+ 				 
+ #ifdef _ENABLE_ARM_ON 
+                float specularPBL = ArmBRDF( roughness , NdotH , LdotH);
+#else
                 float GeometricShadow = SmithJointGGXVisibilityTerm( NdotL, NdotV, roughness );
                 float NormalDistribution = GGXTerm(NdotH, roughness);
-                
-				
- 
-               //F0*(1 - t) + t;
-#ifdef _ENABLE_RAD_ON 
-				float3 FresnelFunction = (specularColor *(1 - _BrdfRad_var.x) + _BrdfRad_var.x);
-#else
-				float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
-#endif
- 
+                float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
+                float specularPBL = (GeometricShadow*NormalDistribution) * UNITY_PI;
 
-				float specularPBL = (GeometricShadow*NormalDistribution) * UNITY_PI;
+#endif
+
+				
+
 				#ifdef UNITY_COLORSPACE_GAMMA
 					specularPBL = sqrt(max(1e-4h, specularPBL));
 				#endif
@@ -223,23 +234,42 @@ Shader "Shader Forge/PBR" {
 
 				//float3 directSpecular = attenColor*specularPBL * UNITY_PI;
 				//float3 directSpecular = attenColor*specularPBL;
-				float3 directSpecular = attenColor*specularPBL*FresnelFunction;
+
+				 #ifdef _ENABLE_ARM_ON 
+				  float3 directSpecular = attenColor*specularPBL;
+				 #else
+				 float3 directSpecular = attenColor*specularPBL*FresnelFunction;
+				 #endif
+				
  
-				/**
-				float3 brdf =   (specularColor *NormalDistribution * FresnelFunction * GeometricShadow) / (4 * (NdotL * NdotV))  ;
 			 
-				brdf = max(0, brdf);
-				float3 directSpecular = attenColor*brdf;
-				*/
  
 				 
+				//return float4(specularColor,1);
+#ifdef _ENABLE_ARM_ON 
+				//float3 indirectSpecular = (gi.indirect.specular);
+				//indirectSpecular *= specularColor ;
+				//indirectSpecular += ArmBRDFEnv( roughness , NdotV );
 
-#ifdef _ENABLE_RAD_ON 
 
-				float4 _IndirSP_var = tex2D(_IndirSP, float2(NdotV, gloss));
-				half grazingTerm = saturate(gloss + specularMonochrome);
+
+				half surfaceReduction;
+				#ifdef UNITY_COLORSPACE_GAMMA
+					surfaceReduction = 1.0 - 0.28*roughness*perceptualRoughness;
+				#else
+					surfaceReduction = 1.0 / (roughness*roughness + 1.0);
+				#endif
+
+		 
 				float3 indirectSpecular = (gi.indirect.specular);
-				indirectSpecular *= specularColor*_IndirSP_var.x + grazingTerm* _IndirSP_var.y;
+				indirectSpecular *= specularColor;
+				indirectSpecular +=  ArmBRDFEnv( roughness , NdotV );
+ 
+
+				indirectSpecular *= surfaceReduction;
+
+				//return float4(indirectSpecular,1);
+			 
 #else
 				half surfaceReduction;
 				#ifdef UNITY_COLORSPACE_GAMMA
@@ -250,8 +280,12 @@ Shader "Shader Forge/PBR" {
 				half grazingTerm = saturate(gloss + specularMonochrome);
 				float3 indirectSpecular = (gi.indirect.specular);
 
-				indirectSpecular *= FresnelLerp(specularColor, grazingTerm, NdotV);
-				indirectSpecular *= surfaceReduction;
+				float3 spv =  FresnelLerp(specularColor, grazingTerm, NdotV)*surfaceReduction;
+				indirectSpecular *= spv;
+				//return float4(spv,1);
+				//indirectSpecular *= FresnelLerp(specularColor, grazingTerm, NdotV);
+				//indirectSpecular *= surfaceReduction;
+
 #endif
                 float3 specular = (directSpecular + indirectSpecular);
                
