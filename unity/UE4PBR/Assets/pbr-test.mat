@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: pbr-test
-  m_Shader: {fileID: 4800000, guid: 9347ae9f3f97c3f469ee5b5b14786640, type: 3}
-  m_ShaderKeywords: _FRESNELMODEL_SCHLICK _GEOSHADOWMODEL_DUER _METALLICTYPE_OTHER
+  m_Shader: {fileID: 4800000, guid: d26301769663b57428aa89c3e63cbae3, type: 3}
+  m_ShaderKeywords: _ENABLE_D_ON _FRESNELMODEL_SCHLICK _GEOSHADOWMODEL_DUER _METALLICTYPE_OTHER
     _NORMALDISTMODEL_GGX _SMITHGEOSHADOWMODEL_SCHLICKGGX
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -66,26 +66,33 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _ENABLE_D: 1
+    - _ENABLE_F: 0
+    - _ENABLE_G: 0
+    - _ENABLE_NDF: 0
     - _FresnelModel: 0
     - _GeoShadowModel: 2
     - _Gloss: 0.853
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.883
     - _GlossyReflections: 1
     - _Ior: 2.93
-    - _Metallic: 0.375
+    - _Metallic: 0.677
     - _MetallicType: 1
     - _Mode: 0
-    - _NormalDistModel: 3
+    - _NormalDistModel: 4
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmithGeoShadowModel: 6
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularPower: 1
+    - _SpecularPower: 0.156
+    - _SpecularRange: 15.5
     - _SrcBlend: 1
     - _UVSec: 0
+    - _UnityLightingContribution: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.6179081, g: 0.6544118, b: 0.38975996, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
