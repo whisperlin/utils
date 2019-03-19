@@ -127,6 +127,13 @@ Shader "Arm/PBR" {
 
 			}
 
+			inline half3 FresnelTermUnity (half3 F0, half cosA)
+			{
+				float t0 = 1 - cosA;
+			    half t = t0*t0*t0*t0*t0;   // ala Schlick interpoliation
+			    return F0 + (1-F0) * t;
+			}
+
 			inline half3 DiffuseAndSpecularFromMetallic2 (half3 albedo, half metallic, out half3 specColor, out half oneMinusReflectivity)
 			{
 			    specColor = lerp (float3(0,0,0), albedo, metallic);
@@ -282,9 +289,7 @@ Shader "Arm/PBR" {
 
 				float3 spv =  FresnelLerp(specularColor, grazingTerm, NdotV)*surfaceReduction;
 				indirectSpecular *= spv;
-				//return float4(spv,1);
-				//indirectSpecular *= FresnelLerp(specularColor, grazingTerm, NdotV);
-				//indirectSpecular *= surfaceReduction;
+
 
 #endif
                 float3 specular = (directSpecular + indirectSpecular);

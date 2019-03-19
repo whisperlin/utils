@@ -206,6 +206,7 @@ Shader "Shader Forge/PBR" {
 #ifdef _ENABLE_RAD_ON 
 				float3 FresnelFunction = (specularColor *(1 - _BrdfRad_var.x) + _BrdfRad_var.x);
 #else
+				//float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
 				float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
 #endif
  
