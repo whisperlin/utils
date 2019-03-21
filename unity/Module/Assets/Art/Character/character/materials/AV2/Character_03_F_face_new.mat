@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Character_03_F_face_new
-  m_Shader: {fileID: 4800000, guid: 3df77fb920addf14ca26a33ed47d540c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5cd4ccd9665402f41aa7e82443ba7b1b, type: 3}
   m_ShaderKeywords: _EMISSION _ENABLE_CUT _METALLICGLOSSMAP _NORMALMAP _SPECGLOSSMAP
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -24,6 +24,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - SPLSampleMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BRDFTex:
+        m_Texture: {fileID: 2800000, guid: ac0e779f5f82548468e1581c43fb52ca, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -105,9 +109,11 @@ Material:
     - IBL_Intensity: 1.9
     - SBL_Intensity: 0
     - SPL_Intensity: 1
+    - _AlbedoPower: 7.3
     - _BP_Gloss: 0.8
     - _BlinnPhongSP: 0
     - _BumpScale: 1
+    - _CurveScale: -0.5
     - _Cutoff: 0.5
     - _DISABLE_IBL_DIFFUSE: 0
     - _DetailNormalMapScale: 1

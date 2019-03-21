@@ -2119,7 +2119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &207714449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2615,7 +2615,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 235353131}
   m_LocalRotation: {x: 0.0016638512, y: 0.9827118, z: -0.008842909, w: 0.18492314}
-  m_LocalPosition: {x: -1.3143637, y: 24.237873, z: 6.3227057}
+  m_LocalPosition: {x: -2.899, y: 24.237873, z: 6.3227057}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 684344081}
@@ -2625,15 +2625,15 @@ Transform:
 --- !u!114 &235353133
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114178839163738082, guid: 3038e24276967f7429bbd8c41c317816,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 235353131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: d09a9ddc034a3974cbda56ea12b0a867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mat: {fileID: 2100000, guid: 600c2c73332dd9f4c96488866c86cbed, type: 2}
 --- !u!20 &235353134
 Camera:
   m_ObjectHideFlags: 0
