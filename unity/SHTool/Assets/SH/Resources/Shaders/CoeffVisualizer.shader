@@ -32,15 +32,15 @@
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
-			float4 c0;
-			float4 c1;
-			float4 c2;
-			float4 c3;
-			float4 c4;
-			float4 c5;
-			float4 c6;
-			float4 c7;
-			float4 c8;
+			float4 g_sph0;
+			float4 g_sph1;
+			float4 g_sph2;
+			float4 g_sph3;
+			float4 g_sph4;
+			float4 g_sph5;
+			float4 g_sph6;
+			float4 g_sph7;
+			float4 g_sph8;
 
 			samplerCUBE input;
 			float _Mode;
@@ -104,7 +104,7 @@
 			{
 				float3 v = i.texcoord.xyz;
 				float4 original = texCUBE(input, i.texcoord);
-				float4 approx = c0 * Y0(v) + c1 * Y1(v) + c2 * Y2(v) + c3 * Y3(v) + c4 * Y4(v) + c5 * Y5(v) + c6 * Y6(v) + c7 * Y7(v) + c8 * Y8(v);
+				float4 approx = g_sph0 * Y0(v) + g_sph1 * Y1(v) + g_sph2 * Y2(v) + g_sph3 * Y3(v) + g_sph4 * Y4(v) + g_sph5 * Y5(v) + g_sph6 * Y6(v) + g_sph7 * Y7(v) + g_sph8 * Y8(v);
 				return lerp(original, approx, _Mode);
 			}
 			ENDCG

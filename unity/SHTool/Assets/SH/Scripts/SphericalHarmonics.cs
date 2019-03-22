@@ -324,6 +324,8 @@ public class SphericalHarmonics
         Color[] input_face;
         int size = input.width;
 
+        
+
         //cycle on all 6 faces of the cubemap
         for (int face = 0; face < 6; ++face)
         {

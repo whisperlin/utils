@@ -12,24 +12,58 @@ uniform float4 g_sph8;
 
  
 
-float3 g_sh(  float3 worldNormal) {
-	  float x = worldNormal.x;
-	  float y = worldNormal.y;
-	  float z = worldNormal.z;
+float Y0(float3 v)
+{
+	return 0.2820947917f;
+}
+float Y1(float3 v)
+{
+	return 0.4886025119f * v.y;
+}
+float Y2(float3 v)
+{
+	return 0.4886025119f * v.z;
+}
+float Y3(float3 v)
+{
+	return 0.4886025119f * v.x;
+}
+float Y4(float3 v)
+{
+	return 1.0925484306f * v.x * v.y;
+}
+float Y5(float3 v)
+{
+	return 1.0925484306f * v.y * v.z;
+}
+float Y6(float3 v)
+{
+	return 0.3153915652f * (3.0f * v.z * v.z - 1.0f);
+}
+float Y7(float3 v)
+{
+	return 1.0925484306f * v.x * v.z;
+}
+float Y8(float3 v)
+{
+	return 0.5462742153f * (v.x * v.x - v.y * v.y);
+}
 
-	  float3 result = (
-	    g_sph0.xyz +
 
-	    g_sph1.xyz * x +
-	    g_sph2.xyz * y +
-	    g_sph3.xyz * z +
 
-	    g_sph4.xyz * z * x +
-	    g_sph5.xyz * y * z +
-	    g_sph6.xyz * y * x +
-	    g_sph7.xyz * (3.0 * z * z - 1.0) +
-	    g_sph8.xyz * (x*x - y*y) 
-	  );
 
-	  return max(result, float3(0,0,0));
+float3 g_sh(float3 v)
+{
+	float3 result = (
+		g_sph0.xyz * Y0(v) +
+		g_sph1.xyz * Y1(v) +
+		g_sph2.xyz * Y2(v) +
+		g_sph3.xyz * Y3(v) +
+		g_sph4.xyz * Y4(v) +
+		g_sph5.xyz * Y5(v) +
+		g_sph6.xyz * Y6(v) +
+		g_sph7.xyz * Y7(v) +
+		g_sph8.xyz * Y8(v)
+	);
+	return max(result, float3(0, 0, 0));
 }
