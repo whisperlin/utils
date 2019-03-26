@@ -34,6 +34,7 @@
 				float4 SceneColor = tex2D(_MainTex, i.uv);
 				float SSSIntencity = (_SSSScale * _CameraDepthTexture_TexelSize.x);
 				float3 XBlur = SSS(SceneColor, i.uv, float2(SSSIntencity, 0)).rgb;
+				 
 				return float4(XBlur, SceneColor.a);
 			}
 			ENDCG

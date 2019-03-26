@@ -249,14 +249,9 @@ Shader "Arm/PBR" {
 				 #endif
 				
  
-			 
  
-				 
-				//return float4(specularColor,1);
 #ifdef _ENABLE_ARM_ON 
-				//float3 indirectSpecular = (gi.indirect.specular);
-				//indirectSpecular *= specularColor ;
-				//indirectSpecular += ArmBRDFEnv( roughness , NdotV );
+ 
 
 
 
@@ -296,24 +291,14 @@ Shader "Arm/PBR" {
                
 /////// Diffuse:
                 NdotL = max(0.0,dot( normalDirection, lightDirection ));
-                //half fd90 = 0.5 + 2 * LdotH * LdotH * (1-gloss);
-                //float nlPow5 = Pow5(1-NdotL);
-                //float nvPow5 = Pow5(1-NdotV);
-
-
-                //
+ 
                 float3 directDiffuse =  NdotL * attenColor;
                 float3 indirectDiffuse = float3(0,0,0);
                 indirectDiffuse += gi.indirect.diffuse;
-
-                //return float4(specular,1);
+ 
                 float3 diffuse = (directDiffuse + indirectDiffuse) * diffuseColor;
 
  
-
-/// Final Color:
-
-				
                 float3 finalColor = diffuse + specular;
                 fixed4 finalRGBA = fixed4(finalColor,1);
                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
@@ -323,5 +308,5 @@ Shader "Arm/PBR" {
         }
     }
     FallBack "Diffuse"
-    CustomEditor "ShaderForgeMaterialInspector"
+ 
 }

@@ -31,8 +31,7 @@ ENDCG
 	{
 		Name "FORWARD"
 		Tags{ "LightMode" = "ForwardBase" }
-
-		Blend One Zero
+ 
 		ZWrite On
 
 		Stencil{
@@ -61,51 +60,8 @@ ENDCG
 	}
 		// ------------------------------------------------------------------
 		//  Additive forward pass (one light per pass)
-		Pass
-	{
-		Name "FORWARD_DELTA"
-		Tags{ "LightMode" = "ForwardAdd" }
-		Blend One One
-		Fog{ Color(0,0,0,0) } // in additive pass fog should be black
-		ZWrite Off
-		ZTest LEqual
-
-		CGPROGRAM
-#pragma target 3.0
-
-		// -------------------------------------
-
-
-#pragma shader_feature _NORMALMAP
-
-#pragma multi_compile_fwdadd_fullshadows
-#pragma multi_compile_fog
-		// Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-		//#pragma multi_compile _ LOD_FADE_CROSSFADE
-
-#pragma vertex vertAdd
-#pragma fragment fragAdd
-#include "UnityStandardCoreForward.cginc"
-
-		ENDCG
-	}
-		// ------------------------------------------------------------------
-		// Extracts information for lightmapping, GI (emission, albedo, ...)
-		// This pass it not used during regular rendering.
-		Pass
-	{
-		Name "META"
-		Tags{ "LightMode" = "Meta" }
-
-		Cull Off
-
-		CGPROGRAM
-#pragma vertex vert_meta
-#pragma fragment frag_meta
-
-#include "UnityStandardMeta.cginc"
-		ENDCG
-	}
+		
+	 
 	}
 
 	FallBack "Standard"

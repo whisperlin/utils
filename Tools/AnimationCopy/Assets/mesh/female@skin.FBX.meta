@@ -1,0 +1,340 @@
+fileFormatVersion: 2
+guid: 90f638576bbda6e45988351bac7211af
+timeCreated: 1548741830
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bip001
+    100002: Bip001 Head
+    100004: Bip001 L Calf
+    100006: Bip001 L Clavicle
+    100008: Bip001 L Finger0
+    100010: Bip001 L Finger01
+    100012: Bip001 L Finger1
+    100014: Bip001 L Finger11
+    100016: Bip001 L Finger2
+    100018: Bip001 L Finger21
+    100020: Bip001 L Foot
+    100022: Bip001 L Forearm
+    100024: Bip001 L Hand
+    100026: Bip001 L Thigh
+    100028: Bip001 L Toe0
+    100030: Bip001 L UpperArm
+    100032: Bip001 Neck
+    100034: Bip001 Pelvis
+    100036: Bip001 R Calf
+    100038: Bip001 R Clavicle
+    100040: Bip001 R Finger0
+    100042: Bip001 R Finger01
+    100044: Bip001 R Finger1
+    100046: Bip001 R Finger11
+    100048: Bip001 R Finger2
+    100050: Bip001 R Finger21
+    100052: Bip001 R Foot
+    100054: Bip001 R Forearm
+    100056: Bip001 R Hand
+    100058: Bip001 R Thigh
+    100060: Bip001 R Toe0
+    100062: Bip001 R UpperArm
+    100064: Bip001 Spine
+    100066: Bip001 Spine1
+    100068: Bone_youbi01
+    100070: Bone_youbi02
+    100072: Bone_zuobi01
+    100074: Bone_zuobi02
+    100076: bottom
+    100078: chargeur_M4A1
+    100080: female
+    100082: //RootNode
+    100084: gunpoint_a
+    100086: gunpoint_groza
+    100088: gunpoint_k
+    100090: gunpoint_m
+    100092: gunpoint_m16a4
+    100094: gunpoint_m16a4 1
+    100096: gunpoint_m249
+    100098: gunpoint_mini14
+    100100: gunpoint_sks
+    100102: gunpoint_tommy_gun
+    100104: gunpoint_u
+    100106: gunpoint_ump9
+    100108: gunpoint_vector
+    100110: gunpoint_vss_vintorez
+    100112: HandGunHold
+    100114: HandLeftGunHold
+    100116: M_ak47_01
+    100118: M_awm_01
+    100120: M_groza_01
+    100122: M_k98k_01
+    100124: M_m16a4_01
+    100126: M_m249_01
+    100128: M_m24_01
+    100130: M_m416_01
+    100132: M_mini14_01
+    100134: M_scar_l_01
+    100136: M_sks_01
+    100138: M_tommy_gun_01
+    100140: M_ump9_01
+    100142: M_uzi_01
+    100144: M_vector_01
+    100146: M_vss_vintorez_01
+    100148: master_M4A1
+    100150: player_root
+    100152: position_master_fix_M4A1
+    100154: position_master_M4A1
+    100156: upper
+    100158: Bip001 Footsteps
+    100160: yinying
+    100162: M_ak47_01_F
+    100164: M_awm_01_F
+    100166: M_groza_01_F
+    100168: M_k98k_01_F
+    100170: M_m16a4_01_F
+    100172: M_m249_01_F
+    100174: M_m24_01_F
+    100176: M_m416_01_F
+    100178: M_mini14_01_F
+    100180: M_scar_l_01_F
+    100182: M_sks_01_F
+    100184: M_tommy_gun_01_F
+    100186: M_ump9_01_F
+    100188: M_uzi_01_F
+    100190: M_vector_01_F
+    100192: M_vss_vintorez_01_F
+    400000: Bip001
+    400002: Bip001 Head
+    400004: Bip001 L Calf
+    400006: Bip001 L Clavicle
+    400008: Bip001 L Finger0
+    400010: Bip001 L Finger01
+    400012: Bip001 L Finger1
+    400014: Bip001 L Finger11
+    400016: Bip001 L Finger2
+    400018: Bip001 L Finger21
+    400020: Bip001 L Foot
+    400022: Bip001 L Forearm
+    400024: Bip001 L Hand
+    400026: Bip001 L Thigh
+    400028: Bip001 L Toe0
+    400030: Bip001 L UpperArm
+    400032: Bip001 Neck
+    400034: Bip001 Pelvis
+    400036: Bip001 R Calf
+    400038: Bip001 R Clavicle
+    400040: Bip001 R Finger0
+    400042: Bip001 R Finger01
+    400044: Bip001 R Finger1
+    400046: Bip001 R Finger11
+    400048: Bip001 R Finger2
+    400050: Bip001 R Finger21
+    400052: Bip001 R Foot
+    400054: Bip001 R Forearm
+    400056: Bip001 R Hand
+    400058: Bip001 R Thigh
+    400060: Bip001 R Toe0
+    400062: Bip001 R UpperArm
+    400064: Bip001 Spine
+    400066: Bip001 Spine1
+    400068: Bone_youbi01
+    400070: Bone_youbi02
+    400072: Bone_zuobi01
+    400074: Bone_zuobi02
+    400076: bottom
+    400078: chargeur_M4A1
+    400080: female
+    400082: //RootNode
+    400084: gunpoint_a
+    400086: gunpoint_groza
+    400088: gunpoint_k
+    400090: gunpoint_m
+    400092: gunpoint_m16a4
+    400094: gunpoint_m16a4 1
+    400096: gunpoint_m249
+    400098: gunpoint_mini14
+    400100: gunpoint_sks
+    400102: gunpoint_tommy_gun
+    400104: gunpoint_u
+    400106: gunpoint_ump9
+    400108: gunpoint_vector
+    400110: gunpoint_vss_vintorez
+    400112: HandGunHold
+    400114: HandLeftGunHold
+    400116: M_ak47_01
+    400118: M_awm_01
+    400120: M_groza_01
+    400122: M_k98k_01
+    400124: M_m16a4_01
+    400126: M_m249_01
+    400128: M_m24_01
+    400130: M_m416_01
+    400132: M_mini14_01
+    400134: M_scar_l_01
+    400136: M_sks_01
+    400138: M_tommy_gun_01
+    400140: M_ump9_01
+    400142: M_uzi_01
+    400144: M_vector_01
+    400146: M_vss_vintorez_01
+    400148: master_M4A1
+    400150: player_root
+    400152: position_master_fix_M4A1
+    400154: position_master_M4A1
+    400156: upper
+    400158: Bip001 Footsteps
+    400160: yinying
+    400162: M_ak47_01_F
+    400164: M_awm_01_F
+    400166: M_groza_01_F
+    400168: M_k98k_01_F
+    400170: M_m16a4_01_F
+    400172: M_m249_01_F
+    400174: M_m24_01_F
+    400176: M_m416_01_F
+    400178: M_mini14_01_F
+    400180: M_scar_l_01_F
+    400182: M_sks_01_F
+    400184: M_tommy_gun_01_F
+    400186: M_ump9_01_F
+    400188: M_uzi_01_F
+    400190: M_vector_01_F
+    400192: M_vss_vintorez_01_F
+    4300000: female
+    4300002: M_uzi_01
+    4300004: M_awm_01
+    4300006: M_m416_01
+    4300008: M_ak47_01
+    4300010: M_groza_01
+    4300012: M_k98k_01
+    4300014: M_m16a4_01
+    4300016: M_m24_01
+    4300018: M_m249_01
+    4300020: M_scar_l_01
+    4300022: M_sks_01
+    4300024: M_tommy_gun_01
+    4300026: M_ump9_01
+    4300028: M_vector_01
+    4300030: M_vss_vintorez_01
+    4300032: M_mini14_01
+    4300034: yinying
+    4300036: M_uzi_01_F
+    4300038: M_awm_01_F
+    4300040: M_m416_01_F
+    4300042: M_ak47_01_F
+    4300044: M_groza_01_F
+    4300046: M_k98k_01_F
+    4300048: M_m16a4_01_F
+    4300050: M_m24_01_F
+    4300052: M_m249_01_F
+    4300054: M_scar_l_01_F
+    4300056: M_sks_01_F
+    4300058: M_tommy_gun_01_F
+    4300060: M_ump9_01_F
+    4300062: M_vector_01_F
+    4300064: M_vss_vintorez_01_F
+    4300066: M_mini14_01_F
+    9500000: //RootNode
+    13700000: female
+    13700002: M_ak47_01
+    13700004: M_awm_01
+    13700006: M_groza_01
+    13700008: M_k98k_01
+    13700010: M_m16a4_01
+    13700012: M_m249_01
+    13700014: M_m24_01
+    13700016: M_m416_01
+    13700018: M_mini14_01
+    13700020: M_scar_l_01
+    13700022: M_sks_01
+    13700024: M_tommy_gun_01
+    13700026: M_ump9_01
+    13700028: M_uzi_01
+    13700030: M_vector_01
+    13700032: M_vss_vintorez_01
+    13700034: yinying
+    13700036: M_ak47_01_F
+    13700038: M_awm_01_F
+    13700040: M_groza_01_F
+    13700042: M_k98k_01_F
+    13700044: M_m16a4_01_F
+    13700046: M_m249_01_F
+    13700048: M_m24_01_F
+    13700050: M_m416_01_F
+    13700052: M_mini14_01_F
+    13700054: M_scar_l_01_F
+    13700056: M_sks_01_F
+    13700058: M_tommy_gun_01_F
+    13700060: M_ump9_01_F
+    13700062: M_uzi_01_F
+    13700064: M_vector_01_F
+    13700066: M_vss_vintorez_01_F
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
