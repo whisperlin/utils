@@ -4,11 +4,23 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public enum CameraEvn
+    {
+        ToFont,
+    }
     public int speed = 5;
-    float x = 45.0f;
-    float y = 30.0f;
+    public float x = 45.0f;
+    public float y = 30.0f;
     bool rotating = false;
-
+    private void Start()
+    {
+        GlobalEvent.AddEvent(CameraMovement.CameraEvn.ToFont, ToFontFun);
+    }
+    public void ToFontFun(params object[] objs)
+    {
+        this.x = (float)objs[0];
+        this.y = (float)objs[1];
+    }
     void LateUpdate()
     {
         if (RubiksCube.CCount==4)

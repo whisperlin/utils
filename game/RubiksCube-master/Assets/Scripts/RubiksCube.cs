@@ -10,6 +10,7 @@ public class RubiksCube : MonoBehaviour
     public int randomStep = 5;
     public float Alpha = 0.5f;
 	public Texture bump;
+    public GameObject explodeObj;
     public void SetSimple(bool b)
     {
         simple = b;
@@ -30,7 +31,13 @@ public class RubiksCube : MonoBehaviour
             }
 
         }*/
-        Debug.Log("is finish = " + isComplete());
+        bool b = isComplete();
+        if (b)
+        {
+            Explode();
+        }
+
+        Debug.Log("is finish = " + b);
 
 
     }
@@ -72,12 +79,14 @@ public class RubiksCube : MonoBehaviour
         {
             CheckInput();
             if (!isNew && isComplete() && !isExploded && !isRotating && Input.touchCount == 0)
-                Explode(3.0f, 500.0f);
+                Explode( );
         }
     }
     
     public void CreateCube()
     {
+        isExploded = false;
+        gameObject.SetActive(true);
         if (!isRotating && !isShuffling  )
         {
             foreach (GameObject cubelet in Cubelets)
@@ -156,6 +165,7 @@ public class RubiksCube : MonoBehaviour
                         return false;
                     }
                     mat = m0;
+                    
                 }
             }
             
@@ -178,20 +188,56 @@ public class RubiksCube : MonoBehaviour
         }
         return n;
     }
-    void Explode(float radius, float power)
+
+    bool ExplodeFace(List<GameObject> slice, Vector3 dir)
     {
-        /*
-        for (int i = 0, len = planes.Count; i < len; i++)
+        int count = slice.Count;
+        //Debug.Log(dir.ToString());
+        Material mat = null;
+        for (int i = 0; i < count; i++)
         {
-            Transform t = planes[i];
-            MeshRenderer mr = t.GetComponent<MeshRenderer>();
-            var mat = mr.sharedMaterials[1];
-            var newMat = GetMatExplode(mat);
-            mr.sharedMaterials[1] = newMat;
+
+            for (int j = 0; j < 6; j++)
+            {
+                GameObject g = slice[i].GetComponent<Cubelet>().Planes[j];
+                var u = g.transform.up;
+                float d = Vector3.Dot(dir, u);
+                if (d > 0.999f)
+                {
+                    //Debug.Log(g.transform.parent.name+"."+g.name+" "+d );
+                    //Debug.Log(u.ToString());
+                    var m0 = g.GetComponent<MeshRenderer>().sharedMaterials[1];
+                    if (mat && m0 != mat)
+                    {
+                        return false;
+                    }
+                    mat = m0;
+                    g.AddComponent<MeshExploder>();
+                }
+            }
+
 
         }
-        */
-            isExploded = true;
+        return true;
+    }
+    void Explode( )
+    {
+        if(explodeObj)
+        {
+            var t = explodeObj.transform;
+            int c = t.childCount ;
+            for (int i = 0; i < c ; i++)
+            {
+                t.GetChild(i).gameObject.BroadcastMessage("Explode");
+                GlobalEvent.DispatchEvent(CameraMovement.CameraEvn.ToFont ,-90f,14f);
+            }
+            
+         
+        }
+            
+        gameObject.SetActive(false);
+        
+        isExploded = true;
     }
 
     void FixCube()
@@ -225,7 +271,6 @@ public class RubiksCube : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 origin = ray.origin;
-
 
             movableSlices.Clear();
             movingSlice.Clear();
