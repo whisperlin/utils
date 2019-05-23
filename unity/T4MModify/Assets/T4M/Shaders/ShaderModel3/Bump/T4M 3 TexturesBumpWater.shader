@@ -1,12 +1,15 @@
 Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec Water" {
 	Properties{
-		_SpecColor("Specular Color", Color) = (1, 1, 1, 1)
-		_ShininessL0("Layer1Shininess", Range(0.03, 1)) = 0.078125
+		//_SpecColor("高光颜色", Color) = (1, 1, 1, 1)
+		//_ShininessL0("Layer1Shininess", Range(0.03, 1)) = 0.078125
 		_Splat0("Layer 1 (R)", 2D) = "white" {}
-		_ShininessL1("Layer2Shininess", Range(0.03, 1)) = 0.078125
-			_Splat1("Layer 2 (G)", 2D) = "white" {}
-		
-			_Splat2("Layer 3 (B)", 2D) = "white" {}
+		_SpecColor0("第一层", Color) = (1, 1, 1, 1)
+		[Toggle(SL1_BOOL)] _S_BOOL1("第一层地表开启高光", Int) = 0
+		//_ShininessL1("Layer2Shininess", Range(0.03, 1)) = 0.078125
+		_Splat1("Layer 2 (G)", 2D) = "white" {}
+		_SpecColor1("第二层", Color) = (1, 1, 1, 1)
+		[Toggle(SL2_BOOL)] _S_BOOL2("第二层地表开启高光", Int) = 0
+		_Splat2("Layer 3 (B)", 2D) = "white" {}
 		_BumpSplat0("Layer1Normalmap", 2D) = "bump" {}
 		_BumpSplat1("Layer2Normalmap", 2D) = "bump" {}
 		_BumpSplat2("Layer3Normalmap", 2D) = "bump" {}
@@ -15,19 +18,20 @@ Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec Water" {
 
 
 
-		_ShininessL2("水光照调节", Range(0.03, 1)) = 0.078125
+		//_ShininessL2("水光照调节", Range(0.03, 1)) = 0.078125
 		_TopColor("浅水色", Color) = (0.619, 0.759, 1, 1)
 		_ButtonColor("深水色", Color) = (0.35, 0.35, 0.35, 1)
 		_Gloss("水高光亮度", Range(0,1)) = 0.5
 		_WaveNormalPower("水法线强度",Range(0,1)) = 1
 		_WaveScale("水波纹缩放", Range(0.02,0.15)) = .07
 		_WaveSpeed("水流动速度", Vector) = (19,9,-16,-7)
-
+		_SpecColor2("水高光色", Color) = (1, 1, 1, 1)
 		
 		[KeywordEnum(Off, On)] _IsMetallic("是否开启金属度", Float) = 0
  
 		metallic_power("天空强度", Range(0,1)) = 1
 		metallic_color("天空颜色", Color) = (1, 1, 1, 0)
+		_Shininess("三层高光锐度", Vector) = (0.078125,0.078125,0.078125,0.078125)
 	}
 
 		SubShader{
@@ -66,6 +70,10 @@ CGPROGRAM
 #define WorldReflectionVector(data,normal) reflect (data.worldRefl, half3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal)))
 #define WorldNormalVector(data,normal) fixed3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal))
 #pragma multi_compile _ISMETALLIC_OFF _ISMETALLIC_ON  
+
+#pragma shader_feature SL1_BOOL
+#pragma shader_feature SL2_BOOL
+
  
 #include "UnityCG.cginc"
 
@@ -100,9 +108,10 @@ CGPROGRAM
 	sampler2D _Control;
 	sampler2D _BumpSplat0, _BumpSplat1, _BumpSplat2;
 	sampler2D _Splat0,_Splat1,_Splat2;
-	fixed _ShininessL0;
-	fixed _ShininessL1;
-	fixed _ShininessL2;
+	//fixed _ShininessL0;
+	//fixed _ShininessL1;
+	//fixed _ShininessL2;
+	fixed4 _Shininess;
 	uniform float4 _WaveSpeed;
 	uniform float _WaveScale;
 	uniform float _WaveNormalPower;
@@ -114,7 +123,12 @@ CGPROGRAM
  
 	float metallic_power;
 	float3 metallic_color;
-	void surf(Input IN, inout SurfaceOutput o , out half3 waterNormal,out half inWater) {
+
+	half4 _SpecColor0;
+	half4 _SpecColor1;
+	half4 _SpecColor2;
+
+	void surf(Input IN, inout SurfaceOutput o , out half3 waterNormal,out half inWater, out half3 specColor) {
 
 
 		half4 temp = IN.worldPos.xzxz * _WaveScale + _WaveSpeed * _WaveScale * _Time.y;
@@ -128,17 +142,25 @@ CGPROGRAM
 
 		col = splat_control.r * splat0.rgb;
 		o.Normal = splat_control.r * UnpackNormal(tex2D(_BumpSplat0, IN.uv_Splat0));
-		//o.Gloss = splat0.a * splat_control.r;
-		o.Specular = _ShininessL0 * splat_control.r;
+		 
+
+#if SL1_BOOL
+		o.Gloss = splat0.a * splat_control.r;
+#endif
+		o.Specular = _Shininess.r * splat_control.r;
 
 		col += splat_control.g * splat1.rgb;
 		o.Normal += splat_control.g * UnpackNormal(tex2D(_BumpSplat1, IN.uv_Splat1));
-		//o.Gloss += splat1.a * splat_control.g;
-		o.Specular += _ShininessL1 * splat_control.g;
+
+#if SL2_BOOL
+		o.Gloss += splat1.a * splat_control.g;
+#endif
+		o.Specular += _Shininess.g * splat_control.g;
 
 
 		col += splat_control.b * lerp(_TopColor,_ButtonColor, splat_control.b);// splat2.rgb;
 
+		specColor = _SpecColor0.rgb*splat_control.r + _SpecColor1.rgb*splat_control.g + _SpecColor2.rgb*splat_control.b;
 		half3 bump1 = UnpackNormal(tex2D(_BumpSplat2, temp.xy)).rgb;
 		half3 bump2 = UnpackNormal(tex2D(_BumpSplat2, temp.zw)).rgb;
 		half3 bump = (bump1 + bump2) * 0.5;
@@ -148,7 +170,7 @@ CGPROGRAM
 		inWater = splat_control.b;
 		o.Normal += splat_control.b * baseNormal;
 		o.Gloss += _Gloss* splat_control.b;
-		o.Specular += _ShininessL2 * splat_control.b;
+		o.Specular += _Shininess.b * splat_control.b;
 
 		o.Albedo = col;
 		o.Alpha = 0.0;
@@ -195,6 +217,10 @@ struct v2f_surf {
 float4 _Control_ST;
 float4 _Splat0_ST;
 float4 _Splat1_ST;
+
+
+
+ 
 
 // vertex shader
 v2f_surf vert_surf (appdata_full v) {
@@ -251,7 +277,7 @@ inline float2 ToRadialCoords(float3 coords)
 	float2 sphereCoords = float2(longitude, latitude) * float2(0.5 / UNITY_PI, 1.0 / UNITY_PI);
 	return float2(0.5, 1.0) - sphereCoords;
 }
-inline fixed4 UnityBlinnPhongLightWater(SurfaceOutput s, half3 viewDir, UnityLight light, half3 waterNormal,half inWater)
+inline fixed4 UnityBlinnPhongLightWater(SurfaceOutput s, half3 viewDir, UnityLight light, half3 waterNormal,half inWater,half3 _SpecColor0)
 {
 	half3 h = normalize(light.dir + viewDir);
 
@@ -266,11 +292,11 @@ inline fixed4 UnityBlinnPhongLightWater(SurfaceOutput s, half3 viewDir, UnityLig
 
 	half2 skyUV = half2(ToRadialCoords(viewReflectDirection) );
 	fixed4 localskyColor = tex2D(_Splat2, skyUV);
-	localskyColor.rgb *= exp2(localskyColor.w * 14.48538f - 3.621346f);
+	//localskyColor.rgb *= exp2(localskyColor.w * 14.48538f - 3.621346f);
 	metallic_power = metallic_power*inWater;
 
 	fixed4 c;
-	c.rgb = ( diff* light.color *(1.0- metallic_power) + metallic_power*localskyColor.rgb )*s.Albedo + light.color * _SpecColor.rgb * spec ;
+	c.rgb = ( diff* light.color *(1.0- metallic_power) + metallic_power*localskyColor.rgb )*s.Albedo + light.color * _SpecColor0.rgb * spec ;
 	//c.rgb = localskyColor.rgb;
  
 	c.a = s.Alpha;
@@ -278,10 +304,10 @@ inline fixed4 UnityBlinnPhongLightWater(SurfaceOutput s, half3 viewDir, UnityLig
 	return c;
 }
 
-inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi,half3 waterNormal,half inWater)
+inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi,half3 waterNormal,half inWater, half3 _SpecColor0)
 {
 	fixed4 c;
-	c = UnityBlinnPhongLightWater(s, viewDir, gi.light, waterNormal, inWater);
+	c = UnityBlinnPhongLightWater(s, viewDir, gi.light, waterNormal, inWater, _SpecColor0);
 	
 #if defined(DIRLIGHTMAP_SEPARATE)
 #ifdef LIGHTMAP_ON
@@ -298,6 +324,7 @@ inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi
 
 	return c;
 }
+
 
 	fixed4 frag_surf (v2f_surf IN) : SV_Target {
 	  UNITY_SETUP_INSTANCE_ID(IN);
@@ -334,7 +361,8 @@ inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi
 	  half3 waterNormal  ;
 	  // call surface function
 	  half inWater  ;
-	  surf (surfIN, o, waterNormal,inWater);
+	  half3 _SpecColor0;
+	  surf (surfIN, o, waterNormal,inWater, _SpecColor0);
 	  
 	  // compute lighting & shadowing factor
 	  UNITY_LIGHT_ATTENUATION(atten, IN, worldPos)
@@ -394,8 +422,8 @@ inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi
 	  #endif
 	  LightingBlinnPhong_GI(o, giInput, gi);
 	  //waterNormal = o.Normal;
-	  // realtime lighting: call lighting function
-	  c += LightingBlinnPhongWater(o, worldViewDir, gi, waterNormal,inWater);
+ 
+	  c += LightingBlinnPhongWater(o, worldViewDir, gi, waterNormal,inWater, _SpecColor0);
 	  UNITY_APPLY_FOG(IN.fogCoord, c); // apply fog
 	  UNITY_OPAQUE_ALPHA(c.a);
 	  return c;

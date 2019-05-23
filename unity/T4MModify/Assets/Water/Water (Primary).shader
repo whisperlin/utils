@@ -1,4 +1,4 @@
-﻿Shader "LayaAir3D/Water/Water (Primary)" {
+﻿Shader "TA/Water (Primary)" {
 	Properties{
 		[NoScaleOffset] _ColorControl("深度控制图", 2D) = "white" { }
 		[NoScaleOffset] _BumpMap("NormalTexture", 2D) = "" { }
