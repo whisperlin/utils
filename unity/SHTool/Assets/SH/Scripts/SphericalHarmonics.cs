@@ -418,7 +418,7 @@ public class SphericalHarmonics
         ComputeShader reduce = Resources.Load<ComputeShader>("Shaders/Reduce_Uniform");
 
         //can't have direct access to the cubemap in the compute shader (I think), so i copy the cubemap faces onto a texture2d array
-        RenderTextureDescriptor desc = new RenderTextureDescriptor();
+        /*RenderTextureDescriptor desc = new RenderTextureDescriptor();
         desc.autoGenerateMips = false;
         desc.bindMS = false;
         desc.colorFormat = ConvertRenderFormat(input.format);
@@ -430,8 +430,9 @@ public class SphericalHarmonics
         desc.msaaSamples = 1;
         desc.sRGB = true;
         desc.useMipMap = false;
-        desc.volumeDepth = 6;
-        RenderTexture converted_input = new RenderTexture(desc);
+        desc.volumeDepth = 6;*/
+        RenderTexture converted_input = new RenderTexture(input.height,input.height,24);
+        //RenderTexture converted_input = new RenderTexture(desc);
         converted_input.Create();
 
         for (int face = 0; face < 6; ++face)

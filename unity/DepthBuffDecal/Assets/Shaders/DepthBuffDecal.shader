@@ -57,6 +57,7 @@ Shader "Dase/Decale" {
 
 			float3 worldspace = direction * depth + _WorldSpaceCameraPos;
 			float4 worldPosition = float4(worldspace.xyz,1.0f);
+			
 			float4 localPosition = mul(unity_WorldToObject,worldPosition);
 			
 
