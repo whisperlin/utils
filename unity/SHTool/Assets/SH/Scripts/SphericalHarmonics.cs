@@ -361,6 +361,86 @@ public class SphericalHarmonics
         return true;
     }
 
+	/*inline float2 ToRadialCoords(float3 coords)
+	{
+		float3 normalizedCoords = normalize(coords);
+		float latitude = acos(normalizedCoords.y);
+		float longitude = atan2(normalizedCoords.z, normalizedCoords.x);
+		float2 sphereCoords = float2(longitude, latitude) * float2(0.5/UNITY_PI, 1.0/UNITY_PI);
+		return float2(0.5,1.0) - sphereCoords;
+	}*/
+	public static Vector2 ToRadialCoords(Vector3 coords)
+	{
+		Vector3 normalizedCoords = coords.normalized;
+		float latitude =  Mathf.Acos (normalizedCoords.y);
+		float longitude =  Mathf.Atan2 (normalizedCoords.z, normalizedCoords.x);
+		Vector2 sphereCoords = new  Vector2(longitude*0.5f/Mathf.PI, latitude*1.0f/Mathf.PI)  ;
+		return new Vector2(0.5f,1.0f) - sphereCoords;
+	}
+	public static int  UVtoTextureIndex( Vector2 uv, Texture2D tex)
+	{
+		int i0 = (int)(uv.x * tex.width);
+		int l0 = (int)(uv.y*tex.height);
+		return l0 * tex.width + i0;
+	}
+
+	public static Color AddSun(Color c)
+	{
+		float n = c.a * 14.48538f  ;
+		float f = Mathf.Log (n, 2f);
+		float f0 = Mathf.Max (0f, f);
+		return new Color (c.r*f0,c.g*f0,c.b*f0,c.a);
+	}
+
+
+	//exp2(local_720.w * 14.48538f - 3.621346f)
+	public static bool CPU_Project_360HJQ(Texture2D tex, Vector4[] output, int sample_count,bool sun,Light [] lights)
+	{
+		if (output.Length != 9)
+		{
+			Debug.LogWarning("output size must be 9 for 9 coefficients");
+			return false;
+		}
+			
+		Color[] cls = null;
+		if(tex)
+			cls = tex.GetPixels ();
+		for (int c = 0; c < 9; ++c)
+		{
+			for (int s = 0; s < sample_count; ++s)
+			{
+				Vector3 dir = Random.onUnitSphere;
+
+				Color radiance = Color.black;
+				if (tex) {
+					int index = UVtoTextureIndex(ToRadialCoords (dir),tex);
+					radiance = cls[index];
+					if (sun)
+						radiance = AddSun (radiance);
+				}
+				for (int i = 0; i < lights.Length; i++) {
+					var _light = lights[i];
+					float ndl = Vector3.Dot (-_light.transform.forward, dir.normalized);
+					Color lc = _light.color * _light.intensity*ndl;
+					radiance = radiance +   lc;
+				}
+				float sh = SphericalHarmonicsBasis.Eval[c](dir);
+
+				output[c].x += radiance.r * sh;
+				output[c].y += radiance.g * sh;
+				output[c].z += radiance.b * sh;
+				output[c].w += radiance.a * sh;
+			}
+
+			output[c].x = output[c].x * 4.0f * Mathf.PI / (float)sample_count;
+			output[c].y = output[c].y * 4.0f * Mathf.PI / (float)sample_count;
+			output[c].z = output[c].z * 4.0f * Mathf.PI / (float)sample_count;
+			output[c].w = output[c].w * 4.0f * Mathf.PI / (float)sample_count;
+		}
+
+		return true;
+	}
+
     public static bool CPU_Project_MonteCarlo_9Coeff(Cubemap input, Vector4[] output, int sample_count)
     {
         if (output.Length != 9)
