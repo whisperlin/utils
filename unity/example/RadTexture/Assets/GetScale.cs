@@ -17,8 +17,8 @@ public class GetScale : MonoBehaviour {
         m.SetRow(2, new Vector4(0.00085f, 0.00000f, - 0.94937f,    227.61000f));
         m.SetRow(3, new Vector4(0.00000f, 0.00000f, 0.00000f, 1.00000f));
 
-        Debug.LogWarning(m);
-        Debug.LogWarning("s"+m.lossyScale+" t:"+m.transpose);
+        //Debug.LogWarning(m);
+       // Debug.LogWarning("s"+m.lossyScale+" t:"+m.transpose);
 
     }
 	
