@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityCore;
+ 
 
 [ExecuteInEditMode]
 public class MakeVSMTarget : MonoBehaviour {
 
-	readonly int WorldToLight = Shader.PropertyToID("_WorldToLight");
-	readonly int ShadowTex = Shader.PropertyToID("_ShadowTex");
-	readonly int VSMPower = Shader.PropertyToID("_MaxDepthDelta");
+	//readonly int WorldToLight = Shader.PropertyToID("_WorldToLight");
+	//readonly int ShadowTex = Shader.PropertyToID("_ShadowTex");
+	//readonly int VSMPower = Shader.PropertyToID("_MaxDepthDelta");
 	public RenderTexture target;
 	public Camera cam;
-	[Slider("最大深度差",0.00001f,0.0001f)]
+	[Range(0.00001f,0.0001f)]
+	 
 	public float mad_depth_delta = 0.00002f ;
 	// Use this for initialization
 	void Start () {
@@ -39,10 +40,10 @@ public class MakeVSMTarget : MonoBehaviour {
 
 		//MVP = P*V*M;
 
-		Shader.SetGlobalTexture (ShadowTex, target);
+		Shader.SetGlobalTexture ("_ShadowTex", target);
  
-		Shader.SetGlobalMatrix(WorldToLight, VP);
-		Shader.SetGlobalFloat(VSMPower, mad_depth_delta);
+		Shader.SetGlobalMatrix("_WorldToLight", VP);
+		Shader.SetGlobalFloat("_MaxDepthDelta", mad_depth_delta);
 
 		//Shader.SetGlobalMatrix(WorldToLight,  cam.worldToCameraMatrix*cam.projectionMatrix );
 	}

@@ -36,7 +36,7 @@
 		#pragma multi_compile_fwdbase
 		#include "HLSLSupport.cginc"
 		#include "UnityShaderVariables.cginc"
-		#include "UnityShaderUtilities.cginc"
+ 
  
 		#include "UnityCG.cginc"
 		#include "Lighting.cginc"
@@ -149,13 +149,14 @@
  
  
 		struct v2f_surf {
-		  UNITY_POSITION(pos);
+          float4 pos : POSITION;
+ 
 		  float2 pack0 : TEXCOORD0; // _MainTex
 		  float4 tSpace0 : TEXCOORD1;
 		  float4 tSpace1 : TEXCOORD2;
 		  float4 tSpace2 : TEXCOORD3;
 		  fixed3 vlight : TEXCOORD4; // ambient/SH/vertexlights
-		  UNITY_SHADOW_COORDS(5)
+		  SHADOW_COORDS(5)
 		  UNITY_FOG_COORDS(6)
 		 
 		  UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -193,7 +194,7 @@
 		 
 		 
 
-		  	  UNITY_TRANSFER_SHADOW(o,v.texcoord1.xy); // pass shadow coordinates to pixel shader
+		  	  TRANSFER_SHADOW(o ); // pass shadow coordinates to pixel shader
 		  	  UNITY_TRANSFER_FOG(o,o.pos); // pass fog coordinates to pixel shader
 		  return o;
 		}

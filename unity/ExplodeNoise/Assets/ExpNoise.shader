@@ -1,5 +1,5 @@
 ﻿ 
-Shader "Unlit/ExpNoise"
+Shader "Unlit/ExpBump"
 {
 	Properties {
 		_BumpAmt  ("Distortion", range (0,1024)) = 10

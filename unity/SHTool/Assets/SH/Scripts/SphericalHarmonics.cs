@@ -371,7 +371,9 @@ public class SphericalHarmonics
 	}*/
 	public static Vector2 ToRadialCoords(Vector3 coords)
 	{
-		Vector3 normalizedCoords = coords.normalized;
+        Matrix4x4 m = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(new Vector3(0, 90, 0)), Vector3.one);
+        coords = m.MultiplyVector(coords);
+        Vector3 normalizedCoords = coords.normalized;
 		float latitude =  Mathf.Acos (normalizedCoords.y);
 		float longitude =  Mathf.Atan2 (normalizedCoords.z, normalizedCoords.x);
 		Vector2 sphereCoords = new  Vector2(longitude*0.5f/Mathf.PI, latitude*1.0f/Mathf.PI)  ;
@@ -401,8 +403,11 @@ public class SphericalHarmonics
 			Debug.LogWarning("output size must be 9 for 9 coefficients");
 			return false;
 		}
-			
-		Color[] cls = null;
+
+        
+
+
+        Color[] cls = null;
 		if(tex)
 			cls = tex.GetPixels ();
 		for (int c = 0; c < 9; ++c)

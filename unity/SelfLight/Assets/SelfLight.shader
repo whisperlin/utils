@@ -6,7 +6,7 @@ Shader "Unlit/SelfLight"
 	{
 		_Color("自发光颜色", Color) = (0,0,0,1)
 		_Power("强度", Range(1, 10)) = 5
-		_Radius("半径", Range(0, 10)) = 3
+		_Radius("半径", Range(1, 2)) = 2
   
 	}
 	SubShader
@@ -35,7 +35,7 @@ Shader "Unlit/SelfLight"
 			v2f vert(float4 vertex : POSITION, float3 normal : NORMAL)
 			{
 				v2f o;
-				float3 pos = vertex + normal*_Radius;
+				float3 pos = vertex *_Radius;
 				o.pos = UnityObjectToClipPos(float4(pos, 1.0));
 				float3 viewDir = ObjSpaceViewDir(vertex);
 				viewDir = normalize(viewDir);

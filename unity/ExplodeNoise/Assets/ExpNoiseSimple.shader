@@ -1,4 +1,4 @@
-﻿Shader "Unlit/ExpNoiseSimple"
+﻿Shader "Unlit/ExpNoise"
 {
 	Properties {
 		_BumpAmt  ("Distortion", range (0,1024)) = 10

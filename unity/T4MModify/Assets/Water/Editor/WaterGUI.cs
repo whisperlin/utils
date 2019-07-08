@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
+[ExecuteInEditMode]
 public class WaterGUI : ShaderGUI
 {
     
  
  
-    static MeshRenderer mesh;
+    //static MeshRenderer mesh;
 
 
 
@@ -62,9 +62,9 @@ public class WaterGUI : ShaderGUI
 
             GUILayout.Label("贴图深度采样控制");
             if (f < 0.01f)
-                f = 30f;
+                f = 0.01f;
             f = EditorGUILayout.Slider(  f, 0.1f, 50f);
-            Shader.SetGlobalFloat(waterToolctrlPower, f );
+            Shader.SetGlobalFloat("waterToolctrlPower", f );
             GUILayout.Label("目标贴图大小");
             width0 = EditorGUILayout.Popup(width0, options);
             height0 = EditorGUILayout.Popup(height0, options);
@@ -72,12 +72,13 @@ public class WaterGUI : ShaderGUI
 
             
 
-
+            
             Camera.main.depthTextureMode = DepthTextureMode.Depth;
-            mesh = (MeshRenderer)EditorGUILayout.ObjectField(mesh, typeof(MeshRenderer));
+            //mesh = (MeshRenderer)EditorGUILayout.ObjectField(mesh, typeof(MeshRenderer));
             if (GUILayout.Button("生成深度贴图"))
             {
-                if (null == mesh)
+                //if (null == mesh)
+                if(false)
                 {
                     EditorUtility.DisplayDialog("提示", "请选择要生成深度贴图的对象", "确定");
                 }
@@ -87,8 +88,14 @@ public class WaterGUI : ShaderGUI
                     int height = GetSize(height0);
                     RenderTexture rt = RenderTexture.GetTemporary(width, height);
                     Camera.main.targetTexture = rt;
+                    var oldPos = Camera.main.transform.position;
+                    var oldForward = Camera.main.transform.forward;
+                    Camera.main.transform.position = SceneView.lastActiveSceneView.camera.transform.position;
+                    Camera.main.transform.forward =  SceneView.lastActiveSceneView.camera.transform.forward;
                     targetMat.EnableKeyword("__CREATE_DEPTH_MAP2");
                     Camera.main.Render();
+                    Camera.main.transform.position = oldPos;
+                    Camera.main.transform.forward = oldForward;
                     Camera.main.targetTexture = null;
 
                     //Material m = new Material(Shader.Find("TA/SimpleBlurEffect"));
@@ -112,6 +119,7 @@ public class WaterGUI : ShaderGUI
                         AssetDatabase.ImportAsset(path);
                         Texture2D t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
                         targetMat.SetTexture("_ColorControl", t);
+                        targetMat.DisableKeyword("__CREATE_DEPTH_MAP");
                     }
                     targetMat.DisableKeyword("__CREATE_DEPTH_MAP2");
                     RenderTexture.ReleaseTemporary(rt);

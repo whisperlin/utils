@@ -120,7 +120,7 @@ public class CubemapSHProjector : EditorWindow
 					ModifyTextureReadable ();
 					coefficients = new Vector4[9];
 					if (SphericalHarmonics.CPU_Project_Uniform_9Coeff (cm, coefficients)) {
-						//setSH9Global();
+						setSH9Global();
 					}
 					if (isCopyNew)
 						GameObject.DestroyImmediate (cm, true);
@@ -135,7 +135,7 @@ public class CubemapSHProjector : EditorWindow
 					ModifyTextureReadable ();
 					coefficients = new Vector4[9];
 					if (SphericalHarmonics.CPU_Project_MonteCarlo_9Coeff (cm, coefficients, 4096)) {
-						//setSH9Global();
+						setSH9Global();
 					}
 					if (isCopyNew)
 						GameObject.DestroyImmediate (cm, true);
@@ -150,7 +150,7 @@ public class CubemapSHProjector : EditorWindow
 					ModifyTextureReadable ();
 					coefficients = new Vector4[9];
 					if (SphericalHarmonics.GPU_Project_Uniform_9Coeff (cm, coefficients)) {
-						//setSH9Global();
+						setSH9Global();
 					}
 					if (isCopyNew)
 						GameObject.DestroyImmediate (cm, true);
@@ -165,7 +165,7 @@ public class CubemapSHProjector : EditorWindow
 					ModifyTextureReadable ();
 					coefficients = new Vector4[9];
 					if (SphericalHarmonics.GPU_Project_MonteCarlo_9Coeff (cm, coefficients)) {
-						//setSH9Global();
+						setSH9Global();
 					}
 					if (isCopyNew)
 						GameObject.DestroyImmediate (cm, true);
@@ -229,7 +229,7 @@ public class CubemapSHProjector : EditorWindow
 					coefficients = new Vector4[9];
 					if (SphericalHarmonics.CPU_Project_360HJQ(env_map, coefficients,4096,sun,ls.ToArray()))
 					{
-						//setSH9Global();
+						setSH9Global();
 					}
 
 				}

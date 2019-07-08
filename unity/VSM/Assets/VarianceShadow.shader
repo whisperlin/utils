@@ -45,7 +45,9 @@
 				float4 wpos = mul(unity_ObjectToWorld, v.vertex); 
 				float4 lv_pos =   mul(_WorldToLight, wpos); 
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				float2 uv =  float2( (lv_pos.x+1)/2  , (lv_pos.y+1)/2);
+
+				float2 uv =   ((lv_pos.xy/ lv_pos.w)+1)*0.5;
+				//float2 uv =  float2( (lv_pos.x+1)/2  , (lv_pos.y+1)/2);
 				//uv.x = 1 - uv.x;
 				uv.y = 1-uv.y;
 				o.lvuv = uv;

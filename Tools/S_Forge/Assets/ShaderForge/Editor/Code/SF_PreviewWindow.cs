@@ -153,7 +153,7 @@ namespace ShaderForge {
 			for( int i = 0; i < lights.Length; i++ ) {
 				lights[i].gameObject.hideFlags = HideFlags.HideAndDontSave;
 				lights[i].type = LightType.Directional;
-				lights[i].lightmapBakeType = LightmapBakeType.Realtime;
+				//lights[i].lightmapBakeType = LightmapBakeType.Realtime;
 				lights[i].enabled = false;
 			}
 

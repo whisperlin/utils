@@ -38,8 +38,26 @@ public class AnimationCopy  {
 		foreach(AnimationClip _c in cs)
 		{
 			if (_c.name.Contains ("__preview__") == false) {
-				var UpClip = Object.Instantiate (_c);
-				SaveAnimationClip(UpClip, rootPath+_c.name+".anim");
+				AnimationClip UpClip = Object.Instantiate (_c);
+				Dictionary<EditorCurveBinding,AnimationCurve> bcMap = new Dictionary<EditorCurveBinding, AnimationCurve> ();
+				List<EditorCurveBinding> newBinds = new List<EditorCurveBinding> ();
+				EditorCurveBinding[]  binds = AnimationUtility.GetCurveBindings (UpClip);
+				foreach (EditorCurveBinding b in binds) {
+					//if (b.propertyName.Contains ("m_LocalPosition") || b.propertyName.Contains ("m_LocalScale") ) {
+					//	continue;
+					//}
+					 
+					newBinds.Add (b);
+					AnimationCurve __clip = AnimationUtility.GetEditorCurve (UpClip,b);
+					bcMap [b] = __clip;
+ 
+				}
+
+				UpClip.ClearCurves ();
+				foreach (EditorCurveBinding b in newBinds) {
+					AnimationUtility.SetEditorCurve (UpClip, b, bcMap [b]);
+				}
+				AssetDatabase.CreateAsset (UpClip, rootPath+_c.name+".anim");
 			}
 		}
 	}

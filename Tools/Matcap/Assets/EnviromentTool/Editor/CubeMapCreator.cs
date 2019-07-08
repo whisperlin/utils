@@ -34,6 +34,18 @@ public class CubeMapCreator : MonoBehaviour
         }
 
     }
+
+
+	/*static Vector3 RotateAroundYInDegrees (Vector3 vertex, float degrees)
+	{
+		float alpha = degrees * Mathf.PI / 180.0;
+		float sina, cosa;
+		sina = Mathf.Sin (alpha);
+		cosa = Mathf.Cos (alpha);
+ 
+		Matrix2x2 m = Matrix2x2(cosa, -sina, sina, cosa);
+		return float3(mul(m, vertex.xz), vertex.y).xzy;
+	}*/
     [MenuItem("TA/环境球/捕捉Panoramic")]
     static void PanoramicCreatorFun()
     {
