@@ -17,7 +17,7 @@
 	}
 
 	SubShader {
-		Tags { "RenderType"="Opaque" }
+		Tags {"Queue"="AlphaTest" "IgnoreProjector"="True" "RenderType"="TransparentCutout"}
 		LOD 200
 
 		CGPROGRAM
