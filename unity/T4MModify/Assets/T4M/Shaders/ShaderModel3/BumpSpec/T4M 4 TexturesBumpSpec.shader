@@ -26,7 +26,7 @@ SubShader {
 CGPROGRAM
 #pragma surface surf BlinnPhong vertex:vert
 #pragma target 3.0
-#pragma exclude_renderers gles xbox360 ps3
+
 #include "UnityCG.cginc"
 
 struct Input {

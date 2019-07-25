@@ -189,11 +189,10 @@ struct v2f_surf {
   #if UNITY_SHOULD_SAMPLE_SH
   half3 sh : TEXCOORD5; // SH
   #endif
-  SHADOW_COORDS(6)
-  UNITY_FOG_COORDS(7)
-  #if SHADER_TARGET >= 30
-  float4 lmap : TEXCOORD8;
-  #endif
+ 
+  UNITY_FOG_COORDS(6)
+  LIGHTING_COORDS(7, 8) //第四步// 
+  
   UNITY_VERTEX_INPUT_INSTANCE_ID
   UNITY_VERTEX_OUTPUT_STEREO
 };
@@ -208,7 +207,7 @@ struct v2f_surf {
   float4 tSpace1 : TEXCOORD3;
   float4 tSpace2 : TEXCOORD4;
   float4 lmap : TEXCOORD5;
-  SHADOW_COORDS(6)
+  //SHADOW_COORDS(6)
   UNITY_FOG_COORDS(7)
   UNITY_VERTEX_INPUT_INSTANCE_ID
   UNITY_VERTEX_OUTPUT_STEREO
@@ -242,11 +241,13 @@ v2f_surf vert_surf (appdata_full v) {
 	  o.tSpace0 = float4(worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x);
 	  o.tSpace1 = float4(worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y);
 	  o.tSpace2 = float4(worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z);
-	  #ifdef DYNAMICLIGHTMAP_ON
-	  o.lmap.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
-	  #endif
+	  
+	  
 	  #ifdef LIGHTMAP_ON
 	  o.lmap.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+
+	  #else
+	  TRANSFER_VERTEX_TO_FRAGMENT(o);
 	  #endif
 
   // SH/ambient and vertex lights
@@ -264,7 +265,7 @@ v2f_surf vert_surf (appdata_full v) {
     #endif
   #endif // !LIGHTMAP_ON
 
-	  TRANSFER_SHADOW(o); // pass shadow coordinates to pixel shader
+	  //TRANSFER_SHADOW(o); // pass shadow coordinates to pixel shader
 	  UNITY_TRANSFER_FOG(o,o.pos); // pass fog coordinates to pixel shader
 	  return o;
 }
@@ -279,24 +280,26 @@ inline float2 ToRadialCoords(float3 coords)
 }
 inline fixed4 UnityBlinnPhongLightWater(SurfaceOutput s, half3 viewDir, UnityLight light, half3 waterNormal,half inWater,half3 _SpecColor0)
 {
-	half3 h = normalize(light.dir + viewDir);
+	half3 lightDir = light.dir;
+	half3 h = normalize(lightDir + viewDir);
 
 	fixed diff = max(0, dot(s.Normal, light.dir));
 
 	float nh = max(0, dot(waterNormal, h));
 	 
 	float spec = pow(nh, s.Specular*128.0) * s.Gloss;
- 
+	
 
 	half3 viewReflectDirection = reflect(-viewDir, waterNormal);
 
 	half2 skyUV = half2(ToRadialCoords(viewReflectDirection) );
 	fixed4 localskyColor = tex2D(_Splat2, skyUV);
-	//localskyColor.rgb *= exp2(localskyColor.w * 14.48538f - 3.621346f);
+ 
+	fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT  ;
 	metallic_power = metallic_power*inWater;
 
 	fixed4 c;
-	c.rgb = ( diff* light.color *(1.0- metallic_power) + metallic_power*localskyColor.rgb )*s.Albedo + light.color * _SpecColor0.rgb * spec ;
+	c.rgb = ( (ambient+diff* light.color) *(1.0- metallic_power) + metallic_power*localskyColor.rgb )*s.Albedo + light.color* _SpecColor0.rgb * spec ;
 	//c.rgb = localskyColor.rgb;
  
 	c.a = s.Alpha;
@@ -304,27 +307,7 @@ inline fixed4 UnityBlinnPhongLightWater(SurfaceOutput s, half3 viewDir, UnityLig
 	return c;
 }
 
-inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi,half3 waterNormal,half inWater, half3 _SpecColor0)
-{
-	fixed4 c;
-	c = UnityBlinnPhongLightWater(s, viewDir, gi.light, waterNormal, inWater, _SpecColor0);
-	
-#if defined(DIRLIGHTMAP_SEPARATE)
-#ifdef LIGHTMAP_ON
-	c += UnityBlinnPhongLight(s, viewDir, gi.light2);
-#endif
-#ifdef DYNAMICLIGHTMAP_ON
-	c += UnityBlinnPhongLight(s, viewDir, gi.light3);
-#endif
-#endif
-
-#ifdef UNITY_LIGHT_FUNCTION_APPLY_INDIRECT
-	c.rgb += s.Albedo * gi.indirect.diffuse;
-#endif
-
-	return c;
-}
-
+ 
 
 	fixed4 frag_surf (v2f_surf IN) : SV_Target {
 	  UNITY_SETUP_INSTANCE_ID(IN);
@@ -364,8 +347,11 @@ inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi
 	  half3 _SpecColor0;
 	  surf (surfIN, o, waterNormal,inWater, _SpecColor0);
 	  
-	  // compute lighting & shadowing factor
-	  UNITY_LIGHT_ATTENUATION(atten, IN, worldPos)
+	  #ifdef LIGHTMAP_ON
+	     float atten = DecodeLightmap (UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
+	  #else
+		 float atten =  LIGHT_ATTENUATION(IN); //第6步//
+	  #endif
 	  fixed4 c = 0;
 
 	  fixed3 worldN;
@@ -382,48 +368,12 @@ inline fixed4 LightingBlinnPhongWater(SurfaceOutput s, half3 viewDir, UnityGI gi
 	  waterNormal = worldN;
 
 
-	  // Setup lighting environment
 	  UnityGI gi;
 	  UNITY_INITIALIZE_OUTPUT(UnityGI, gi);
-	  gi.indirect.diffuse = 0;
-	  gi.indirect.specular = 0;
-	  #if !defined(LIGHTMAP_ON)
-		  gi.light.color = _LightColor0.rgb;
-		  gi.light.dir = lightDir;
-	  #endif
-	  // Call GI (lightmaps/SH/reflections) lighting function
-	  UnityGIInput giInput;
-	  UNITY_INITIALIZE_OUTPUT(UnityGIInput, giInput);
-	  giInput.light = gi.light;
-	  giInput.worldPos = worldPos;
-	  giInput.worldViewDir = worldViewDir;
-	  giInput.atten = atten;
-	  #if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON)
-		giInput.lightmapUV = IN.lmap;
-	  #else
-		giInput.lightmapUV = 0.0;
-	  #endif
-	  #if UNITY_SHOULD_SAMPLE_SH
-		giInput.ambient = IN.sh;
-	  #else
-		giInput.ambient.rgb = 0.0;
-	  #endif
-	  giInput.probeHDR[0] = unity_SpecCube0_HDR;
-	  giInput.probeHDR[1] = unity_SpecCube1_HDR;
-	  #if UNITY_SPECCUBE_BLENDING || UNITY_SPECCUBE_BOX_PROJECTION
-		giInput.boxMin[0] = unity_SpecCube0_BoxMin; // .w holds lerp value for blending
-	  #endif
-	  #if UNITY_SPECCUBE_BOX_PROJECTION
-		giInput.boxMax[0] = unity_SpecCube0_BoxMax;
-		giInput.probePosition[0] = unity_SpecCube0_ProbePosition;
-		giInput.boxMax[1] = unity_SpecCube1_BoxMax;
-		giInput.boxMin[1] = unity_SpecCube1_BoxMin;
-		giInput.probePosition[1] = unity_SpecCube1_ProbePosition;
-	  #endif
-	  LightingBlinnPhong_GI(o, giInput, gi);
-	  //waterNormal = o.Normal;
+	  gi.light.color = _LightColor0.rgb*atten;
+	  gi.light.dir = lightDir;
  
-	  c += LightingBlinnPhongWater(o, worldViewDir, gi, waterNormal,inWater, _SpecColor0);
+	  c = UnityBlinnPhongLightWater(o, worldViewDir, gi.light, waterNormal, inWater,_SpecColor0);
 	  UNITY_APPLY_FOG(IN.fogCoord, c); // apply fog
 	  UNITY_OPAQUE_ALPHA(c.a);
 	  return c;

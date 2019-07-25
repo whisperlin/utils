@@ -297,7 +297,7 @@ public class T4MSC : EditorWindow {
 	int partofT4MObj=0;
 	static public bool billActivate = false;
 	static public bool LodActivate = false;
-	bool keepTexture =false;
+	bool keepTexture = true;
 	static bool oldActivBillb;
 	static bool oldActivLOD;
 	public enum PaintHandle{
@@ -1305,8 +1305,8 @@ public class T4MSC : EditorWindow {
 					
 					float test = T4MStronger*200/100;
 					T4MPreview.material.SetFloat ("_Transp", Mathf.Clamp(test,0.4f,1));
-				
-				T4MBrushSizeInPourcent = (int)Mathf.Round ((brushSize*T4MMaskTex.width)/100);
+                    FixMeskCtrl();
+                    T4MBrushSizeInPourcent = (int)Mathf.Round ((brushSize*T4MMaskTex.width)/100);
 				
 				 
 					
@@ -2262,7 +2262,17 @@ public class T4MSC : EditorWindow {
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 					if(CurrentSelect.GetComponent <T4MObjSC>())
-						GUILayout.Label("Already T4M Object", EditorStyles.boldLabel);
+                    {
+                        GUILayout.BeginVertical();
+                        GUILayout.Label("Already T4M Object", EditorStyles.boldLabel);
+                        
+                        if (GUILayout.Button("修复贴图"))
+                        {
+                            FixMeskCtrl();
+                        }
+                        GUILayout.EndVertical();
+                    }
+						
 					else GUILayout.Label("Can't convert that to T4M Object", EditorStyles.boldLabel);
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
@@ -3286,6 +3296,52 @@ public class T4MSC : EditorWindow {
 		IniNewSelect();
 	}
 	
+
+    void CreateControlText()
+	{
+        if (CurrentSelect.gameObject.GetComponent<T4MObjSC>().T4MMaterial.GetTexture("_Control") != null) { 
+            return;
+        }
+        Texture2D Control2 = new Texture2D (512, 512,  TextureFormat.ARGB32, true);
+		Color[] ColorBase = new Color[512 * 512];
+		for (var t = 0; t < ColorBase.Length; t++) {
+				ColorBase[t] = new Color (1, 0, 0, 0);
+		}
+		
+		Control2.SetPixels (ColorBase);
+		 
+        string path = T4MPrefabFolder + "Terrains/Texture/" + FinalExpName + ".png";
+        if (!System.IO.File.Exists(path))
+        {
+            byte[] data = Control2.EncodeToPNG();
+            File.WriteAllBytes(path, data);
+        }
+        else
+        {
+            Texture t = (Texture)AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
+            if (!t)
+            {
+                byte[] data = Control2.EncodeToPNG();
+                File.WriteAllBytes(path, data);
+            }
+        }
+		
+		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+		
+		TextureImporter TextureI= AssetImporter.GetAtPath (path) as TextureImporter;
+        
+		TextureI.textureCompression = TextureImporterCompression.Uncompressed;
+		TextureI.isReadable = true;
+		TextureI.anisoLevel = 9;
+		TextureI.mipmapEnabled = false;
+		TextureI.wrapMode = TextureWrapMode.Clamp;
+        TextureI.compressionQuality = 100;
+        AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+		
+		Texture Contr2 =(Texture) AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
+		CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Control", Contr2);
+		IniNewSelect();
+	}
 	void CreateControl2Text()
 	{
 		Texture2D Control2 = new Texture2D (512, 512,  TextureFormat.ARGB32, true);
@@ -3295,22 +3351,36 @@ public class T4MSC : EditorWindow {
 		}
 		
 		Control2.SetPixels (ColorBase);
-		string path;
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control") != null){
-		 	path = T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control").name+"C2.png";
-			
-		}else path = T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.name+"C2.png";	
-		byte[] data = Control2.EncodeToPNG ();
-		File.WriteAllBytes (path, data);
-		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+		string path = T4MPrefabFolder + "Terrains/Texture/" + FinalExpName + "_Ctrl2.png";
+        if (!System.IO.File.Exists(path))
+        {
+            byte[] data = Control2.EncodeToPNG();
+            File.WriteAllBytes(path, data);
+        }
+        else
+        {
+            Texture t = (Texture)AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
+            if (!t)
+            {
+                byte[] data = Control2.EncodeToPNG();
+                File.WriteAllBytes(path, data);
+            }
+            else
+            {
+                Control2 = (Texture2D)t;
+            }
+        }
+        AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
 		
 		TextureImporter TextureI= AssetImporter.GetAtPath (path) as TextureImporter;
-		TextureI.textureFormat = TextureImporterFormat.ARGB32;
-		TextureI.isReadable = true;
+        TextureI.textureCompression = TextureImporterCompression.Uncompressed;
+        TextureI.isReadable = true;
 		TextureI.anisoLevel = 9;
 		TextureI.mipmapEnabled = false;
 		TextureI.wrapMode = TextureWrapMode.Clamp;
-		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+        TextureI.compressionQuality = 100;
+
+        AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
 		
 		Texture Contr2 =(Texture) AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Control2", Contr2);
@@ -3438,20 +3508,39 @@ public class T4MSC : EditorWindow {
 		AssetDatabase.SaveAssets(); 
 	
 		string path = T4MPrefabFolder+"Terrains/Texture/"+FinalExpName+".png";
-		
+
+		string path0 = T4MPrefabFolder+"Terrains/Texture/"+FinalExpName+"_Ctrl2.png";
+		bool hasSecond = false;
 		//Control Texture Creation or Recuperation
 		string AssetName = AssetDatabase.GetAssetPath(CurrentSelect.GetComponent <Terrain>().terrainData) as string;
 		UnityEngine.Object[] AssetName2 = AssetDatabase.LoadAllAssetsAtPath (AssetName);
 		if (AssetName2 !=null && AssetName2.Length>1 && keepTexture){
-			for (var b = 0; b < AssetName2.Length; b++) {
+            //有时地表有两张坑爹同名贴图.
+            for (var b = 0; b < AssetName2.Length; b++) {
 				if(AssetName2[b].name == "SplatAlpha 0"){
 					Texture2D texture  = AssetName2[b] as Texture2D;
 					byte[] bytes = texture.EncodeToPNG();
 			  		File.WriteAllBytes(path, bytes);
 					AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+                    break;
 				}
+				 
 			}
-		}else{ 
+            for (var b = 0; b < AssetName2.Length; b++)
+            {
+                
+                if (AssetName2[b].name == "SplatAlpha 1")
+                {
+                    Texture2D texture = AssetName2[b] as Texture2D;
+                    byte[] bytes = texture.EncodeToPNG();
+                    File.WriteAllBytes(path0, bytes);
+                    AssetDatabase.ImportAsset(path0, ImportAssetOptions.ForceUpdate);
+                    hasSecond = true;
+                    break;
+                }
+            }
+        }
+        else{ 
 			Texture2D NewMaskText = new Texture2D (512, 512,  TextureFormat.ARGB32, true);
 			Color[] ColorBase = new Color[512 * 512];
 			for (var t = 0; t < ColorBase.Length; t++) {
@@ -3465,8 +3554,10 @@ public class T4MSC : EditorWindow {
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
 		
 		UpdateProgress();
-		
-		//Modification de la Texture 
+
+        //Modification de la Texture 
+        SetTextureImportFormat(path, 512, true, TextureImporterFormat.RGBA32, TextureImporterFormat.RGBA32, TextureImporterFormat.RGBA32);
+        /*
 		TextureImporter TextureI= AssetImporter.GetAtPath (path) as TextureImporter;
 		TextureI.textureFormat = TextureImporterFormat.ARGB32;
 		TextureI.isReadable = true;
@@ -3476,12 +3567,31 @@ public class T4MSC : EditorWindow {
 		AssetDatabase.Refresh();
 		
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+        */
+        {
+			if (hasSecond) {
+                SetTextureImportFormat(path0, 512, true, TextureImporterFormat.RGBA32, TextureImporterFormat.RGBA32, TextureImporterFormat.RGBA32);
+                /*TextureImporter TextureI2= AssetImporter.GetAtPath (path0) as TextureImporter;
+				TextureI2.textureFormat = TextureImporterFormat.ARGB32;
+				TextureI2.isReadable = true;
+				TextureI2.anisoLevel = 9;
+				TextureI2.mipmapEnabled = false;
+				TextureI2.wrapMode = TextureWrapMode.Clamp;
+				AssetDatabase.Refresh();
+				AssetDatabase.ImportAsset (path0, ImportAssetOptions.ForceUpdate);*/
+			}
+		}
 		
 		UpdateProgress();
 		
 		//Creation du Materiel
 		Material Tmaterial;
-		Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
+		if (hasSecond) {
+			Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 6 Textures"));
+		} else {
+			Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
+		}
+
 		AssetDatabase.CreateAsset(Tmaterial, T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat");
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat", ImportAssetOptions.ForceUpdate);
 		AssetDatabase.Refresh();
@@ -3490,17 +3600,29 @@ public class T4MSC : EditorWindow {
 		if (keepTexture){
 			SplatPrototype[] texts = CurrentSelect.GetComponent <Terrain>().terrainData.splatPrototypes;
 			for (int e = 0 ; e < texts.Length ; e++){
-				if (e<4){
-					Tmaterial.SetTexture("_Splat"+e, texts[e].texture);
-					Tmaterial.SetTextureScale ("_Splat"+e, texts[e].tileSize*8.9f);
+				if (hasSecond) {
+					if (e<6){
+						Tmaterial.SetTexture("_Splat"+e, texts[e].texture);
+						Tmaterial.SetTextureScale ("_Splat"+e, texts[e].tileSize*8.9f);
+					}
+				} else {
+					if (e<4){
+						Tmaterial.SetTexture("_Splat"+e, texts[e].texture);
+						Tmaterial.SetTextureScale ("_Splat"+e, texts[e].tileSize*8.9f);
+					}
 				}
+
 			}
 		}
 		
 		//Attribution de la Texture Control sur le materiau
 		Texture test =(Texture) AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
 		Tmaterial.SetTexture ("_Control", test);
+		if (hasSecond) {
+			Texture test2 =(Texture) AssetDatabase.LoadAssetAtPath(path0, typeof(Texture));
+			Tmaterial.SetTexture ("_Control2", test2);
 		
+		}
 		
 		UpdateProgress();
 		
@@ -3603,9 +3725,50 @@ public class T4MSC : EditorWindow {
 		AssetDatabase.StopAssetEditing();
 		PrefabUtility.ResetToPrefabState (Child);
 	}
-	
-	
-	void Obj2T4M()
+    private static void SetTextureImportFormat(string path,
+                                        int maxSize,
+                                        bool isReadable,
+                                        TextureImporterFormat pcFormat,
+                                        TextureImporterFormat androidFormat,
+                                        TextureImporterFormat iosFormat)
+    {
+        TextureImporter ti = TextureImporter.GetAtPath(path) as TextureImporter;
+        ti.mipmapEnabled = false;
+        ti.wrapMode = TextureWrapMode.Clamp;
+        ti.textureType = TextureImporterType.Default;
+        ti.filterMode = FilterMode.Bilinear;
+        ti.isReadable = isReadable;
+        //--设置平台格式--
+        TextureImporterPlatformSettings importerSettings_PC = new TextureImporterPlatformSettings();
+        importerSettings_PC.overridden = true;
+        importerSettings_PC.name = "Standalone";
+        importerSettings_PC.textureCompression = TextureImporterCompression.Uncompressed;
+        importerSettings_PC.maxTextureSize = maxSize;
+        importerSettings_PC.format = pcFormat;
+
+        TextureImporterPlatformSettings importerSettings_Andorid = new TextureImporterPlatformSettings();
+        importerSettings_Andorid.overridden = true;
+        importerSettings_Andorid.name = "Android";
+        importerSettings_Andorid.textureCompression = TextureImporterCompression.Uncompressed;
+        importerSettings_Andorid.maxTextureSize = maxSize;
+        importerSettings_Andorid.format = androidFormat;
+
+        TextureImporterPlatformSettings importerSettings_IOS = new TextureImporterPlatformSettings();
+        importerSettings_IOS.overridden = true;
+        importerSettings_IOS.name = "iPhone";
+        importerSettings_IOS.textureCompression = TextureImporterCompression.Uncompressed;
+        importerSettings_IOS.maxTextureSize = maxSize;
+        importerSettings_IOS.format = iosFormat;
+        //-----
+
+        ti.SetPlatformTextureSettings(importerSettings_PC);
+        ti.SetPlatformTextureSettings(importerSettings_Andorid);
+        ti.SetPlatformTextureSettings(importerSettings_IOS);
+        ti.SaveAndReimport();
+        AssetDatabase.ImportAsset(path);
+    }
+
+    void Obj2T4M()
 	{
 		if (terrainName=="")
 			terrainName =CurrentSelect.name; 
@@ -3657,13 +3820,9 @@ public class T4MSC : EditorWindow {
 		var data = NewMaskText.EncodeToPNG ();
 		File.WriteAllBytes (path, data);
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
-		var TextureIm= AssetImporter.GetAtPath (path) as TextureImporter;
-		TextureIm.textureFormat = TextureImporterFormat.ARGB32;
-		TextureIm.isReadable = true;
-		TextureIm.anisoLevel = 9;
-		TextureIm.mipmapEnabled = false;
-		TextureIm.wrapMode = TextureWrapMode.Clamp;
-		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+        SetTextureImportFormat(path, 512, true, TextureImporterFormat.RGBA32, TextureImporterFormat.RGBA32, TextureImporterFormat.RGBA32);
+
+       
 		Material Tmaterial;
 		Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
 		AssetDatabase.CreateAsset(Tmaterial, T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat");
@@ -3761,7 +3920,22 @@ public class T4MSC : EditorWindow {
             EditorUtility.DisplayProgressBar("Generate...", "", Mathf.InverseLerp(0, totalCount, ++tCount));
         }
     }
-	
+    void FixMeskCtrl()
+    {
+        T4MObjSC obj =  CurrentSelect.gameObject.GetComponent<T4MObjSC>();
+        if (null == T4MMaskTex)
+        {
+            CreateControlText();
+            T4MMaskTex = (Texture2D)obj.T4MMaterial.GetTexture("_Control");
+        }
+        if (null == T4MMaskTex2 && obj.T4MMaterial.HasProperty("_Control2"))
+        {
+            CreateControl2Text();
+            T4MMaskTex2 = (Texture2D)obj.T4MMaterial.GetTexture("_Control2");
+        }
+
+        
+    }
 	void IniNewSelect()
 	{
 		
