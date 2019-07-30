@@ -1,6 +1,12 @@
 ﻿Shader "SH/SHResult"
 {
  
+	Properties
+	{
+ 
+		[Toggle(LOW_LEVEL_SH)] _SH9_ENABLE("sh9", Float) = 0
+ 
+	}
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
@@ -13,10 +19,13 @@
 			#pragma fragment frag
 			// make fog work
 			#pragma multi_compile_fog
+
+			#pragma multi_compile _ LOW_LEVEL_SH
+ 
 			
 			#include "UnityCG.cginc"
 			#include "SHGlobal.cginc"
-
+			
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -46,8 +55,14 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-
+#if LOW_LEVEL_SH
 				fixed3 c = g_sh(i.worldNormal);
+ 
+#else
+				fixed3 c = g_sh(i.worldNormal);
+ 
+#endif
+				
 				fixed4 col = float4(c,1);
 				//fixed4 col = float4(i.worldNormal,1);
 				// apply fog

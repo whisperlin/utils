@@ -1,6 +1,13 @@
 ﻿
+
+
 #ifndef ___GLOBAL_SH9___
 #define ___GLOBAL_SH9___ 1
+
+
+
+
+
 
 
 uniform float4 g_sph0;
@@ -56,7 +63,7 @@ float Y8(float3 v)
 
 
 
-float3 g_sh(float3 v)
+float3 g_sh_order3(float3 v)
 {
 	float3 result = (
 		g_sph0.xyz * Y0(v) +
@@ -68,11 +75,30 @@ float3 g_sh(float3 v)
 		g_sph6.xyz * Y6(v) +
 		g_sph7.xyz * Y7(v) +
 		g_sph8.xyz * Y8(v)
-	);
+		);
+	return max(result, float3(0, 0, 0));
+}
+
+float3 g_sh_order2(float3 v)
+{
+	float3 result = (
+		g_sph0.xyz * Y0(v) +
+		g_sph1.xyz * Y1(v) +
+		g_sph2.xyz * Y2(v) +
+		g_sph3.xyz * Y3(v)
+		);
 	return max(result, float3(0, 0, 0));
 }
 
 
-
+float3 g_sh(float3 v)
+{
+#if  LOW_LEVEL_SH
+	return g_sh_order2(v);
+#else
+	return g_sh_order3(v);
+#endif
+	
+}
 
 #endif
