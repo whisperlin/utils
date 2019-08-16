@@ -4,12 +4,6 @@
 #ifndef ___GLOBAL_SH9___
 #define ___GLOBAL_SH9___ 1
 
-
-
-
-
-
-
 uniform float4 g_sph0;
 uniform float4 g_sph1;
 uniform float4 g_sph2;
@@ -19,9 +13,6 @@ uniform float4 g_sph5;
 uniform float4 g_sph6;
 uniform float4 g_sph7;
 uniform float4 g_sph8;
-
-
- 
 
 float Y0(float3 v)
 {
@@ -60,9 +51,6 @@ float Y8(float3 v)
 	return 0.5462742153f * (v.x * v.x - v.y * v.y);
 }
 
-
-
-
 float3 g_sh_order3(float3 v)
 {
 	float3 result = (
@@ -78,7 +66,6 @@ float3 g_sh_order3(float3 v)
 		);
 	return max(result, float3(0, 0, 0));
 }
-
 float3 g_sh_order2(float3 v)
 {
 	float3 result = (

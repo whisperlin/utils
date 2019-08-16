@@ -1,4 +1,5 @@
-﻿
+﻿#ifndef _______________height_fog______________________
+#define  _______________height_fog______________________
 
 #include "virtuallight.cginc"
 #if GLOBAL_ENV_SH9
@@ -210,6 +211,9 @@ float globalEnvOffset;
 #endif
 
 	
+#endif
+
+
 #endif
 
 

@@ -2,7 +2,13 @@
 #define LCH_COMMON_CGINC
 
 #include "UnityCG.cginc"
+//[Toggle(MyToggle2)] _MyToggle2("MyToggle2", Float) = 0
+//[KeywordEnum(One, Two, Three)] _MyEnum("MyEnum", Float) = 0
+//#pragma shader_feature MyToggle2
+//#pragma multi_compile _MYENUM_ONE _MYENUM_TWO _MYENUM_THREE
+
 //
+
 //half3 viewDir = normalize(UnityWorldSpaceViewDir(i.posWorld));
 //half3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
 //UnityObjectToClipPos
@@ -81,7 +87,51 @@ inline fixed3 UnpackNormalRG(fixed4 packednormal)
 	return normal;
 }
 
+void Billboard(inout float4 vertex, inout float3 normal)
+{
+	float3 upCamVec = normalize(UNITY_MATRIX_V._m10_m11_m12);
+	float3 forwardCamVec = -normalize(UNITY_MATRIX_V._m20_m21_m22);
+	float3 rightCamVec = normalize(UNITY_MATRIX_V._m00_m01_m02);
+	float4x4 rotationCamMatrix = float4x4(rightCamVec, 0, upCamVec, 0, forwardCamVec, 0, 0, 0, 0, 1);
+	normal = normalize(mul(normal, rotationCamMatrix));
+	//This unfortunately must be made to take non-uniform scaling into account;
+	//Transform to world coords, apply rotation and transform back to local;
+	vertex = mul(vertex, unity_ObjectToWorld);
+	vertex = mul(vertex, rotationCamMatrix);
+	vertex = mul(vertex, unity_WorldToObject);
 
+}
+void BillboardY(inout float4 vertex, inout float3 normal)
+{
+	//float3 upCamVec = normalize ( UNITY_MATRIX_V._m10_m11_m12 );
+	float3 upCamVec = float3(0, 1, 0);
+	float3 forwardCamVec = -normalize(UNITY_MATRIX_V._m20_m21_m22);
+	float3 rightCamVec = normalize(UNITY_MATRIX_V._m00_m01_m02);
+	float4x4 rotationCamMatrix = float4x4(rightCamVec, 0, upCamVec, 0, forwardCamVec, 0, 0, 0, 0, 1);
+	normal = normalize(mul(normal, rotationCamMatrix));
+	//This unfortunately must be made to take non-uniform scaling into account;
+	//Transform to world coords, apply rotation and transform back to local;
+	vertex = mul(vertex, unity_ObjectToWorld);
+	vertex = mul(vertex, rotationCamMatrix);
+	vertex = mul(vertex, unity_WorldToObject);
+
+
+}
+
+void BillboardY(inout float4 vertex )
+{
+	float3 upCamVec = float3(0, 1, 0);
+	float3 forwardCamVec = -normalize(UNITY_MATRIX_V._m20_m21_m22);
+	float3 rightCamVec = normalize(UNITY_MATRIX_V._m00_m01_m02);
+	float4x4 rotationCamMatrix = float4x4(rightCamVec, 0, upCamVec, 0, forwardCamVec, 0, 0, 0, 0, 1);
+ 
+	//This unfortunately must be made to take non-uniform scaling into account;
+	//Transform to world coords, apply rotation and transform back to local;
+	vertex = mul(vertex, unity_ObjectToWorld);
+	vertex = mul(vertex, rotationCamMatrix);
+	vertex = mul(vertex, unity_WorldToObject);
+ 
+}
 
  
 #endif

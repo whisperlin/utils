@@ -28,6 +28,7 @@ Shader "TA/Scene/TreeSoft"
 			#pragma fragment frag
 			#pragma multi_compile_fwdbase
 			#pragma multi_compile_fog
+			#pragma multi_compile_instancing
             #pragma multi_compile LIGHTMAP_OFF LIGHTMAP_ON
 		#pragma   multi_compile  _  ENABLE_NEW_FOG
 			#pragma   multi_compile  _  _POW_FOG_ON
@@ -35,7 +36,8 @@ Shader "TA/Scene/TreeSoft"
 			#pragma   multi_compile  _ ENABLE_DISTANCE_ENV
 			#pragma   multi_compile  _ ENABLE_BACK_LIGHT
 			#pragma   multi_compile  _  GLOBAL_ENV_SH9
-			#pragma multi_compile _FADEPHY_OFF _FADEPHY_ON
+			#pragma multi_compile _FADEPHY_OFF _FADEPHYSICS_ON
+ 
 
 			#include "UnityCG.cginc"
 			#include "Lighting.cginc"
@@ -71,5 +73,49 @@ Shader "TA/Scene/TreeSoft"
 			}
 			ENDCG
 		}
+
+		Pass
+		{
+			Name "ShadowCaster"
+			Tags{"LightMode" = "ShadowCaster"}
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile_shadowcaster
+			#pragma multi_compile_instancing
+			#include "UnityCG.cginc" 
+			#include "grass.cginc"
+			struct v2fsd
+			{
+				float2 uv : TEXCOORD0;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				V2F_SHADOW_CASTER;
+			};
+
+			v2f vert(appdata_full  v)
+			{
+				v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+
+
+				float4 wpos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1.0));
+
+				grass_move(wpos, v.color);
+				v.vertex = mul(wpos, unity_WorldToObject);
+				o.uv = v.texcoord;
+				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+
+				return o;
+			}
+			float4  frag(v2f i) :SV_Target
+			{
+				fixed4 c = tex2D(_MainTex, i.uv);
+				clip(c.a - _AlphaCut);
+				SHADOW_CASTER_FRAGMENT(i)
+			}
+			ENDCG
+		}
 	}
+	Fallback "Mobile/Diffuse"
 }

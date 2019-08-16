@@ -1,3 +1,5 @@
+// Upgrade NOTE: upgraded instancing buffer 'ASESampleShadersSimpleGPUInstancing' to new syntax.
+
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "ASESampleShaders/SimpleGPUInstancing"
@@ -27,14 +29,15 @@ Shader "ASESampleShaders/SimpleGPUInstancing"
 		uniform sampler2D _Checkers;
 		uniform float4 _Checkers_ST;
 
-		UNITY_INSTANCING_CBUFFER_START(ASESampleShadersSimpleGPUInstancing)
+		UNITY_INSTANCING_BUFFER_START(ASESampleShadersSimpleGPUInstancing)
 			UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-		UNITY_INSTANCING_CBUFFER_END
+#define _Color_arr ASESampleShadersSimpleGPUInstancing
+		UNITY_INSTANCING_BUFFER_END(ASESampleShadersSimpleGPUInstancing)
 
 		void surf( Input i , inout SurfaceOutputStandard o )
 		{
 			float2 uv_Checkers = i.uv_texcoord * _Checkers_ST.xy + _Checkers_ST.zw;
-			float4 _Color_Instance = UNITY_ACCESS_INSTANCED_PROP(_Color);
+			float4 _Color_Instance = UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color);
 			o.Albedo = ( tex2D( _Checkers, uv_Checkers ) * _Color_Instance ).xyz;
 			o.Alpha = 1;
 		}

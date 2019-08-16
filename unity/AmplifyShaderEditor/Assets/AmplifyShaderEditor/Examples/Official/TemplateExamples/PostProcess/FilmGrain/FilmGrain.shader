@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "ASESampleShaders/FilmGrain"
@@ -56,7 +58,7 @@ Shader "ASESampleShaders/FilmGrain"
 			{
 				v2f_img_custom o;
 
-				o.pos = mul ( UNITY_MATRIX_MVP, v.vertex );
+				o.pos = UnityObjectToClipPos ( v.vertex );
 				o.uv = float4( v.texcoord.xy, 1, 1 );
 
 				#ifdef UNITY_HALF_TEXEL_OFFSET

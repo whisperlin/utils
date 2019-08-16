@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader /*ase_name*/ "ASETemplateShaders/PostProcess" /*end*/
 {
 	Properties
@@ -52,7 +54,7 @@ Shader /*ase_name*/ "ASETemplateShaders/PostProcess" /*end*/
 			{
 				v2f_img_custom o;
 
-				o.pos = mul ( UNITY_MATRIX_MVP, v.vertex );
+				o.pos = UnityObjectToClipPos ( v.vertex );
 				o.uv = float4( v.texcoord.xy, 1, 1 );
 
 				#ifdef UNITY_HALF_TEXEL_OFFSET

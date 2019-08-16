@@ -15,8 +15,9 @@ Shader "TA/Scene/Tree"
 		_EmissionTex("自发光控制图",2D)  = "white" {}
 
 
-
-		[KeywordEnum(Off,On)] _fadePhy("是否开启碰撞交互", Float) = 0
+		
+		[KeywordEnum(Off,On)] _fadePhysics("是否开启碰撞交互", Float) = 0
+		//[Toggle(_ENABLE_BILLBOARD_Y)] _ENABLE_BILLBOARD_Y("是否开启公告版", Float) = 0
 	}
 
 	SubShader
@@ -37,18 +38,23 @@ Shader "TA/Scene/Tree"
 			#pragma   multi_compile  _  _POW_FOG_ON
 			#pragma   multi_compile  _  _HEIGHT_FOG_ON
 			#pragma   multi_compile  _  GLOBAL_ENV_SH9
-			#pragma multi_compile _FADEPHY_OFF _FADEPHY_ON
-			
+			#pragma multi_compile _FADEPHY_OFF _FADEPHYSICS_ON
+
+			#pragma multi_compile_instancing
+			//#pragma shader_feature _ENABLE_BILLBOARD_Y
 
 			#include "UnityCG.cginc"
 			#include "Lighting.cginc"
-			#include "height-fog.cginc"
+			
 			#include "grass.cginc"
 			
 			 
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
+
+				UNITY_SETUP_INSTANCE_ID(i);
+
 				fixed4 c = tex2D(_MainTex, i.uv);
 				c.rgb *= _Color.rgb;
 #if !defined(LIGHTMAP_OFF) || defined(LIGHTMAP_ON)
@@ -65,9 +71,54 @@ Shader "TA/Scene/Tree"
 				clip(c.a - _AlphaCut);
 				APPLY_HEIGHT_FOG(c,i.wpos,i.normalWorld,i.fogCoord);
 				UNITY_APPLY_FOG_MOBILE(i.fogCoord, c);
+				//return i.dis;
 				return c;
 			}
 			ENDCG
 		}
+
+		Pass
+		{
+			Name "ShadowCaster"
+			Tags{"LightMode" = "ShadowCaster"}
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile_shadowcaster
+			#pragma multi_compile_instancing
+			#include "UnityCG.cginc" 
+			#include "grass.cginc"
+			struct v2fsd
+			{
+				float2 uv : TEXCOORD0;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				V2F_SHADOW_CASTER;
+			};
+		 
+			v2f vert(appdata_full  v)
+			{
+				v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+
+
+				float4 wpos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1.0));
+		 
+				grass_move(wpos, v.color);
+				v.vertex =   mul(wpos, unity_WorldToObject);
+				o.uv = v.texcoord;
+				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+	 
+				return o;
+			}
+			float4  frag(v2f i) :SV_Target
+			{
+				fixed4 c = tex2D(_MainTex, i.uv);
+				clip(c.a - _AlphaCut);
+				SHADOW_CASTER_FRAGMENT(i)
+			}
+			ENDCG
+		}
 	}
+	Fallback "Mobile/Diffuse"
 }
