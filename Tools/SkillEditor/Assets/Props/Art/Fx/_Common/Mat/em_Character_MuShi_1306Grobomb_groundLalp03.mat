@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: em_Character_MuShi_1306Grobomb_groundLalp03
+  m_Shader: {fileID: 4800000, guid: 891d64e8ac78bea4793eabf526b63c58, type: 3}
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: <noninit>
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Diffuse
+      second:
+        m_Texture: {fileID: 2800000, guid: dd3b09d21a6106a4888e7e6f26ed5955, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _mask
+      second:
+        m_Texture: {fileID: 2800000, guid: dd3b09d21a6106a4888e7e6f26ed5955, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: <noninit>
+      second: 0
+    - first:
+        name: _fliuld
+      second: 0
+    - first:
+        name: _fliuld_power
+      second: 1
+    - first:
+        name: _power
+      second: 10
+    m_Colors:
+    - first:
+        name: <noninit>
+      second: {r: 0, g: 0.0000000024183127, b: 0, a: 0.0000000024182985}
+    - first:
+        name: _Color
+      second: {r: 1, g: 0.8235294, b: 0.2509804, a: 1}

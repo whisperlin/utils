@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: em_Character_MuShi_1301circleatt01_pidao01
+  m_Shader: {fileID: 4800000, guid: 425987486a9dae9469a64ec447d0ef00, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: <noninit>
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: f6a5ab20b539c344085bd380346d3141, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Mask
+      second:
+        m_Texture: {fileID: 2800000, guid: 4a3eb74ba50c2404bbbe7f15875b2def, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: <noninit>
+      second: 0
+    m_Colors:
+    - first:
+        name: <noninit>
+      second: {r: 0, g: 0.0000018209585, b: 0, a: 0.0000018209512}
+    - first:
+        name: _TintColor
+      second: {r: 1, g: 1, b: 1, a: 1}

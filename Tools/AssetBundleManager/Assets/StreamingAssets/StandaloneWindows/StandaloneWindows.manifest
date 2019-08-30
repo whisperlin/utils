@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 622239417
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: assets@test.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: assets@test@cube.prefab.unity3d
+      Dependencies:
+        Dependency_0: assets@test.unity3d
+    Info_2:
+      Name: assets@test@sphere.prefab.unity3d
+      Dependencies:
+        Dependency_0: assets@test.unity3d
+    Info_3:
+      Name: assets@testscene.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: assets@testscene@demo.unity.unity3d
+      Dependencies:
+        Dependency_0: assets@test@cube.prefab.unity3d
+        Dependency_1: assets@test@sphere.prefab.unity3d
