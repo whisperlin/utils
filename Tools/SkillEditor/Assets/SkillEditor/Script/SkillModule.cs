@@ -44,7 +44,7 @@ public enum LCHChannelType
     RoleState = 102,
 }
 
-public enum SkillData
+public enum SkillDataType
 {
     ROLE,
     SKILL
@@ -52,18 +52,18 @@ public enum SkillData
 
 public interface SkillDataLoader
 {
-    string LoadFile(string id, SkillData type);
+    string LoadFile(string id, SkillDataType type);
 
-    bool Exists(string id, SkillData type);
-    void SaveFile(string id,string text, SkillData type);
-    List<string> GetIds(SkillData type);
+    bool Exists(string id, SkillDataType type);
+    void SaveFile(string id,string text, SkillDataType type);
+    List<string> GetIds(SkillDataType type);
 
     string loadPropertys();
  
  
-    void DeleveFile(string id, SkillData type);
+    void DeleveFile(string id, SkillDataType type);
 }
-public class SkillModule {
+public class SkillData {
 
 
     public  static LCHChannelType[] singleChannels = new LCHChannelType[] { LCHChannelType.PosX, LCHChannelType.PosY, LCHChannelType.PosZ };
@@ -71,7 +71,7 @@ public class SkillModule {
     public bool EditorModel = false;
     static int objCount = 1;
     int id;
-    public SkillModule()
+    public SkillData()
     {
         this.id = objCount;
         objCount++;
@@ -202,10 +202,29 @@ public class SkillModule {
         string skillId = (string)args[0];
         int objId = (int)args[1];
         var skill = GetSkill(skillId);
-        int c = skill.objs.Length;
-      
-        skill.RemoveObject(objId);
 
+        var o0 = skill.GetObject(objId);
+        skill.RemoveObject(objId);
+        if ( null != o0 && o0.type == 1)
+        {
+            for (int i = skill.objs.Length-1; i >=0; i-- )
+            {
+                var o1 = skill.objs[i];
+                if (o1.type == 3)
+                {
+                    int bind = o1.propertys.GetValueInt("bind", 0);
+                    if (bind == 2)
+                    {
+                        int objid = o1.propertys.GetValueInt("objid", 0);
+                        if (objid == o0.id)
+                        {
+                            skill.RemoveObject(o1.id);
+                        }
+                    }
+                }
+
+            }
+        }
         SaveSkill(skillId);
 
 
@@ -357,14 +376,14 @@ public class SkillModule {
 #if UNITY_EDITOR
         if (EditorModel && null == loader)
             loader = new EditorFileLoader();
-        if (loader.Exists(id, SkillData.ROLE))
+        if (loader.Exists(id, SkillDataType.ROLE))
         {
             EditorUtility.DisplayDialog("提示", "同id角色已经存", "确定");
             return;
              
         }
 #endif
-        loader.SaveFile(id, json, SkillData.ROLE);
+        loader.SaveFile(id, json, SkillDataType.ROLE);
         EventManager.CallEvent((int)SkillEvent.OnRoleListModify, id, type);
     }
 
@@ -472,8 +491,10 @@ public class SkillModule {
     }
     private void SkillAddBaseCollider(object[] args)
     {
+
         string skillId = (string)args[0];
-        string bindName = (string)args[1];
+        int objId = (int)args[1];
+        string bindName = (string)args[2];
         LCHSkillData skill = GetSkill(skillId);
         var v = skill.objs;
         int objCount = v.Length;
@@ -491,7 +512,16 @@ public class SkillModule {
         eo.type = 3;
         eo.id = id;
         eo.name = "触发器-未命名";
-        eo.propertys["bind"] = 2;
+        if (bindName.Length > 0)
+        {
+            eo.propertys["bind"] = 2;
+        }
+        else
+        {
+            eo.propertys["bind"] = 1;
+        }
+        
+        eo.propertys["objid"] = objId;
         eo.propertys["bind_name"] = bindName;
         LCHSkillData s = new LCHSkillData();
         skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
@@ -559,7 +589,7 @@ public class SkillModule {
         string roidId = arg[1].ToString();
 
 #if UNITY_EDITOR
-        if (this.loader.Exists(id, SkillData.SKILL))
+        if (this.loader.Exists(id, SkillDataType.SKILL))
         {
             EditorUtility.DisplayDialog("提示", "同id技能已经存在", "确定");
             return;
@@ -569,13 +599,10 @@ public class SkillModule {
         roid.skills = ArrayHelper.AddItem(roid.skills, id);
 
         LCHSkillData skill = new LCHSkillData();
-        
-      
         skill.id = id;
         skill.roleId = roidId;
-
         string json = JsonConvert.SerializeObject(skill);
-        loader.SaveFile(id, json, SkillData.SKILL);
+        loader.SaveFile(id, json, SkillDataType.SKILL);
         SaveRole(roidId);
 
     }
@@ -586,7 +613,7 @@ public class SkillModule {
         var skill = GetSkill(skillId);
         var role = GetRole(skill.roleId);
         role.DeleteSkill(skillId);
-        loader.DeleveFile(skillId, SkillData.SKILL);
+        loader.DeleveFile(skillId, SkillDataType.SKILL);
         skills.Remove(skillId);
         SaveRole(role.id);
     }
@@ -596,7 +623,7 @@ public class SkillModule {
     {
         if (skills.ContainsKey(skillId))
             return skills[skillId];
-        var js = loader.LoadFile(skillId, SkillData.SKILL);
+        var js = loader.LoadFile(skillId, SkillDataType.SKILL);
         if (js.Length == 0)
             return null;
         var v = JSonHelper.DeserializeSkill(js);
@@ -611,10 +638,11 @@ public class SkillModule {
             if (null == s)
                 return;
             string json = JsonConvert.SerializeObject(s);
-            loader.SaveFile(skillId, json, SkillData.SKILL);
+            loader.SaveFile(skillId, json, SkillDataType.SKILL);
         }
         catch (System.Exception e)
         {
+            
             Debug.LogError(e.ToString() + e.StackTrace);
         }
        
@@ -626,7 +654,7 @@ public class SkillModule {
     {
         if (roles.ContainsKey(id))
             return roles[id];
-        var js = loader.LoadFile(id, SkillData.ROLE);
+        var js = loader.LoadFile(id, SkillDataType.ROLE);
         //var v = JSonHelper.DeserializeDictionary(js);
         LCHRoleData v = JSonHelper.DeserializeRole(js);
         if (v == null)
@@ -638,9 +666,9 @@ public class SkillModule {
     }
     public void DeleteRole(string id)
     {
-        loader.DeleveFile(id, SkillData.ROLE);
+        loader.DeleveFile(id, SkillDataType.ROLE);
         roles.Remove(id);
-        int type = (int)SkillData.ROLE;
+        int type = (int)SkillDataType.ROLE;
         EventManager.CallEvent((int)SkillEvent.OnRoleListModify, id, type );
     }
     public void DeleteSkill(string  curSkillId)
@@ -656,7 +684,7 @@ public class SkillModule {
             ids.Add(s);
         }
         role.skills = ids.ToArray();
-        loader.DeleveFile( curSkillId, SkillData.SKILL);
+        loader.DeleveFile( curSkillId, SkillDataType.SKILL);
         skills.Remove( curSkillId);
         SaveRole(sk.roleId);
 
@@ -669,7 +697,7 @@ public class SkillModule {
         if (r == null)
             return;
         string json = JsonConvert.SerializeObject(r);
-        loader.SaveFile(id, json, SkillData.ROLE);
+        loader.SaveFile(id, json, SkillDataType.ROLE);
     }
     
     public void ReleaseRole(string id)
@@ -679,6 +707,6 @@ public class SkillModule {
 
     public List<string> GetAllRoles()
     {
-        return this.loader.GetIds(SkillData.ROLE);
+        return this.loader.GetIds(SkillDataType.ROLE);
     }
 }

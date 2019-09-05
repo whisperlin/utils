@@ -8,17 +8,43 @@ public class ObjDictionary : Dictionary<string,object>
     public T GetValue<T>(string key,T defaultValue) {
         try
         {
-            return (T)this[key];
+            object v = this[key];
+            return (T)v;
         }
         catch(System.Exception e)
         {
+            //object v = this[key];
+            //Debug.Log(v.GetType());
             this[key] = defaultValue;
             return (T)this[key];
 
         }
         
     }
+    public float GetValueFloat(string key, float defaultValue)
+    {
+        try
+        {
+            return (float)this[key];
+        }
+        catch (System.Exception e)
+        {
+            if (this.ContainsKey(key))
+            {
+                float i = System.Convert.ToSingle(this[key]);
+                this[key] = i;
+                return i;
+            }
+            else
+            {
+                this[key] = defaultValue;
+            }
 
+            return defaultValue;
+
+        }
+
+    }
     public int GetValueInt(string key, int defaultValue)
     {
         try

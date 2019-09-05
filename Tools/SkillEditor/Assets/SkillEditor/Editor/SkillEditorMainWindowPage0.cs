@@ -61,7 +61,8 @@ public partial class SkillEditorMainWindow
                 string path = "";
                 if (PrefabUtility.GetPrefabType(anim.gameObject) == PrefabType.PrefabInstance)
                 {
-                    UnityEngine.Object parentObject = EditorUtility.GetPrefabParent(anim.gameObject);
+                    
+                    UnityEngine.Object parentObject = PrefabUtility.GetPrefabParent(anim.gameObject);
                     path = AssetDatabase.GetAssetPath(parentObject);
                 }
                 else
@@ -213,6 +214,10 @@ public partial class SkillEditorMainWindow
         scrollViewPos2 = GUILayout.BeginScrollView(scrollViewPos2, GUILayout.Height(120));
         if ( SkillEditorData.Instance.CurRoleId.Length > 0)
         {
+            if (selSkillInt >= roleData.skills.Length)
+            {
+                selSkillInt = 0;
+            }
             selSkillInt = GUILayout.SelectionGrid(selSkillInt, roleData.skills, 1);
             CheckSkillUpdate(selSkillInt);
              

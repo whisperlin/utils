@@ -105,6 +105,7 @@ public partial class SkillEditorMainWindow
         EditorGUI.BeginDisabledGroup(null == anim);
         if (GUILayout.Button("原碰撞体", layourWidth80))
         {
+           
 
             PopupWindow.Show(buttonRect ,ColliderDialog.Show(anim.transform, OnColliderAdd,SkillEditorData.Instance.CurSkillId));
         }
@@ -193,7 +194,19 @@ public partial class SkillEditorMainWindow
         if (selectObjId > -1   )
         {
             selectObject = skill.GetObject(selectObjId);
-            if (selectObject.type != 4)
+            if (selectObject.type == 3)
+            {
+                var rect = EditorGUILayout.BeginHorizontal();
+                EditorGUI.BeginDisabledGroup(selectObject.type == 3);
+                //selectObject.type
+                GUILayout.Label("绑定对象", GUILayout.Width(80f));
+                int bind0 = selectObject.propertys.GetValueInt("bind", 0);
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.TextField(selectObject.propertys.GetValue<string>("bind_name", ""));
+                EditorGUI.EndDisabledGroup();
+                EditorGUILayout.EndHorizontal();
+            }
+            if (selectObject.type != 4 )
             {
                 var rect = EditorGUILayout.BeginHorizontal();
                 EditorGUI.BeginDisabledGroup(selectObject.type == 3);
@@ -275,8 +288,8 @@ public partial class SkillEditorMainWindow
         GUILayout.EndHorizontal();//1
     }
 
-    public void OnColliderAdd(string str, object[] args)
+    public void OnColliderAdd(int objId,string str, object[] args)
     {
-        EventManager.CallEvent((int)SkillEvent.SkillAddBaseCollider, SkillEditorData.Instance.CurSkillId, str);
+        EventManager.CallEvent((int)SkillEvent.SkillAddBaseCollider, SkillEditorData.Instance.CurSkillId, objId,str);
     }
 }

@@ -17,11 +17,31 @@ public class ObjectContain
     public string mod_name;
     public int objId;
     public int type;
+    public int bindObjId;
+    public int bind;
+    public string bindName;
     public Vector3 pos = Vector3.zero;
     public Quaternion rot = Quaternion.identity;
     public Vector3 scale = Vector3.one;
     public GameObject gameobject;
     public Animation animaction;
+    public Collider collider;
+    public List<LCHChannelData> channels = new List<LCHChannelData>();//这里搞不了多态，因为序列化json不支持多态。
+    public List<LCHEventChannelData> events = new List<LCHEventChannelData>();
+    public Renderer[] roleRenders;
+    public LCharacterHitData hitData;
+
+    public void SetInformation(LCHObjectData od)
+    {
+        objId = od.id;
+        type = od.type;
+        bind = od.propertys.GetValueInt("bind",0);
+        if(bind==2)
+            bindName = od.propertys.GetValue<string>("bind_name", "");
+        bindObjId = od.propertys.GetValueInt("objid",-1);
+        mod = od.propertys.GetValue<string>("mod", "");
+        mod_name = od.propertys.GetValue<string>("mod_name", "");
+    }
 
     internal void ResetTransformData()
     {
@@ -73,35 +93,39 @@ public class LCHSkill  {
         for (int i = 0; i < c0; i++)
         {
             var o = SkillData.objs[i];
-            if (o.type == 3)
-                continue;
-            int bind = o.propertys.GetValueInt("bind", 0);
-            if (bind == 2)
+            if (o.type == 1 || o.type == 2)
             {
-                string bind_name = o.propertys.GetValue<string>("bind_name", "");
-                var ct = GetObjectContainById(o.id);
-                if (ct.gameobject)
+                int bind = o.propertys.GetValueInt("bind", 0);
+                if (bind == 2)
                 {
-                    if (role.gameobject && ct.gameobject)
+                    string bind_name = o.propertys.GetValue<string>("bind_name", "");
+                    var ct = GetObjectContainById(o.id);
+                    if (ct.gameobject)
                     {
-                        ct.gameobject.transform.parent = role.gameobject.transform.FindChild(bind_name);
+                        if (role.gameobject && ct.gameobject)
+                        {
+                            ct.gameobject.transform.parent = role.gameobject.transform.FindChild(bind_name);
+                        }
                     }
                 }
-            }
-            else if (bind == 1)
-            {
-                var ct = GetObjectContainById(o.id);
-                if (role.gameobject &&  ct.gameobject)
+                else if (bind == 1)
                 {
-                    ct.gameobject.transform.parent = role.gameobject.transform;
+                    var ct = GetObjectContainById(o.id);
+                    if (role.gameobject && ct.gameobject)
+                    {
+                        ct.gameobject.transform.parent = role.gameobject.transform;
+                    }
+                }
+                else if (bind == 0)
+                {
+                    var ct = GetObjectContainById(o.id);
+                    if (null != ct.gameobject)
+                        ct.gameobject.transform.parent = null;
                 }
             }
-            else if (bind == 0)
-            {
-                var ct = GetObjectContainById(o.id);
-                if(null != ct.gameobject)
-                    ct.gameobject.transform.parent = null;
-            }
+     
+                
+            
         }
     }
 #endif
@@ -163,6 +187,9 @@ public class LCHSkill  {
     }
     public void ComputeAnim(float curTime)
     {
+#if UNITY_EDITOR
+        SetObjectParent();
+#endif
         //初始化.
         role.ResetTransformData();
         for (int i = 0, c0 = objs.Count; i < c0; i++)
@@ -249,7 +276,7 @@ public class LCHSkill  {
             if (null != role.gameobject)
             {
                 role.gameobject.transform.localPosition = role.pos;
-                role.gameobject.transform.rotation = role.rot;
+                role.gameobject.transform.localRotation = role.rot;
                 role.gameobject.transform.localScale = role.scale;
             }
 
@@ -261,7 +288,7 @@ public class LCHSkill  {
             if (null == o0.gameobject)
                 continue;
             o0.gameobject.transform.localPosition = o0.pos;
-            o0.gameobject.transform.rotation = o0.rot;
+            o0.gameobject.transform.localRotation = o0.rot;
             o0.gameobject.transform.localScale = o0.scale;
         }
 
@@ -275,7 +302,7 @@ public class LCHSkill  {
             float _time;
             if (t == LCHChannelType.Object)
             {
-                if (_e.TryGetKeyFrameRunntimme(curTime, out value, out _time))
+                if (_e.TryGetKeyFrame(curTime, out value, out _time))
                 {
                     if (null != contain.gameobject)
                     {
@@ -308,7 +335,7 @@ public class LCHSkill  {
                 {
                     if (null != contain.gameobject)
                     {
-                        if(contain.type!=-1)
+                        if(contain.objId!=-1)
 
                             contain.gameobject.SetActive(false);
                     }
@@ -316,7 +343,7 @@ public class LCHSkill  {
             }
             if (t == LCHChannelType.Event)
             {
-                if (_e.TryGetKeyFrameRunntimme(curTime, out value, out _time))
+                if (_e.TryGetKeyFrame(curTime, out value, out _time))
                 {
                     if (null != contain.gameobject)
                     {

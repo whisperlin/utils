@@ -42,12 +42,12 @@ public class ColliderRender : MonoBehaviour {
     {
         if (primMesh == null)
         {
-            Debug.Log("Getting Unity Primitive Mesh: " + primitiveType);
+            //Debug.Log("Getting Unity Primitive Mesh: " + primitiveType);
             primMesh = Resources.GetBuiltinResource<Mesh>(GetPrimitiveMeshPath(primitiveType));
 
             if (primMesh == null)
             {
-                Debug.LogError("Couldn't load Unity Primitive Mesh: " + primitiveType);
+               // Debug.LogError("Couldn't load Unity Primitive Mesh: " + primitiveType);
             }
         }
 

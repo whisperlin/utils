@@ -71,7 +71,8 @@ public class SkillEditorWindow : EditorWindow
                 SkillEditorData.Instance.playing = false;
             }
         }
-        SkillEditorMainWindow.golbalWindow.UpdateSkill();
+        if(null != SkillEditorMainWindow.golbalWindow)
+            SkillEditorMainWindow.golbalWindow.UpdateSkill();
         Repaint();
     }
     private void OnEnable()
@@ -97,6 +98,7 @@ public class SkillEditorWindow : EditorWindow
     public static bool autoApdateKeyFrame = true;
     void OnGUI()
     {
+        var width100 = GUILayout.Width(100f);
         var width150 = GUILayout.Width(150f);
         var width50 = GUILayout.Width(50f);
         var width80 = GUILayout.Width(80f);
@@ -180,8 +182,18 @@ public class SkillEditorWindow : EditorWindow
         showCollider = EditorGUILayout.ToggleLeft("显示碰撞体",showCollider);
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        GUILayout.Label("技能长度", width50);
-        maxLength = EditorGUILayout.Slider( maxLength, 0f, 20f, width150);
+        GUILayout.Label("技能长度", width100);
+
+        if (null != skill)
+        {
+            maxLength = skill.maxLength = EditorGUILayout.Slider(skill.maxLength, 0f, 10f, width150);
+        }
+        else
+        {
+            maxLength = EditorGUILayout.Slider(maxLength, 0f, 20f, width150);
+        }
+        
+        
         GUILayout.Label("工具条缩放", width50);
         scale = EditorGUILayout.Slider(  scale, 0.2f, 2f, width150);
 
