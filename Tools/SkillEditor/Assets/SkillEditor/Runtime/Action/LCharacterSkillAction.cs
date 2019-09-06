@@ -5,7 +5,7 @@ using UnityEngine;
 public class LCharacterSkillAction : LChatacterAction
 {
 
-    LCHSkillData skillData;
+    protected LCHSkillData skillData;
 
     public bool HasLoaded
     {
@@ -15,19 +15,14 @@ public class LCharacterSkillAction : LChatacterAction
         }
     }
     private bool hasLoaded = false;
-    public LCharacterSkillAction(string skillName )
-    {
-        SkillId = skillName;
-
-        //this.skillData = data;
-    }
+    
     public static bool fixBeginPos = true;
      
     public ObjectContain role = new ObjectContain();
     public Dictionary<int,ObjectContain> objs = new Dictionary<int, ObjectContain>();
     public ObjectContain[] objList ;
     public Dictionary<int, AudioClip> clips = new Dictionary<int, AudioClip>();
-    private string SkillId;
+    public string SkillId;
 
     public Dictionary<string, SkillData> loadedSkillData = new Dictionary<string, SkillData>();
     private Vector3 baseGroundPos;
@@ -132,6 +127,7 @@ public class LCharacterSkillAction : LChatacterAction
 
         curTime = 0f;
         beginPositon = baseGroundPos = character.GetCurPosition();
+        //Debug.LogError("beginPositon  ="+ beginPositon);
         beginLocalRot = character.GetCurLocalRot();
         beginLocalScale = character.GetCurLoaclScale();
         lastTime = 0f;
@@ -277,7 +273,7 @@ public class LCharacterSkillAction : LChatacterAction
     }
      
     public static void SetObjectPos(float curTime, ObjectContain contain, Dictionary<int, ObjectContain> objs , LChatacterInterface character, LChatacterInformationInterface information,
-        ref Vector3 beginPositon,
+         Vector3 beginPositon,
         Vector3 beginLocalScale,
         Quaternion beginLocalRot )
     {
@@ -296,25 +292,48 @@ public class LCharacterSkillAction : LChatacterAction
             {
                 contain.gameobject.transform.parent = FindInChildrenIncludingInactive(role.gameobject.transform, contain.bindName);
             }
-            else if (contain.bind == 0 && contain.gameobject != null && contain.gameobject.transform.parent == null && role.gameobject != null)
+            else if (contain.bind == 0 && contain.gameobject != null  )
             {
+                contain.gameobject.transform.parent = null;
                 contain.gameobject.transform.position = beginPositon;
                 contain.gameobject.transform.localRotation = beginLocalRot;
+                contain.gameobject.transform.localScale = Vector3.one;
+
+
             }
 
             if (contain.bind == 0)
             {
-                //Debug.Log("contain.pos = " + contain.pos);
+
+                /*if (contain.objId == 1)
+                {
+                    
+                    Debug.Log(contain.objId + " contain.pos = " + contain.pos + " basePosition " + contain.gameobject.transform.position);
+                    Debug.Log("befor " + contain.objId + " contain.pos = " + contain.gameobject.transform.position);
+                    if (contain.pos.z == 2f)
+                    {
+                        Debug.LogError("here");
+                    }
+                }*/
                 contain.gameobject.transform.position = contain.gameobject.transform.localToWorldMatrix.MultiplyPoint(contain.pos);
                 contain.gameobject.transform.localRotation *= contain.rot;
+
+                /*if (contain.objId == 1)
+                {
+                    float dt = contain.gameobject.transform.position.z - beginPositon.z;
+                    Debug.Log("final "+contain.objId + " contain.pos = " + contain.gameobject.transform.position);
+                    Debug.Log("beginPositon  =" + beginPositon + " dt = "+ dt);
+                }*/
             }
             else
             {
                 contain.gameobject.transform.localPosition = contain.pos;
                 contain.gameobject.transform.localRotation = contain.rot;
+                contain.gameobject.transform.localScale = contain.scale;
             }
             contain.gameobject.transform.localScale = contain.scale;
         }
+        //type3 不改位移
         else if (contain.type == 3)
         {
             if (contain.gameobject == null)
@@ -332,8 +351,8 @@ public class LCharacterSkillAction : LChatacterAction
                 {
                     ObjectContain c1 = objs[contain.bindObjId];
                     contain.gameobject = c1.gameobject;
-                    contain.gameobject.transform.position = beginPositon;
-                    contain.gameobject.transform.localRotation = beginLocalRot;
+                    //contain.gameobject.transform.position = beginPositon;
+                    //contain.gameobject.transform.localRotation = beginLocalRot;
 
                 }
             }
@@ -453,7 +472,7 @@ public class LCharacterSkillAction : LChatacterAction
                             {
                                 contain.hitData = contain.gameobject.AddComponent<LCharacterHitData>();
                             }
-         
+                            contain.hitData.characterId = character.GetId();
                             contain.hitData.hittedObject.Clear();
                             contain.hitData.value = value;
                             
@@ -509,7 +528,7 @@ public class LCharacterSkillAction : LChatacterAction
         {
             var contain = objList[i];
             SetObjectPos(curTime, contain, objs, character, information,
-            ref beginPositon,
+             beginPositon,
             beginLocalScale,
             beginLocalRot);
         }

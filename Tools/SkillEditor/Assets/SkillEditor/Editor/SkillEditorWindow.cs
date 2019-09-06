@@ -12,7 +12,6 @@ public class SkillEditorWindow : EditorWindow
         SkillEditorWindow window = (SkillEditorWindow)EditorWindow.GetWindow(typeof(SkillEditorWindow));
         SkillEditorWindow.CurActive = window;
         window.Show();
-         
     }
     public bool hasFocus = true;
     public static SkillEditorWindow CurActive;
@@ -31,6 +30,7 @@ public class SkillEditorWindow : EditorWindow
 
     public Vector2 scrollPosition = Vector2.zero;
     public float maxLength = 3f;
+    public float skillRange = 3f;
     public float scale = 1;
     public float viewHeight = 600f;
     public float ChannelHeight = 30f; 
@@ -180,6 +180,15 @@ public class SkillEditorWindow : EditorWindow
         }
         GUILayout.Space(50f);
         showCollider = EditorGUILayout.ToggleLeft("显示碰撞体",showCollider);
+        GUILayout.Label("AI自动攻击范围", width100);
+        if (null != skill)
+        {
+            skillRange = skill.skillRange = EditorGUILayout.Slider(skill.skillRange, 0f, 20f, width150);
+        }
+        else
+        {
+            EditorGUILayout.Slider(1f, 0f, 20f, width150);
+        }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         GUILayout.Label("技能长度", width100);
@@ -190,10 +199,9 @@ public class SkillEditorWindow : EditorWindow
         }
         else
         {
-            maxLength = EditorGUILayout.Slider(maxLength, 0f, 20f, width150);
+            maxLength = EditorGUILayout.Slider(maxLength, 0f, 5f, width150);
         }
-        
-        
+
         GUILayout.Label("工具条缩放", width50);
         scale = EditorGUILayout.Slider(  scale, 0.2f, 2f, width150);
 
@@ -343,6 +351,79 @@ public class SkillEditorWindow : EditorWindow
         SkillEditorMainWindow.toolbarInt = 1;
 
     }
+    bool TryDragFramePos(Vector2 pos)
+    {
+        if (null != SkillEditorMainWindow.golbalWindow)
+        {
+            LCHSkillData skill = SkillEditorMainWindow.golbalWindow.GetSkill();
+            //int c = skill.channels.Count + skill.events.Count;
+            int c1 = skill.channels.Count;
+            int c2 = skill.events.Count;
+
+            //Debug.Log("selectNormalChannel = " + selectNormalChannel);
+
+            float delta = 20f * scale;
+            float width = maxLength * 10f * delta;
+            float _curSelectFrame = maxLength * pos.x / width;
+            int selFrame = ((int)((_curSelectFrame + 0.0000001f) * 10f));
+
+            if (null != selectNormalChannel)
+            {
+                
+                if (selectNormalChannel.GetKeyframeIndex(selFrame)==-1)
+                {
+                    int _index = selectNormalChannel.GetKeyframeIndex(curSelectFrame);
+                    var v = selectNormalChannel.values[_index];
+                    selectNormalChannel.DeleteFrame(_index);
+                    if (selectNormalChannel.AddKeyFrame(selFrame, v))
+                    {
+                        curSelectFrame = selFrame;
+                        
+                    }
+                   
+                }
+            }
+            if (null != selectEventChannel)
+            {
+                //curSelectFrame
+                if (  null != selectEvent)
+                {
+                    if (null == selectEventChannel.GetKeyFrame(selFrame))
+                    {
+                        selectEventChannel.DeleteKeyFrame(selectEvent);
+                        if (selectEventChannel.AddKeyFrame(selFrame, selectEvent))
+                        {
+                            curSelectFrame = selFrame;
+                        }
+                    }
+                    
+                    
+
+                }
+            }
+            /*if (SkillEditorWindow.curSelectChannel >= 0)
+                {
+                    if (SkillEditorWindow.curSelectChannel < c1)
+                    {
+                        selectNormalChannel = skill.channels[SkillEditorWindow.curSelectChannel];
+                        selectEvent = null;
+                        selectEventChannel = null;
+                        selNormalKeyFrameIndex = selectNormalChannel.GetKeyframeIndex(SkillEditorWindow.curSelectFrame);
+                    }
+                    else if (SkillEditorWindow.curSelectChannel < c2 + c1)
+                    {
+                        selectNormalChannel = null;
+                        int index = SkillEditorWindow.curSelectChannel - c1;
+                        selectEventChannel = skill.events[index];
+                        selectEvent = selectEventChannel.GetKeyFrame(SkillEditorWindow.curSelectFrame);
+                    }
+                }
+         
+            */
+            //SkillEditorMainWindow.toolbarInt = 1;
+        }
+        return false;
+    }
     void OnKeyFrameAreaEvent(Vector2 pos )
     {
         if (Event.current.button == 1)
@@ -370,17 +451,27 @@ public class SkillEditorWindow : EditorWindow
         {
             if (Event.current.type == EventType.MouseDown)
             {
-                
+
                 UpdateCurFramePos(pos);
-                UpdateTime(pos.x,true);
+                UpdateTime(pos.x, true);
                 GUI.FocusControl("FocusControl01");
             }
-            
+          
+            if (Event.current.type == EventType.MouseDrag)
+            {
+                if (TryDragFramePos(pos))
+                {
+                    UpdateTime(pos.x, true);
+                    //GUI.FocusControl("FocusControl01");
+                }
+            }
+
         }
     }
     
     private void UpdateColliderRender()
     {
+        
         if (null == ColliderRender.colliderRender)
         {
             GameObject g = new GameObject();
@@ -388,6 +479,8 @@ public class SkillEditorWindow : EditorWindow
             g.hideFlags = HideFlags.DontSave;
             ColliderRender.colliderRender = g.AddComponent<ColliderRender>();
         }
+        ColliderRender.colliderRender.attackRange = skillRange;
+ 
         if (showCollider)
         {
             ColliderRender.colliderRender.gameObject.SetActive(true);
@@ -399,7 +492,6 @@ public class SkillEditorWindow : EditorWindow
             else
             {
                 int count = 0;
-                //
                 for (int i = 0, c = skill.objs.Count; i < c; i++)
                 {
                     var o = skill.objs[i];
@@ -419,7 +511,7 @@ public class SkillEditorWindow : EditorWindow
                         count++;
                     }
                 }
-                //skill.objs;
+                
             }
         }
         else

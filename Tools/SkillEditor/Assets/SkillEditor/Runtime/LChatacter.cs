@@ -27,6 +27,15 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     {
         return roleId;
     }
+    public int GetCamp()
+    {
+        return camp;
+    }
+    public bool IsDead()
+    {
+        return false;
+    }
+    
     void CheckInterface()
     {
         if (null == charactor)
@@ -41,7 +50,6 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
         actionList.Add(action);
     }
     List<LChatacterAction> actionList = new List<LChatacterAction>();
- 
     //当前行为.
     public LChatacterAction curAction;
 
@@ -62,17 +70,15 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
             Rigidbody rb = collders[i].gameObject.GetComponent<Rigidbody>();
             if (null == rb)
                 rb = collders[i].gameObject.AddComponent<Rigidbody>();
-            //collders[i].isTrigger = true;
             rb.isKinematic = true;
             rb.useGravity = false;
         }
     }
     // Use this for initialization
     void Start () {
+        information.AddCharacter(this);
         UpdateColliderLayer();
     }
-
-    
 
     void AddCoroutine(IEnumerator fun)
     {
@@ -84,10 +90,10 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
  
         //CheckInterface();
         LChatacterAction.UpdateAction(ref curAction, actionList, charactor, information);
-        if (null != curAction)
+        /*if (null != curAction)
         {
             curAction.doAction(charactor, information);
-        }
+        }*/
 		
 	}
 
@@ -130,8 +136,6 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     {
         var f = Camera.main.transform.forward;
         forward = new Vector3(f.x, 0, f.z).normalized;
-
-
     }
 
     public void SetCurPosition(Vector3 pos )
@@ -142,32 +146,74 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     {
         transform.forward = forward;
     }
-
-    
-
-     
-
-    
-
+ 
     public int  GetAttackLayer()
     {
         return campInformation.attack;
     }
-
+    Dictionary<int, int> hatredMap = new Dictionary<int, int>();
+    
+    public void OnHit(Collider other, int otherCharacterId,ObjDictionary value, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information)
+    {
+        if (this.IsAI())
+        {
+            this.AddHaterd(otherCharacterId,1);
+         
+        }
+        LChatacterAction.OnHit(other, value, dir, ref curAction, actionList, this, information);
+    }
+    public int GetTargetId()
+    {
+        int targetCharacterId = -1;
+        if (IsAI())
+        {
+            if (hatredMap.Count > 0)
+            {
+                var e = hatredMap.GetEnumerator();
+                int maxHutred = 0;
+                while (e.MoveNext())
+                {
+                    int characterId = e.Current.Key;
+                    int hutred = e.Current.Value;
+                    if (hutred > maxHutred)
+                    {
+                        targetCharacterId = characterId;
+                    }
+                }
+                e.Dispose();
+            }
+        }
+        else
+        {
+            //...
+        }
+        return targetCharacterId;
+    }
+    public  void AddHaterd(int otherCharacterId, int v)
+    {
+        if (hatredMap.ContainsKey(otherCharacterId))
+        {
+            hatredMap[otherCharacterId] = hatredMap[otherCharacterId] + v;
+        }
+        else
+        {
+            hatredMap[otherCharacterId] = v;
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
  
         LCharacterHitData hitData = other.gameObject.GetComponent<LCharacterHitData>();
         if (hitData != null)
         {
-            if (!hitData.hittedObject.Contains(roleId))
+            if (!hitData.hittedObject.Contains(roleId)&&null != hitData.value)
             {
                 hitData.hittedObject.Add(roleId);
                 Vector3 dir = other.transform.forward;
                 dir.y = 0;
                 dir.Normalize();
-                LChatacterAction.OnHit(other, hitData.value, dir, ref curAction, actionList, charactor, information);
-
+               // Debug.Log("on hit");
+                charactor.OnHit( other, hitData.characterId, hitData.value, dir, ref curAction, actionList, information);
             }
             else
             {
@@ -184,5 +230,16 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     private void OnCollisionEnter(Collision collision)
     {
         
+    }
+
+    bool isAI = false;
+    public bool IsAI()
+    {
+        return isAI;
+    }
+
+    public void EnableAI()
+    {
+        isAI = true; ;
     }
 }

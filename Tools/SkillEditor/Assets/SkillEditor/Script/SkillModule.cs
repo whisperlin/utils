@@ -299,7 +299,7 @@ public class SkillData {
             var f = events.times[i];
             if (f == curSelectFrame)
             {
-                events.DeleteFrame(i);
+                events.DeleteFrameByIndex(i);
                 return;
             }
         }

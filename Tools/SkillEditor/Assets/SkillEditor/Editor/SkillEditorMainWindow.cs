@@ -170,7 +170,6 @@ public partial class SkillEditorMainWindow : EditorWindow
     void OnGUI()
     {
 
-
         if (! SkillEditorData.Instance.SkillsData.isInited())
         {
              SkillEditorData.Instance.SkillsData.Init(new EditorFileLoader());

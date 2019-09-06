@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+ 
+
 public interface CharactorLoadHandle
 {
     object asset {get;}
@@ -40,7 +42,6 @@ public class CharactorLoadResult : CharactorLoadHandle
         {
             return data.asset;
         }
-  
     }
     
     public bool isFinish
@@ -49,7 +50,6 @@ public class CharactorLoadResult : CharactorLoadHandle
         {
             return data.isFinish;
         }
-        
     }
 
     public string Error
@@ -77,6 +77,12 @@ public interface LChatacterInterface
     Animation GetRoleAnimation();//获得对象的主模型.
     Renderer[] GetRoleRender();
     int GetAttackLayer();
+    bool IsDead();//是否死亡.
+    int GetTargetId();
+    bool IsAI();
+    void EnableAI();//绑定技能ai脚本会自动调用这个接口。
+    int GetCamp();//
+    void OnHit(Collider other,int otherCharacterId, ObjDictionary value, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information);
 }
 //角色相关数据的抽象接口。
 public interface LChatacterInformationInterface  {
@@ -84,6 +90,11 @@ public interface LChatacterInformationInterface  {
     //尝试移动到某个位置.返回最近点可以移动位置
     Vector3 tryMove(Vector3 pos,Vector3 dir,bool fixToGround);
     Vector3 getGroundHight(Vector3 pos );
+    
+    LChatacterInterface GetCharacter(int targetId);
+    void AddCharacter(LChatacterInterface character);
+    void RemoveCharacter(LChatacterInterface character);
+
     //获取数据接口，数据键值统一用int，避免unity字典产生c。可以用枚举做键值
 
 }

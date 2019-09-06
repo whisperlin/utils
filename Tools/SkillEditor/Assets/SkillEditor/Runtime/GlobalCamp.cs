@@ -20,11 +20,29 @@ public class GlobalCamp : MonoBehaviour {
     // Use this for initialization
     void Awake() {
         globalCampInformations = campInformations;
+
+        HashSet<int> usedChannels = new HashSet<int>();
         for (int i = 0; i < campInformations.Length; i++)
         {
             var c = campInformations[i];
-            Physics.IgnoreLayerCollision(c.self, 0, true);
-            Physics.IgnoreLayerCollision(c.attack, 0, true);
+            usedChannels.Add(c.self);
+            usedChannels.Add(c.attack);
+        }
+        for (int i = 0; i < campInformations.Length; i++)
+        {
+            var c = campInformations[i];
+
+            for (int j = 0; j < 32; j++)
+            {
+                if (!usedChannels.Contains(j))
+                {
+                    Physics.IgnoreLayerCollision(c.self, j, true);
+                    Physics.IgnoreLayerCollision(c.attack, j, true);
+                }
+               
+            }
+            
+            
             //Physics.IgnoreLayerCollision( 0, c.self, true);
             //Physics.IgnoreLayerCollision( 0, c.attack, true);
             for (int j = 0; j < campInformations.Length; j++)

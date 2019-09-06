@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [ExecuteInEditMode]
 public class ColliderRender : MonoBehaviour {
     private static Mesh _unityCapsuleMesh = null;
@@ -9,8 +13,9 @@ public class ColliderRender : MonoBehaviour {
     private static Mesh _unityPlaneMesh = null;
     private static Mesh _unitySphereMesh = null;
     private static Mesh _unityQuadMesh = null;
-
     public static ColliderRender colliderRender = null;
+
+    public float attackRange = 1f;
     public static Mesh GetUnityPrimitiveMesh(PrimitiveType primitiveType)
     {
         switch (primitiveType)
@@ -116,6 +121,19 @@ public class ColliderRender : MonoBehaviour {
 
             }
         }
+        
+        {
+            //Gizmos.color  = new Color(1.0f,0.5f, 0.5f);
+            //Gizmos.DrawWireMesh(GetUnityPrimitiveMesh(PrimitiveType.Cylinder), Vector3.zero,Quaternion.identity,  attackRange);
+#if UNITY_EDITOR
+            Handles.color = new Color(1.0f, 0.5f, 0.5f); 
+            Handles.DrawWireDisc(Vector3.zero, Vector3.up, attackRange);
+            
+#endif
+
+
+        }
+            
     }
 
     private void Update()

@@ -73,8 +73,6 @@ public  class LCHChannelData
                     float t0 = time - times[j - 1];
                     float t1 = t - times[j - 1];
                     float v = Mathf.Lerp(values[j - 1], values[j], t0 / t1); 
-                    //if (debug)
-                    //    Debug.Log("return   " + time + " between " + times[j - 1] + " "+t + " value "+v);
                     return v;
                 }
             }
@@ -82,8 +80,6 @@ public  class LCHChannelData
         if (ct0 > 0)
         {
             var v = values[ct0 - 1];
-            //if (debug)
-            //    Debug.Log("return last " + v + " at " + time);
             return v;
         }
            
@@ -141,6 +137,28 @@ public  class LCHChannelData
         }
         return " 不存在";
     }
+
+    public bool AddKeyFrame(int frame, float value)
+    {
+        int l = times.Count;
+        for (int i = 0; i < l; i++)
+        {
+            var f = times[i];
+            if (f > frame)
+            {
+                times.Insert(i, frame);
+                values.Insert(i, value);
+                return true;
+            }
+            else if (f == frame)
+            {
+                return false;
+            }
+        }
+        times.Add(frame);
+        values.Add(value);
+        return true;
+    }
 }
 
 public class LCHHitEventData
@@ -174,12 +192,45 @@ public class LCHEventChannelData
         }
         return null;
     }
+    public void DeleteKeyFrame(ObjDictionary ObjDictionary)
+    {
+        for (int i = 0, c = times.Count; i < c; i++)
+        {
+            if (values[i] == ObjDictionary)
+            {
+                times.RemoveAt(i);
+                values.RemoveAt(i);
+                return;
+            }
+        }
+    }
+    public bool AddKeyFrame(int frame, ObjDictionary value)
+    {
+        int l = times.Count;
+        for (int i = 0; i < l; i++)
+        {
+            var f = times[i];
+            if (f > frame)
+            {
+                times.Insert(i, frame);
+                values.Insert(i, value);
+                return true;
+            }
+            else if (f == frame)
+            {
+                return false;
+            }
+        }
+        times.Add( frame);
+        values.Add(value);
+        return true;
+    }
     public void AddKey(int index, int frame)
     {
         times.Insert(index, frame);
         values.Insert(index, new ObjDictionary());
     }
-    public void DeleteFrame(int index)
+    public void DeleteFrameByIndex(int index)
     {
         times.RemoveAt(index);
         values.RemoveAt(index);
@@ -279,6 +330,8 @@ public class LCHEventChannelData
         value = null;
         return false;
     }
+
+    
 }
 
 
@@ -293,12 +346,14 @@ public class LCHSkillData
         instanceId = innerId;
     }
 #endif
+
     public string id = "";
     public string roleId = "";
     public float maxLength = 3f;
     public LCHObjectData[] objs = new LCHObjectData[0];
     public List<LCHChannelData> channels = new List<LCHChannelData>();//这里搞不了多态，因为序列化json不支持多态。
     public List<LCHEventChannelData> events = new List<LCHEventChannelData>();
+    public float skillRange = 1f;//技能攻击范围。
     public void GetidsAndName(ref string[] items0, ref int[] ids)
     {
         int objLen = objs.Length;

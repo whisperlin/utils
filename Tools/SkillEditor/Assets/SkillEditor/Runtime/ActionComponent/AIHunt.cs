@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LChatacter))]
-public class ActionWalk : MonoBehaviour
+public class AIHunt : MonoBehaviour
 {
     public string animName = "Run";
-    public int priority = 10;
-    public float speed = 10f;
-
-
+    public int priority = 50;
+    public float speed = 5f;
     void Start()
     {
 
         LChatacter chatacter = GetComponent<LChatacter>();
-        var a = new LCharacterWalkAction();
+        chatacter.EnableAI();
+        var a = new LChatacterHunt();
         a.priority = priority;
-        a.speed = speed;
         a.animName = animName;
+        a.speed = speed;
         chatacter.AddAction(a);
 
     }
 }
+
+
+ 

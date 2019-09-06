@@ -67,18 +67,21 @@ public abstract class LChatacterAction {
                 oldAciton.endAction(character, information);
             curAction.beginAction(character, information);
         }
+        if (null != curAction)
+        {
+            curAction.doAction(character, information);
+        }
         //beginAction
     }
-    public static void OnHit(Collider collider, ObjDictionary data,Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actions, LChatacterInterface character, LChatacterInformationInterface information)
+    public static void OnHit
+        (Collider collider, ObjDictionary data,Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actions, LChatacterInterface character, LChatacterInformationInterface information)
     {
         ActionType status = (ActionType)data.GetValueInt("status", 0);
-        //Debug.Log("status = " + status.ToString());
         for (int i = 0, c = actions.Count; i < c; i++)
         {
             var a = actions[i];
             if (status ==  a.GetActionType())
             {
-                //刚体状态等判断...
                 a.SetHitData(data,dir);
                 if (null != curAction)
                 {
@@ -88,11 +91,7 @@ public abstract class LChatacterAction {
                 a.beginAction(character, information);
                 break;
             }
-            
-
         }
-
-        
     }
     
 }

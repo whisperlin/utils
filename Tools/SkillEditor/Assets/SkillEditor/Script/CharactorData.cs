@@ -138,7 +138,6 @@ public class CharactorData : LChatacterInformationInterface
 
     Vector3 TryPhysiceMove(Vector3 pos ,Vector3 dir, bool fixToGround)
     {
-
         RaycastHit hit;
         Vector3 newPos = pos + dir;
         float l = Vector3.Distance(newPos, pos);
@@ -216,12 +215,9 @@ public class CharactorData : LChatacterInformationInterface
             return TryPhysiceMove(pos, dir,fixToGround);
         }
     }
-
      
-
     public Vector3  getGroundHight(Vector3 pos)
     {
-
         CheckSceneInformation();
         if (hasMavMesh)
         {
@@ -243,7 +239,23 @@ public class CharactorData : LChatacterInformationInterface
             }
             return pos;
         }
+    }
+    List<LChatacterInterface> characters = new List<LChatacterInterface>();
+    Dictionary<int, LChatacterInterface> charactersMap = new Dictionary<int, LChatacterInterface>();
+    public LChatacterInterface GetCharacter(int targetId)
+    {
+        return charactersMap[targetId];
+    }
 
-        
+    public void AddCharacter(LChatacterInterface character)
+    {
+        characters.Add(character);
+        charactersMap[character.GetId()] = character;
+    }
+
+    public void RemoveCharacter(LChatacterInterface character)
+    {
+        charactersMap.Remove(character.GetId());
+        characters.Remove(character);
     }
 }

@@ -8,7 +8,7 @@ public class AciontHit : MonoBehaviour
 {
 
     //行为的优先级
-    public int priority = 55;
+    public int priority = 1000;
     //跳跃到达最高点所用时间.
     public float JumpTime = 1f;
 

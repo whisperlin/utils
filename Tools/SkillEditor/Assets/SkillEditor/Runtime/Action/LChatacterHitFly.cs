@@ -30,7 +30,7 @@ public class LCharacterHitFly : LChatacterAction
         float ctrl_time = data.GetValueFloat("ctrl_time", 0.0f);
         float hit_back = data.GetValueFloat("hit_back", 0.0f);
         float hit_fly = data.GetValueFloat("hit_fly", 0.0f);
-        Debug.Log("hit_back = "+ hit_back);
+        //Debug.Log("hit_back = "+ hit_back);
         JumpTime = ctrl_time;
         jumpSpeed = hit_back;
         jumpHeight = hit_fly;

@@ -4,22 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LChatacter))]
-public class ActionLCharacterSkill : MonoBehaviour {
+public class AISkill : MonoBehaviour
+{
 
     //行为的优先级
     public int priority = 100;
     public string skillName = "s01";
-    public VirtualInput.KeyCode button = VirtualInput.KeyCode.Button0;
+    
     // Use this for initialization
-    void Start () {
-
+    void Start()
+    {
         LChatacter chatacter = GetComponent<LChatacter>();
-        LCharacterSkillAction a = new LCharacterSkillAction(skillName);
+        chatacter.EnableAI();
+        LCharacterSkillAI a = new LCharacterSkillAI();
+        a.SkillId = skillName;
         a.priority = priority;
-        a.button = button;
+ 
         chatacter.AddAction(a);
 
     }
 
-     
+
+
 }
+
+
+ 
