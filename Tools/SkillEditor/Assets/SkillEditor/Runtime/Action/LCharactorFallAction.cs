@@ -18,7 +18,7 @@ public class LCharactorFallAction : LChatacterAction
     {
         var pos0 = character.GetCurPosition();
         var pos = information.getGroundHight(pos0);
-        bool inAir = character.GetCurPosition().y - pos.y > 0.01f;
+        bool inAir = pos0.y - pos.y > 0.01f;
         if (inAir)
         {
             pos0.y -= fallSpeed * Time.deltaTime;

@@ -29,21 +29,24 @@ public partial class SkillEditorMainWindow : EditorWindow
     {
         SkillEditorData.Instance.Reset(); 
         toolbarInt = 0;
-        if (! SkillEditorData.Instance.SkillsData.isInited())
+        if (! SkillEditorData.Instance.skillsData.isInited())
         {
-             SkillEditorData.Instance.SkillsData.Init(new EditorFileLoader());
+             SkillEditorData.Instance.skillsData.Init(new EditorFileLoader());
+            SkillEditorData.Instance.skillsData.BindEvent();
         }
-         SkillEditorData.Instance.SkillsData.EditorModel = true;
+         SkillEditorData.Instance.skillsData.EditorModel = true;
         golbalWindow = this;
         OnEnable0();
-        OnEnable1();
+        //OnEnable1();
     }
     public void OnDisable()
     {
-        SkillEditorData.Instance.SkillsData.Release();
+       
+        SkillEditorData.Instance.skillsData.RemoveBind();
         SkillEditorData.Instance.ReleaseResource();
         try { OnDisable0(); } catch (Exception e) { Debug.LogError(e.ToString() + e.StackTrace); }
-        try { OnDisable1() ;}catch (Exception e){Debug.LogError(e.ToString() + e.StackTrace);}
+        //try { OnDisable1() ;}catch (Exception e){Debug.LogError(e.ToString() + e.StackTrace);}
+        SkillEditorData.Instance.Release();
         golbalWindow = null;
     }
     UpdateLimiter limiter = new UpdateLimiter(2.0f);
@@ -57,7 +60,7 @@ public partial class SkillEditorMainWindow : EditorWindow
             && null != SkillEditorData.Instance.skill
             )
             {
-                var skillData = SkillEditorData.Instance.SkillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
+                var skillData = SkillEditorData.Instance.skillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
                 object[] editorState = new object[skillData.channels.Count];
                 for (int i = 0, l = skillData.channels.Count; i < l; i++)
                 {
@@ -125,9 +128,9 @@ public partial class SkillEditorMainWindow : EditorWindow
     void Update()
     {
         //编辑器改代码的时候经常丢失...
-        if (SkillEditorData.Instance.SkillsData.loader == null)
+        if (SkillEditorData.Instance.skillsData.loader == null)
         {
-            SkillEditorData.Instance.SkillsData.loader = new EditorFileLoader();
+            SkillEditorData.Instance.skillsData.loader = new EditorFileLoader();
         }
 
 
@@ -148,19 +151,19 @@ public partial class SkillEditorMainWindow : EditorWindow
     }
     void AutoSaveFun(params object[] args)
     {
-        if (! SkillEditorData.Instance.SkillsData.isInited())
+        if (! SkillEditorData.Instance.skillsData.isInited())
         {
-             SkillEditorData.Instance.SkillsData.Init(new EditorFileLoader());
+             SkillEditorData.Instance.skillsData.Init(new EditorFileLoader());
         }
         if ( SkillEditorData.Instance.CurRoleId.Length > 0)
         {
-             SkillEditorData.Instance.SkillsData.GetRole( SkillEditorData.Instance.CurSkillId);
-             SkillEditorData.Instance.SkillsData.SaveRole( SkillEditorData.Instance.CurRoleId);
+             SkillEditorData.Instance.skillsData.GetRole( SkillEditorData.Instance.CurRoleId);
+             SkillEditorData.Instance.skillsData.SaveRole( SkillEditorData.Instance.CurRoleId);
         }
         if ( SkillEditorData.Instance.CurSkillId.Length > 0)
         {
-             SkillEditorData.Instance.SkillsData.GetSkill( SkillEditorData.Instance.CurSkillId);
-             SkillEditorData.Instance.SkillsData.SaveSkill( SkillEditorData.Instance.CurSkillId);
+             SkillEditorData.Instance.skillsData.GetSkill( SkillEditorData.Instance.CurSkillId);
+             SkillEditorData.Instance.skillsData.SaveSkill( SkillEditorData.Instance.CurSkillId);
         }
     }
 
@@ -170,9 +173,9 @@ public partial class SkillEditorMainWindow : EditorWindow
     void OnGUI()
     {
 
-        if (! SkillEditorData.Instance.SkillsData.isInited())
+        if (! SkillEditorData.Instance.skillsData.isInited())
         {
-             SkillEditorData.Instance.SkillsData.Init(new EditorFileLoader());
+             SkillEditorData.Instance.skillsData.Init(new EditorFileLoader());
         }
         var toolbarInt0 = GUILayout.Toolbar(  toolbarInt, toolbarStrings);
         if (toolbarInt0 != toolbarInt)
@@ -200,12 +203,12 @@ public partial class SkillEditorMainWindow : EditorWindow
 
     public Dictionary<string, object> GetEventTemp()
     {
-        return  SkillEditorData.Instance.SkillsData.GetEventTemp();
+        return  SkillEditorData.Instance.skillsData.GetEventTemp();
     }
 
     public string[] GetEventNames()
     {
-        return  SkillEditorData.Instance.SkillsData.GetEventNames();
+        return  SkillEditorData.Instance.skillsData.GetEventNames();
     }
 }
 

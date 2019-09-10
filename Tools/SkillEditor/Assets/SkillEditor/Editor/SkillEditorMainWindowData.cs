@@ -10,17 +10,7 @@ public partial class SkillEditorMainWindow   {
     
 
     
-    public LCHSkillData GetSkill()
-    {
-        if ( SkillEditorData.Instance.CurSkillId.Length == 0)
-        {
-            return null;
-        }
-        else
-        {
-            return  SkillEditorData.Instance.SkillsData.GetSkill( SkillEditorData.Instance.CurSkillId);
-        }
-    }
+     
 
 
 }

@@ -156,7 +156,7 @@ public class AssetbundlePacker
          
     }
 
-    [MenuItem("TA/Assets/打包PC信息", false, 351)]
+    [MenuItem("TA/Assets/生成assetbundle信息", false, 351)]
     public static void PackInfor()
     {
         BuildTarget target = BuildTarget.StandaloneWindows;
@@ -218,7 +218,7 @@ public class AssetbundlePacker
         {
             dirBundleName = dirBundleName.Substring(0, dirBundleName.Length - 1);
         }
-        dirBundleName  += ASSET_BUNDLE_SUFFIX;
+        //dirBundleName  += ASSET_BUNDLE_SUFFIX;
         foreach (string file in files)
         {
             if (file.EndsWith(".meta"))
@@ -230,11 +230,24 @@ public class AssetbundlePacker
             {
                 string ext = System.IO.Path.GetExtension(file);
                 string bundleName = dirBundleName;
-                if (null != ext && (ext.Equals(".prefab") || ext.Equals(".unity")))
+                if (null != ext && (
+                    ext.Equals(".prefab")
+                    || ext.Equals(".unity")
+                    //|| ext.Equals(".mat")
+                    ))
                 {
-
-                    bundleName += ASSET_BUNDLE_SUFFIX;
+                    /*if (ext.Equals(".mat"))
+                    {
+                        Debug.Log("here");
+                    }*/
+                    bundleName = file;
                 }
+                else
+                {
+                    //bundleName = fullPath;
+                    bundleName = dirBundleName;
+                }
+                bundleName += ASSET_BUNDLE_SUFFIX;
                 bundleName = bundleName.Replace("/", "@");
                 bundleName = bundleName.Replace("\\", "@");
                 bundleName = bundleName.ToLower();

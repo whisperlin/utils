@@ -40,7 +40,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("Z", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosZ);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosZ);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -49,7 +49,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("Y", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosY);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -58,7 +58,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("X", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosX);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosX);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -78,7 +78,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("Y", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.RotY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel( SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.RotY);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -99,7 +99,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("Z", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleZ);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel( SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleZ);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -108,7 +108,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("Y", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel( SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleY);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -117,7 +117,7 @@ public class MenuDialog : PopupWindowContent
             GUILayout.Space(12f);
             if (EditorGUILayout.ToggleLeft("X", false, GUILayout.Width(300f)))
             {
-                EventManager.CallEvent((int)SkillEvent.SkillLerpFloatChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleX);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel( SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleX);
                 editorWindow.Close();
             }
             EditorGUILayout.EndHorizontal();
@@ -137,7 +137,7 @@ public class MenuDialog : PopupWindowContent
         GUILayout.Space(12f);
         if (EditorGUILayout.ToggleLeft("触发事件", false,GUILayout.Width(300f)))
         {
-            EventManager.CallEvent((int)SkillEvent.SkillEventChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.Event);
+            SkillEditorData.Instance.skillsData.SkillEventChannel( SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.Event);
             editorWindow.Close();
         }
         EditorGUILayout.EndHorizontal();
@@ -150,7 +150,7 @@ public class MenuDialog : PopupWindowContent
         GUILayout.Space(12f);
         if (EditorGUILayout.ToggleLeft("动作/状态", false, GUILayout.Width(300f)))
         {
-            EventManager.CallEvent((int)SkillEvent.SkillEventChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.Object);
+            SkillEditorData.Instance.skillsData.SkillEventChannel( SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.Object);
             editorWindow.Close();
         }
         EditorGUILayout.EndHorizontal();
@@ -163,7 +163,7 @@ public class MenuDialog : PopupWindowContent
         GUILayout.Space(12f);
         if (EditorGUILayout.ToggleLeft("角色状态", false, GUILayout.Width(300f)))
         {
-            EventManager.CallEvent((int)SkillEvent.SkillEventChannel, SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.RoleState);
+            SkillEditorData.Instance.skillsData.SkillEventChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.RoleState);
             editorWindow.Close();
         }
         EditorGUILayout.EndHorizontal();
@@ -182,7 +182,7 @@ public class MenuDialog : PopupWindowContent
             editorWindow.Close();
             return;
         }
-        LCHSkillData skill = SkillEditorMainWindow.golbalWindow.GetSkill();
+        LCHSkillData skill = SkillEditorData.Instance.skillsData .GetSkill(SkillEditorData.Instance.CurSkillId);
         if (null == skill)
         {
             editorWindow.Close();

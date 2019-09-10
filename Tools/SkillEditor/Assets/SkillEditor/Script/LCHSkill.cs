@@ -13,8 +13,8 @@ public interface SkillResourceLoader
 }
 public class ObjectContain
 {
-    public string mod;
-    public string mod_name;
+    public string mod = null;
+    public string mod_name = null;
     public int objId;
     public int type;
     public int bindObjId;
@@ -29,7 +29,10 @@ public class ObjectContain
     public List<LCHChannelData> channels = new List<LCHChannelData>();//这里搞不了多态，因为序列化json不支持多态。
     public List<LCHEventChannelData> events = new List<LCHEventChannelData>();
     public Renderer[] roleRenders;
+    public ParticleSystem[] systems;
+    public Animation[] anims;
     public LCharacterHitData hitData;
+    internal GameObject baseGameObject;
 
     public void SetInformation(LCHObjectData od)
     {
@@ -57,10 +60,10 @@ public class LCHSkill  {
     {
         this.loader = loader;
         roleData = r;
-        skillData = s;
+        _skillData = s;
     }
     private LCHRoleData roleData;
-    private LCHSkillData skillData;
+    private LCHSkillData _skillData;
     public ObjectContain role = new ObjectContain();
     public List<ObjectContain> objs = new List<ObjectContain>();
 
@@ -71,11 +74,11 @@ public class LCHSkill  {
             return roleData;
         }
     }
-    public LCHSkillData SkillData
+    public LCHSkillData skillData
     {
         get
         {
-            return skillData;
+            return _skillData;
         }
  
     }
@@ -89,10 +92,10 @@ public class LCHSkill  {
 
     public void SetObjectParent()
     {
-        int c0 = SkillData.objs.Length;
+        int c0 = skillData.objs.Length;
         for (int i = 0; i < c0; i++)
         {
-            var o = SkillData.objs[i];
+            var o = skillData.objs[i];
             if (o.type == 1 || o.type == 2)
             {
                 int bind = o.propertys.GetValueInt("bind", 0);
@@ -131,7 +134,7 @@ public class LCHSkill  {
 #endif
     public void Release()
     {
-        int c0 = SkillData.objs.Length;
+        int c0 = skillData.objs.Length;
 #if UNITY_EDITOR
         int c1 = objs.Count;
         if (c0 == c1)
@@ -139,7 +142,7 @@ public class LCHSkill  {
 #endif
             for (int i = 0; i < c0; i++)
             {
-                var o = SkillData.objs[i];
+                var o = skillData.objs[i];
                 if(null != objs[i])
                     loader.ReleaseModel(o.type, o.propertys.GetValue<string>("mod_name", ""), o.propertys.GetValue<string>("mod", ""), objs[i].gameobject);
             }
@@ -198,9 +201,9 @@ public class LCHSkill  {
             o0.ResetTransformData();
         }
         //计算位置变换.
-        for (int i = 0, c0 = skillData.channels.Count; i < c0; i++)
+        for (int i = 0, c0 = _skillData.channels.Count; i < c0; i++)
         {
-            var channel = skillData.channels[i];
+            var channel = _skillData.channels[i];
             var contain = GetObjectContainById(channel.objId);
             LCHChannelType t = (LCHChannelType)channel.type;
 #if UNITY_EDITOR
@@ -293,9 +296,9 @@ public class LCHSkill  {
         }
 
         //计算物体事件，比如播放动作，声音等。
-        for (int i = 0, c0 = skillData.events.Count; i < c0; i++)
+        for (int i = 0, c0 = _skillData.events.Count; i < c0; i++)
         {
-            var _e = skillData.events[i];
+            var _e = _skillData.events[i];
             var contain = GetObjectContainById(_e.objId);
             LCHChannelType t = (LCHChannelType)_e.type;
             ObjDictionary value;
@@ -389,9 +392,9 @@ public class LCHSkill  {
             var ct = objs[i];
             if (null != ct)
             {
-                for (int j = 0, c2 = skillData.objs.Length; j < c2; j++)
+                for (int j = 0, c2 = _skillData.objs.Length; j < c2; j++)
                 {
-                    if (skillData.objs[j].id == ct.objId)
+                    if (_skillData.objs[j].id == ct.objId)
                         goto ct;
                 }
                 loader.ReleaseModel(ct.objId, ct.mod_name, ct.mod, ct.gameobject);
@@ -399,14 +402,14 @@ public class LCHSkill  {
             }
         }
         //编辑器添加删除了物体。objContains是用来提速的。
-        if (skillData.objs.Length != objs.Count)
+        if (_skillData.objs.Length != objs.Count)
         {
             objContains.Clear();
         }
-        ArrayHelper.ResizeArray<ObjectContain>(ref objs, skillData.objs.Length);
-        for (int i = 0, c = skillData.objs.Length; i < c; i++)
+        ArrayHelper.ResizeArray<ObjectContain>(ref objs, _skillData.objs.Length);
+        for (int i = 0, c = _skillData.objs.Length; i < c; i++)
         {
-            var o = skillData.objs[i];
+            var o = _skillData.objs[i];
             string name = o.propertys.GetValue<string>("bind_name", "");
             var o1 = objs[i];
             if (o.type == 3)
@@ -426,23 +429,35 @@ public class LCHSkill  {
     }
 #if UNITY_EDITOR
     string[]  nullAnims = new string[1] {"无" };
-    public void GetSoundList(int objId , ref string [] items , ref int [] ids)
+    public void GetAllObjectList(int objId , ref string [] items , ref int [] ids ,ref string [] objects ,ref int []objIds)
     {
+        List<string> obj_items = new List<string>();
+        List<int> obj_ids = new List<int>();
+
         List<string> _items = new List<string>();
         List<int> _ids = new List<int>();
         _items.Add("无");
         _ids.Add(-2);
-        for (int i = 0; i < skillData.objs.Length; i++)
+        obj_items.Add("无");
+        obj_ids.Add(-2);
+        for (int i = 0; i < _skillData.objs.Length; i++)
         {
-            var od = skillData.objs[i];
+            var od = _skillData.objs[i];
             if (od.type == 4)
             {
                 _items.Add("(" + od.id + ")" + od.name);
                 _ids.Add(od.id);
             }
+            else if (od.type == 1)
+            {
+                obj_items.Add("(" + od.id + ")" + od.name);
+                obj_ids.Add(od.id);
+            }
         }
         items = _items.ToArray();
         ids = _ids.ToArray();
+        objects = obj_items.ToArray();
+        objIds = obj_ids.ToArray();
     }
     public string[]  GetAnimList(int objId)
     {
@@ -530,12 +545,12 @@ public class LCHSkill  {
     {
         Release();
         role.gameobject = loader.LoadModul(-1, roleData.mod_name, roleData.mod);
-        for (int i = 0, c = SkillData.objs.Length; i < c; i++)
+        for (int i = 0, c = skillData.objs.Length; i < c; i++)
         {
             if (objs[i] == null)
                 objs[i] = new ObjectContain();
             var o2 = objs[i];
-            var o = SkillData.objs[i];
+            var o = skillData.objs[i];
 
 
             string name = o.propertys.GetValue<string>("bind_name", "");

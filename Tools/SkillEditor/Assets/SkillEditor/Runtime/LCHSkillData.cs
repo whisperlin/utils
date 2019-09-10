@@ -27,7 +27,7 @@ public  class LCHChannelData
 
     public Quaternion GetSlerpYValue(float time)
     {
-        time = time * 10f;
+        time = time * 100f;
         int ct0 = times.Count;
         for (int j = 0; j < ct0; j++)
         {
@@ -55,7 +55,7 @@ public  class LCHChannelData
     public static bool debug = false;
     public float GetLerpValue(float time)
     {
-        time = time * 10f;
+        time = time * 100f;
         int ct0 = times.Count;
         for (int j = 0 ; j < ct0; j++)
         {
@@ -266,8 +266,8 @@ public class LCHEventChannelData
     //返回值1，找到,0未设置过,1,已经设置过。
     public int TryGetKeyFrameRunTime(float curFrame,float lastTime, out ObjDictionary value, out float time)
     {
-        curFrame = curFrame * 10f;
-        lastTime = lastTime * 10f;
+        curFrame = curFrame * 100f;
+        lastTime = lastTime * 100f;
         int ct0 = times.Count;
         int returnType = 0;
         for (int i = 0, c = ct0; i < c; i++)
@@ -275,7 +275,7 @@ public class LCHEventChannelData
             int t = times[i];
             if (t >= lastTime && t <= curFrame)
             {
-                time = (curFrame - t) * 0.1f;
+                time = (curFrame - t) * 0.01f;
                 value = values[i];
                 return 1;
             }
@@ -292,7 +292,7 @@ public class LCHEventChannelData
     }
     public bool TryGetKeyFrame(float curFrame, out ObjDictionary value, out float time)
     {
-        curFrame = curFrame * 10f;
+        curFrame = curFrame * 100f;
         int ct0 = times.Count;
         for (int i = 0, c = ct0; i < c; i++)
         {
@@ -313,7 +313,7 @@ public class LCHEventChannelData
                 }
                 else
                 {
-                    time = (curFrame - times[i-1]) * 0.1f;
+                    time = (curFrame - times[i-1]) * 0.01f;
                     value = values[i-1];
                     return true;
                 }
@@ -322,7 +322,7 @@ public class LCHEventChannelData
         if (ct0 > 0 && times[ct0 - 1]< curFrame)
         {
             value = values[ct0-1];
-            time = (curFrame - times[ct0-1]) * 0.1f;
+            time = (curFrame - times[ct0-1]) * 0.01f;
             return true;
         }
  ;

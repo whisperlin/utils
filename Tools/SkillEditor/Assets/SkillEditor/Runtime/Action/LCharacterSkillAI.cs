@@ -19,7 +19,10 @@ public class LCharacterSkillAI : LCharacterSkillAction
     }
     public override bool isQualified(LChatacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
     {
-
+        if (!character.CanUsedSkill(cdName, skillState))
+        {
+            return false;
+        }
         int targetId = character.GetTargetId();
         if (targetId != -1)
         {
@@ -30,7 +33,7 @@ public class LCharacterSkillAI : LCharacterSkillAction
             var selPos = character.GetCurPosition();
             var targetPos = target.GetCurPosition();
             float dis = Vector3.Distance(selPos, targetPos);
-            if (null != skillData && dis < skillData.skillRange)
+            if (null != skillData && dis < skillData.skillRange )
             {
                 return true;
             }

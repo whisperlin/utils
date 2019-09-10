@@ -115,6 +115,11 @@
 			"type": "sound",
 			"defalut": 0,
 			"tip": "打击声音"
+		},
+		"hit_effect": {
+			"type": "effect",
+			"defalut": "",
+			"tip": "受击特效"
 		}
 	},
 	"object": {
@@ -127,6 +132,12 @@
 			"type": "anim",
 			"defalut": "",
 			"tip": "播放动作"
+		}
+		,
+		"crossFade": {
+			"type": "bool",
+			"defalut": true,
+			"tip": "动作混合"
 		}
 		,
 		"bullet": {

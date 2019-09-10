@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class SkillEditorWindow : EditorWindow
 {
-    
     [MenuItem("TA/技能编辑器/关键帧")]
     public static void Init()
     {
@@ -77,17 +76,14 @@ public class SkillEditorWindow : EditorWindow
     }
     private void OnEnable()
     {
-        EventManager.AddEvent((int)SkillEvent.AddChanneled, AddChanneled);
+        
     }
 
-    private void AddChanneled(object[] args)
-    {
-         
-    }
+    
 
     private void OnDestroy()
     {
-        EventManager.RemoveEvent((int)SkillEvent.AddChanneled, AddChanneled);
+        
     }
     string[] channelNames;
 
@@ -103,15 +99,15 @@ public class SkillEditorWindow : EditorWindow
         var width50 = GUILayout.Width(50f);
         var width80 = GUILayout.Width(80f);
         var width30 = GUILayout.Width(30f);
-        EditorGUI.BeginDisabledGroup(SkillEditorMainWindow.golbalWindow == null||  SkillEditorData.Instance.CurSkillId.Length == 0);
+        EditorGUI.BeginDisabledGroup(SkillEditorMainWindow.golbalWindow == null||  SkillEditorData.Instance.CurSkillId.Length == 0 || SkillEditorData.Instance.skillsData == null);
         LCHSkillData skill = null;
-        if (null == SkillEditorMainWindow.golbalWindow)
+        if (null == SkillEditorMainWindow.golbalWindow || SkillEditorData.Instance.skillsData == null)
         {
             viewHeight = 600f;
         }
         else
         {
-            skill = SkillEditorMainWindow.golbalWindow.GetSkill();
+            skill = SkillEditorData.Instance.skillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
             if (null != skill)
             {
                 viewHeight = Mathf.Max(600f, ChannelHeight * skill.channels.Count + 100f);
@@ -155,7 +151,7 @@ public class SkillEditorWindow : EditorWindow
         };
         if (GUILayout.Button("删除", width50))
         {
-            EventManager.CallEvent((int)SkillEvent.RemoveChannel, skill.id, curSelectChannel);
+            SkillEditorData.Instance.skillsData.RemoveChannel( skill.id, curSelectChannel);
         }
         GUILayout.Space(20f);
         if (SkillEditorData.Instance.playing)
@@ -195,7 +191,7 @@ public class SkillEditorWindow : EditorWindow
 
         if (null != skill)
         {
-            maxLength = skill.maxLength = EditorGUILayout.Slider(skill.maxLength, 0f, 10f, width150);
+            maxLength = skill.maxLength = EditorGUILayout.Slider(skill.maxLength, 0f, 10f);
         }
         else
         {
@@ -212,14 +208,14 @@ public class SkillEditorWindow : EditorWindow
         {
             if (null != skill)
             {
-                EventManager.CallEvent((int)SkillEvent.AddKeyFrame, skill.id, curSelectChannel, curSelectFrame);
+                SkillEditorData.Instance.skillsData.AddKeyFrame(skill.id, curSelectChannel, curSelectFrame);
             }
         }
         if (GUILayout.Button("-", width30))
         {
             if (null != skill)
             {
-                EventManager.CallEvent((int)SkillEvent.RemoveKeyFrame, skill.id, curSelectChannel, curSelectFrame);
+                SkillEditorData.Instance.skillsData.RemoveKeyFrame( skill.id, curSelectChannel, curSelectFrame);
             }
         }
         EditorGUI.EndDisabledGroup();
@@ -328,7 +324,7 @@ public class SkillEditorWindow : EditorWindow
         SkillEditorData.Instance.curTime = maxLength * mousePos / width;
         if (forKeyFrame)
         {
-            SkillEditorData.Instance.curTime =    0.1f*((int)(SkillEditorData.Instance.curTime * 10f))  ;
+            SkillEditorData.Instance.curTime =    0.1f*((int)(SkillEditorData.Instance.curTime * 100f))  ;
         }
     }
     bool dragging = false;
@@ -338,9 +334,9 @@ public class SkillEditorWindow : EditorWindow
 
     void UpdateCurFramePos(Vector2 pos)
     {
-        if (null == SkillEditorMainWindow.golbalWindow)
+        if (null == SkillEditorMainWindow.golbalWindow && SkillEditorData.Instance.skillsData != null)
             return;
-        LCHSkillData skill = SkillEditorMainWindow.golbalWindow.GetSkill();
+        LCHSkillData skill = SkillEditorData.Instance.skillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
         int c = skill.channels.Count + skill.events.Count;
         curSelectChannel = (int)(pos.y / ChannelHeight);
         curSelectChannel = Mathf.Min(curSelectChannel, c - 1);
@@ -348,24 +344,21 @@ public class SkillEditorWindow : EditorWindow
         float width = maxLength * 10f * delta;
         float _curSelectFrame = maxLength * pos.x / width;
         curSelectFrame = ((int)((_curSelectFrame+0.0000001f) * 10f));
+        curSelectFrame *= 10;//保留10
         SkillEditorMainWindow.toolbarInt = 1;
-
     }
     bool TryDragFramePos(Vector2 pos)
     {
-        if (null != SkillEditorMainWindow.golbalWindow)
+        if (null != SkillEditorMainWindow.golbalWindow && SkillEditorData.Instance.skillsData != null)
         {
-            LCHSkillData skill = SkillEditorMainWindow.golbalWindow.GetSkill();
-            //int c = skill.channels.Count + skill.events.Count;
+            LCHSkillData skill = SkillEditorData.Instance.skillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
             int c1 = skill.channels.Count;
             int c2 = skill.events.Count;
-
-            //Debug.Log("selectNormalChannel = " + selectNormalChannel);
-
             float delta = 20f * scale;
             float width = maxLength * 10f * delta;
             float _curSelectFrame = maxLength * pos.x / width;
             int selFrame = ((int)((_curSelectFrame + 0.0000001f) * 10f));
+            selFrame *= 10;
 
             if (null != selectNormalChannel)
             {
@@ -380,7 +373,6 @@ public class SkillEditorWindow : EditorWindow
                         curSelectFrame = selFrame;
                         
                     }
-                   
                 }
             }
             if (null != selectEventChannel)
@@ -396,31 +388,8 @@ public class SkillEditorWindow : EditorWindow
                             curSelectFrame = selFrame;
                         }
                     }
-                    
-                    
-
                 }
             }
-            /*if (SkillEditorWindow.curSelectChannel >= 0)
-                {
-                    if (SkillEditorWindow.curSelectChannel < c1)
-                    {
-                        selectNormalChannel = skill.channels[SkillEditorWindow.curSelectChannel];
-                        selectEvent = null;
-                        selectEventChannel = null;
-                        selNormalKeyFrameIndex = selectNormalChannel.GetKeyframeIndex(SkillEditorWindow.curSelectFrame);
-                    }
-                    else if (SkillEditorWindow.curSelectChannel < c2 + c1)
-                    {
-                        selectNormalChannel = null;
-                        int index = SkillEditorWindow.curSelectChannel - c1;
-                        selectEventChannel = skill.events[index];
-                        selectEvent = selectEventChannel.GetKeyFrame(SkillEditorWindow.curSelectFrame);
-                    }
-                }
-         
-            */
-            //SkillEditorMainWindow.toolbarInt = 1;
         }
         return false;
     }
@@ -462,16 +431,13 @@ public class SkillEditorWindow : EditorWindow
                 if (TryDragFramePos(pos))
                 {
                     UpdateTime(pos.x, true);
-                    //GUI.FocusControl("FocusControl01");
                 }
             }
-
         }
     }
     
     private void UpdateColliderRender()
     {
-        
         if (null == ColliderRender.colliderRender)
         {
             GameObject g = new GameObject();
@@ -511,7 +477,6 @@ public class SkillEditorWindow : EditorWindow
                         count++;
                     }
                 }
-                
             }
         }
         else

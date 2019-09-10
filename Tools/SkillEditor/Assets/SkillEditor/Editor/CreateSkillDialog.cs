@@ -31,7 +31,7 @@ public class CreateSkillDialog : EditorWindow
                 EditorUtility.DisplayDialog("警告", "id不能为空", "确定");
                 return;
             }
-            EventManager.CallEvent((int)SkillEvent.CreateSkill, id  , roleId);
+            SkillEditorData.Instance.skillsData.CreateSkill(id, roleId);
             Close();
 
         }

@@ -33,7 +33,7 @@ public class IdInputDialog : EditorWindow
                 EditorUtility.DisplayDialog("警告", "id不能为空", "确定");
                 return;
             }
-            EventManager.CallEvent((int)SkillEvent.CreateRole, id, type);
+            SkillEditorData.Instance.skillsData.CreateRole( id, type);
             Close();
 
         }

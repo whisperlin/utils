@@ -104,7 +104,8 @@ public class TimeBarHelper  {
         {
             float _y0 = curSelectChannel * ChannelHeight;
             float _y1 = _y0 + ChannelHeight;
-            float curSelePos = curSelectFrame;
+            float curSelePos = curSelectFrame /10;
+            
             curSelePos = curSelePos * delta;
             Color backColor2 = new Color(0.4f, 0.4f, 1f);
             EditorGUI.DrawRect(new Rect(curSelePos, _y0 , delta, ChannelHeight ), backColor2);
@@ -119,6 +120,8 @@ public class TimeBarHelper  {
                 float _y0 = i * ChannelHeight;
                 float _y1 = _y0 + ChannelHeight;
                 int _t = _times[j];
+
+                _t = _t / 10;
                 float curSelePos = _t ;
                 curSelePos = curSelePos * delta;
                 if (i == curSelectChannel && _t == curSelectFrame)

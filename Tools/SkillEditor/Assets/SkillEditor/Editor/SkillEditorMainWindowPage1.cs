@@ -11,23 +11,7 @@ public partial class SkillEditorMainWindow
     private Vector2 scrollViewPos5 = Vector2.zero;
 
     
-    public void OnEnable1()
-    {
-        EventManager.AddEvent((int)SkillEvent.OnRoleListModify, OnSkillObjectModify);
-
-        //EventManager.AddEvent((int)SkillEvent.OnBind, OnSkillObjectModify);
-    }
-    public void OnDisable1()
-    {
-        //EventManager.AddEvent((int)SkillEvent.OnRoleListModify, OnSkillObjectModify);
-        //OnSkillObjectModify
-        EventManager.RemoveEvent((int)SkillEvent.OnRoleListModify, OnSkillObjectModify);
-    }
-
-    private void OnSkillObjectModify(object[] args)
-    {
-        
-    }
+    
     public void UpdateSound(LCHObjectData obj)
     {
         AudioClip g = (AudioClip)EditorGUILayout.ObjectField(AssetDatabase.LoadAssetAtPath<AudioClip>(obj.propertys.GetValue<string>("mod", "")), typeof(AudioClip), false);
@@ -87,7 +71,7 @@ public partial class SkillEditorMainWindow
  
         if ( SkillEditorData.Instance.CurSkillId.Length > 0)
         {
-            skill =  SkillEditorData.Instance.SkillsData.GetSkill( SkillEditorData.Instance.CurSkillId);
+            skill =  SkillEditorData.Instance.skillsData.GetSkill( SkillEditorData.Instance.CurSkillId);
      
         }
         if (null == skill)
@@ -95,11 +79,11 @@ public partial class SkillEditorMainWindow
         var buttonRect = EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("添加对象", layourWidth80))
         {
-            EventManager.CallEvent((int)SkillEvent.SkillAddObject,  SkillEditorData.Instance.CurSkillId);
+            SkillEditorData.Instance.skillsData.SkillAddObject(  SkillEditorData.Instance.CurSkillId);
         }
         if (GUILayout.Button("添加碰撞体", layourWidth80))
         {
-            EventManager.CallEvent((int)SkillEvent.SkillAddBoxCollider,  SkillEditorData.Instance.CurSkillId);
+            SkillEditorData.Instance.skillsData.SkillAddBoxCollider(  SkillEditorData.Instance.CurSkillId);
         }
 
         EditorGUI.BeginDisabledGroup(null == anim);
@@ -115,7 +99,7 @@ public partial class SkillEditorMainWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("音效", layourWidth80))
         {
-            EventManager.CallEvent((int)SkillEvent.SkillAddSound, SkillEditorData.Instance.CurSkillId);
+            SkillEditorData.Instance.skillsData.SkillAddSound( SkillEditorData.Instance.CurSkillId);
         }
          
 
@@ -180,7 +164,7 @@ public partial class SkillEditorMainWindow
                 {
                     if (selectObjId == obj.id)
                         selectObjId = -1;
-                    EventManager.CallEvent((int)SkillEvent.RemoveObject, skill.id, obj.id);
+                    SkillEditorData.Instance.skillsData.RemoveObject( skill.id, obj.id);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -197,7 +181,7 @@ public partial class SkillEditorMainWindow
             if (selectObject.type == 3)
             {
                 var rect = EditorGUILayout.BeginHorizontal();
-                EditorGUI.BeginDisabledGroup(selectObject.type == 3);
+                //EditorGUI.BeginDisabledGroup(selectObject.type == 3);
                 //selectObject.type
                 GUILayout.Label("绑定对象", GUILayout.Width(80f));
                 int bind0 = selectObject.propertys.GetValueInt("bind", 0);
@@ -226,19 +210,17 @@ public partial class SkillEditorMainWindow
                 EditorGUI.EndDisabledGroup();
                 EditorGUILayout.EndHorizontal();
             }
-            
         }
         GUILayout.EndScrollView();
         SpeceLine();
         GUILayout.Label("事件属性:");
         GUILayout.BeginHorizontal();
         //1
-
+        Dictionary<string, object> property_params = new Dictionary<string, object>();
         scrollViewPos5 = GUILayout.BeginScrollView(scrollViewPos5, GUILayout.Height(200));
         if (skill != null)
         {
-            if (null != SkillEditorWindow.selectEvent && null != SkillEditorWindow.selectEventChannel
-                )
+            if (null != SkillEditorWindow.selectEvent && null != SkillEditorWindow.selectEventChannel)
             {
                 int objId = SkillEditorWindow.selectEventChannel.objId;
                 var _object = skill.GetObject(objId);
@@ -253,13 +235,20 @@ public partial class SkillEditorMainWindow
                     GUILayout.EndHorizontal();//2
                     string[] sounds = ArrayHelper.emptyStringList;
                     int[] soundIds = ArrayHelper.emptyIntList;
+                    string [] objectNames =  ArrayHelper.emptyStringList;
+                    int[] objectid = ArrayHelper.emptyIntList;
                     if (null != SkillEditorData.Instance.skill)
                     {
-                        
-                        SkillEditorData.Instance.skill.GetSoundList(objId, ref sounds, ref soundIds);
+                        SkillEditorData.Instance.skill.GetAllObjectList(objId, ref sounds, ref soundIds,ref objectNames,ref objectid);
                     }
                     if (eEnable)
-                        PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.SkillsData.GetEventTemp(), SkillEditorData.Instance.SkillsData.GetEventNames(),null,sounds,soundIds);
+                    {
+                        property_params["sounds"] = sounds;
+                        property_params["soundIds"] = soundIds;
+                        property_params["objectNames"] = objectNames;
+                        property_params["objectid"] = objectid;
+                        PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetEventTemp(), SkillEditorData.Instance.skillsData.GetEventNames(), property_params);
+                    }
                 }
                 else if (_type == LCHChannelType.Object)
                 {
@@ -269,7 +258,9 @@ public partial class SkillEditorMainWindow
                     {
                           anims = SkillEditorData.Instance.skill.GetAnimList(objId);
                     }
-                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.SkillsData.GetObjecctTemp(), SkillEditorData.Instance.SkillsData.GetObjectNames(), anims, null,null);
+ 
+                    property_params["anims"] = anims;
+                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetObjecctTemp(), SkillEditorData.Instance.skillsData.GetObjectNames(), property_params);
                 }
                 else if (_type == LCHChannelType.RoleState)
                 {
@@ -279,7 +270,8 @@ public partial class SkillEditorMainWindow
                     {
                         anims = SkillEditorData.Instance.skill.GetAnimList(objId);
                     }
-                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.SkillsData.GetRoleStateTemp(), SkillEditorData.Instance.SkillsData.GetRoleStateNames(), null, null, null);
+                    
+                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetRoleStateTemp(), SkillEditorData.Instance.skillsData.GetRoleStateNames(), null);
                 }
             }
              
@@ -290,6 +282,6 @@ public partial class SkillEditorMainWindow
 
     public void OnColliderAdd(int objId,string str, object[] args)
     {
-        EventManager.CallEvent((int)SkillEvent.SkillAddBaseCollider, SkillEditorData.Instance.CurSkillId, objId,str);
+        SkillEditorData.Instance.skillsData.SkillAddBaseCollider( SkillEditorData.Instance.CurSkillId, objId,str);
     }
 }

@@ -149,10 +149,15 @@ public class LAssetBundleManager : MonoBehaviour {
         string baseUrl = GetPlatformRootUrl();
         url = baseUrl+"objects_path.json";
 
+        //Debug.LogError("load url" + url);
         WWW www = new WWW(url);
         yield return www;
+        //Debug.LogError("www.error = "+ www.error);
+        
         data = JsonConvert.DeserializeObject<AssetsData>(www.text);
         www.Dispose();
+        float last = Time.realtimeSinceStartup;
+        //Debug.LogError("load url" + url + " finish");
         while (true)
         {
             yield return null;
@@ -162,12 +167,16 @@ public class LAssetBundleManager : MonoBehaviour {
                 AssetIndormation infor;
                 if (data.objs.TryGetValue(_data.path, out infor))
                 {
-          
-                    deplendsSet.Clear();
-                    GetAllDeplend(infor.dependencies ,ref deplendsSet);
 
-                    foreach (string dep in deplendsSet)
+                    deplendsSet.Clear();
+                    GetAllDeplend(infor.dependencies, ref deplendsSet);
+
+
+                    var e = deplendsSet.GetEnumerator();
+
+                    while (e.MoveNext())
                     {
+                        string dep = e.Current;
                         AssetBundle bd0;
                         if (bundles.TryGetValue(dep, out bd0))
                         {
@@ -176,23 +185,29 @@ public class LAssetBundleManager : MonoBehaviour {
                         }
                         WWW www1 = new WWW(baseUrl + dep);
                         yield return www1;
+                        //Debug.Log("load url " + baseUrl + dep + " finish "   +(Time.realtimeSinceStartup - last));
+                        last = Time.realtimeSinceStartup;
                         bundles[dep] = www1.assetBundle;
+
                     }
-                    
+                    e.Dispose();
+
+
                     AssetBundle bd;
-                    if (!bundles.TryGetValue(infor.package,out bd)|| null ==bd)
+                    if (!bundles.TryGetValue(infor.package, out bd) || null == bd)
                     {
-                        WWW www1 = new WWW(baseUrl+infor.package);
+                        WWW www1 = new WWW(baseUrl + infor.package);
                         yield return www1;
+                        //Debug.Log("load url " + baseUrl + infor.package + " finish " + (Time.realtimeSinceStartup- last));
+                        last = Time.realtimeSinceStartup;
                         bundles[infor.package] = bd = www1.assetBundle;
-                        
+
                     }
                    
-
-                    
-
                     _data.asset = bd.LoadAsset(_data.path);
                     _data.isFinish = true;
+                    //Debug.Log("load obj " + _data.path + " finish " + (Time.realtimeSinceStartup - last));
+                    last = Time.realtimeSinceStartup;
 
                     foreach (string dep in deplendsSet)
                     {
@@ -214,13 +229,17 @@ public class LAssetBundleManager : MonoBehaviour {
                     WWW textWWW = new WWW(_data.path);
                     yield return textWWW;
                     _data.asset = textWWW.text;
-                    
+
                     textWWW.Dispose();
                     _data.isFinish = true;
-                    _data.error = "非打包文件"+_data.path+"当做文本读取";
+                    _data.error = "非打包文件" + _data.path + "当做文本读取";
                     loadingHandles.Remove(_data.path);
                 }
             }
+            /*else
+            {
+                Debug.Log("finished");
+            }*/
         }
     }
 

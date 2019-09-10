@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ActionSkill))]
+[CustomEditor(typeof(ActionSkillSimple))]
 public class ActionSkillUI : Editor {
 
-    private ActionSkill itm;
+    private ActionSkillSimple itm;
     EditorFileLoader editorLoader = null;
     public override void OnInspectorGUI()
     {
@@ -24,7 +24,7 @@ public class ActionSkillUI : Editor {
             editorLoader = new EditorFileLoader();
  
         if (itm == null)
-            itm = this.target as ActionSkill;
+            itm = this.target as ActionSkillSimple;
 
         
         

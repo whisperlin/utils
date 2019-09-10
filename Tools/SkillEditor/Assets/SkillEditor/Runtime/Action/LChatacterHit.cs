@@ -22,17 +22,21 @@ public class LCharacterHit : LChatacterAction
 
     Vector3 beginPositon;
     Vector3 endPoition;
-
+    string effect;
+    GameObject effect_obj;
 
     float curTime = 0;
-    public override void SetHitData(ObjDictionary data, Vector3 dir)
+    public override void SetHitData(LCharacterHitData data, Vector3 dir )
     {
-        float ctrl_time = data.GetValueFloat("ctrl_time", 0.0f);
-        float hit_back = data.GetValueFloat("hit_back", 0.0f);
-        float hit_back_time = data.GetValueFloat("hit_back_time", 0.0f);
+        float ctrl_time = data.value.GetValueFloat("ctrl_time", 0.0f);
+        float hit_back = data.value.GetValueFloat("hit_back", 0.0f);
+        float hit_back_time = data.value.GetValueFloat("hit_back_time", 0.0f);
         this.ctrl_time = ctrl_time;
         this.hit_back_speed = hit_back;
         this.hit_back_time = hit_back_time;
+        this.effect = data.effect;
+        this.effect_obj = data.effect_obj;
+        
         MoveDir = dir;
     }
 
@@ -40,9 +44,25 @@ public class LCharacterHit : LChatacterAction
     public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
-        character.CrossFade(animName);
+        //character.CrossFade(animName);
+        character.ResetAndPlay(animName);
+        //character.Play(animName);
+        //Debug.Log("play "+ animName);
         beginPositon = character.GetCurPosition();
         endPoition = beginPositon += MoveDir* hit_back_time * hit_back_speed;
+        if (effect_obj != null  )
+        {
+            
+            GameObject g = GlobalEffectPool.Instacne().pools.GetObject(effect_obj);
+            g.transform.position = beginPositon;
+            g.transform.forward = -MoveDir;
+            AutoReleaseEffect eff = g.AddComponent<AutoReleaseEffect>();
+            g.SetActive(true);
+            
+        }
+
+        
+        //effectId = 
     }
 
     public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
@@ -63,10 +83,12 @@ public class LCharacterHit : LChatacterAction
     public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
     {
         curTime += Time.deltaTime;
+        
         if (curTime <= hit_back_time+ ctrl_time)
         {
             return false;
         }
+        //Debug.Log("hit finish  at " + curTime);
         return true;
     }
 
@@ -85,12 +107,15 @@ public class LCharacterHit : LChatacterAction
 
     public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
-
+        /*if (character.IsAI())
+        {
+            Debug.Log("end hit at "+ curTime);
+        }*/
     }
 
     public override ActionType GetActionType()
     {
-        return ActionType.HIT_BACK;
+        return ActionType.CTRL;
     }
 }
 

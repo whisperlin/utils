@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LChatacter : MonoBehaviour, LChatacterInterface
+public partial class LChatacter : MonoBehaviour, LChatacterInterface
 {
     [Header("所属阵营")]
     public int camp = 0;
@@ -17,6 +17,29 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     public LChatacterInterface charactor;
 
     static int _roleId = 0;
+
+    Dictionary<string, CDParams> cds = new Dictionary<string, CDParams>();
+    List<CDParams> cdsList = new List<CDParams>();
+    public void AddParam(string cdName, CDParams _params)
+    {
+        cdsList.Add(_params);
+        cds[cdName] = _params;
+    }
+    public void UpdateCDParams()
+    {
+        for (int i = 0, l = cds.Count; i < l; i++)
+        {
+            cdsList[i].update();
+        }
+    }
+    public bool CanUsedSkill(string cdName, int state)
+    {
+        return cds[cdName].CanUse(state);
+    }
+    public void updateCDState(string cdName, int skillState)
+    {
+        cds[cdName].updateState(skillState);
+    }
     int roleId;
     void Awake()
     {
@@ -87,25 +110,30 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
 
  
     void Update () {
- 
-        //CheckInterface();
+        UpdateCDParams();
         LChatacterAction.UpdateAction(ref curAction, actionList, charactor, information);
-        /*if (null != curAction)
-        {
-            curAction.doAction(charactor, information);
-        }*/
-		
 	}
 
     public void CrossFade(string anim_name)
     {
         if(null != animCtrl)
-            animCtrl.CrossFade(anim_name);
+            animCtrl.CrossFade(anim_name,0.05f);
+    }
+    public void Play(string anim_name)
+    {
+        if (null != animCtrl)
+            animCtrl.Play(anim_name);
+    }
+    public void ResetAndPlay(string anim_name)
+    {
+        if (null != animCtrl)
+        {
+            animCtrl[anim_name].time = 0f;
+            animCtrl.Play(anim_name);
+        }
+            
     }
 
- 
-
-   
 
     public Vector3 GetCurPosition()
     {
@@ -153,14 +181,13 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     }
     Dictionary<int, int> hatredMap = new Dictionary<int, int>();
     
-    public void OnHit(Collider other, int otherCharacterId,ObjDictionary value, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information)
+    public void OnHit(Collider other, LCharacterHitData hitData, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information)
     {
         if (this.IsAI())
         {
-            this.AddHaterd(otherCharacterId,1);
-         
+            this.AddHaterd(hitData.characterId,1);
         }
-        LChatacterAction.OnHit(other, value, dir, ref curAction, actionList, this, information);
+        LChatacterAction.OnHit(other, hitData, dir, ref curAction, actionList, this, information);
     }
     public int GetTargetId()
     {
@@ -183,10 +210,6 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
                 e.Dispose();
             }
         }
-        else
-        {
-            //...
-        }
         return targetCharacterId;
     }
     public  void AddHaterd(int otherCharacterId, int v)
@@ -202,28 +225,19 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     }
     void OnTriggerEnter(Collider other)
     {
- 
-        LCharacterHitData hitData = other.gameObject.GetComponent<LCharacterHitData>();
+        LCharacterHitDataCmp hitData = other.gameObject.GetComponent<LCharacterHitDataCmp>();
         if (hitData != null)
         {
-            if (!hitData.hittedObject.Contains(roleId)&&null != hitData.value)
+            if (!hitData.data.hittedObject.Contains(roleId)&&null != hitData.data.value)
             {
-                hitData.hittedObject.Add(roleId);
+                hitData.data.hittedObject.Add(roleId);
                 Vector3 dir = other.transform.forward;
                 dir.y = 0;
                 dir.Normalize();
-               // Debug.Log("on hit");
-                charactor.OnHit( other, hitData.characterId, hitData.value, dir, ref curAction, actionList, information);
-            }
-            else
-            {
-                //Debug.Log("has hit");
+                charactor.OnHit( other, hitData.data, dir, ref curAction, actionList, information);
             }
         }
-        else
-        {
-            //Debug.Log("hitData  null"  );
-        }
+ 
         
     }
 
@@ -241,5 +255,9 @@ public class LChatacter : MonoBehaviour, LChatacterInterface
     public void EnableAI()
     {
         isAI = true; ;
+    }
+    public float SkillCDTime(string skillId)
+    {
+        return 0f;
     }
 }

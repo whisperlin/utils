@@ -14,10 +14,10 @@ public class SkillEditorData {
             return instacne;
         }
     }
-    public SkillData _skillsData = new SkillData();
+    SkillData _skillsData = new SkillData();
     public string CurSkillId = "";
     public string CurRoleId = "";
-    public SkillData SkillsData { get { return _skillsData; } }
+    public SkillData skillsData { get { return _skillsData; } }
     public LCHSkill skill;
     public float curTime = 0;
     public bool playing = false;
@@ -42,9 +42,9 @@ public class SkillEditorData {
             return;
         if (CurSkillId.Length == 0)
             return;
-        var role = SkillsData.GetRole(CurRoleId);
-        var s = SkillsData.GetSkill(CurSkillId);
-        if (skill != null && skill.SkillData != s)
+        var role = skillsData.GetRole(CurRoleId);
+        var s = skillsData.GetSkill(CurSkillId);
+        if (skill != null && skill.skillData != s)
         {
             ReleaseResource();
         }
@@ -58,6 +58,13 @@ public class SkillEditorData {
         skill.SetObjectParent();
 
     }
+
+    public void Release()
+    {
+        _skillsData.Release();
+        _skillsData = new SkillData();
+    }
+
     public void UpdateAnimation()
     {
         if (null == skill)

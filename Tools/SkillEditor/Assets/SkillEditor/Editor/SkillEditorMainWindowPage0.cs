@@ -17,7 +17,7 @@ public partial class SkillEditorMainWindow
     public void OnRoleListModify(params object[] arg)
     {
          
-        List<string> str =  SkillEditorData.Instance.SkillsData.GetAllRoles();
+        List<string> str =  SkillEditorData.Instance.skillsData.GetAllRoles();
         roleIds = str.ToArray(); 
         //Repaint();
 
@@ -25,7 +25,7 @@ public partial class SkillEditorMainWindow
     //OnRoleListModify
     public void OnEnable0()
     {
-        List<string> str =  SkillEditorData.Instance.SkillsData.GetAllRoles();
+        List<string> str =  SkillEditorData.Instance.skillsData.GetAllRoles();
         roleIds = str.ToArray();
         EventManager.AddEvent((int)SkillEvent.OnRoleListModify, OnRoleListModify);
 
@@ -40,7 +40,7 @@ public partial class SkillEditorMainWindow
 
     void LoadRole(string _id)
     {
-        roleData =  SkillEditorData.Instance.SkillsData.GetRole(_id);
+        roleData =  SkillEditorData.Instance.skillsData.GetRole(_id);
         string path = roleData.mod;
         anim = null;
         if (path.Length > 0)
@@ -80,7 +80,7 @@ public partial class SkillEditorMainWindow
                 {
                     roleData.mod = path;
                     roleData.mod_name = anim.gameObject.name;
-                    SkillEditorData.Instance.SkillsData.SaveRole(SkillEditorData.Instance.CurRoleId);
+                    SkillEditorData.Instance.skillsData.SaveRole(SkillEditorData.Instance.CurRoleId);
                 }
 
             }
@@ -96,7 +96,7 @@ public partial class SkillEditorMainWindow
     
     void CheckRoleUpdate()
     {
-        if (null ==  SkillEditorData.Instance.SkillsData || roleIds.Length < 1)
+        if (null ==  SkillEditorData.Instance.skillsData || roleIds.Length < 1)
         {
              SkillEditorData.Instance.CurRoleId = "";
             return;
@@ -114,7 +114,7 @@ public partial class SkillEditorMainWindow
             string _id0 = roleData.id;
             if (_id0 !=  SkillEditorData.Instance.CurRoleId)
             {
-                 SkillEditorData.Instance.SkillsData.SaveRole(_id0);
+                 SkillEditorData.Instance.skillsData.SaveRole(_id0);
                 LoadRole( SkillEditorData.Instance.CurRoleId);
                 GUI.FocusControl("FocusControl01");
             }
@@ -126,7 +126,7 @@ public partial class SkillEditorMainWindow
         {
             string id = (string)roleData.id;
             roleData = null;
-             SkillEditorData.Instance.SkillsData.DeleteRole(id);
+             SkillEditorData.Instance.skillsData.DeleteRole(id);
         }
     }
     void DeleteSkill()
@@ -139,7 +139,7 @@ public partial class SkillEditorMainWindow
 
             if ( SkillEditorData.Instance.CurSkillId.Length > 0)
             {
-                 SkillEditorData.Instance.SkillsData.DeleteSkill( SkillEditorData.Instance.CurSkillId);
+                 SkillEditorData.Instance.skillsData.DeleteSkill( SkillEditorData.Instance.CurSkillId);
                 //roleData.skills
                 //EventManager.CallEvent((int)SkillEvent.DeleteSkill,  SkillEditorData.Instance.CurSkillId);
  
@@ -182,11 +182,11 @@ public partial class SkillEditorMainWindow
 
         CheckRoleUpdate();
         GUILayout.Label("角色属性:");
-        scrollViewPos2 = GUILayout.BeginScrollView(scrollViewPos2, GUILayout.Height(120));
+        scrollViewPos1 = GUILayout.BeginScrollView(scrollViewPos1, GUILayout.Height(120));
 
         if( SkillEditorData.Instance.CurRoleId.Length>0)
         {
-            PropertyHelper.DrawPropertys(roleData.propertys,  SkillEditorData.Instance.SkillsData.GetPropertyTemp(),  SkillEditorData.Instance.SkillsData.GetPropertyNames());
+            PropertyHelper.DrawPropertys(roleData.propertys,  SkillEditorData.Instance.skillsData.GetPropertyTemp(),  SkillEditorData.Instance.skillsData.GetPropertyNames(),null);
         }
        
         GUILayout.EndScrollView();
@@ -211,7 +211,7 @@ public partial class SkillEditorMainWindow
         }
         GUILayout.EndHorizontal();
         GUILayout.Label("技能列表:");
-        scrollViewPos2 = GUILayout.BeginScrollView(scrollViewPos2, GUILayout.Height(120));
+        scrollViewPos2 = GUILayout.BeginScrollView(scrollViewPos2 );
         if ( SkillEditorData.Instance.CurRoleId.Length > 0)
         {
             if (selSkillInt >= roleData.skills.Length)
@@ -220,8 +220,6 @@ public partial class SkillEditorMainWindow
             }
             selSkillInt = GUILayout.SelectionGrid(selSkillInt, roleData.skills, 1);
             CheckSkillUpdate(selSkillInt);
-             
-            
         }
  
         

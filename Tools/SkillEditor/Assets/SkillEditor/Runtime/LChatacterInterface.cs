@@ -60,6 +60,93 @@ public class CharactorLoadResult : CharactorLoadHandle
         }
     }
 }
+public enum CdState
+{
+    NORMAL,//使用后就cd
+    HIT,//前一段打中人，触发后续技能.
+}
+[System.Serializable]
+public class CDData //cd技能数据
+{
+    public string skillId;//技能名
+    public float cd;//cd时间
+}
+
+public class CDParams 
+{
+    private int state = 0;
+    public CDData[] cds;
+    public float cd;
+
+    public int State
+    {
+        get
+        {
+            return state;
+        }
+    }
+    public void update()
+    {
+        cd = cd - Time.deltaTime;
+       /*if (cds.Length > 0 )
+        {
+            Debug.Log("cd = " + cd + " state = " + state);
+        }*/
+         
+        if (cd <= 0 && State > 0 )//后续技能用，比如放玩1技能，5秒内可以放2技能，使用2技能或者五秒过后，进入1技能cd状态。
+        {
+            cd = cds[0].cd;
+            state = 0;
+            //Debug.Log("updateState to " + state);
+        }
+        
+    }
+    public void updateState(int skillState)//一技能使用，或者命中，触发2技能。
+    {
+      
+        
+        if (skillState < cds.Length - 1)
+        {
+            state = skillState+1;
+            Debug.Log("updateState to " + state);
+            cd = cds[state].cd;
+        }
+        else
+        {
+            state = 0;
+            cd = cds[state].cd;
+            Debug.Log("updateState to " + state);
+        }
+        cd = cds[state].cd;
+    }
+    public bool CanUse(int state)
+    {
+        if (state == this.State)
+        {
+            if (state == 0)
+                return cd < 0.00001f;
+            else
+                return cd > 0.00001f;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //这个是ui显示用。
+    public float GetCD(int state)
+    {
+        if (state == this.State)
+        {
+            return cd;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
 
 //角色的抽象接口
 public interface LChatacterInterface
@@ -82,8 +169,17 @@ public interface LChatacterInterface
     bool IsAI();
     void EnableAI();//绑定技能ai脚本会自动调用这个接口。
     int GetCamp();//
-    void OnHit(Collider other,int otherCharacterId, ObjDictionary value, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information);
+    void OnHit(Collider other, LCharacterHitData data, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information);
+
+    float SkillCDTime(string skillId);
+    bool CanUsedSkill(string skillId, int state);
+    void AddParam(string cdName, CDParams _params);
+    void UpdateCDParams();
+    void updateCDState(string cdName, int skillState);
+    void Play(string animName);
+    void ResetAndPlay(string animName);
 }
+
 //角色相关数据的抽象接口。
 public interface LChatacterInformationInterface  {
 
@@ -94,6 +190,7 @@ public interface LChatacterInformationInterface  {
     LChatacterInterface GetCharacter(int targetId);
     void AddCharacter(LChatacterInterface character);
     void RemoveCharacter(LChatacterInterface character);
+    void slowly(float v, float slow_motion);
 
     //获取数据接口，数据键值统一用int，避免unity字典产生c。可以用枚举做键值
 

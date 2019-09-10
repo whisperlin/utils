@@ -8,7 +8,13 @@ using Newtonsoft.Json.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 public enum SkillEvent
+{
+    AddChanneled,
+    OnRoleListModify,
+}
+/*public enum SkillEvent
 {
     CreateRole,
     DeleteRole,
@@ -28,7 +34,7 @@ public enum SkillEvent
     SkillEventChannel,
     SkillAddBaseCollider,
     SkillAddSound,
-}
+}*/
 public enum LCHChannelType
 {
     PosX = 0,
@@ -81,11 +87,12 @@ public class SkillData {
 #else
     SkillDataLoader loader;
 #endif
-    public void Init(SkillDataLoader loader)
-    {
-        this.loader = loader;
 #if UNITY_EDITOR
-        EventManager.AddEvent((int)SkillEvent.CreateRole, CreateRole);
+ 
+    public void BindEvent()
+    {
+     
+        /*EventManager.AddEvent((int)SkillEvent.CreateRole, CreateRole);
         EventManager.AddEvent((int)SkillEvent.CreateSkill, CreateSkill);
         EventManager.AddEvent((int)SkillEvent.SkillAddObject, SkillAddObject);
         EventManager.AddEvent((int)SkillEvent.SkillLerpFloatChannel, SkillLerpFloatChannel);
@@ -97,10 +104,14 @@ public class SkillData {
         EventManager.AddEvent((int)SkillEvent.RemoveObject, RemoveObject);
         EventManager.AddEvent((int)SkillEvent.SkillEventChannel, SkillEventChannel);
         EventManager.AddEvent((int)SkillEvent.SkillAddBaseCollider, SkillAddBaseCollider);
-        EventManager.AddEvent((int)SkillEvent.SkillAddSound, SkillAddSound);
-        
-
+        EventManager.AddEvent((int)SkillEvent.SkillAddSound, SkillAddSound);*/
+    }
 #endif
+    public void Init(SkillDataLoader loader)
+    {
+        this.loader = loader;
+
+ 
         Dictionary<string, object> _dic = JSonHelper.DeserializeDictionary(loader.loadPropertys());
         propertyTemp = (Dictionary<string, object>)_dic["propertys"];
         eventTemp = (Dictionary<string, object>)_dic["event"];
@@ -174,11 +185,12 @@ public class SkillData {
     {
         return roleStateKeys;
     }
-    
-    public void Release()
-    {
 #if UNITY_EDITOR
-        EventManager.RemoveEvent((int)SkillEvent.CreateRole, CreateRole);
+    
+    public void RemoveBind()
+    {
+        
+        /*EventManager.RemoveEvent((int)SkillEvent.CreateRole, CreateRole);
         EventManager.RemoveEvent((int)SkillEvent.CreateSkill, CreateSkill);
         EventManager.RemoveEvent((int)SkillEvent.SkillAddObject, SkillAddObject);
         EventManager.RemoveEvent((int)SkillEvent.SkillLerpFloatChannel, SkillLerpFloatChannel);
@@ -190,14 +202,19 @@ public class SkillData {
         EventManager.RemoveEvent((int)SkillEvent.RemoveObject, RemoveObject);
         EventManager.RemoveEvent((int)SkillEvent.SkillEventChannel, SkillEventChannel);
         EventManager.RemoveEvent((int)SkillEvent.SkillAddBaseCollider, SkillAddBaseCollider);
-        EventManager.RemoveEvent((int)SkillEvent.SkillAddSound, SkillAddSound);
+        EventManager.RemoveEvent((int)SkillEvent.SkillAddSound, SkillAddSound);*/
+    }
 #endif
+    public void Release()
+    {
+ 
         loader = null;
+        
     }
 
     
 
-    private void RemoveObject(object[] args)
+    public void RemoveObject(params object[] args)
     {
         string skillId = (string)args[0];
         int objId = (int)args[1];
@@ -241,7 +258,7 @@ public class SkillData {
         SaveSkill(skillId);
 
     }
-    private void RemoveChannel(object[] args)
+    public void RemoveChannel(params object[] args)
     {
         string skillId = (string)args[0];
         int curSelectChannel = (int)args[1];
@@ -259,7 +276,7 @@ public class SkillData {
         SaveSkill(skillId);
 
     }
-    private void RemoveKeyFrame(object[] args)
+    public void RemoveKeyFrame(params object[] args)
     {
         string skillId = (string)args[0];
         int curSelectChannel = (int)args[1];
@@ -306,7 +323,7 @@ public class SkillData {
         SaveSkill(skillId);
     }
 
-    private void AddKeyFrame(object[] args)
+    public void AddKeyFrame(params object[] args)
     {
         string skillId = (string)args[0];
         int curSelectChannel = (int)args[1];
@@ -327,6 +344,7 @@ public class SkillData {
             if (f > curSelectFrame)
             {
                 channel.AddKey(i, curSelectFrame);
+                SaveSkill(skillId);
                 return;
             }
             else if (f == curSelectFrame)
@@ -352,10 +370,12 @@ public class SkillData {
             if (f > curSelectFrame)
             {
                 events.AddKey(i, curSelectFrame);
+                SaveSkill(skillId);
                 return;
             }
             else if (f == curSelectFrame)
             {
+
                 return;
             }
         }
@@ -384,7 +404,7 @@ public class SkillData {
         }
 #endif
         loader.SaveFile(id, json, SkillDataType.ROLE);
-        EventManager.CallEvent((int)SkillEvent.OnRoleListModify, id, type);
+ 
     }
 
     bool HasChannel(LCHSkillData skill ,int objId, int type,params object[] arg)
@@ -415,7 +435,7 @@ public class SkillData {
         }
         return true;
     }
-    private void SkillEventChannel(object[] args)
+    public void SkillEventChannel(params object[] args)
     {
         string skillId = (string)args[0];//pos_x
         int objId = (int)args[1];
@@ -432,10 +452,9 @@ public class SkillData {
         channel.type = (int)type;
         channel.objId = objId;
         skill.events.Add(channel);
-        SaveSkill(skill.id);
-        EventManager.CallEvent((int)SkillEvent.AddChanneled);
+        SaveSkill(skill.id); 
     }
-    private void SkillLerpFloatChannel(object[] args)
+    public void SkillLerpFloatChannel(params object[] args)
     {
         
         string skillId = (string)args[0];//pos_x
@@ -454,12 +473,10 @@ public class SkillData {
         channel.type = (int)type;
         channel.objId = objId;
         skill.channels.Add(channel);
-        SaveSkill(skill.id);
-        EventManager.CallEvent((int)SkillEvent.AddChanneled);
-        //Dictionary<SkillData>
+        SaveSkill(skill.id); 
 
     }
-    private void SkillAddSound(object[] args)
+    public void SkillAddSound(params object[] args)
     {
         string skillId = (string)args[0];
  
@@ -487,9 +504,9 @@ public class SkillData {
         LCHSkillData s = new LCHSkillData();
         skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
         SaveSkill(skillId);
-        EventManager.CallEvent((int)SkillEvent.OnSkillObjectModify);
+ 
     }
-    private void SkillAddBaseCollider(object[] args)
+    public void SkillAddBaseCollider(params object[] args)
     {
 
         string skillId = (string)args[0];
@@ -526,9 +543,9 @@ public class SkillData {
         LCHSkillData s = new LCHSkillData();
         skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
         SaveSkill(skillId);
-        EventManager.CallEvent((int)SkillEvent.OnSkillObjectModify);
+ 
     }
-    private void SkillAddBoxCollider(object[] args)
+    public void SkillAddBoxCollider(params object[] args)
     {
         string skillId = (string)args[0];
         LCHSkillData skill = GetSkill(skillId);
@@ -551,9 +568,9 @@ public class SkillData {
         LCHSkillData s = new LCHSkillData();
         skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
         SaveSkill(skillId);
-        EventManager.CallEvent((int)SkillEvent.OnSkillObjectModify);
+ 
     }
-    private void SkillAddObject(object[] args)
+    public void SkillAddObject(params object[] args)
     {
         string skillId = (string)args[0];
         LCHSkillData skill = GetSkill(skillId);
@@ -578,7 +595,7 @@ public class SkillData {
         skill.objs =  ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
         SaveSkill(skillId);
         //skill["objs"] = JSonHelper.AddItem(sks, ct);
-        EventManager.CallEvent((int)SkillEvent.OnSkillObjectModify);
+ 
     }
 
     
@@ -607,7 +624,7 @@ public class SkillData {
 
     }
 
-    private void DeleteSkill(object[] args)
+    public void DeleteSkill(params object[] args)
     {
         string skillId = (string)args[0];
         var skill = GetSkill(skillId);
@@ -623,6 +640,10 @@ public class SkillData {
     {
         if (skills.ContainsKey(skillId))
             return skills[skillId];
+#if UNITY_EDITOR
+        if (EditorModel && null == loader)
+            loader = new EditorFileLoader();
+#endif
         var js = loader.LoadFile(skillId, SkillDataType.SKILL);
         if (js.Length == 0)
             return null;
@@ -634,6 +655,7 @@ public class SkillData {
     {
         try
         {
+ 
             var s = skills[skillId];
             if (null == s)
                 return;
@@ -642,8 +664,13 @@ public class SkillData {
         }
         catch (System.Exception e)
         {
-            
-            Debug.LogError(e.ToString() + e.StackTrace);
+
+            var s = skills[skillId];
+            if (null == s)
+                return;
+            string json = JsonConvert.SerializeObject(s);
+            loader.SaveFile(skillId, json, SkillDataType.SKILL);
+ 
         }
        
     }
@@ -657,6 +684,7 @@ public class SkillData {
         var js = loader.LoadFile(id, SkillDataType.ROLE);
         //var v = JSonHelper.DeserializeDictionary(js);
         LCHRoleData v = JSonHelper.DeserializeRole(js);
+        Array.Sort<string>(v.skills);
         if (v == null)
             return null;
         roles[id] = v;
@@ -669,7 +697,7 @@ public class SkillData {
         loader.DeleveFile(id, SkillDataType.ROLE);
         roles.Remove(id);
         int type = (int)SkillDataType.ROLE;
-        EventManager.CallEvent((int)SkillEvent.OnRoleListModify, id, type );
+ 
     }
     public void DeleteSkill(string  curSkillId)
     {

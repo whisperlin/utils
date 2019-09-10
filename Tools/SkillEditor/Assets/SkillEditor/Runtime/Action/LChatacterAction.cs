@@ -22,7 +22,7 @@ public abstract class LChatacterAction {
     public abstract bool isFinish(LChatacterInterface character, LChatacterInformationInterface information);
 
 
-    public virtual void SetHitData(ObjDictionary data, Vector3 dir)
+    public virtual void SetHitData(LCharacterHitData data, Vector3 dir )
     {
          
     }
@@ -56,8 +56,15 @@ public abstract class LChatacterAction {
         for (int i = 0, c = actions.Count; i < c; i++)
         {
             var a = actions[i];
-            if ( (curAction==null || a.priority >= curAction.priority) && a.isQualified(curAction, character, information) )
+            if ( (curAction==null || a.priority > curAction.priority) && a.isQualified(curAction, character, information) )
             {
+                if (character.IsAI())
+                {
+                    if (null != curAction)
+                    {
+                        Debug.Log(curAction.ToString()+ " " +curAction.priority + " " +a.ToString() + "  " + a.priority);
+                    }
+                }
                 curAction = a;
             }
         }
@@ -74,15 +81,31 @@ public abstract class LChatacterAction {
         //beginAction
     }
     public static void OnHit
-        (Collider collider, ObjDictionary data,Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actions, LChatacterInterface character, LChatacterInformationInterface information)
+        (Collider collider, LCharacterHitData data,Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actions, LChatacterInterface character, LChatacterInformationInterface information)
     {
-        ActionType status = (ActionType)data.GetValueInt("status", 0);
+        ActionType status = (ActionType)data.value.GetValueInt("status", 0);
+        float slow_motion = data.value.GetValueFloat("slow_motion",0f);
+        if (data.firstHit)
+        {
+            if (data.cdState == CdState.HIT)
+            {
+                LChatacterInterface chr = information.GetCharacter(data.characterId);
+                chr.updateCDState(data.cdName, data.skillState);
+            }
+            if (slow_motion > 0.0001f)
+            {
+
+                information.slowly(0.01f,slow_motion);
+                data.firstHit = true;
+            }
+        }
+        
         for (int i = 0, c = actions.Count; i < c; i++)
         {
             var a = actions[i];
             if (status ==  a.GetActionType())
             {
-                a.SetHitData(data,dir);
+                a.SetHitData(data, dir  );
                 if (null != curAction)
                 {
                     curAction.endAction(character, information);

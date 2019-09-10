@@ -28,6 +28,13 @@ public class AciontHit : MonoBehaviour
             a.animName = animHitFly;
             chatacter.AddAction(a);
         }
+        {
+            LChatacter chatacter = GetComponent<LChatacter>();
+            LCharacterHitBack a = new LCharacterHitBack();
+            a.priority = priority;
+            a.animName = animHitFly;
+            chatacter.AddAction(a);
+        }
 
         if (isHitFly)
         {

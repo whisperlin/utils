@@ -6,8 +6,9 @@ using UnityEditor;
 public class PropertyHelper  {
 
      
-    public static void DrawPropertys(Dictionary<string,object> propertys , Dictionary<string,object> temps, string[] keys ,string [] anims = null ,string [] sounds = null ,int []soundIds = null)
+    public static void DrawPropertys(Dictionary<string,object> propertys , Dictionary<string,object> temps, string[] keys ,Dictionary<string,object> _params)
     {
+        //string [] anims = null ,string [] sounds = null ,int []soundIds = null
         if (null == propertys)
             return;
         for (int i = 0, len = keys.Length; i < len; i++)
@@ -70,12 +71,17 @@ public class PropertyHelper  {
             }
             else if (type == "anim")
             {
-                DrawPropertyPopList(propertys, name, anims);
+                DrawPropertyPopList(propertys, name, (string [])_params["anims"]);
             }
             else if(type== "sound")
             {
-                DrawPropertyPopList(propertys, name, sounds, soundIds);
+                DrawPropertyPopList(propertys, name, (string[])_params["sounds"], (int [])_params["soundIds"]);
             }
+            else if (type == "effect")
+            {
+                DrawPropertyPopList(propertys, name, (string[])_params["objectNames"], (int[])_params["objectid"]);
+            }
+ 
             GUILayout.EndHorizontal();
         }
     }
@@ -170,7 +176,7 @@ public class PropertyHelper  {
             }
             catch (System.Exception e1)
             {
-                id = 0;
+                id = -2;
             }
             
         }

@@ -22,7 +22,10 @@ public class CharactorData : LChatacterInformationInterface
         }
         return _instance;
     }
-
+    public void slowly(float v, float slow_motion)
+    {
+        SlowlyControl.Slowly(v, slow_motion);
+    }
     void CheckSceneInformation()
     {
         if (null == newScene)
