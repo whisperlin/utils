@@ -44,7 +44,6 @@ public class AciontHit : MonoBehaviour
             a.animName = animHitFly;
             chatacter.AddAction(a);
         }
-        
 
     }
 

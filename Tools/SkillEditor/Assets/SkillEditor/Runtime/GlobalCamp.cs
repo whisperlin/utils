@@ -11,16 +11,15 @@ public struct CampInformation
     [Header("攻击物理碰撞层")]
     [Range(0, 31)]
     public int attack;
-   
 }
 public class GlobalCamp : MonoBehaviour {
  
     public CampInformation[] campInformations = new CampInformation[0];
     public static CampInformation[]  globalCampInformations;
-    // Use this for initialization
+
+    public int jumpLayer = 20;
     void Awake() {
         globalCampInformations = campInformations;
-
         HashSet<int> usedChannels = new HashSet<int>();
         for (int i = 0; i < campInformations.Length; i++)
         {
@@ -41,10 +40,7 @@ public class GlobalCamp : MonoBehaviour {
                 }
                
             }
-            
-            
-            //Physics.IgnoreLayerCollision( 0, c.self, true);
-            //Physics.IgnoreLayerCollision( 0, c.attack, true);
+ 
             for (int j = 0; j < campInformations.Length; j++)
             {
                 var c1 = campInformations[j];
@@ -71,7 +67,13 @@ public class GlobalCamp : MonoBehaviour {
             }
              
         }
-	}
-	
-	
+        if (campInformations.Length > 0)
+        {
+            var c = campInformations[0];
+            Physics.IgnoreLayerCollision(c.self, jumpLayer, false);
+        }
+        //jumpLayer
+    }
+
+
 }

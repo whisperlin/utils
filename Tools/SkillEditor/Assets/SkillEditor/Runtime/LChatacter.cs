@@ -22,8 +22,28 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
     List<CDParams> cdsList = new List<CDParams>();
     public void AddParam(string cdName, CDParams _params)
     {
+        if (cds.ContainsKey(cdName))
+        {
+            var c  = cds[cdName];
+            cdsList.Remove(c);
+            cds.Remove(cdName);
+        }
         cdsList.Add(_params);
         cds[cdName] = _params;
+    }
+    public void RemoveParam(string cdName)
+    {
+        if (cds.ContainsKey(cdName))
+        {
+            var c = cds[cdName];
+            cdsList.Remove(c);
+            cds.Remove(cdName);
+        }
+    }
+    public void RemoveAciton(LChatacterAction action)
+    {
+        action.onRelease();
+        actionList.Remove(action);
     }
     public void UpdateCDParams()
     {
@@ -32,10 +52,14 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
             cdsList[i].update();
         }
     }
+ 
     public bool CanUsedSkill(string cdName, int state)
     {
         return cds[cdName].CanUse(state);
     }
+
+    
+
     public void updateCDState(string cdName, int skillState)
     {
         cds[cdName].updateState(skillState);
@@ -111,6 +135,7 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
  
     void Update () {
         UpdateCDParams();
+        UpdateTrigger();
         LChatacterAction.UpdateAction(ref curAction, actionList, charactor, information);
 	}
 
@@ -181,13 +206,11 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
     }
     Dictionary<int, int> hatredMap = new Dictionary<int, int>();
     
-    public void OnHit(Collider other, LCharacterHitData hitData, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information)
+    public void OnHit(Collider other, LCharacterColliderData hitData, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information)
     {
-        if (this.IsAI())
-        {
-            this.AddHaterd(hitData.characterId,1);
-        }
-        LChatacterAction.OnHit(other, hitData, dir, ref curAction, actionList, this, information);
+ 
+        LChatacterAction.OnHit(other, hitData, ref curAction, actionList, this, information);
+
     }
     public int GetTargetId()
     {
@@ -223,22 +246,32 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
             hatredMap[otherCharacterId] = v;
         }
     }
+    LCharacterDictionary<LCharacterHitDataCmp> triggers = new LCharacterDictionary<LCharacterHitDataCmp>();
     void OnTriggerEnter(Collider other)
     {
         LCharacterHitDataCmp hitData = other.gameObject.GetComponent<LCharacterHitDataCmp>();
         if (hitData != null)
         {
-            if (!hitData.data.hittedObject.Contains(roleId)&&null != hitData.data.value)
-            {
-                hitData.data.hittedObject.Add(roleId);
-                Vector3 dir = other.transform.forward;
-                dir.y = 0;
-                dir.Normalize();
-                charactor.OnHit( other, hitData.data, dir, ref curAction, actionList, information);
-            }
+            LChatacterAction.OnHit(other, hitData.data, ref curAction, actionList, this, information);
+            hitData._collider = other;
+            triggers.Add(other.GetInstanceID(), hitData);
+        } 
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        triggers.Remove(other.GetInstanceID());
+    }
+    void UpdateTrigger()
+    {
+        for (  int i = triggers.list.Count - 1; i >=0 ; i--)
+        {
+            var v = triggers.list[i];
+            if (v._collider.enabled)
+                LChatacterAction.OnHit(v._collider, v.data, ref curAction, actionList, this, information);
+            else
+                triggers.Remove(v._collider.GetInstanceID()); ;
+            
         }
- 
-        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -259,5 +292,18 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
     public float SkillCDTime(string skillId)
     {
         return 0f;
+    }
+
+    Dictionary<int, object> characterData = new Dictionary<int, object>();
+    public object GetData(int key)
+    {
+        object r = null;
+        characterData.TryGetValue(key, out r);
+        return r; ;
+    }
+
+    public void SetData(int key, object value)
+    {
+        characterData[key] = value;
     }
 }

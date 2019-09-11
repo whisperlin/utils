@@ -31,7 +31,7 @@ public class ObjectContain
     public Renderer[] roleRenders;
     public ParticleSystem[] systems;
     public Animation[] anims;
-    public LCharacterHitData hitData;
+    public LCharacterColliderData hitData;
     internal GameObject baseGameObject;
 
     public void SetInformation(LCHObjectData od)

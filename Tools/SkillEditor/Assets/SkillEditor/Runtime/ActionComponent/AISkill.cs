@@ -11,10 +11,18 @@ public class AISkill : MonoBehaviour
     public int priority = 100;
     public string skillName = "s01";
     public float cd = 0f;
+    LChatacter chatacter;
+    LCharacterSkillAI a = new LCharacterSkillAI();
+    string cdName = "";
     // Use this for initialization
     void Start()
     {
-        LChatacter chatacter = GetComponent<LChatacter>();
+        
+
+    }
+    private void OnEnable()
+    {
+        chatacter = GetComponent<LChatacter>();
         chatacter.EnableAI();
 
 
@@ -22,12 +30,10 @@ public class AISkill : MonoBehaviour
         CDData[] cds = new CDData[1] { new CDData() };
         cds[0].cd = cd;
         _params.cds = cds;
-        string cdName = "cd_" + skillName;
+        cdName = "cd_" + skillName;
         chatacter.AddParam(cdName, _params);
 
-        
-        
-        LCharacterSkillAI a = new LCharacterSkillAI();
+ 
         a.SkillId = skillName;
         a.priority = priority;
 
@@ -35,7 +41,11 @@ public class AISkill : MonoBehaviour
         a.cdState = CdState.NORMAL;
         a.cdName = cdName;
         chatacter.AddAction(a);
-
+    }
+    private void OnDisable()
+    {
+        chatacter.RemoveAciton(a);
+        chatacter.RemoveParam(cdName);
     }
 
 

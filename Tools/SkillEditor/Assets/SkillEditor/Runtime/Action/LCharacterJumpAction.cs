@@ -23,12 +23,12 @@ public class LCharacterJumpAction : LChatacterAction
     Vector3 beginPositon;
  
     int jumpCount = 0;
-    float beginTime = 0;
+ 
     bool firFrame = true;
-
+    float curTime = 0f;
     public  void initJump(LChatacterInterface character, LChatacterInformationInterface information)
     {
-        beginTime = Time.realtimeSinceStartup;
+        curTime = 0f;
         character.CrossFade(animName);
         //跳跃的方向
         Vector3 forward;
@@ -54,34 +54,18 @@ public class LCharacterJumpAction : LChatacterAction
             initJump(character, information);
         }
         firFrame = false;
-        float curTime = Time.realtimeSinceStartup -beginTime;
+ 
 
         Vector3 pos = character.GetCurPosition();
         Vector3 pos0 = pos;
-        if (curTime <= JumpTime)
-        {
-            float t = curTime / JumpTime;
-            float b = t - 1;
-            float y = -b * b + 1;
+        float t = curTime / JumpTime;
+        float b = t - 1;
+        float y = -b * b + 1;
 
-            float h = jumpHeight * y;
-            pos.y = beginPositon.y + h;
+        float h = jumpHeight * y;
 
-        }
-        else if (curTime <= JumpTime * 2)
-        {
-            float t = (JumpTime * 2 - curTime) / JumpTime;
-            float b = t - 1;
-            float y = -b * b + 1;
-            float h = jumpHeight * y;
-            pos.y = beginPositon.y + h;
-        }
-        else
-        {
-            float v = 2f*jumpHeight / JumpTime;
-            pos.y -= v * Time.deltaTime;
-        }
-       
+        pos.y = beginPositon.y + h;
+
         pos += MoveDir * jumpSpeed *Time.deltaTime;
         pos = information.tryMove(pos0, pos-pos0, false);
         character.SetCurPosition(pos);
@@ -90,7 +74,7 @@ public class LCharacterJumpAction : LChatacterAction
 
     public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
     {
-        float curTime = Time.realtimeSinceStartup - beginTime;
+        curTime += Time.deltaTime;
 
         if (curTime <= JumpTime) {
             return false;

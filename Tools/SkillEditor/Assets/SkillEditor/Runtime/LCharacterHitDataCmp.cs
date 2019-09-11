@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[DisallowMultipleComponent]
 public class LCharacterHitDataCmp : MonoBehaviour {
 
-    public LCharacterHitData data = new LCharacterHitData();
+    public LCharacterColliderData data = new LCharacterColliderData();
+    public Collider _collider;
 }

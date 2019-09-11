@@ -147,6 +147,13 @@ public class CDParams
         }
     }
 }
+public enum LCharacterData
+{
+    TRANSFER,//跳转
+
+
+    USER_KEY,//用户扩展键值ID。。
+}
 
 //角色的抽象接口
 public interface LChatacterInterface
@@ -169,7 +176,7 @@ public interface LChatacterInterface
     bool IsAI();
     void EnableAI();//绑定技能ai脚本会自动调用这个接口。
     int GetCamp();//
-    void OnHit(Collider other, LCharacterHitData data, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information);
+    void OnHit(Collider other, LCharacterColliderData data, Vector3 dir, ref LChatacterAction curAction, List<LChatacterAction> actionList , LChatacterInformationInterface information);
 
     float SkillCDTime(string skillId);
     bool CanUsedSkill(string skillId, int state);
@@ -178,6 +185,9 @@ public interface LChatacterInterface
     void updateCDState(string cdName, int skillState);
     void Play(string animName);
     void ResetAndPlay(string animName);
+    object GetData(int key);//key不存在返回null
+    void SetData(int key,object value);
+    void AddHaterd(int characterId, int v);
 }
 
 //角色相关数据的抽象接口。

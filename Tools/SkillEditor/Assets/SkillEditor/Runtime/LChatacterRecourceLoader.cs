@@ -107,8 +107,8 @@ public class LChatacterRecourceLoader : MonoBehaviour ,LChatacterRecourceInterfa
         CharactorLoadResult h = new CharactorLoadResult(_res);
         if (skillDatas.TryGetValue(skillId, out skillData))
         {
-
             _res.asset = skillData;
+            _res.isFinish = true;
 
         }
         else

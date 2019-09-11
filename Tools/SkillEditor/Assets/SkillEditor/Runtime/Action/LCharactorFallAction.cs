@@ -11,6 +11,7 @@ public class LCharactorFallAction : LChatacterAction
 
     public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
+        //Debug.LogError("begin fall");
         character.CrossFade(animName);
     }
 
@@ -36,9 +37,10 @@ public class LCharactorFallAction : LChatacterAction
 
     public override bool isQualified(LChatacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
     {
-
+       
         var pos = information.getGroundHight(character.GetCurPosition());
         bool inAir = character.GetCurPosition().y - pos.y > 0.01f;
+         
         return inAir;
     }
 
@@ -51,7 +53,9 @@ public class LCharactorFallAction : LChatacterAction
     {
         var pos = information.getGroundHight(character.GetCurPosition());
         character.SetCurPosition(pos);
-         
+
+        //Debug.LogError("end fall");
+
     }
 }
 

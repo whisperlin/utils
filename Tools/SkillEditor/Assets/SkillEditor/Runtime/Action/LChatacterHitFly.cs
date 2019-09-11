@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class LCharacterHitFly : LChatacterAction
+public class LCharacterHitFly : LCharacterHitBase
 {
     public string animName;
  
@@ -16,7 +16,7 @@ public class LCharacterHitFly : LChatacterAction
     //跳跃到达最高点所用时间.
     public float JumpTime = 2f;
 
-    float hitDelta = 0.1f;
+    float hitDelta = 0.05f;
     //跳跃水平方向.
     Vector3 MoveDir = Vector3.zero;
 
@@ -25,7 +25,8 @@ public class LCharacterHitFly : LChatacterAction
     GameObject effect_obj;
 
     float curTime = 0;
-    public override void SetHitData(LCharacterHitData data,Vector3 dir )
+
+    protected override  void SetHitData(LCharacterHitData data, Vector3 dir)
     {
 
         float ctrl_time = data.value.GetValueFloat("ctrl_time", 0.0f);

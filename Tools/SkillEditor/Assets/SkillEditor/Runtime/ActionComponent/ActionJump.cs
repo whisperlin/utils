@@ -25,11 +25,14 @@ public class ActionJump : MonoBehaviour
 
     public VirtualInput.KeyCode button = VirtualInput.KeyCode.Button9;
     // Use this for initialization
-    void Start()
-    {
+    LChatacter chatacter;
+    LCharacterJumpAction a;
+ 
 
-        LChatacter chatacter = GetComponent<LChatacter>();
-        LCharacterJumpAction a = new LCharacterJumpAction();
+    private void OnEnable()
+    {
+        chatacter = GetComponent<LChatacter>();
+        a = new LCharacterJumpAction();
         a.priority = priority;
         a.button = button;
         a.jumpSpeed = jumpSpeed;
@@ -38,6 +41,10 @@ public class ActionJump : MonoBehaviour
         a.animName = animName;
         a.maxJumpCount = maxJumpCount;
         chatacter.AddAction(a);
+    }
+    private void OnDisable()
+    {
+        chatacter.RemoveAciton(a);
 
     }
 

@@ -57,17 +57,15 @@ public class CharactorData : LChatacterInformationInterface
         
         return goundPos;
     }
-    Vector3 GetPointFall(Vector3 pos, RaycastHit hit ,float maxDelta)
+   /* Vector3 GetPointFall(Vector3 pos, Ray r, RaycastHit hit ,float maxDelta)
     {
         //跌落
         if (pos.y > hit.point.y)
         {
-            //角度转弧度。
-             
             if (hit.distance > maxDelta)
             {
                 
-                Vector3 p = hit.point + Vector3.down * maxDelta;
+                Vector3 p = r.origin + Vector3.down * maxDelta;
                 return p;
             }
             else
@@ -79,14 +77,13 @@ public class CharactorData : LChatacterInformationInterface
         {
             return hit.point;
         }
-    }
+    }*/
 
     Vector3 GetPointFallNav(Vector3 pos, Vector3 newPoint, float maxDelta)
     {
         //跌落
         if (pos.y > newPoint.y)
         {
-            //角度转弧度。
             float d = pos.y - newPoint.y;
             if (d > maxDelta)
             {
@@ -102,6 +99,7 @@ public class CharactorData : LChatacterInformationInterface
             return newPoint;
         }
     }
+    
     Vector3 TryNavMesMove(Vector3 pos ,Vector3 dir, bool fixToGround)
     {
         var newPos = pos + dir;
@@ -113,28 +111,28 @@ public class CharactorData : LChatacterInformationInterface
             if (fixToGround)
                 return GetPointFallNav(pos, hit.position,delta);
             else
-                return GetPointNotFall(pos, hit.position);
+                return GetPointNotFall(newPos, hit.position);
         }
         if (NavMesh.SamplePosition(newPos, out hit, 10f, NavMesh.AllAreas))
         {
             if (fixToGround)
                 return GetPointFallNav(pos, hit.position, delta);
             else
-                return GetPointNotFall(pos, hit.position);
+                return GetPointNotFall(newPos, hit.position);
         }
         if (NavMesh.SamplePosition(newPos, out hit, 100f, NavMesh.AllAreas))
         {
             if (fixToGround)
                 return GetPointFallNav(pos, hit.position, delta);
             else
-                return GetPointNotFall(pos, hit.position);
+                return GetPointNotFall(newPos, hit.position);
         }
         if (NavMesh.SamplePosition(newPos, out hit, 1000f, NavMesh.AllAreas))
         {
             if (fixToGround)
                 return GetPointFallNav(pos, hit.position, delta);
             else
-                return GetPointNotFall(pos, hit.position);
+                return GetPointNotFall(newPos, hit.position);
         }
         return pos;
     }
@@ -147,11 +145,13 @@ public class CharactorData : LChatacterInformationInterface
         float delta = l * ageSin;
         newPos += Vector3.up * delta;
         delta = delta * 2f;
-        if (Physics.Raycast(new Ray(newPos, Vector3.down), out hit, 100f))
-        //if (mc.Raycast(pos0, Vector3.down, out hit, 100f))
+        Ray r = new Ray(newPos, Vector3.down);
+        if (Physics.Raycast(r, out hit, 100f))
         {
+            
             if (fixToGround)
-                return GetPointFall(pos, hit, delta);
+                //return GetPointFall(pos,r, hit, delta);
+                return GetPointFallNav(pos, hit.point, delta);
             else
                 return GetPointNotFall(newPos, hit.point);
 
@@ -177,11 +177,13 @@ public class CharactorData : LChatacterInformationInterface
         float delta = l * ageSin;
         newPos += Vector3.up * delta;
         delta = delta * 2f;
-        if (mc.Raycast(new Ray(newPos, Vector3.down), out hit, 100f))
+        Ray r = new Ray(newPos, Vector3.down);
+        if (mc.Raycast(r, out hit, 100f))
         //if (mc.Raycast(pos0, Vector3.down, out hit, 100f))
         {
             if (fixToGround)
-                return GetPointFall(pos, hit, delta);
+                return GetPointFallNav(pos, hit.point, delta);
+                //return GetPointFall(pos,r, hit, delta);
             else
                 return GetPointNotFall(newPos, hit.point);
 
@@ -210,8 +212,20 @@ public class CharactorData : LChatacterInformationInterface
         CheckSceneInformation();
         if (hasMavMesh)
         {
+            //return TryNavPhysiceMove(pos, dir, fixToGround);
+            return TryNavPhysiceMove(pos, dir, fixToGround); 
+            if (fixToGround)
+            {
+                return TryNavMesMove(pos, dir, fixToGround);
+            }
+            else
+            {
+                return TryNavPhysiceMove(pos, dir, fixToGround);
+            }
+            //return TryNavMesMove2(pos, dir, fixToGround);
+            //TryNavMesMove2
             //return TryNavMesMove(pos, dir,fixToGround);
-            return TryNavPhysiceMove(pos, dir, fixToGround);
+            //return TryNavPhysiceMove(pos, dir, fixToGround);
         }
         else
         {

@@ -20,8 +20,13 @@ public class LCharacterWalkAction : LChatacterAction
         character.GetForward(out forward);
         Vector3 left = Vector3.Cross(forward, Vector3.up);
         Vector3 MoveDir = (left * VirtualInput.dir.x + forward* VirtualInput.dir.y).normalized;
-        Vector3 pos0 =   MoveDir * Time.deltaTime * speed  ;
-        Vector3 pos = information.tryMove(character.GetCurPosition(),pos0,true);
+        Vector3 dir =   MoveDir * Time.deltaTime * speed  ;
+        Vector3 basePos = character.GetCurPosition();
+        Vector3 pos = information.tryMove(basePos, dir,true);
+        if (basePos.y - pos.y > 0.5f)
+        {
+            pos = information.tryMove(basePos, dir, true);
+        }
         character.SetCurPosition(pos);
         character.SetCurForward(MoveDir);
     }

@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class LCharacterHitData
+{
+    public int characterId;
+    public HashSet<int> hittedObject = new HashSet<int>();
+    public ObjDictionary value;
+    public bool firstHit;//是否击中的第一个对象，用于产生动作停滞。
+    public string cdName;
+    public int skillState;
+    public CdState cdState;
+    public string effect = null;
+    public GameObject effect_obj = null;
+}
 public class LCharacterSkillAction : LChatacterAction
 {
     public string SkillId;
@@ -489,30 +501,40 @@ public class LCharacterSkillAction : LChatacterAction
                         {
                             if (null == contain.hitData)
                             {
-                                contain.hitData = contain.gameobject.AddComponent<LCharacterHitDataCmp>().data;
+                                LCharacterHitDataCmp hdc = contain.gameobject.GetComponent<LCharacterHitDataCmp>();
+                                if (null == hdc)
+                                {
+                                    hdc = contain.gameobject.AddComponent<LCharacterHitDataCmp>();
+                                }
+                                contain.hitData = hdc.data;
                             }
-                            contain.hitData.characterId = character.GetId();
-                            contain.hitData.hittedObject.Clear();
-                            contain.hitData.value = value;
-                            contain.hitData.firstHit = true;
+                           
+                            contain.hitData.type = "hit";
+                            LCharacterHitData hitData = new LCharacterHitData();
 
-                            contain.hitData.cdName = cdName;
-                            contain.hitData.skillState = skillState;
-                            contain.hitData.cdState = cdState;
+                            hitData.hittedObject.Clear();
+                            hitData.value = value;
+                            hitData.characterId = character.GetId();
+                            hitData.firstHit = true;
+
+                            hitData.cdName = cdName;
+                            hitData.skillState = skillState;
+                            hitData.cdState = cdState;
 
                             int effectId = value.GetValueInt("hit_effect", -2);
                             if (effectId != -2 && objs.ContainsKey(effectId))
                             {
                                 var ct = objs[effectId];
-                                contain.hitData.effect = ct.mod;
-                                contain.hitData.effect_obj = ct.baseGameObject;
+                                hitData.effect = ct.mod;
+                                hitData.effect_obj = ct.baseGameObject;
 
                             }
                             else
                             {
-                                contain.hitData.effect = null;
-                                contain.hitData.effect_obj = null;
+                                hitData.effect = null;
+                                hitData.effect_obj = null;
                             }
+                            contain.hitData.data = hitData;
 
                         }
                     }
@@ -604,8 +626,24 @@ public class LCharacterSkillAction : LChatacterAction
         return false;
     }
 
-   
 
+    public override void onRelease()
+    {
+        for (int i = 0, c0 = objList.Length; i < c0; i++)
+        {
+            var o0 = objList[i];
+            if (o0.objId != -1)
+            {
+                if (o0.objId != -1)
+                {
+                    if (null != o0.gameobject)
+                    {
+                        GameObject.DestroyImmediate(o0.gameobject);
+                    }
+                }
+            }
+        }
+    }
     public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
         if (cdState != CdState.HIT)

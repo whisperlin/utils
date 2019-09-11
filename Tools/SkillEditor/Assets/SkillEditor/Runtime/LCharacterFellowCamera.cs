@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleFellowCamera : MonoBehaviour {
+public class LCharacterFellowCamera : MonoBehaviour {
 
  
     public Camera cam;
