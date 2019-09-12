@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿#define RESOURCE_LOAD_IN_EDITOR    
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class LAssetBundleManager : MonoBehaviour {
 
     internal class HandleData
@@ -160,7 +163,7 @@ public class LAssetBundleManager : MonoBehaviour {
         //Debug.LogError("load url" + url + " finish");
         while (true)
         {
-            yield return null;
+            
             if (loadingHandleList.Count > 0)
             {
                 HandleData _data = loadingHandleList.Dequeue();
@@ -168,7 +171,18 @@ public class LAssetBundleManager : MonoBehaviour {
                 if (data.objs.TryGetValue(_data.path, out infor))
                 {
 
+#if RESOURCE_LOAD_IN_EDITOR && UNITY_EDITOR
+
+                    //Resources.LoadAssetAtPath()
+
+
+                    _data.asset = AssetDatabase.LoadAssetAtPath<GameObject>(_data.path);
+                    loadingHandles.Remove(_data.path);
+                    _data.isFinish = true;
+                    continue;
+#else
                     deplendsSet.Clear();
+
                     GetAllDeplend(infor.dependencies, ref deplendsSet);
 
 
@@ -222,6 +236,9 @@ public class LAssetBundleManager : MonoBehaviour {
                     bd.Unload(false);
                     loadingHandles.Remove(_data.path);
 
+#endif
+
+
                 }
                 else
                 {
@@ -236,10 +253,11 @@ public class LAssetBundleManager : MonoBehaviour {
                     loadingHandles.Remove(_data.path);
                 }
             }
-            /*else
+            else
             {
-                Debug.Log("finished");
-            }*/
+                yield return null;
+                //Debug.Log("finished");
+            }
         }
     }
 

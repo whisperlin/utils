@@ -9,7 +9,7 @@ public class AssetbundlePacker
 {
     // 打包输出目录   路径统一都加/结尾
     private static string RES_OUTPUT_PATH = "Assets/StreamingAssets/";
-    private static string[] RES_DIRS = new string[] { "Assets/Props/", "Assets/Cartoon Game Sound 2.0/" };
+    private static string[] RES_DIRS = new string[] { "Assets/Props/Prefabs/Character", "Assets/Props/Prefabs/quan_shi" , "Assets/TA" };
 
     
     // AssetBundle打包后缀

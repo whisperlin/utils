@@ -329,7 +329,8 @@ public class LCHSkill  {
                                     contain.animaction.Stop();
                                 }
                             }
-                            ParticleSystemHelper.Simulate(contain.gameobject, _time);
+                            if(_e.objId != -1)
+                                ParticleSystemHelper.Simulate(contain.gameobject, _time);
                         }
                     }
 

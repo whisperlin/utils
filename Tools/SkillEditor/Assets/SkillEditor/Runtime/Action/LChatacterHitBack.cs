@@ -26,38 +26,7 @@ public class LCharacterHitBack : LCharacterHitBase
     GameObject effect_obj;
 
     float curTime = 0;
-    public override bool OnTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
-    {
-        if (cdata.type == "hit")
-        {
-            LCharacterHitData data = cdata.getData<LCharacterHitData>();
-            ActionType status = (ActionType)data.value.GetValueInt("status", 0);
-            if (GetActionType() == status)
-            {
-                float slow_motion = data.value.GetValueFloat("slow_motion", 0f);
-                if (data.firstHit)
-                {
-                    if (data.cdState == CdState.HIT)
-                    {
-                        LChatacterInterface chr = information.GetCharacter(data.characterId);
-                        chr.updateCDState(data.cdName, data.skillState);
-                    }
-                    if (slow_motion > 0.0001f)
-                    {
-                        information.slowly(0.01f, slow_motion);
-                        data.firstHit = true;
-                    }
-                }
-
-                Vector3 dir = other.transform.forward;
-                dir.y = 0;
-                dir.Normalize();
-                SetHitData(data, dir);
-                return true;
-            }
-        }
-        return false;
-    }
+    
     protected override void SetHitData(LCharacterHitData data, Vector3 dir)
     {
         float ctrl_time = data.value.GetValueFloat("ctrl_time", 0.0f);

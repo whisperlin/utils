@@ -87,6 +87,7 @@ public class LCharacterSkillAction : LChatacterAction
             }
             else if (o.type == 1)//对象(特效，模型...)。
             {
+                Debug.LogError("load " + oc.mod);
                 var handle = loader.loadResource(oc.mod_name, oc.mod,fun);
                 while (!handle.isFinish)
                 {
@@ -407,12 +408,16 @@ public class LCharacterSkillAction : LChatacterAction
                         
                         if (enable)
                         {
-                            contain.gameobject.SetActive(enable);
+                            contain.gameobject.SetActive(false);
+                            contain.gameobject.SetActive(true);
+                            /*contain.gameobject.SetActive(enable);
                             for (int i = 0, l = contain.systems.Length; i < l; i++)
                             {
                                 //Debug.Log(contain.systems[i].isStopped);
-                                 contain.systems[i].Play();
-                            }
+                                contain.systems[i].gameObject.SetActive(false);
+                                contain.systems[i].gameObject.SetActive(true);
+                                contain.systems[i].Play(true);
+                            }*/
                              
                         }
                         else

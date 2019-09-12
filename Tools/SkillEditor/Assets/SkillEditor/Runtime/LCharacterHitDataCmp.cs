@@ -7,4 +7,5 @@ public class LCharacterHitDataCmp : MonoBehaviour {
 
     public LCharacterColliderData data = new LCharacterColliderData();
     public Collider _collider;
+    public GameObject _colliderObj;
 }

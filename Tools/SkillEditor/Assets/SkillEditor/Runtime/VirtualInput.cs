@@ -15,12 +15,25 @@ public class VirtualInput  {
         Button7,
         Button8,
         Button9,
+        Button10,
+        Button11,
+        Button12,
+        Button13,
+        Button14,
+        Button15,
+        Button16,
+        Button17,
+        Button18,
+        Button19,
+ 
+
+
 
     }
     public static Vector2 dir = Vector2.zero;
     public static bool isDirectKeyDown = false;
-    public static bool[] lastButtons = new bool[10];
-    public static bool[] buttons = new bool[10];
+    public static bool[] lastButtons = new bool[20];
+    public static bool[] buttons = new bool[20];
 
 
     public static bool IsButtonDown(KeyCode kc)

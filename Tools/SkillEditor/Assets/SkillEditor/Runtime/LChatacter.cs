@@ -123,6 +123,8 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
     }
     // Use this for initialization
     void Start () {
+        if (null == animCtrl)
+            animCtrl = gameObject.GetComponentInChildren<Animation>();
         information.AddCharacter(this);
         UpdateColliderLayer();
     }
@@ -249,27 +251,39 @@ public partial class LChatacter : MonoBehaviour, LChatacterInterface
     LCharacterDictionary<LCharacterHitDataCmp> triggers = new LCharacterDictionary<LCharacterHitDataCmp>();
     void OnTriggerEnter(Collider other)
     {
+       
         LCharacterHitDataCmp hitData = other.gameObject.GetComponent<LCharacterHitDataCmp>();
         if (hitData != null)
         {
+            Debug.LogError("OnTriggerEnter " + other.name);
             LChatacterAction.OnHit(other, hitData.data, ref curAction, actionList, this, information);
             hitData._collider = other;
-            triggers.Add(other.GetInstanceID(), hitData);
-        } 
+            hitData._colliderObj = other.gameObject;
+            triggers.Add(hitData._collider.gameObject.GetInstanceID(), hitData);
+        }
+         
     }
     private void OnTriggerExit(Collider other)
     {
         triggers.Remove(other.GetInstanceID());
+        Debug.LogError("OnTriggerExit ");
     }
     void UpdateTrigger()
     {
         for (  int i = triggers.list.Count - 1; i >=0 ; i--)
         {
             var v = triggers.list[i];
-            if (v._collider.enabled)
+            if (v._colliderObj.activeSelf)
+            {
+                //Debug.LogError("hit " +v._collider.gameObject.activeSelf);
                 LChatacterAction.OnHit(v._collider, v.data, ref curAction, actionList, this, information);
+            }
             else
-                triggers.Remove(v._collider.GetInstanceID()); ;
+            {
+               // Debug.LogError("remove");
+                triggers.Remove(v._colliderObj.GetInstanceID()); 
+            }
+                
             
         }
     }

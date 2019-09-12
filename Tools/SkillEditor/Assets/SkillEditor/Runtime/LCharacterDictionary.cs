@@ -12,6 +12,7 @@ public class LCharacterDictionary<T>  {
         if (!dictionary.ContainsKey(k))
         {
             dictionary[k] = v;
+            list.Add(v);
         }
     }
     public void Remove(int k)
