@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: niuqu
+  m_Shader: {fileID: 4800000, guid: d58cbeefd2e3cdc4ca4a8e40b51ed972, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _node_4275
+      second:
+        m_Texture: {fileID: 2800000, guid: 93954a400f33672478d0fb5c05fbdcc1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _node_7703
+      second:
+        m_Texture: {fileID: 2800000, guid: ffda46e82df49c64195e64b80d5d7845, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _node_9547
+      second:
+        m_Texture: {fileID: 2800000, guid: ec57bd34a4866dd499459b780cb8d672, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _Cutoff
+      second: 0.5
+    - first:
+        name: _QD
+      second: 0.15
+    m_Colors: []

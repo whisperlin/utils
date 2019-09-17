@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 3412735870
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 52f36931e225a168505615d9bbe9ff7b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7bd39743cce4d37940997ab4332a0cd7
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/TA/EnviromentTool/Shaders/TestBumped.shader
+- Assets/TA/EnviromentTool/Shaders/CubemapToMatcap.shader
+- Assets/TA/EnviromentTool/Shaders/FakeReflect.shader
+- Assets/TA/EnviromentTool/Shaders/CubemapToEquirectangular.shader
+Dependencies: []
