@@ -18,7 +18,14 @@ public class LCharactorFallAction : LCharacterAction
     public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
         var pos0 = character.GetCurPosition();
-        var pos = information.getGroundHight(pos0);
+
+        Vector3 pos;
+        if (!information.getGroundHight(pos0, out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
+        
         bool inAir = pos0.y - pos.y > 0.01f;
         if (inAir)
         {
@@ -30,15 +37,26 @@ public class LCharactorFallAction : LCharacterAction
 
     public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
     {
-        var pos = information.getGroundHight(character.GetCurPosition());
+        Vector3 pos;
+        if (!information.getGroundHight(character.GetCurPosition(), out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
+        
         bool inAir = character.GetCurPosition().y - pos.y > 0.01f;
         return !inAir;
     }
 
     public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
     {
-       
-        var pos = information.getGroundHight(character.GetCurPosition());
+        Vector3 pos;
+        if (!information.getGroundHight(character.GetCurPosition(), out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
+ 
         bool inAir = character.GetCurPosition().y - pos.y > 0.01f;
          
         return inAir;
@@ -51,7 +69,13 @@ public class LCharactorFallAction : LCharacterAction
 
     public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
-        var pos = information.getGroundHight(character.GetCurPosition());
+        Vector3 pos;
+        if (!information.getGroundHight(character.GetCurPosition(), out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
+   
         character.SetCurPosition(pos);
 
         //Debug.LogError("end fall");

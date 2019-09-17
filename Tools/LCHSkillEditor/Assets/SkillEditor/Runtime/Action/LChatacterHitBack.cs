@@ -44,6 +44,7 @@ public class LCharacterHitBack : LCharacterHitBase
 
     public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
+        
         curTime = 0f;
         //character.CrossFade(animName);
         character.ResetAndPlay(animName );
@@ -68,6 +69,12 @@ public class LCharacterHitBack : LCharacterHitBase
 
     public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
+
+        /*Vector3 test;
+        if (!information.getGroundHight(character.GetCurPosition(), out test))
+        {
+            Debug.LogError("error");
+        }*/
         if (curTime <= hit_back_time)
         {
             Vector3 dir = MoveDir * Time.deltaTime * hit_back_speed;
@@ -79,6 +86,12 @@ public class LCharacterHitBack : LCharacterHitBase
             endPoition.y = character.GetCurPosition().y; ;
             Vector3 pos = information.tryMove(endPoition, Vector3.zero, true);
         }
+ 
+        /*if (!information.getGroundHight(character.GetCurPosition(), out test))
+        {
+            Debug.LogError("error");
+        }*/
+ 
     }
 
     public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)

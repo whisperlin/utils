@@ -13,12 +13,14 @@ public struct CampInformation
     public int attack;
 }
 public class GlobalCamp : MonoBehaviour {
- 
+
+    public LayerMask ground ;
     public CampInformation[] campInformations = new CampInformation[0];
     public static CampInformation[]  globalCampInformations;
 
     public int jumpLayer = 20;
     void Awake() {
+        PhysicesData.ground = ground;
         globalCampInformations = campInformations;
         HashSet<int> usedChannels = new HashSet<int>();
         for (int i = 0; i < campInformations.Length; i++)

@@ -136,36 +136,74 @@ public class CharactorData : LChatacterInformationInterface
         }
         return pos;
     }
-
+    static Vector3 debugV;
     Vector3 TryPhysiceMove(Vector3 pos ,Vector3 dir, bool fixToGround)
     {
         RaycastHit hit;
-        Vector3 newPos = pos + dir;
-        float l = Vector3.Distance(newPos, pos);
-        float delta = l * ageSin;
-        newPos += Vector3.up * delta;
-        delta = delta * 2f;
-        Ray r = new Ray(newPos, Vector3.down);
-        if (Physics.Raycast(r, out hit, 100f))
+        if (fixToGround)
         {
-            
-            if (fixToGround)
-                //return GetPointFall(pos,r, hit, delta);
-                return GetPointFallNav(pos, hit.point, delta);
-            else
-                return GetPointNotFall(newPos, hit.point);
-
-        }
-        if (!fixToGround)
-        {
-            dir.x = 0f;
-            dir.y = 0f;
-            if (Physics.Raycast(new Ray(pos , Vector3.down), out hit, 100f))
+            Vector3 newPos = pos + dir;
+            float l = Vector3.Distance(newPos, pos);
+            float delta = l * ageSin;
+            newPos += Vector3.up * delta;
+            delta = delta * 2f;
+            Ray r = new Ray(newPos, Vector3.down);
+            if (Physics.Raycast(r, out hit, 100f, PhysicesData.ground))
             {
-                return GetPointNotFall(pos+ dir, hit.point);
+
+                return GetPointFallNav(pos, hit.point, delta);
+
+            }
+             
+            return pos;
+        }
+        else
+        {
+            float distance = Vector3.Distance(dir, Vector3.zero);
+            Vector3 pos0;
+            if (Physics.Raycast(new Ray(pos, dir), out hit, distance, PhysicesData.ground))
+            {
+
+                pos0 =  hit.point;
+            }
+            else
+            {
+                pos0 =  pos + dir;
+            }
+            //最终点是否可行走。
+            if (Physics.Raycast(new Ray(pos0, Vector3.down), out hit, 100f, PhysicesData.ground))
+            {
+               // Debug.LogError("dit ground end "+pos0);
+                debugV = pos0;
+                return pos0;
+            }
+            else
+            {
+                distance = pos.y - pos0.y  ;
+
+                Vector3 test;
+                if (!getGroundHight(pos, out test))
+                {
+                    Debug.LogError("pos not hit");
+                    Debug.LogError(pos0.x == debugV.x);
+                    Debug.LogError(pos0.z == debugV.z);
+                }
+                 
+                //下落,并且能碰到地面，取地面高度.
+                if (distance > 0 &&Physics.Raycast(new Ray(pos+Vector3.up, Vector3.down), out hit, distance+1,PhysicesData.ground))
+                {
+                    //Debug.LogError("hit ground");
+                    return hit.point;
+                }
+                else
+                {
+                   // Debug.LogError("not hit ground "+ pos);
+                    return new Vector3(pos.x, pos0.y, pos.z);
+                }
             }
         }
-        return pos;
+        
+        
 
          
     }
@@ -232,29 +270,45 @@ public class CharactorData : LChatacterInformationInterface
             return TryPhysiceMove(pos, dir,fixToGround);
         }
     }
-     
-    public Vector3  getGroundHight(Vector3 pos)
+    public Vector3 GetNewPointCanWalk(Vector3 pos)
+    {
+        CheckSceneInformation();
+        if (hasMavMesh)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(pos, out hit, 100f, NavMesh.AllAreas))
+            {
+                return new Vector3(hit.position.x,  pos.y, hit.position.z);
+            }
+        }
+        
+        return pos;
+    }
+    public bool  getGroundHight(Vector3 pos ,out Vector3 ground)
     {
         CheckSceneInformation();
         if (hasMavMesh)
         {
             RaycastHit hit;
-            if (mc.Raycast(new Ray(pos + Vector3.up, Vector3.down), out hit, 100f))
+            if (mc.Raycast(new Ray(pos + Vector3.up, Vector3.down), out hit, 100f ))
             {
-                return hit.point;
+                ground = hit.point;
+                return true;
 
             }
-            return pos;
+            ground = Vector3.zero;
+            return false;
         }
         else
         {
             RaycastHit hit;
-            if (Physics.Raycast(new Ray(pos + Vector3.up, Vector3.down), out hit, 100f))
+            if (Physics.Raycast(new Ray(pos + Vector3.up, Vector3.down), out hit, 100f, PhysicesData.ground))
             {
-                return hit.point;
-
+                ground =  hit.point;
+                return true;
             }
-            return pos;
+            ground = Vector3.zero;
+            return false;
         }
     }
     List<LChatacterInterface> characters = new List<LChatacterInterface>();

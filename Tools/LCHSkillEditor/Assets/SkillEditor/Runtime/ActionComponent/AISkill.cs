@@ -47,9 +47,6 @@ public class AISkill : MonoBehaviour
         chatacter.RemoveAciton(a);
         chatacter.RemoveParam(cdName);
     }
-
-
-
 }
 
 

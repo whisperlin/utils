@@ -51,7 +51,12 @@ public class LCharacterSkillAction : LCharacterAction
     public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
     {
         var pos0 = character.GetCurPosition();
-        var pos = information.getGroundHight(pos0);
+        Vector3 pos;
+        if (!information.getGroundHight(pos0, out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
         bool inAir = pos0.y - pos.y > 0.01f;
         if (VirtualInput.buttons[(int)button]  && (!isOnGround ||   !inAir )  && character.CanUsedSkill(cdName, skillState)  )
         {

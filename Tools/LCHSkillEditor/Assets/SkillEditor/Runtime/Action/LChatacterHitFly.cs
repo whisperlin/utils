@@ -28,8 +28,9 @@ public class LCharacterHitFly : LCharacterHitBase
     float ctrl_time = 0f;
     bool onGround = false;
     bool upping = true;
+    float air_delay = 0f;
     internal string animHitFlyDown;
-
+    bool beBreak = false;
     protected override  void SetHitData(LCharacterHitData data, Vector3 dir)
     {
 
@@ -47,14 +48,61 @@ public class LCharacterHitFly : LCharacterHitBase
 
     }
 
+
+    public override bool CanStopByTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
+    {
+        //暂时倒地不能攻击
+        if (onGround)
+        {
+            return false;
+        }
+        if (!base.CanStopByTrigger(cdata, other, character, information))
+        {
+            return false;
+        }
+        if (cdata.type == "hit")
+        {
+            LCharacterHitData data = cdata.getData<LCharacterHitData>();
+            ActionType status = (ActionType)data.value.GetValueInt("status", 0);
+            if (status ==  ActionType.HIT_FLY  || status == ActionType.HIT_DOWN)
+            {
+                beBreak = true;
+                return true;
+            }
+            float slow_motion = data.value.GetValueFloat("slow_motion", 0f);
+            float air_delay = data.value.GetValueFloat("air_delay", 0f);
+            if (data.firstHit)
+            {
+                if (data.cdState == CdState.HIT)
+                {
+                    LChatacterInterface chr = information.GetCharacter(data.characterId);
+                    chr.updateCDState(data.cdName, data.skillState);
+                }
+                if (slow_motion > 0.0001f)
+                {
+                    information.slowly(0.01f, slow_motion);
+                    data.firstHit = true;
+                }
+                character.ResetAndPlay(animNameFly );
+                this.air_delay = air_delay;
+ 
+            }
+            return false;
+
+        }
+        return true;
+    }
+
     public void initJump(LChatacterInterface character, LChatacterInformationInterface information)
     {
         curTime = -hitDelta;
-        character.CrossFade(animNameFly,0.05f);
+        character.ResetAndPlay(animNameFly );
         beginPositon = character.GetCurPosition();
         character.SetCurForward(-MoveDir);
         onGround = false;
         upping = true;
+        beBreak = false;
+        endPos = character.GetCurPosition();
     }
     public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
@@ -71,8 +119,10 @@ public class LCharacterHitFly : LCharacterHitBase
     {
         if (onGround)
             return;
-        Vector3 pos = character.GetCurPosition();
+        Vector3 pos = endPos;
+ 
         Vector3 pos0 = pos;
+ 
         float J2 = JumpTime * 2;
         if (curTime < 0)
         {
@@ -93,20 +143,39 @@ public class LCharacterHitFly : LCharacterHitBase
             character.CrossFade(animHitFlyDown,0.2f);
 
         }
+        
+        
         pos = information.tryMove(pos0, pos - pos0, false);
-         
-            
         character.SetCurPosition(pos);
-
+     
+       
     }
-
+    Vector3 endPos;
     public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
     {
-        curTime += Time.deltaTime;
+        float deltaTime = Time.deltaTime;
+        
+        if(air_delay>0.00001f)
+        {
+            if (this.air_delay > deltaTime)
+            {
+                this.air_delay -= deltaTime;
+                return false;
+            }
+            else
+            {
+                deltaTime -= air_delay;
+                air_delay = 0f;
+            }
+        }
+ 
+        curTime += deltaTime;
        if (onGround)
         {
- 
-            return curTime > ctrl_time;
+            bool b = curTime > ctrl_time;
+            //if(b)
+            //    Debug.LogError("end on ground");
+            return b;
         }
         else
         {
@@ -114,24 +183,34 @@ public class LCharacterHitFly : LCharacterHitBase
             {
                 return false;
             }
-            var pos = information.getGroundHight(character.GetCurPosition());
+            Vector3 pos;
+            if (!information.getGroundHight(character.GetCurPosition(), out pos))
+            {
+                Debug.LogError("has error");
+                character.SetCurPosition(endPos);
+
+                information.getGroundHight(endPos, out pos);
+ 
+            }
+            else
+            {
+                endPos = character.GetCurPosition();
+            }
+             
             float d = character.GetCurPosition().y - pos.y;
             onGround = d < 0.0000001f;
+            Debug.Log(" onGround " + onGround);
             if (onGround)
                 curTime = 0f;
             return false;
         }
-        //animHitFlyDown
-
-
-
+ 
     }
 
     public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
     {
 
-        
-
+         
         return false;
     }
 
@@ -142,7 +221,8 @@ public class LCharacterHitFly : LCharacterHitBase
 
     public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
-
+        if(!beBreak)
+            character.SetCurPosition(endPos);
     }
 
     public override ActionType GetActionType( )

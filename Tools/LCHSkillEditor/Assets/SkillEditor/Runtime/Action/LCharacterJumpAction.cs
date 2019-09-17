@@ -79,7 +79,13 @@ public class LCharacterJumpAction : LCharacterAction
         if (curTime <= JumpTime) {
             return false;
         }
-        var pos = information.getGroundHight(character.GetCurPosition());
+
+        Vector3 pos;
+        if (!information.getGroundHight( character.GetCurPosition()  ,out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
         float d = character.GetCurPosition().y - pos.y;
         bool inAir = d > 0.001f;
         return !inAir;
@@ -90,7 +96,14 @@ public class LCharacterJumpAction : LCharacterAction
        
         if (  VirtualInput.buttons[(int)button])
         {
-            var pos = information.getGroundHight(character.GetCurPosition());
+            Vector3 pos;
+            if (!information.getGroundHight(character.GetCurPosition(), out pos))
+            {
+                Debug.LogError("has error");
+                pos = character.GetCurPosition();
+            }
+
+            
             bool inAir = character.GetCurPosition().y - pos.y > 0.001f;
 
             return !inAir;

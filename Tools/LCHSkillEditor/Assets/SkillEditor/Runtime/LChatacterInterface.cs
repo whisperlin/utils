@@ -108,14 +108,14 @@ public class CDParams
         if (skillState < cds.Length - 1)
         {
             state = skillState+1;
-            Debug.Log("updateState to " + state);
+            //Debug.Log("updateState to " + state);
             cd = cds[state].cd;
         }
         else
         {
             state = 0;
             cd = cds[state].cd;
-            Debug.Log("updateState to " + state);
+            //Debug.Log("updateState to " + state);
         }
         cd = cds[state].cd;
     }
@@ -195,12 +195,14 @@ public interface LChatacterInformationInterface  {
 
     //尝试移动到某个位置.返回最近点可以移动位置
     Vector3 tryMove(Vector3 pos,Vector3 dir,bool fixToGround);
-    Vector3 getGroundHight(Vector3 pos );
+
+    bool getGroundHight(Vector3 pos,out Vector3 result );
     
     LChatacterInterface GetCharacter(int targetId);
     void AddCharacter(LChatacterInterface character);
     void RemoveCharacter(LChatacterInterface character);
     void slowly(float v, float slow_motion);
+    Vector3 GetNewPointCanWalk(Vector3 pos);
 
     //获取数据接口，数据键值统一用int，避免unity字典产生c。可以用枚举做键值
 

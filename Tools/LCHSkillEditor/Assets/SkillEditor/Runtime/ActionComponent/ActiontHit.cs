@@ -23,15 +23,16 @@ public class ActiontHit : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        LChatacter chatacter = GetComponent<LChatacter>();
         {
-            LChatacter chatacter = GetComponent<LChatacter>();
+           
             LCharacterHit a = new LCharacterHit();
             a.priority = priority;
             a.animName = animHit;
             chatacter.AddAction(a);
         }
         {
-            LChatacter chatacter = GetComponent<LChatacter>();
+ 
             LCharacterHitBack a = new LCharacterHitBack();
             a.priority = priority;
             a.animName = animHit;
@@ -40,12 +41,24 @@ public class ActiontHit : MonoBehaviour
 
         if (isHitFly)
         {
-            LChatacter chatacter = GetComponent<LChatacter>();
-            LCharacterHitFly a = new LCharacterHitFly();
-            a.priority = priority;
-            a.animNameFly = animHitFly;
-            a.animHitFlyDown = animHitFlyDown;
-            chatacter.AddAction(a);
+            {
+                LCharacterHitFly a = new LCharacterHitFly();
+                a.priority = priority;
+                a.animNameFly = animHitFly;
+                a.animHitFlyDown = animHitFlyDown;
+                chatacter.AddAction(a);
+            }
+
+
+
+
+            {
+                LCharacterHitDown a = new LCharacterHitDown();
+                a.priority = priority;
+                a.animNameFly = animHitFly;
+                a.animHitFlyDown = animHitFlyDown;
+                chatacter.AddAction(a);
+            }
         }
 
     }

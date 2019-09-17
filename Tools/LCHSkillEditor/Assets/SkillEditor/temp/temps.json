@@ -54,7 +54,8 @@
 				"无",
 				"击飞",
 				"眩晕",
-				"击退"
+				"击退",
+				"击落"
 			],
 			"tip": "附加状态"
 		},
@@ -72,11 +73,13 @@
 		},
 		"hit_back": {
 			"type": "float",
-			"defalut": 0,
+			"defalut": 10,
 			"tip": "击退速度",
 			"limit": "status",
 			"limit_items": [
-				1,3
+				1,
+				3,
+				4
 			]
 		},
 		"hit_back_time": {
@@ -86,7 +89,16 @@
 			"limit": "status",
 			"limit_items": [
 				1,
-				3
+				3 
+			]
+		},
+		"hit_down": {
+			"type": "float",
+			"defalut": 10,
+			"tip": "击落速度",
+			"limit": "status",
+			"limit_items": [
+				4
 			]
 		},
 		"hit_fly": {
@@ -102,6 +114,16 @@
 			"type": "float",
 			"defalut": 0,
 			"tip": "动作停滞"
+		},
+		"air_delay": {
+			"type": "float",
+			"defalut": 0.05,
+			"tip": "空中击中停滞",
+			"limit": "status",
+			"limit_items": [
+				2,
+				3
+			]
 		},
 		"reacting_force": {
 			"type": "float",
@@ -134,20 +156,17 @@
 			"type": "anim",
 			"defalut": "",
 			"tip": "播放动作"
-		}
-		,
+		},
 		"crossFade": {
 			"type": "bool",
 			"defalut": true,
 			"tip": "动作混合"
-		}
-		,
+		},
 		"bullet": {
 			"type": "bool",
 			"defalut": true,
 			"tip": "飞行道具"
-		}
-		,
+		},
 		"bullet_speed": {
 			"type": "float",
 			"defalut": 1.0,

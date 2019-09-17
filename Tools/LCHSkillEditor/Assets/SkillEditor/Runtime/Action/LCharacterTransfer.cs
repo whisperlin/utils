@@ -120,7 +120,14 @@ public class LCharacterTransfer : LCharacterAction
     public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
     {
         isJumpping = false;
-        character.SetCurPosition(information.getGroundHight(endPositoin+Vector3.up));
+
+        Vector3 pos;
+        if (!information.getGroundHight(endPositoin+Vector3.up, out pos))
+        {
+            Debug.LogError("has error");
+            pos = character.GetCurPosition();
+        }
+        character.SetCurPosition(pos);
     }
     public override ActionType GetActionType()
     {
