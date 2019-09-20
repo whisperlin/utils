@@ -18,6 +18,8 @@ public struct LCHJsButtonInformation
     public Vector3 position;
     [Header("按钮大小(按屏幕高度比例)")]
     public Vector2 size;
+    [Header("虚拟按键(cd名为空可用)")]
+    public VirtualInput.KeyCode keyCode;
  
 }
 public struct LCHJsButtonObject
@@ -115,6 +117,7 @@ public class LCHJoystickButtons : MonoBehaviour {
             lb.pointMat = pointMat;
             lb.pointOperaSize = pointOperaSize*Screen.height;
             lb.randMat = randMat;
+            lb.keyCode = buttons[i].keyCode;
         }
     }
     // Use this for initialization

@@ -20,6 +20,8 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Material randMat;
 
     bool dragging = false;
+    public VirtualInput.KeyCode keyCode;
+
     static void CircularRing(Mesh m, float radius0, float radius1)
     {
         List<Vector3> vectors = new List<Vector3>();
@@ -185,6 +187,13 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (button.information.cdName == null || button.information.cdName.Length ==0)
+        {
+            VirtualInput.buttons[(int)keyCode] = true;
+            VirtualInput.js_buttons[(int)keyCode] = true;
+            count = 2; 
+            return;
+        }
         if (dragging)
             return;
         var _param = character.GetSkillCDSkillParams(button.information.cdName);
@@ -205,6 +214,11 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (button.information.cdName == null || button.information.cdName.Length == 0)
+        {
+ 
+            return;
+        }
         if (holdingDrag != null)
         {
             return;
@@ -275,6 +289,11 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (button.information.cdName == null || button.information.cdName.Length == 0)
+        {
+      
+            return;
+        }
         if (holdingDrag == this)
         {
             dragging = true;
@@ -297,6 +316,10 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (button.information.cdName == null || button.information.cdName.Length == 0)
+        {
+            return;
+        }
         var p = eventData.position;
         
         var _param = character.GetSkillCDSkillParams(button.information.cdName);
@@ -337,6 +360,11 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
+        if (button.information.cdName == null || button.information.cdName.Length == 0)
+        {
+            
+            return;
+        }
         var _param = character.GetSkillCDSkillParams(button.information.cdName);
         if (null == _param)
             return;
@@ -366,12 +394,23 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             if (count == 1)
             {
-                var _param = character.GetSkillCDSkillParams(button.information.cdName);
-                if (null == _param)
-                    return;
-                VirtualInput.KeyCode bt = _param.button;
-                VirtualInput.buttons[(int)bt] = false;
-                VirtualInput.js_buttons[(int)bt] = false;
+
+                if (button.information.cdName == null || button.information.cdName.Length == 0)
+                {
+                    VirtualInput.buttons[(int)keyCode] = false;
+                    VirtualInput.js_buttons[(int)keyCode] = false;
+           
+                }
+                else
+                {
+                    var _param = character.GetSkillCDSkillParams(button.information.cdName);
+                    if (null == _param)
+                        return;
+                    VirtualInput.KeyCode bt = _param.button;
+                    VirtualInput.buttons[(int)bt] = false;
+                    VirtualInput.js_buttons[(int)bt] = false;
+                }
+                
 
             }
             count--;

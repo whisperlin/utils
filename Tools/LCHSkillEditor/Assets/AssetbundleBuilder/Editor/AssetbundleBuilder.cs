@@ -9,7 +9,7 @@ public class AssetbundlePacker
 {
     // 打包输出目录   路径统一都加/结尾
     private static string RES_OUTPUT_PATH = "Assets/StreamingAssets/";
-    private static string[] RES_DIRS = new string[] { "Assets/Props/Prefabs/Character", "Assets/Props/Prefabs/quan_shi" , "Assets/TA" };
+    private static string[] RES_DIRS = new string[] { "Assets/Props/Prefabs/Character", "Assets/Props/Prefabs/quan_shi" /*, "Assets/TA" */};
 
     
     // AssetBundle打包后缀
@@ -145,14 +145,14 @@ public class AssetbundlePacker
  
 
     }
-    [MenuItem("TA/Assets/打包PC", false, 351)]
+    /*[MenuItem("TA/Assets/打包PC", false, 351)]
     public static void Pack()
     {
         BuildTarget target = BuildTarget.StandaloneWindows;
         MarkAssetName();
         BuildBundle(target);
         MakeDependList(target);
-    }
+    }*/
 
     [MenuItem("TA/Assets/打包Android", false, 351)]
     public static void PackAndroid()
