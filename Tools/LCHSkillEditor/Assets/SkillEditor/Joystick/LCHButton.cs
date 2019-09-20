@@ -200,7 +200,17 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (null == _param)
             return;
         VirtualInput.KeyCode bt = _param.button;
-        VirtualInput.skillDir = Vector3.zero;
+        //fellowCharacter.forward  = skillDir
+
+        if (_param.type == SkillParams.TYPE.DRAG_DIR)
+        {
+            VirtualInput.skillDir = fellowCharacter.forward;
+        }
+        else
+        {
+            VirtualInput.skillDir = Vector3.zero;
+        }
+            
         VirtualInput.buttons[(int)bt] = true;
         VirtualInput.js_buttons[(int)bt] = true;
         if (holdingDrag == this)
