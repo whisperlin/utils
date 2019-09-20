@@ -26,18 +26,17 @@ public class LCharacterJumpAction : LCharacterAction
  
     bool firFrame = true;
     float curTime = 0f;
-    public  void initJump(LChatacterInterface character, LChatacterInformationInterface information)
+    public  void initJump(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
         character.CrossFade(animName,0.05f);
         //跳跃的方向
-        Vector3 forward;
-        character.GetForward(out forward);
+        Vector3 forward = character.GetGameForward( );
         Vector3 left = Vector3.Cross(forward, Vector3.up);
         MoveDir = (-left * VirtualInput.dir.x + forward * VirtualInput.dir.y).normalized;
         beginPositon = character.GetCurPosition();
     }
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         jumpCount = 0;
         firFrame = true;
@@ -46,7 +45,7 @@ public class LCharacterJumpAction : LCharacterAction
  
     }
 
-    public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void doAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         if (!firFrame && jumpCount < maxJumpCount && VirtualInput.IsButtonDown(button))
         {
@@ -72,7 +71,7 @@ public class LCharacterJumpAction : LCharacterAction
  
     }
 
-    public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isFinish(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime += Time.deltaTime;
 
@@ -91,7 +90,7 @@ public class LCharacterJumpAction : LCharacterAction
         return !inAir;
     }
 
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information)
     {
        
         if (  VirtualInput.buttons[(int)button])
@@ -112,12 +111,12 @@ public class LCharacterJumpAction : LCharacterAction
         return false;
     }
 
-    public override IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun)
+    public override IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun)
     {
         yield return null;
     }
 
-    public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void endAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
 
     }

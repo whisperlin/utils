@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
  
-
 public interface CharactorLoadHandle
 {
     object asset {get;}
@@ -72,12 +69,31 @@ public class CDData //cd技能数据
     public float cd;//cd时间
 }
 
-public class CDParams 
+//技能参数，包括cd情况，技能释放方式等信息
+public class SkillParams 
 {
+    
+    public enum TYPE
+    {
+        CLICK,//按下施放.
+        DRAG_DIR,//拖拽选择释放方向，
+        DRAG_POINT,
+        //后续添加拖拽选择释放目标，拖拽选择释放点等?
+    }
     private int state = 0;
     public CDData[] cds;
     public float cd;
+    public VirtualInput.KeyCode button;
 
+    public TYPE type = TYPE.CLICK;//技能释放类型.
+ 
+    public float skillRange = 1f;//技能释放距离
+    public float skillWidth = 1f;//技能释放距离
+
+    public float GetMaxCD()
+    {
+        return cds[state].cd;
+    }
     public int State
     {
         get
@@ -85,26 +101,21 @@ public class CDParams
             return state;
         }
     }
+
+    public bool isUsing = false;
+
     public void update()
     {
         cd = cd - Time.deltaTime;
-       /*if (cds.Length > 0 )
-        {
-            Debug.Log("cd = " + cd + " state = " + state);
-        }*/
-         
+ 
         if (cd <= 0 && State > 0 )//后续技能用，比如放玩1技能，5秒内可以放2技能，使用2技能或者五秒过后，进入1技能cd状态。
         {
             cd = cds[0].cd;
             state = 0;
-            //Debug.Log("updateState to " + state);
         }
-        
     }
     public void updateState(int skillState)//一技能使用，或者命中，触发2技能。
     {
-      
-        
         if (skillState < cds.Length - 1)
         {
             state = skillState+1;
@@ -134,18 +145,7 @@ public class CDParams
         }
     }
 
-    //这个是ui显示用。
-    public float GetCD(int state)
-    {
-        if (state == this.State)
-        {
-            return cd;
-        }
-        else
-        {
-            return 0;
-        }
-    }
+     
 }
 public enum LCharacterData
 {
@@ -156,14 +156,14 @@ public enum LCharacterData
 }
 
 //角色的抽象接口
-public interface LChatacterInterface
+public interface LCharacterInterface
 {
     //返回这个角色唯一的id,
     int GetId();
     void CrossFade(string anim_name,float time);
     Vector3 GetCurPosition();
     //获得移动的前向，根据游戏不同可能是相机的平面前向也可能是角色前向。
-    void GetForward(out Vector3 forward);
+    Vector3  GetGameForward( );
     void SetCurPosition(Vector3 pos );
     void SetCurForward( Vector3 forward);
     Quaternion GetCurLocalRot();
@@ -178,16 +178,20 @@ public interface LChatacterInterface
     int GetCamp();//
     void OnHit(Collider other, LCharacterColliderData data, Vector3 dir, ref LCharacterAction curAction, List<LCharacterAction> actionList , LChatacterInformationInterface information);
 
-    float SkillCDTime(string skillId);
-    bool CanUsedSkill(string skillId, int state);
-    void AddParam(string cdName, CDParams _params);
-    void UpdateCDParams();
+    SkillParams GetSkillCDSkillParams(string cdName );
+  
+ 
+    void AddParam(string cdName, SkillParams _params);
+    void RemoveParam(string cdName);
+    void UpdateSkillParams();
     void updateCDState(string cdName, int skillState);
     void Play(string animName);
     void ResetAndPlay(string animName);
     object GetData(int key);//key不存在返回null
     void SetData(int key,object value);
     void AddHaterd(int characterId, int v);
+    void UpdateSkillRange(string cdName, float skillRange, float skillWidth);
+    Vector3 GetCurForward();
 }
 
 //角色相关数据的抽象接口。
@@ -198,9 +202,9 @@ public interface LChatacterInformationInterface  {
 
     bool getGroundHight(Vector3 pos,out Vector3 result );
     
-    LChatacterInterface GetCharacter(int targetId);
-    void AddCharacter(LChatacterInterface character);
-    void RemoveCharacter(LChatacterInterface character);
+    LCharacterInterface GetCharacter(int targetId);
+    void AddCharacter(LCharacterInterface character);
+    void RemoveCharacter(LCharacterInterface character);
     void slowly(float v, float slow_motion);
     Vector3 GetNewPointCanWalk(Vector3 pos);
 

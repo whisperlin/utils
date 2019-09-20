@@ -37,7 +37,7 @@ public class LCharacterTransfer : LCharacterAction
 
     float curTime = 0f;
     bool isJumpping = false;
-    public void initJump(LChatacterInterface character, LChatacterInformationInterface information)
+    public void initJump(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
         character.CrossFade(animName,0.05f);
@@ -53,13 +53,13 @@ public class LCharacterTransfer : LCharacterAction
         JumpTime = length * 0.5f / jumpSpeed;
         beginPositon = character.GetCurPosition();
     }
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         initJump(character, information);
         isJumpping = true;
     }
 
-    public override bool OnTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool OnTrigger(LCharacterColliderData cdata, Collider other, LCharacterInterface character, LChatacterInformationInterface information)
     {
         if (cdata.type == "tra")
         {
@@ -73,7 +73,7 @@ public class LCharacterTransfer : LCharacterAction
         return false;
     }
 
-    public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void doAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         Vector3 pos = character.GetCurPosition();
         Vector3 pos0 = pos;
@@ -90,7 +90,7 @@ public class LCharacterTransfer : LCharacterAction
 
     }
 
-    public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isFinish(LCharacterInterface character, LChatacterInformationInterface information)
     {
 
         curTime += Time.deltaTime;
@@ -104,7 +104,7 @@ public class LCharacterTransfer : LCharacterAction
         return true;
     }
 
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information)
     {
 
 
@@ -112,12 +112,12 @@ public class LCharacterTransfer : LCharacterAction
         return false;
     }
 
-    public override IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun)
+    public override IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun)
     {
         yield return null;
     }
 
-    public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void endAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         isJumpping = false;
 

@@ -173,7 +173,7 @@ public partial class SkillEditorMainWindow
         SpeceLine();
         GUILayout.Label("属性列表:");
   
-        scrollViewPos4 = GUILayout.BeginScrollView(scrollViewPos4, GUILayout.Height(200));
+        scrollViewPos4 = GUILayout.BeginScrollView(scrollViewPos4, GUILayout.Height(100));
         LCHObjectData selectObject = null;
         if (selectObjId > -1   )
         {
@@ -217,7 +217,7 @@ public partial class SkillEditorMainWindow
         GUILayout.BeginHorizontal();
         //1
         Dictionary<string, object> property_params = new Dictionary<string, object>();
-        scrollViewPos5 = GUILayout.BeginScrollView(scrollViewPos5, GUILayout.Height(200));
+        scrollViewPos5 = GUILayout.BeginScrollView(scrollViewPos5 );
         if (skill != null)
         {
             if (null != SkillEditorWindow.selectEvent && null != SkillEditorWindow.selectEventChannel)

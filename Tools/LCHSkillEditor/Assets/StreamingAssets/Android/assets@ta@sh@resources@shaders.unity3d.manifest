@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 3236860647
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 299e422685ff8dd0817036a14c89155b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: da96927c3dd236487939f80f571ccc3f
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 72
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+Assets:
+- Assets/TA/SH/Resources/Shaders/CoeffVisualizer.shader
+- Assets/TA/SH/Resources/Shaders/Reduce_Uniform.compute
+- Assets/TA/SH/Resources/Shaders/CosineSkybox.shader
+- Assets/TA/SH/Resources/Shaders/MonteCarloProject.shader
+- Assets/TA/SH/Resources/Shaders/SHResult.shader
+- Assets/TA/SH/Resources/Shaders/Visibility_Shader.shader
+- Assets/TA/SH/Resources/Shaders/BlackShader.shader
+- Assets/TA/SH/Resources/Shaders/SH_Shader.shader
+- Assets/TA/SH/Resources/Shaders/Reduce_MC_1024.compute
+- Assets/TA/SH/Resources/Shaders/SHGlobal.cginc
+- Assets/TA/SH/Resources/Shaders/SH_Utils.cginc
+Dependencies: []

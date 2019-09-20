@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class VirtualInput  {
+    internal static Vector3 skillDir;
+
     public enum KeyCode
     {
         Button0,
@@ -34,6 +36,8 @@ public class VirtualInput  {
     public static bool isDirectKeyDown = false;
     public static bool[] lastButtons = new bool[20];
     public static bool[] buttons = new bool[20];
+    //摇杆输入状态位。
+    public static bool[] js_buttons = new bool[20] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
 
 
     public static bool IsButtonDown(KeyCode kc)

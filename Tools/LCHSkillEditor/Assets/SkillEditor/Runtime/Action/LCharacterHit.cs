@@ -43,7 +43,7 @@ public class LCharacterHit : LCharacterHitBase
     }
 
     
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
         //character.CrossFade(animName);
@@ -67,7 +67,7 @@ public class LCharacterHit : LCharacterHitBase
         //effectId = 
     }
 
-    public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void doAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         if (curTime <= hit_back_time)
         {
@@ -82,7 +82,7 @@ public class LCharacterHit : LCharacterHitBase
         }
     }
 
-    public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isFinish(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime += Time.deltaTime;
         
@@ -94,7 +94,7 @@ public class LCharacterHit : LCharacterHitBase
         return true;
     }
 
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information)
     {
 
 
@@ -102,12 +102,12 @@ public class LCharacterHit : LCharacterHitBase
         return false;
     }
 
-    public override IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun)
+    public override IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun)
     {
         yield return null;
     }
 
-    public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void endAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         /*if (character.IsAI())
         {

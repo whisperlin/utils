@@ -7,7 +7,7 @@ public abstract class LCharacterHitBase : LCharacterAction
      
     protected abstract void SetHitData(LCharacterHitData data, Vector3 dir);
     
-    public override bool OnTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool OnTrigger(LCharacterColliderData cdata, Collider other, LCharacterInterface character, LChatacterInformationInterface information)
     {
         if (cdata.type == "hit")
         {
@@ -29,7 +29,7 @@ public abstract class LCharacterHitBase : LCharacterAction
                     {
                         if (data.cdState == CdState.HIT)
                         {
-                            LChatacterInterface chr = information.GetCharacter(data.characterId);
+                            LCharacterInterface chr = information.GetCharacter(data.characterId);
                             chr.updateCDState(data.cdName, data.skillState);
                         }
                         if (slow_motion > 0.0001f)
@@ -38,10 +38,28 @@ public abstract class LCharacterHitBase : LCharacterAction
                             data.firstHit = true;
                         }
                     }
-
-                    Vector3 dir = other.transform.forward;
+                    int hit_dir = data.value.GetValueInt("hit_dir",0);
+                    Vector3 dir;
+                    if (hit_dir == 0)
+                    {
+                        dir = other.transform.forward;
+                        
+                    }
+                    else if (hit_dir == 1)
+                    {
+                        dir = character.GetCurPosition() - other.transform.position;
+                    }
+                    else if (hit_dir == 2)
+                    {
+                        dir = character.GetCurPosition() -  information.GetCharacter(data.characterId).GetCurPosition() ;
+                    }
+                    else 
+                    {
+                        dir = information.GetCharacter(data.characterId).GetCurPosition() - character.GetCurPosition()  ;
+                    }
                     dir.y = 0;
                     dir.Normalize();
+
                     SetHitData(data, dir);
                     return true;
                 }

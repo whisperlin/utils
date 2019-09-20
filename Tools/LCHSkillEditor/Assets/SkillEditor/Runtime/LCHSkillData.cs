@@ -264,9 +264,9 @@ public class LCHEventChannelData
         return " 不存在";
     }
     //返回值1，找到,0未设置过,1,已经设置过。
-    public int TryGetKeyFrameRunTime(float curFrame,float lastTime, out ObjDictionary value, out float time)
+    public int TryGetKeyFrameRunTime(float _curFrame,float lastTime, out ObjDictionary value, out float time,out float keyFrameTime)
     {
-        curFrame = curFrame * 100f;
+        float curFrame = _curFrame * 100f;
         lastTime = lastTime * 100f;
         int ct0 = times.Count;
         int returnType = 0;
@@ -275,8 +275,10 @@ public class LCHEventChannelData
             int t = times[i];
             if (t >= lastTime && t <= curFrame)
             {
-                time = (curFrame - t) * 0.01f;
+                keyFrameTime = t * 0.01f;
+                time = _curFrame-keyFrameTime;
                 value = values[i];
+               
                 return 1;
             }
             else if (curFrame > t)
@@ -287,6 +289,7 @@ public class LCHEventChannelData
 
         }
         time = 0f;
+        keyFrameTime = 0f;
         value = null;
         return returnType;
     }
@@ -354,6 +357,8 @@ public class LCHSkillData
     public List<LCHChannelData> channels = new List<LCHChannelData>();//这里搞不了多态，因为序列化json不支持多态。
     public List<LCHEventChannelData> events = new List<LCHEventChannelData>();
     public float skillRange = 1f;//技能攻击范围。
+
+    public float skillWidth = 1f;//技能宽度。
     public void GetidsAndName(ref string[] items0, ref int[] ids)
     {
         int objLen = objs.Length;

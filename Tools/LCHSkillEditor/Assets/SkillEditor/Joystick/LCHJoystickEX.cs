@@ -26,7 +26,6 @@ public class LCHJoystickEX : MonoBehaviour ,/*IPointerDownHandler,IPointerUpHand
         if (null != panel)
         {
             panel.rectTransform.sizeDelta = new Vector2(Screen.width*width, Screen.height*height);
-
             background.rectTransform.sizeDelta = new Vector2(Screen.height * backgroundHeight, Screen.height * backgroundHeight);
             button.rectTransform.sizeDelta = new Vector2(Screen.height * buttonHeight, Screen.height * buttonHeight);
         }
@@ -52,7 +51,6 @@ public class LCHJoystickEX : MonoBehaviour ,/*IPointerDownHandler,IPointerUpHand
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.LogError("OnDrag" + eventData.position);
         if (null != button)
         {
             var p = eventData.position;

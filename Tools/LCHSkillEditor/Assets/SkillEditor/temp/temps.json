@@ -89,7 +89,7 @@
 			"limit": "status",
 			"limit_items": [
 				1,
-				3 
+				3
 			]
 		},
 		"hit_down": {
@@ -144,6 +144,17 @@
 			"type": "effect",
 			"defalut": "",
 			"tip": "受击特效"
+		},
+		"hit_dir": {
+			"type": "list",
+			"defalut": 0,
+			"items": [
+				"Z方向",
+				"碰撞体中心->敌人",
+				"角色中心->敌人",
+				"敌人->角色中心"
+			],
+			"tip": "击飞方向"
 		}
 	},
 	"object": {
@@ -162,15 +173,24 @@
 			"defalut": true,
 			"tip": "动作混合"
 		},
-		"bullet": {
-			"type": "bool",
-			"defalut": true,
-			"tip": "飞行道具"
+		"ex_action": {
+			"type": "list",
+			"defalut": 0,
+			"items": [
+				"无",
+				"坐标系移动向模板(主角才有效)", 
+				"停止更新位置"
+			],
+			"tip": "特殊行为"
 		},
-		"bullet_speed": {
+		"ToTargetTime": {
 			"type": "float",
-			"defalut": 1.0,
-			"tip": "飞行速度"
+			"defalut": 0.1,
+			"tip": "移动到目标点用时",
+			"limit": "ex_action",
+			"limit_items": [
+				1
+			]
 		}
 	},
 	"role_state": {

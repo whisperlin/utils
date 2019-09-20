@@ -21,6 +21,10 @@ public class PropertyHelper  {
             if (temp.ContainsKey("limit") && temp.ContainsKey("limit_items"))
             {
                 string lkey = temp["limit"].ToString();
+                if (!propertys.ContainsKey(lkey))
+                {
+                    propertys[lkey] = 0;
+                }
                 int lvalue = System.Convert.ToInt32(propertys[lkey]);
 
                 int[] limits = (int[])temp["limit_items"];

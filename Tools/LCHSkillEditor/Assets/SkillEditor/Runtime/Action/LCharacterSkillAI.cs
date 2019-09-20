@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LCharacterSkillAI : LCharacterSkillAction
 {
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         int targetId = character.GetTargetId();
         var c = information.GetCharacter(targetId);
@@ -18,16 +18,23 @@ public class LCharacterSkillAI : LCharacterSkillAction
         }
         base.beginAction(character, information);
     }
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information)
     {
-        if (!character.CanUsedSkill(cdName, skillState))
+
+        var _param = character.GetSkillCDSkillParams(cdName);
+        if (null == _param )
+        {
+            return true;
+        }
+        else if (!_param.CanUse(skillState))
         {
             return false;
         }
+         
         int targetId = character.GetTargetId();
         if (targetId != -1)
         {
-            LChatacterInterface target = information.GetCharacter(targetId);
+            LCharacterInterface target = information.GetCharacter(targetId);
             
             if(null== target ||target.IsDead())
                 return false;

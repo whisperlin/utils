@@ -88,6 +88,8 @@ public class ColliderRender : MonoBehaviour {
 
     public Collider [] colliders = new Collider[0];
     static Color gizmosColor = new Color(0.5f, 0.5f, 1.0f);
+    public float skillWidth;
+
     void OnDrawGizmos()
     {
         Gizmos.color = gizmosColor;
@@ -128,6 +130,11 @@ public class ColliderRender : MonoBehaviour {
 #if UNITY_EDITOR
             Handles.color = new Color(1.0f, 0.5f, 0.5f); 
             Handles.DrawWireDisc(Vector3.zero, Vector3.up, attackRange);
+
+            Handles.color = new Color(1.0f, 1.0f, 0.5f);
+
+            Handles.DrawWireDisc(Vector3.zero, Vector3.up, skillWidth);
+
             
 #endif
 

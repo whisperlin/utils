@@ -26,7 +26,7 @@ public class AISkill : MonoBehaviour
         chatacter.EnableAI();
 
 
-        CDParams _params = new CDParams();
+        SkillParams _params = new SkillParams();
         CDData[] cds = new CDData[1] { new CDData() };
         cds[0].cd = cd;
         _params.cds = cds;

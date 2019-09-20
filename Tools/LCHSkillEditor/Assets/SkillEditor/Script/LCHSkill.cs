@@ -33,6 +33,7 @@ public class ObjectContain
     public Animation[] anims;
     public LCharacterColliderData hitData;
     internal GameObject baseGameObject;
+    public bool stopUpatePos = false;
 
     public void SetInformation(LCHObjectData od)
     {

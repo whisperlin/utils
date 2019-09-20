@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 1440304714
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 701c01dcf11d9bc8ed621059f36b9802
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 397095f45ba94618c3f08a8df4f5688d
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+Assets:
+- Assets/TA/Shader/Effect/DissolveShaderBump.shader
+- Assets/TA/Shader/Effect/TexUV.shader
+- Assets/TA/Shader/Effect/DissolveShader.shader
+- Assets/TA/Shader/Effect/DissolveShaderBlend.shader
+- Assets/TA/Shader/Effect/DissolveShaderBumpBlend.shader
+- Assets/TA/Shader/Effect/dissolve.cginc
+Dependencies: []

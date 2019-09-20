@@ -30,6 +30,7 @@ public class SkillEditorWindow : EditorWindow
     public Vector2 scrollPosition = Vector2.zero;
     public float maxLength = 3f;
     public float skillRange = 3f;
+    public float skillWidth = 1f;
     public float scale = 1;
     public float viewHeight = 600f;
     public float ChannelHeight = 30f; 
@@ -185,6 +186,16 @@ public class SkillEditorWindow : EditorWindow
         {
             EditorGUILayout.Slider(1f, 0f, 20f, width150);
         }
+        GUILayout.Label("技能宽度", width100);
+        if (null != skill)
+        {
+            skillWidth = skill.skillWidth = EditorGUILayout.Slider(skill.skillWidth, 0f, 20f, width150);
+        }
+        else
+        {
+            EditorGUILayout.Slider(1f, 0f, 20f, width150);
+        }
+        
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         GUILayout.Label("技能长度", width100);
@@ -446,7 +457,9 @@ public class SkillEditorWindow : EditorWindow
             ColliderRender.colliderRender = g.AddComponent<ColliderRender>();
         }
         ColliderRender.colliderRender.attackRange = skillRange;
- 
+        ColliderRender.colliderRender.skillWidth = skillWidth;
+
+        //skillWidth
         if (showCollider)
         {
             ColliderRender.colliderRender.gameObject.SetActive(true);

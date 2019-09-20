@@ -1,102 +1,100 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public class LCharacterAirHit : LCharacterAction
+public abstract class LCharacterAirHit : LCharacterHitBase
 {
-    public string animName;
+    public string animNameFly;
+    protected bool onGround = false;
+    
+    protected float air_delay = 0;
+    protected float curTime = 0;
+    protected float ctrl_time = 0;
 
-    public float mixDistance = 1f;
-    public float speed = 10f;
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+
+    public virtual void initAirHit(LCharacterInterface character, LChatacterInformationInterface information)
     {
-        character.CrossFade(animName, 0.05f);
-        //character.Play(animName);
+        character.ResetAndPlay(animNameFly);
+        onGround = false;
+       
     }
-
-    public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool CanStopByTrigger(LCharacterColliderData cdata, Collider other, LCharacterInterface character, LChatacterInformationInterface information)
     {
-        int targetId = character.GetTargetId();
-        if (targetId != -1)
+        if (onGround)
         {
-            LChatacterInterface target = information.GetCharacter(targetId);
-
-            if (null == target || target.IsDead())
-                return;
-            var selPos = character.GetCurPosition();
-            var targetPos = target.GetCurPosition();
-            Vector3 MoveDir = targetPos - selPos;
-            MoveDir.y = 0f;
-
-
-            MoveDir.Normalize();
-            Vector3 pos0 = MoveDir * Time.deltaTime * speed;
-            Vector3 pos = information.tryMove(character.GetCurPosition(), pos0, true);
-            character.SetCurPosition(pos);
-            character.SetCurForward(MoveDir);
-
+            return false;
         }
-    }
-
-    public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
-    {
-
-        int targetId = character.GetTargetId();
-        if (targetId != -1)
+        if (!base.CanStopByTrigger(cdata, other, character, information))
         {
-            LChatacterInterface target = information.GetCharacter(targetId);
-
-            if (null == target || target.IsDead())
-                return true;
-
-            var selPos = character.GetCurPosition();
-
-            var targetPos = target.GetCurPosition();
-
-            float f = Vector3.Distance(selPos, targetPos);
-            if (f < mixDistance)
+            return false;
+        }
+        if (cdata.type == "hit")
+        {
+            LCharacterHitData data = cdata.getData<LCharacterHitData>();
+            ActionType status = (ActionType)data.value.GetValueInt("status", 0);
+            if (status == ActionType.HIT_FLY || status == ActionType.HIT_DOWN)
             {
                 return true;
+            }
+            float slow_motion = data.value.GetValueFloat("slow_motion", 0f);
+            float air_delay = data.value.GetValueFloat("air_delay", 0f);
+            if (data.firstHit)
+            {
+                if (data.cdState == CdState.HIT)
+                {
+                    LCharacterInterface chr = information.GetCharacter(data.characterId);
+                    chr.updateCDState(data.cdName, data.skillState);
+                }
+                if (slow_motion > 0.0001f)
+                {
+                    information.slowly(0.01f, slow_motion);
+                    data.firstHit = true;
+                }
+                character.ResetAndPlay(animNameFly);
+                this.air_delay = air_delay;
             }
             return false;
         }
         return true;
     }
 
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+
+    public override bool isFinish(LCharacterInterface character, LChatacterInformationInterface information)
     {
-        int targetId = character.GetTargetId();
-        if (targetId != -1)
+        float deltaTime = Time.deltaTime;
+        if (air_delay > 0.00001f)
         {
-            LChatacterInterface target = information.GetCharacter(targetId);
-
-            if (null == target || target.IsDead())
-                return false;
-            var selPos = character.GetCurPosition();
-
-            var targetPos = target.GetCurPosition();
-
-            float f = Vector3.Distance(selPos, targetPos);
-            if (f > mixDistance)
+            if (this.air_delay > deltaTime)
             {
-                return true;
+                this.air_delay -= deltaTime;
+                return false;
             }
-
-
-
+            else
+            {
+                deltaTime -= air_delay;
+                air_delay = 0f;
+            }
         }
+        curTime += deltaTime;
+        if (onGround)
+        {
+            bool b = curTime > ctrl_time;
+
+            return b;
+        }
+        else
+        {
+            return NoOnGround( character,  information);
+
+ 
+        }
+    }
+
+    public virtual bool NoOnGround(LCharacterInterface character, LChatacterInformationInterface information)
+    {
         return false;
-    }
-
-    public override IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun)
-    {
-        yield return null;
-    }
-
-    public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
-    {
-
     }
 }
 

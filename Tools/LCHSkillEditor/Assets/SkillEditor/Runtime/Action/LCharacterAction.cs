@@ -30,15 +30,15 @@ public abstract class LCharacterAction {
     }
     public int priority = 0;
 
-    public abstract IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun);
-    public abstract bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information);
-    public abstract void beginAction(LChatacterInterface character, LChatacterInformationInterface information);
-    public abstract void endAction(LChatacterInterface character, LChatacterInformationInterface information);
-    public abstract void doAction(LChatacterInterface character, LChatacterInformationInterface information);
-    public abstract bool isFinish(LChatacterInterface character, LChatacterInformationInterface information);
+    public abstract IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun);
+    public abstract bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information);
+    public abstract void beginAction(LCharacterInterface character, LChatacterInformationInterface information);
+    public abstract void endAction(LCharacterInterface character, LChatacterInformationInterface information);
+    public abstract void doAction(LCharacterInterface character, LChatacterInformationInterface information);
+    public abstract bool isFinish(LCharacterInterface character, LChatacterInformationInterface information);
 
 
-    public virtual bool CanStopByTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
+    public virtual bool CanStopByTrigger(LCharacterColliderData cdata, Collider other, LCharacterInterface character, LChatacterInformationInterface information)
     {
         var v = character.GetData((int)ACTIONATA.ROLE_STATE);
         if (v == null)
@@ -60,7 +60,7 @@ public abstract class LCharacterAction {
                 {
                     if (data.cdState == CdState.HIT)
                     {
-                        LChatacterInterface chr = information.GetCharacter(data.characterId);
+                        LCharacterInterface chr = information.GetCharacter(data.characterId);
                         chr.updateCDState(data.cdName, data.skillState);
                     }
                     if (slow_motion > 0.0001f)
@@ -76,7 +76,7 @@ public abstract class LCharacterAction {
         return true;
     }
 
-    public virtual bool OnTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
+    public virtual bool OnTrigger(LCharacterColliderData cdata, Collider other, LCharacterInterface character, LChatacterInformationInterface information)
     {
         //return true 则消息不再向下传递
         return false;
@@ -98,7 +98,7 @@ public abstract class LCharacterAction {
     {
     }
 
-    public static void UpdateAction(ref LCharacterAction curAction, List<LCharacterAction> actions, LChatacterInterface character, LChatacterInformationInterface information)
+    public static void UpdateAction(ref LCharacterAction curAction, List<LCharacterAction> actions, LCharacterInterface character, LChatacterInformationInterface information)
     {
 
         if (null != curAction)
@@ -150,7 +150,7 @@ public abstract class LCharacterAction {
         //beginAction
     }
     public  static void OnHit
-        (Collider collider, LCharacterColliderData cdata, ref LCharacterAction curAction, List<LCharacterAction> actions, LChatacterInterface character, LChatacterInformationInterface information)
+        (Collider collider, LCharacterColliderData cdata, ref LCharacterAction curAction, List<LCharacterAction> actions, LCharacterInterface character, LChatacterInformationInterface information)
     {
         //if (character.IsAI())
          //   Debug.Log(curAction.ToString() + " check stop");

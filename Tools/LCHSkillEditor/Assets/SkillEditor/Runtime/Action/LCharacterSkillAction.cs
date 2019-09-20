@@ -24,6 +24,12 @@ public class LCharacterSkillAction : LCharacterAction
     public bool isOnGround = true;
     protected LCHSkillData skillData;
 
+    Vector3 targetPoint;
+    Vector3 targetDir;
+    Vector3 beginTargetPoint;
+    float beginToTarget = -1f;
+    float endToTarget = -1f;
+
     public bool HasLoaded
     {
         get
@@ -47,8 +53,10 @@ public class LCharacterSkillAction : LCharacterAction
     private Quaternion beginLocalRot;
     private Vector3 beginLocalScale;
 
+    Vector3 skillDir = Vector3.zero;
 
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+    public bool cdOnEnd = true;
+    public override bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information)
     {
         var pos0 = character.GetCurPosition();
         Vector3 pos;
@@ -58,15 +66,23 @@ public class LCharacterSkillAction : LCharacterAction
             pos = character.GetCurPosition();
         }
         bool inAir = pos0.y - pos.y > 0.01f;
-        if (VirtualInput.buttons[(int)button]  && (!isOnGround ||   !inAir )  && character.CanUsedSkill(cdName, skillState)  )
+        if (VirtualInput.buttons[(int)button]  && (!isOnGround ||   !inAir )/*  && character.CanUsedSkill(cdName, skillState) */ )
         {
-            return true;
+           
+            var _param = character.GetSkillCDSkillParams(cdName);
+            if (null != _param && _param.CanUse(skillState))
+            {
+                 
+                
+                return true;
+            }
+            
         }
 
         return false;
     }
     private  float curTime = 0f,lastTime = 0f ;
-    public override IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun)
+    public override IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun)
     {
         Debug.Log("skill on init "+ SkillId);
         hasLoaded = false;
@@ -74,9 +90,12 @@ public class LCharacterSkillAction : LCharacterAction
         while (!handle0.isFinish)
             yield return null;
         skillData = (LCHSkillData)handle0.asset;
-        //Debug.LogError("LoadSkillDataFile");
+         
         role.type = 1;
         role.objId = -1;
+
+        character.UpdateSkillRange(cdName,skillData.skillRange,skillData.skillWidth);
+        //
         objs[role.objId] = role;
         objList = new ObjectContain[skillData.objs.Length];
         for (int i = 0, l = skillData.objs.Length; i < l; i++)
@@ -161,33 +180,53 @@ public class LCharacterSkillAction : LCharacterAction
     }
 
     
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
+
+        var _param = character.GetSkillCDSkillParams(cdName);
+        if (null != _param && _param.CanUse(skillState))
+        {
+            if (_param.type == SkillParams.TYPE.DRAG_DIR)
+            {
+                skillDir = VirtualInput.skillDir;
+                if (VirtualInput.skillDir != Vector3.zero)
+                {
+                    character.SetCurForward(skillDir);
+                }
+            }
+        }
         beginPositon = baseGroundPos = character.GetCurPosition();
+
+        targetPoint =  beginPositon + VirtualInput.skillDir;
+        targetDir = VirtualInput.skillDir.normalized;
         beginLocalRot = character.GetCurLocalRot();
         beginLocalScale = character.GetCurLoaclScale();
         lastTime = 0f;
+        beginToTarget = -1f;
+        if (cdOnEnd)
+        {
+            var skillParams  =  character.GetSkillCDSkillParams(cdName);
+            skillParams.isUsing = true;
+             
+        }
+        else
+        {
+            if (cdState != CdState.HIT)
+                character.updateCDState(cdName, skillState);
+        }
 
-
-        /*for (int i = 0, c0 = objList.Length; i < c0; i++)
+        for (int i = 0, c0 = objList.Length; i < c0; i++)
         {
             var o0 = objList[i];
-            if (o0.type == 1  )
-            {
-                if (null != o0.baseGameObject)
-                {
-                    Debug.LogError("bg "+o0.baseGameObject + " g "+o0.gameobject );
-                }
-            }
-        }*/
+            o0.stopUpatePos = false;
+        }
 
-        //Debug.Log("begin skill");
     }
     
     
 
-    public static void CmpAnimationPos(float curTime,ObjectContain contain, LChatacterInterface character, LChatacterInformationInterface information)
+    public static void CmpAnimationPos(float curTime,ObjectContain contain, LCharacterInterface character, LChatacterInformationInterface information)
     {
         contain.ResetTransformData();
         for (int i = 0, c0 = contain.channels.Count; i < c0; i++)
@@ -249,7 +288,7 @@ public class LCharacterSkillAction : LCharacterAction
     }
 
 
-    public static void SetRolePos(float curTime, ObjectContain contain, LChatacterInterface character, LChatacterInformationInterface information,
+    public static void SetRolePos(float curTime, ObjectContain contain, LCharacterInterface character, LChatacterInformationInterface information,
         ref Vector3 beginGroundLinePos,
         Vector3 beginLocalScale,
         Quaternion beginLocalRot,
@@ -318,17 +357,28 @@ public class LCharacterSkillAction : LCharacterAction
         return null;  //couldn't find crap
     }
      
-    public static void SetObjectPos(float curTime, ObjectContain contain, Dictionary<int, ObjectContain> objs , LChatacterInterface character, LChatacterInformationInterface information,
+    public static void SetObjectPos(float curTime, ObjectContain contain, Dictionary<int, ObjectContain> objs , LCharacterInterface character, LChatacterInformationInterface information,
          Vector3 beginPositon,
         Vector3 beginLocalScale,
         Quaternion beginLocalRot )
     {
+
+        if (contain.stopUpatePos)
+        {
+            if (contain.gameobject != null)
+            {
+                contain.gameobject.transform.parent = null;
+                return;
+            }
+        }
         //beginPositon
         if (contain.type == 1 || contain.type == 2 || contain.type == 4)
         {
             ObjectContain role = objs[-1];
+           
             if (contain.bind == 1 && contain.gameobject != null && contain.gameobject.transform.parent == null && role.gameobject != null)
             {
+                //Debug.LogError("contain.bind = " + contain.bind + " " + contain.gameobject);
                 contain.gameobject.transform.parent = role.gameobject.transform;
             }
             else if (contain.bind == 2 && contain.gameobject != null && contain.gameobject.transform.parent == null && role.gameobject != null)
@@ -377,20 +427,24 @@ public class LCharacterSkillAction : LCharacterAction
             }
         }
     }
-    public static void CmpObjectEvent(float curTime,float lastTime, LCHEventChannelData _e, ObjectContain contain, LChatacterInterface character, LChatacterInformationInterface information,
+    public static void CmpObjectEvent(float curTime, float lastTime, LCHEventChannelData _e, ObjectContain contain, LCharacterInterface character, LChatacterInformationInterface information,
         Dictionary<int, ObjectContain> objs
-        ,CdState cdState
+        , CdState cdState
         , string cdName
         , int skillState
-         
+        ,Vector3 baseGroundPos
+        , ref float beginToTarget
+        , ref float endToTarget
+        , ref Vector3 beginTargetPoint
         )
     {
         LCHChannelType t = (LCHChannelType)_e.type;
         ObjDictionary value;
         float _time;
+        float _keyFrameTime;
         if (t == LCHChannelType.Object)
         {
-            int res = _e.TryGetKeyFrameRunTime(curTime, lastTime, out value, out _time);
+            int res = _e.TryGetKeyFrameRunTime(curTime, lastTime, out value, out _time,out _keyFrameTime);
             if (res == 1)
             {
                 if (null != contain.gameobject)
@@ -409,35 +463,21 @@ public class LCharacterSkillAction : LCharacterAction
                     }
                     else
                     {
-                        
-                        
                         if (enable)
                         {
                             contain.gameobject.SetActive(false);
                             contain.gameobject.SetActive(true);
-                            /*contain.gameobject.SetActive(enable);
-                            for (int i = 0, l = contain.systems.Length; i < l; i++)
-                            {
-                                //Debug.Log(contain.systems[i].isStopped);
-                                contain.systems[i].gameObject.SetActive(false);
-                                contain.systems[i].gameObject.SetActive(true);
-                                contain.systems[i].Play(true);
-                            }*/
-                             
                         }
                         else
                         {
                             contain.gameobject.SetActive(enable);
                         }
-                         
-                        //Debug.LogError("_e.objId  " + _e.objId + " " + enable);
-                        //contain.gameobject.SetActive(enable);
                     }
-
                     if (enable)
                     {
                         if (contain.type == 1)
                         {
+                            
                             string anim_name = value.GetValue<string>("anim", "");
                             if (anim_name.Length > 0)
                             {
@@ -456,12 +496,33 @@ public class LCharacterSkillAction : LCharacterAction
                                     }
                                     else
                                     {
-                                        contain.animaction[anim_name].time=0f;//特么受击不这么干不重置。。。
+                                        contain.animaction[anim_name].time=0f;//特么不这么干不重置。。。
                                         contain.animaction.Play(anim_name );
                                     }
-                                   
                                 }
                             }
+
+                            int ex_action = value.GetValueInt("ex_action", 0);
+                            if (ex_action == 1)
+                            {
+                                //主模型.
+                                if (_e.objId == -1)
+                                {
+                                    float ToTargetTime = value.GetValueFloat("ex_action", -1f);
+                                    if (ToTargetTime > 0f)
+                                    {
+                                        beginToTarget = _keyFrameTime;
+                                        endToTarget = _keyFrameTime + ToTargetTime;
+                                        beginTargetPoint = baseGroundPos;
+                                    }
+                                }
+
+                            }
+                            else if (ex_action == 2)
+                            {
+                                contain.stopUpatePos = true;
+                            }
+                            
                         }
                     }
                 }
@@ -482,7 +543,8 @@ public class LCharacterSkillAction : LCharacterAction
         }
         if (t == LCHChannelType.Event)
         {
-            int res = _e.TryGetKeyFrameRunTime(curTime, lastTime, out value, out _time);
+     
+            int res = _e.TryGetKeyFrameRunTime(curTime, lastTime, out value, out _time,out _keyFrameTime);
             if (res == 1)
             {
                 if (contain.type == 2 || contain.type == 3)
@@ -559,7 +621,7 @@ public class LCharacterSkillAction : LCharacterAction
             }
         }
     }
-    public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void doAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         
         if (!hasLoaded)
@@ -603,7 +665,7 @@ public class LCharacterSkillAction : LCharacterAction
             for (int i = 0, c0 = contain.events.Count; i < c0; i++)
             {
                 var _e = contain.events[i];
-                CmpObjectEvent(curTime, lastTime, _e, contain, character, information,objs ,cdState,cdName,skillState );
+                CmpObjectEvent(curTime, lastTime, _e, contain, character, information,objs ,cdState,cdName,skillState, baseGroundPos, ref beginToTarget ,ref endToTarget ,ref beginTargetPoint);
             }
         }
         for (int ii = 0, c1 = objList.Length; ii < c1; ii++)
@@ -612,21 +674,54 @@ public class LCharacterSkillAction : LCharacterAction
             for (int i = 0, c0 = contain.events.Count; i < c0; i++)
             {
                 var _e = contain.events[i];
-                CmpObjectEvent(curTime, lastTime, _e, contain, character, information, objs, cdState, cdName, skillState );
+                CmpObjectEvent(curTime, lastTime, _e, contain, character, information, objs, cdState, cdName, skillState, baseGroundPos,  ref beginToTarget, ref endToTarget,ref beginTargetPoint);
             }
         }
-         //计算物体事件，比如播放动作，声音等。
-            for (int i = 0, c0 = skillData.events.Count; i < c0; i++)
+        if (beginToTarget >= 0f && curTime >= beginToTarget )
+        {
+           
+            if (curTime < endToTarget)
+            {
+                
+                float t = (curTime - beginToTarget) / (endToTarget - curTime);
+                var p = Vector3.Lerp(beginTargetPoint, targetPoint,t);
+                //能移动就移动过去
+                Vector3 g;
+                if (information.getGroundHight(p, out g))
+                {
+                    baseGroundPos = g;
+                    character.SetCurForward(targetDir);
+                    beginLocalRot = character.GetCurLocalRot();
+                    
+                }
+                
+
+            }
+            else
+            {
+                //能移动就移动过去
+                Vector3 g;
+                if (information.getGroundHight(targetPoint, out g))
+                {
+                    baseGroundPos = g;
+                    character.SetCurForward(targetDir);
+                    beginLocalRot = character.GetCurLocalRot();
+ 
+                }
+                beginToTarget = -1f;
+            }
+        }
+        /* //计算物体事件，比如播放动作，声音等。
+        for (int i = 0, c0 = skillData.events.Count; i < c0; i++)
         {
             var _e = skillData.events[i];
             var contain = objs[_e.objId];
-            
 
-        }
+        }*/
         lastTime = curTime;
     }
 
-    public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isFinish(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime += Time.deltaTime;
         if (skillData != null && skillData.maxLength < curTime)
@@ -639,6 +734,8 @@ public class LCharacterSkillAction : LCharacterAction
 
     public override void onRelease()
     {
+        if (null == objList)
+            return;
         for (int i = 0, c0 = objList.Length; i < c0; i++)
         {
             var o0 = objList[i];
@@ -654,10 +751,17 @@ public class LCharacterSkillAction : LCharacterAction
             }
         }
     }
-    public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void endAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
-        if (cdState != CdState.HIT)
-            character.updateCDState(cdName, skillState);
+        if (cdOnEnd)
+        {
+            if (cdState != CdState.HIT)
+                character.updateCDState(cdName, skillState);
+            var skillParams = character.GetSkillCDSkillParams(cdName);
+            skillParams.isUsing = false;
+             
+        }
+        
         for (int i = 0, c0 = objList.Length; i < c0; i++)
         {
             var o0 = objList[i];
@@ -669,6 +773,10 @@ public class LCharacterSkillAction : LCharacterAction
                     {
                         o0.gameobject.SetActive(false);
                     }
+                }
+                if (o0.bind == 1 && o0.gameobject != null)
+                {
+                    o0.gameobject.transform.parent = null;
                 }
             }
         }

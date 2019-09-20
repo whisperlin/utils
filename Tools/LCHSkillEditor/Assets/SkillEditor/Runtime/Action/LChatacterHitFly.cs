@@ -3,32 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class LCharacterHitFly : LCharacterHitBase
+public class LCharacterHitFly : LCharacterAirHit
 {
-    public string animNameFly;
  
-
-    //跳跃水平移动速度.(服务器很可能只管水平的)
-
     public float jumpSpeed = 5f;
     //跳跃高度.
     public float jumpHeight = 5f;
     //跳跃到达最高点所用时间.
     public float JumpTime = 2f;
-
     float hitDelta = 0.05f;
     //跳跃水平方向.
     Vector3 MoveDir = Vector3.zero;
-
     Vector3 beginPositon;
     string effect;
     GameObject effect_obj;
-
-    float curTime = 0;
-    float ctrl_time = 0f;
-    bool onGround = false;
+ 
     bool upping = true;
-    float air_delay = 0f;
     internal string animHitFlyDown;
     bool beBreak = false;
     protected override  void SetHitData(LCharacterHitData data, Vector3 dir)
@@ -45,11 +35,10 @@ public class LCharacterHitFly : LCharacterHitBase
         MoveDir = dir;
         this.effect = data.effect;
         this.effect_obj = data.effect_obj;
-
     }
 
 
-    public override bool CanStopByTrigger(LCharacterColliderData cdata, Collider other, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool CanStopByTrigger(LCharacterColliderData cdata, Collider other, LCharacterInterface character, LChatacterInformationInterface information)
     {
         //暂时倒地不能攻击
         if (onGround)
@@ -75,7 +64,7 @@ public class LCharacterHitFly : LCharacterHitBase
             {
                 if (data.cdState == CdState.HIT)
                 {
-                    LChatacterInterface chr = information.GetCharacter(data.characterId);
+                    LCharacterInterface chr = information.GetCharacter(data.characterId);
                     chr.updateCDState(data.cdName, data.skillState);
                 }
                 if (slow_motion > 0.0001f)
@@ -93,20 +82,19 @@ public class LCharacterHitFly : LCharacterHitBase
         return true;
     }
 
-    public void initJump(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void initAirHit(LCharacterInterface character, LChatacterInformationInterface information)
     {
+        base.initAirHit(character, information);
         curTime = -hitDelta;
-        character.ResetAndPlay(animNameFly );
         beginPositon = character.GetCurPosition();
         character.SetCurForward(-MoveDir);
-        onGround = false;
         upping = true;
         beBreak = false;
         endPos = character.GetCurPosition();
     }
-    public override void beginAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
-        initJump(character, information);
+        initAirHit(character, information);
         if (effect_obj != null)
         {
             GameObject g = GameObject.Instantiate(effect_obj);
@@ -115,7 +103,7 @@ public class LCharacterHitFly : LCharacterHitBase
         }
     }
    
-    public override void doAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void doAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         if (onGround)
             return;
@@ -151,75 +139,48 @@ public class LCharacterHitFly : LCharacterHitBase
        
     }
     Vector3 endPos;
-    public override bool isFinish(LChatacterInterface character, LChatacterInformationInterface information)
+    
+
+    public override bool NoOnGround(LCharacterInterface character, LChatacterInformationInterface information)
     {
-        float deltaTime = Time.deltaTime;
-        
-        if(air_delay>0.00001f)
+        if (curTime <= JumpTime)
         {
-            if (this.air_delay > deltaTime)
-            {
-                this.air_delay -= deltaTime;
-                return false;
-            }
-            else
-            {
-                deltaTime -= air_delay;
-                air_delay = 0f;
-            }
+            return false;
         }
- 
-        curTime += deltaTime;
-       if (onGround)
+        Vector3 pos;
+        if (!information.getGroundHight(character.GetCurPosition(), out pos))
         {
-            bool b = curTime > ctrl_time;
-            //if(b)
-            //    Debug.LogError("end on ground");
-            return b;
+            Debug.LogError("has error");
+            character.SetCurPosition(endPos);
+
+            information.getGroundHight(endPos, out pos);
+
         }
         else
         {
-            if (curTime <= JumpTime)
-            {
-                return false;
-            }
-            Vector3 pos;
-            if (!information.getGroundHight(character.GetCurPosition(), out pos))
-            {
-                Debug.LogError("has error");
-                character.SetCurPosition(endPos);
-
-                information.getGroundHight(endPos, out pos);
- 
-            }
-            else
-            {
-                endPos = character.GetCurPosition();
-            }
-             
-            float d = character.GetCurPosition().y - pos.y;
-            onGround = d < 0.0000001f;
-            Debug.Log(" onGround " + onGround);
-            if (onGround)
-                curTime = 0f;
-            return false;
+            endPos = character.GetCurPosition();
         }
- 
+
+        float d = character.GetCurPosition().y - pos.y;
+        onGround = d < 0.0000001f;
+        if (onGround)
+            curTime = 0f;
+        return false;
     }
 
-    public override bool isQualified(LCharacterAction curAction, LChatacterInterface character, LChatacterInformationInterface information)
+    public override bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information)
     {
 
          
         return false;
     }
 
-    public override IEnumerator onInit(LChatacterRecourceInterface loader, LChatacterInterface character, AddCoroutineFun fun)
+    public override IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun)
     {
         yield return null;
     }
 
-    public override void endAction(LChatacterInterface character, LChatacterInformationInterface information)
+    public override void endAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         if(!beBreak)
             character.SetCurPosition(endPos);

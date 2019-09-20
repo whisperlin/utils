@@ -311,20 +311,20 @@ public class CharactorData : LChatacterInformationInterface
             return false;
         }
     }
-    List<LChatacterInterface> characters = new List<LChatacterInterface>();
-    Dictionary<int, LChatacterInterface> charactersMap = new Dictionary<int, LChatacterInterface>();
-    public LChatacterInterface GetCharacter(int targetId)
+    List<LCharacterInterface> characters = new List<LCharacterInterface>();
+    Dictionary<int, LCharacterInterface> charactersMap = new Dictionary<int, LCharacterInterface>();
+    public LCharacterInterface GetCharacter(int targetId)
     {
         return charactersMap[targetId];
     }
 
-    public void AddCharacter(LChatacterInterface character)
+    public void AddCharacter(LCharacterInterface character)
     {
         characters.Add(character);
         charactersMap[character.GetId()] = character;
     }
 
-    public void RemoveCharacter(LChatacterInterface character)
+    public void RemoveCharacter(LCharacterInterface character)
     {
         charactersMap.Remove(character.GetId());
         characters.Remove(character);

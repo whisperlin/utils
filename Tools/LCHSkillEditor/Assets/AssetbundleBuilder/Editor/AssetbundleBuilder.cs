@@ -152,18 +152,18 @@ public class AssetbundlePacker
         MarkAssetName();
         BuildBundle(target);
         MakeDependList(target);
-
-         
     }
 
-    [MenuItem("TA/Assets/生成assetbundle信息", false, 351)]
-    public static void PackInfor()
+    [MenuItem("TA/Assets/打包Android", false, 351)]
+    public static void PackAndroid()
     {
-        BuildTarget target = BuildTarget.StandaloneWindows;
+        BuildTarget target = BuildTarget.Android;
         MarkAssetName();
-
-
+        BuildBundle(target);
+        MakeDependList(target);
     }
+
+   
     class AssetBuildBundleInfo
     {
         public string fileName;
