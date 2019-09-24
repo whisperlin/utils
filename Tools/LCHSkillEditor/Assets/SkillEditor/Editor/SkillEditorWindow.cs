@@ -229,14 +229,26 @@ public class SkillEditorWindow : EditorWindow
                 SkillEditorData.Instance.skillsData.RemoveKeyFrame( skill.id, curSelectChannel, curSelectFrame);
             }
         }
+
+        if (GUILayout.Button("c", width30))
+        {
+            if (null != skill)
+            {
+                SkillEditorData.Instance.skillsData.CopyKeyFrame(skill.id, curSelectChannel, curSelectFrame);
+            }
+        }
         EditorGUI.EndDisabledGroup();
 
         GUILayout.Label("关键帧值:", width80);
+
+        if (selectNormalChannel != null && selNormalKeyFrameIndex >= selectNormalChannel.values.Count)
+        {
+            selNormalKeyFrameIndex = selectNormalChannel.values.Count - 1;
+        }
         if (selectNormalChannel == null || selNormalKeyFrameIndex == -1)
         {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.FloatField(0f, width80);
-            
             EditorGUI.EndDisabledGroup();
         }
         else

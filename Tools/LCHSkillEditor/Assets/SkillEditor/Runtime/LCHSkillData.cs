@@ -225,10 +225,18 @@ public class LCHEventChannelData
         values.Add(value);
         return true;
     }
-    public void AddKey(int index, int frame)
+    public void AddKey(int index, int frame, ObjDictionary defaultVal = null )
     {
         times.Insert(index, frame);
-        values.Insert(index, new ObjDictionary());
+        if (null == defaultVal)
+        {
+            values.Insert(index, new ObjDictionary());
+        }
+        else
+        {
+            values.Insert(index, defaultVal);
+        }
+        
     }
     public void DeleteFrameByIndex(int index)
     {

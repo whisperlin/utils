@@ -22,6 +22,8 @@ public class LCharacterFellowCamera : MonoBehaviour {
     float cur_xRot = 45f;
     float cur_yRot = 30f;
 
+    public bool slowly = true;
+
     //[Header("事件所在层")]
     //public int eventLayer = 31;
 
@@ -87,8 +89,17 @@ public class LCharacterFellowCamera : MonoBehaviour {
 
 
         cur_distance = MoveToLerp(distance, cur_distance, Time.deltaTime * distanceDelta);
-        cur_xRot = RotTo(xRot, cur_xRot,Time.deltaTime * RotDelta);
-        cur_yRot = RotTo(yRot, cur_yRot, Time.deltaTime * RotDelta);
+        if (slowly)
+        {
+            cur_xRot = RotTo(xRot, cur_xRot, Time.deltaTime * RotDelta);
+            cur_yRot = RotTo(yRot, cur_yRot, Time.deltaTime * RotDelta);
+        }
+        else
+        {
+            cur_xRot = xRot;
+            cur_yRot = yRot;
+        }
+       
  
     }
     public void SetToTarget()

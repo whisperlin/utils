@@ -276,11 +276,8 @@ public class SkillData {
         SaveSkill(skillId);
 
     }
-    public void RemoveKeyFrame(params object[] args)
+    public void RemoveKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
     {
-        string skillId = (string)args[0];
-        int curSelectChannel = (int)args[1];
-        int curSelectFrame = (int)args[2];
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0 )
             return;
@@ -303,6 +300,90 @@ public class SkillData {
         SaveSkill(skillId);
     }
 
+    public void CopyKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    {
+        
+        var skill = GetSkill(skillId);
+        if (curSelectChannel < 0)
+            return;
+        if (curSelectChannel >= skill.channels.Count)
+        {
+            
+            EventCopyKeyFrame(skillId, curSelectChannel - skill.channels.Count, curSelectFrame);
+            return;
+        }
+        var channel = skill.channels[curSelectChannel];
+        int count = channel.times.Count;
+        for (int i = 0; i < count; i++)
+        {
+            var f = channel.times[i];
+            if (f == curSelectFrame)
+            {
+                //找到一个可拷贝的位置
+                int time = f + 10;
+                int oi = i;
+                i++;
+                for (; i < count; i++)
+                {
+                     
+                    if (channel.times[i] == time)
+                    {
+                        time = channel.times[i] + 10;
+                    }
+                    else
+                    {
+                        AddKeyFrame(skillId, curSelectChannel, time, channel.values[oi]);
+                        return;
+                    }
+                }
+                AddKeyFrame(skillId, curSelectChannel, time, channel.values[oi]);
+                return;
+            }
+        }
+ 
+    }
+    
+
+    private void EventCopyKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    {
+
+        var skill = GetSkill(skillId);
+        if (curSelectChannel < 0 || curSelectChannel >= skill.events.Count)
+            return;
+        var events = skill.events[curSelectChannel];
+        int count = events.times.Count;
+        for (int i = 0; i < count; i++)
+        {
+            var f = events.times[i];
+            if (f == curSelectFrame)
+            {
+                //找到一个可拷贝的位置
+                int time = f + 10;
+                int oi = i;
+                i++;
+                for (; i < count; i++)
+                {
+
+                    if (events.times[i] == time)
+                    {
+                        time = events.times[i] + 10;
+                    }
+                    else
+                    {
+           
+                        AddEventKeyFrame(skillId, curSelectChannel, time, events.values[oi].Copy());
+                        
+                        return;
+                    }
+                }
+                AddEventKeyFrame(skillId, curSelectChannel  , time, events.values[oi].Copy());
+                //AddKeyFrame(skillId, curSelectChannel, time, channel.values[oi]);
+                return;
+         
+            }
+        }
+        SaveSkill(skillId);
+    }
     private void RemoveEventKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
     {
      
@@ -323,11 +404,9 @@ public class SkillData {
         SaveSkill(skillId);
     }
 
-    public void AddKeyFrame(params object[] args)
+    public void AddKeyFrame(string skillId, int curSelectChannel, int curSelectFrame ,float defaultVal = 0f)
     {
-        string skillId = (string)args[0];
-        int curSelectChannel = (int)args[1];
-        int curSelectFrame = (int)args[2];
+ 
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0 )
             return;
@@ -343,7 +422,7 @@ public class SkillData {
             var f = channel.times[i];
             if (f > curSelectFrame)
             {
-                channel.AddKey(i, curSelectFrame);
+                channel.AddKey(i, curSelectFrame, defaultVal);
                 SaveSkill(skillId);
                 return;
             }
@@ -357,7 +436,7 @@ public class SkillData {
        
     }
 
-    private void AddEventKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    private void AddEventKeyFrame(string skillId, int curSelectChannel, int curSelectFrame, ObjDictionary defaultVal = null)
     {
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0 || curSelectChannel >= skill.events.Count)
@@ -369,7 +448,7 @@ public class SkillData {
             var f = events.times[i];
             if (f > curSelectFrame)
             {
-                events.AddKey(i, curSelectFrame);
+                events.AddKey(i, curSelectFrame, defaultVal);
                 SaveSkill(skillId);
                 return;
             }
@@ -379,7 +458,7 @@ public class SkillData {
                 return;
             }
         }
-        events.AddKey(count, curSelectFrame);
+        events.AddKey(count, curSelectFrame, defaultVal);
         SaveSkill(skillId);
 
     }

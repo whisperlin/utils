@@ -5,6 +5,16 @@ using UnityEngine;
 public class ObjDictionary : Dictionary<string,object>
 {
 
+    public ObjDictionary Copy()
+    {
+        ObjDictionary d = new ObjDictionary();
+        foreach (var p in this)
+        {
+            d[p.Key] = p.Value;
+        }
+        return d;
+    }
+
     public T GetValue<T>(string key,T defaultValue) {
         try
         {

@@ -126,9 +126,36 @@ public class LCHJoystickButtons : MonoBehaviour {
         init();
         
     }
-	
-	// Update is called once per frame
-	void Update () {
+	Dictionary<int,string> intString = new Dictionary<int, string>();
+    Dictionary<int, string> ZOString = new Dictionary<int, string>();
+    public string getIntString(int i )
+    {
+        if (intString.ContainsKey(i))
+            return intString[i];
+        string s = i.ToString() ;
+        intString[ i] = s;
+        return s;
+    }
+    public string getZOString(int i)
+    {
+        if (ZOString.ContainsKey(i))
+            return ZOString[i];
+        string s;
+        if (i < 10)
+        {
+            s = "0." + i.ToString() + "0";
+        }
+        else
+        {
+            s = "0." + i.ToString() ;
+        }
+
+        ZOString[i] = s;
+        return s;
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (null == character)
             return;
         var chr = character.character;
@@ -152,11 +179,27 @@ public class LCHJoystickButtons : MonoBehaviour {
                 //cdSecondColor
                 if (_param.cd > 1f)
                 {
-                    obj.txt.text = _param.cd.ToString("F0");
+
+
+                    /*using (GameFramework.zstring.Block())
+                    {
+                        int c = (int)_param.cd;
+
+                        obj.txt.text = GameFramework.zstring.Format("{0}", c);   
+                        
+                    }*/
+
+                    int c = (int)(_param.cd );
+                    obj.txt.text = getIntString(c);
+
                 }
                 else
                 {
-                    obj.txt.text = _param.cd.ToString("F2");
+
+                    int c = (int)(_param.cd * 100);
+                    obj.txt.text = getZOString(c);
+                    
+                   // obj.txt.text = _param.cd.ToString("2" );
                 }
             }
             else
