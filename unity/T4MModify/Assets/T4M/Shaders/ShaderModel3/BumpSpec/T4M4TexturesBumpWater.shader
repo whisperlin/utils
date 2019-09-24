@@ -1,4 +1,6 @@
-﻿Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec Water" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec Water" {
 Properties {
 	_SpecColor ("Specular Color", Color) = (1, 1, 1, 1)
 	_SpecColor0("第一层高光色", Color) = (1, 1, 1, 1)
@@ -28,6 +30,10 @@ Properties {
 	[KeywordEnum(Off, On)] _IsMetallic("是否开启金属度", Float) = 0
 	metallic_power("天空强度", Range(0,1)) = 1
 	metallic_color("天空颜色", Color) = (1, 1, 1, 0)
+
+	[HideInInspector]cubemapCenter("cubemapCenter",Vector) = (1, 1, 1, 1)
+	[HideInInspector]boxMin("boxMin",Vector) = (1, 1, 1, 1)
+	[HideInInspector]boxMax("boxMax",Vector) = (1, 1, 1, 1)
 } 
 
 SubShader {
@@ -40,8 +46,21 @@ CGPROGRAM
 #pragma surface surf BlinnPhong vertex:vert
 #pragma target 3.0
 #pragma exclude_renderers gles xbox360 ps3
+
+#pragma multi_compile __  BOX_PROJECT_SKY_BOX
+#include "boxproject.cginc" 
 #include "UnityCG.cginc"
 
+		#ifdef UNITY_PASS_SHADOWCASTER
+			#undef INTERNAL_DATA
+			#undef WorldReflectionVector
+			#undef WorldNormalVector
+			#define INTERNAL_DATA half3 internalSurfaceTtoW0; half3 internalSurfaceTtoW1; half3 internalSurfaceTtoW2;
+			#define WorldReflectionVector(data,normal) reflect (data.worldRefl, half3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal)))
+			#define WorldNormalVector(data,normal) fixed3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal))
+			
+		#endif
+		#define WorldNormalVectorFun(data,normal) fixed3(dot(data.internalSurfaceTtoW0,normal), dot(data.internalSurfaceTtoW1,normal), dot(data.internalSurfaceTtoW2,normal))
 struct Input {
 	float3 worldPos;
 	float2 uv_Control : TEXCOORD0;
@@ -49,6 +68,8 @@ struct Input {
 	float2 uv_Splat1 : TEXCOORD2;
 	float2 uv_Splat2 : TEXCOORD3;
 	float2 uv_Splat3 : TEXCOORD4;
+	float3 worldRefl;
+	half3 internalSurfaceTtoW0; half3 internalSurfaceTtoW1; half3 internalSurfaceTtoW2;
 };
 
 void vert (inout appdata_full v) {
@@ -132,13 +153,27 @@ void surf (Input IN, inout SurfaceOutput o) {
 
 	half3 waterNormal =   lerp(baseNormal,bump ,  _WaveNormalPower)  ;
 
+	//waterNormal = baseNormal;
+ 
+
 
 	metallic_power = metallic_power*splat_control.a;
-	fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(IN.worldPos));
-	half3 viewReflectDirection = reflect(-worldViewDir, waterNormal);
-	half2 skyUV = half2(ToRadialCoords(viewReflectDirection) );
+ 
+	float3 viewReflectDirection = reflect(IN.worldRefl, half3(dot(IN.internalSurfaceTtoW0, waterNormal), dot(IN.internalSurfaceTtoW1, waterNormal), dot(IN.internalSurfaceTtoW2, waterNormal)));
+ 
+ 
+#if BOX_PROJECT_SKY_BOX
+	viewReflectDirection = BoxProjectedCubemapDirectionT4M(viewReflectDirection, IN.worldPos, cubemapCenter, boxMin, boxMax);
+#endif
+	half2 skyUV = half2(ToRadialCoords(viewReflectDirection));
+	//half2 skyUV = half2(ToRadialCoords(viewReflectDirection) );
 	fixed4 localskyColor = tex2D(_Splat3, skyUV);
 
+	/*o.Normal = float3(0, 0, 1);
+	o.Gloss = 0;
+	o.Specular = 0;
+	o.Emission = localskyColor;
+	return;*/
 	float3 waterColor = lerp(_TopColor,_ButtonColor, splat_control.a);
  
     col += splat_control.a * (1-metallic_power)*waterColor;

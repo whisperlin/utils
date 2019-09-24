@@ -1,4 +1,4 @@
-﻿Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec water" {
+﻿Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec water old" {
 Properties {
 	//_SpecColor ("Specular Color", Color) = (1, 1, 1, 1)
 	_SpecColor0("第一层高光色", Color) = (1, 1, 1, 1)
