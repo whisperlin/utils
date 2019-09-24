@@ -42,7 +42,7 @@ namespace AmplifyShaderEditor
 
 		public static void DrawCurve( Vector3[] allPoints, Vector2[] allNormals, Color[] allColors, int pointCount )
 		{
-			if ( Event.current.type != EventType.repaint )
+			if ( Event.current.type != EventType.Repaint )
 				return;
 
 			CreateMaterial();

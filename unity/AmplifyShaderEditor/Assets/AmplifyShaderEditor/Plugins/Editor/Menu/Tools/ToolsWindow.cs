@@ -203,7 +203,7 @@ namespace AmplifyShaderEditor
 				m_searchBarSize.x = m_transformedArea.x + m_transformedArea.width - 235 - TabX;
 				string currentFocus = GUI.GetNameOfFocusedControl();
 
-				if ( Event.current.type == EventType.keyDown )
+				if ( Event.current.type == EventType.KeyDown )
 				{
 					KeyCode keyCode = Event.current.keyCode;
 					if ( Event.current.shift )

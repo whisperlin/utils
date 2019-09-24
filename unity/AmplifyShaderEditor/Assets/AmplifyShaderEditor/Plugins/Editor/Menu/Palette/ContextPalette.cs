@@ -44,7 +44,7 @@ namespace AmplifyShaderEditor
 			//if ( !_isActive )
 			//	return;
 
-			if ( Event.current.type == EventType.mouseDown && !IsInside( Event.current.mousePosition ) )
+			if ( Event.current.type == EventType.MouseDown && !IsInside( Event.current.mousePosition ) )
 			{
 				Disable();
 				return;

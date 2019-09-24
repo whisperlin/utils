@@ -451,13 +451,13 @@ namespace AmplifyShaderEditor
 				}
 			}
 
-			if ( drawInfo.CurrentEventType == EventType.Repaint || drawInfo.CurrentEventType == EventType.mouseUp )
+			if ( drawInfo.CurrentEventType == EventType.Repaint || drawInfo.CurrentEventType == EventType.MouseUp )
 			{
 				// Left Button
 				EditorGUIUtility.AddCursorRect( m_resizeLeftIconCoords, MouseCursor.ResizeUpRight );
 				if ( m_isResizingLeft )
 				{
-					if ( drawInfo.CurrentEventType == EventType.mouseUp )
+					if ( drawInfo.CurrentEventType == EventType.MouseUp )
 					{
 						m_isResizingLeft = false;
 						ContainerGraph.ParentWindow.ForceAutoPanDir = false;
@@ -494,7 +494,7 @@ namespace AmplifyShaderEditor
 				EditorGUIUtility.AddCursorRect( m_resizeRightIconCoords, MouseCursor.ResizeUpLeft );
 				if ( m_isResizingRight )
 				{
-					if ( drawInfo.CurrentEventType == EventType.mouseUp )
+					if ( drawInfo.CurrentEventType == EventType.MouseUp )
 					{
 						m_isResizingRight = false;
 						ContainerGraph.ParentWindow.ForceAutoPanDir = false;
@@ -538,7 +538,7 @@ namespace AmplifyShaderEditor
 				m_titleText = m_titleText.Replace( IOUtils.FIELD_SEPARATOR, ' ' );
 			}
 
-			if ( m_focusOnTitle && drawInfo.CurrentEventType == EventType.keyUp )
+			if ( m_focusOnTitle && drawInfo.CurrentEventType == EventType.KeyUp )
 			{
 				m_focusOnTitle = false;
 				m_startEditing = true;

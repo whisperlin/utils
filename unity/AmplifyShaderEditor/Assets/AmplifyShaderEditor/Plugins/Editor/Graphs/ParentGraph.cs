@@ -899,17 +899,17 @@ namespace AmplifyShaderEditor
 			{
 				node = m_nodes[ i ];
 				bool restoreMouse = false;
-				if( drawInfo.CurrentEventType == EventType.mouseDown && m_nodeClicked > -1 && node.UniqueId != m_nodeClicked )
+				if( drawInfo.CurrentEventType == EventType.MouseDown && m_nodeClicked > -1 && node.UniqueId != m_nodeClicked )
 				{
 					restoreMouse = true;
-					drawInfo.CurrentEventType = EventType.ignore;
+					drawInfo.CurrentEventType = EventType.Ignore;
 				}
 
 				node.DrawGUIControls( drawInfo );
 
 				if( restoreMouse )
 				{
-					drawInfo.CurrentEventType = EventType.mouseDown;
+					drawInfo.CurrentEventType = EventType.MouseDown;
 				}
 			}
 
@@ -923,22 +923,22 @@ namespace AmplifyShaderEditor
 			{
 				node = m_nodes[ i ];
 				bool restoreMouse = false;
-				if( drawInfo.CurrentEventType == EventType.mouseDown && m_nodeClicked > -1 && node.UniqueId != m_nodeClicked )
+				if( drawInfo.CurrentEventType == EventType.MouseDown && m_nodeClicked > -1 && node.UniqueId != m_nodeClicked )
 				{
 					restoreMouse = true;
-					drawInfo.CurrentEventType = EventType.ignore;
+					drawInfo.CurrentEventType = EventType.Ignore;
 				}
 
 				node.Draw( drawInfo );
 
 				if( restoreMouse )
 				{
-					drawInfo.CurrentEventType = EventType.mouseDown;
+					drawInfo.CurrentEventType = EventType.MouseDown;
 				}
 			}
 
 			// Draw Tooltip
-			if( drawInfo.CurrentEventType == EventType.Repaint || drawInfo.CurrentEventType == EventType.mouseDown )
+			if( drawInfo.CurrentEventType == EventType.Repaint || drawInfo.CurrentEventType == EventType.MouseDown )
 			{
 				int visibleCount = m_visibleNodes.Count;
 				for( int i = visibleCount - 1; i >= 0; i-- )

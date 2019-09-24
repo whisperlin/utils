@@ -79,7 +79,7 @@ namespace AmplifyShaderEditor
 					break;
 					case DebugNodeState.TakeScreenshot:
 					{
-						if ( m_screenshotRT != null && Event.current.type == EventType.repaint )
+						if ( m_screenshotRT != null && Event.current.type == EventType.Repaint )
 						{
 							m_screenshotTex2D.ReadPixels( new Rect( 0, 0, m_screenshotRT.width, m_screenshotRT.height ), 0, 0 );
 							m_screenshotTex2D.Apply();

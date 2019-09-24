@@ -402,7 +402,7 @@ namespace AmplifyShaderEditor
 				m_isEditingPicker = false;
 			}
 
-			if( m_state != ReferenceState.Self && drawInfo.CurrentEventType == EventType.mouseDown && m_previewRect.Contains( drawInfo.MousePosition ) )
+			if( m_state != ReferenceState.Self && drawInfo.CurrentEventType == EventType.MouseDown && m_previewRect.Contains( drawInfo.MousePosition ) )
 			{
 				UIUtils.FocusOnNode( m_previewTextProp, 1, true );
 				Event.current.Use();
@@ -457,10 +457,10 @@ namespace AmplifyShaderEditor
 				hitRect.width = 4 * 14 * drawInfo.InvertedZoom;
 
 				bool restoreMouse = false;
-				if( Event.current.type == EventType.mouseDown && hitRect.Contains( drawInfo.MousePosition ) )
+				if( Event.current.type == EventType.MouseDown && hitRect.Contains( drawInfo.MousePosition ) )
 				{
 					restoreMouse = true;
-					Event.current.type = EventType.ignore;
+					Event.current.type = EventType.Ignore;
 				}
 
 				EditorGUI.BeginChangeCheck();
@@ -485,7 +485,7 @@ namespace AmplifyShaderEditor
 
 				if( restoreMouse )
 				{
-					Event.current.type = EventType.mouseDown;
+					Event.current.type = EventType.MouseDown;
 				}
 
 				if( ( drawInfo.CurrentEventType == EventType.MouseDown || drawInfo.CurrentEventType == EventType.MouseUp ) )

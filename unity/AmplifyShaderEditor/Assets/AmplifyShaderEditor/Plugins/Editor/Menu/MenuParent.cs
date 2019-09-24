@@ -300,7 +300,7 @@ namespace AmplifyShaderEditor
 			if ( m_parentWindow.CameraDrawInfo.CurrentEventType == EventType.Repaint )
 				GUI.Label( m_minimizeButtonPos, string.Empty, UIUtils.GetCustomStyle( m_isMaximized ? CustomStyle.MinimizeButton : CustomStyle.MaximizeButton ) );
 
-			if( m_parentWindow.CameraDrawInfo.CurrentEventType == EventType.mouseDown && buttonArea.Contains( m_parentWindow.CameraDrawInfo.MousePosition ) )
+			if( m_parentWindow.CameraDrawInfo.CurrentEventType == EventType.MouseDown && buttonArea.Contains( m_parentWindow.CameraDrawInfo.MousePosition ) )
 			//if ( GUI.Button( buttonArea, string.Empty, m_empty ) )
 			{
 				m_isMaximized = !m_isMaximized;

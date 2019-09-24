@@ -953,7 +953,7 @@ namespace AmplifyShaderEditor
 							( m_globalPosition.y + m_globalPosition.height > 0 ) &&
 							( m_globalPosition.y < drawInfo.CameraArea.height );
 
-			if( m_isMoving > 0 && drawInfo.CurrentEventType != EventType.mouseDrag )
+			if( m_isMoving > 0 && drawInfo.CurrentEventType != EventType.MouseDrag )
 			{
 				float deltaX = Mathf.Abs( m_lastPosition.x - m_position.x );
 				float deltaY = Mathf.Abs( m_lastPosition.y - m_position.y );

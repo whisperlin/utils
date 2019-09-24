@@ -250,7 +250,7 @@ namespace AmplifyShaderEditor
 			if ( m_debugGrid )
 			{
 #if UNITY_5_5_OR_NEWER
-				Handles.CircleHandleCap( 0, drawInfo.InvertedZoom * ( new Vector3( drawInfo.CameraOffset.x, drawInfo.CameraOffset.y, 0f ) ), Quaternion.identity, 5,EventType.layout );
+				Handles.CircleHandleCap( 0, drawInfo.InvertedZoom * ( new Vector3( drawInfo.CameraOffset.x, drawInfo.CameraOffset.y, 0f ) ), Quaternion.identity, 5,EventType.Layout );
 #else
 				Handles.CircleCap( 0, drawInfo.InvertedZoom * ( new Vector3( drawInfo.CameraOffset.x, drawInfo.CameraOffset.y, 0f ) ), Quaternion.identity, 5 );
 #endif

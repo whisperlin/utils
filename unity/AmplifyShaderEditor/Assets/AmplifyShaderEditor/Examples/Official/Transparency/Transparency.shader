@@ -38,7 +38,7 @@ Shader "ASESampleShaders/Transparency"
 		{
 			float2 uv_texcoord;
 			float3 worldRefl;
-			INTERNAL_DATA
+			half3 internalSurfaceTtoW0; half3 internalSurfaceTtoW1; half3 internalSurfaceTtoW2;
 		};
 
 		uniform sampler2D _char_woodman_normals;
