@@ -23,7 +23,7 @@ public class SimpleVirtualInput : MonoBehaviour {
     public KeyCode button9 = KeyCode.T;
 
 
-    public KeyCode jump = KeyCode.Space;
+    public KeyCode button19 = KeyCode.Space;
     // Use this for initialization
     void Start () {
 		
@@ -76,7 +76,7 @@ public class SimpleVirtualInput : MonoBehaviour {
         VirtualInput.buttons[7] = Input.GetKey(button7) || VirtualInput.js_buttons[7];
         VirtualInput.buttons[8] = Input.GetKey(button8) || VirtualInput.js_buttons[8];
         VirtualInput.buttons[9] = Input.GetKey(button9) || VirtualInput.js_buttons[9];
-        VirtualInput.buttons[19] = Input.GetKey(jump) || VirtualInput.js_buttons[19];
+        VirtualInput.buttons[19] = Input.GetKey(button19) || VirtualInput.js_buttons[19];
 
 
 

@@ -247,6 +247,7 @@ public class SkillData {
 
     }
 
+   
     private void RemoveEventChannel(string skillId, int curSelectChannel)
     {
      
@@ -431,7 +432,7 @@ public class SkillData {
                 return;
             }
         }
-        channel.AddKey(count, curSelectFrame);
+        channel.AddKey(count, curSelectFrame, defaultVal);
         SaveSkill(skillId);
        
     }
@@ -759,7 +760,16 @@ public class SkillData {
     }
 
     Dictionary<string, LCHRoleData> roles = new Dictionary<string, LCHRoleData>();
- 
+    public bool HasRole(string curRoleId)
+    {
+        if (!loader.Exists(curRoleId, SkillDataType.ROLE))
+        {
+            roles.Remove(curRoleId);
+            return false;
+        }
+        return true;
+    }
+
     public LCHRoleData GetRole(string id)
     {
         if (roles.ContainsKey(id))

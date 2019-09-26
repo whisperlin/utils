@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionTransfer : MonoBehaviour {
 
     //行为的优先级
@@ -11,13 +11,13 @@ public class ActionTransfer : MonoBehaviour {
     public float speed = 10f;
     public float height = 5f;
 
-    LChatacter chatacter;
+    LCharacter chatacter;
     LCharacterTransfer a;
 
 
     private void OnEnable()
     {
-        chatacter = GetComponent<LChatacter>();
+        chatacter = GetComponent<LCharacter>();
         a = new LCharacterTransfer();
         a.priority = priority;
         a.jumpSpeed = speed;

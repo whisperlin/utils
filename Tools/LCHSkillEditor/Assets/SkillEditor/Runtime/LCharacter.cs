@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class LChatacter : CharacterBase, LCharacterInterface
+public partial class LCharacter : CharacterBase, LCharacterInterface
 {
 
 

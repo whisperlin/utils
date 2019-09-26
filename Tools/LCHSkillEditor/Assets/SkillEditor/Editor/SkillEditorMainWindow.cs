@@ -24,7 +24,21 @@ public partial class SkillEditorMainWindow : EditorWindow
         SkillEditorWindow.Init();
 
     }
- 
+    
+
+    [MenuItem("TA/技能编辑器/快捷/添加常用行为")]
+    static void AddActionInit2()
+    {
+        for (int i = 0; i < Selection.gameObjects.Length; i++)
+        {
+            GameObject g =  Selection.gameObjects[i];
+            g.AddComponent<LCharacter>();
+            g.AddComponent<ActionIdle>();
+            g.AddComponent<ActionFall>();
+        }
+       
+    }
+
     public void OnEnable()
     {
         SkillEditorData.Instance.Reset(); 
@@ -56,11 +70,13 @@ public partial class SkillEditorMainWindow : EditorWindow
         if (null != SkillEditorWindow.CurActive && !SkillEditorWindow.CurActive.hasFocus)
         {
             if (Selection.activeTransform != null
-            && SkillEditorWindow.autoApdateKeyFrame
+            && SkillEditorWindow.autoUpdateKeyFrame
             && null != SkillEditorData.Instance.skill
             )
             {
                 var skillData = SkillEditorData.Instance.skillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
+                if (null == skillData)
+                    return;
                 object[] editorState = new object[skillData.channels.Count];
                 for (int i = 0, l = skillData.channels.Count; i < l; i++)
                 {
@@ -157,6 +173,11 @@ public partial class SkillEditorMainWindow : EditorWindow
         }
         if ( SkillEditorData.Instance.CurRoleId.Length > 0)
         {
+            if (!SkillEditorData.Instance.skillsData.HasRole(SkillEditorData.Instance.CurRoleId)  )
+            {
+                SkillEditorData.Instance.CurRoleId = "";
+                return;
+            }
              SkillEditorData.Instance.skillsData.GetRole( SkillEditorData.Instance.CurRoleId);
              SkillEditorData.Instance.skillsData.SaveRole( SkillEditorData.Instance.CurRoleId);
         }

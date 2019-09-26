@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionSkillSimple : MonoBehaviour {
 
     //行为的优先级
@@ -16,7 +16,7 @@ public class ActionSkillSimple : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        LChatacter chatacter = GetComponent<LChatacter>();
+        LCharacter chatacter = GetComponent<LCharacter>();
         LCharacterSkillAction a = new LCharacterSkillAction();
 
         SkillParams _params = new SkillParams();

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionSkill : MonoBehaviour {
     public int priority = 100;
     public VirtualInput.KeyCode button = VirtualInput.KeyCode.Button0;
@@ -15,7 +15,7 @@ public class ActionSkill : MonoBehaviour {
 
         if (skills.Length == 0)
             return;
-        LChatacter chatacter = GetComponent<LChatacter>();
+        LCharacter chatacter = GetComponent<LCharacter>();
         SkillParams _params =new SkillParams();
         _params.cds = skills;
         _params.type = type;

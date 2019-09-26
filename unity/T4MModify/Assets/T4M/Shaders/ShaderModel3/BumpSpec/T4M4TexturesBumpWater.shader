@@ -2,7 +2,7 @@
 
 Shader "T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec Water" {
 Properties {
-	_SpecColor ("Specular Color", Color) = (1, 1, 1, 1)
+	//_SpecColor ("Specular Color", Color) = (1, 1, 1, 1)
 	_SpecColor0("第一层高光色", Color) = (1, 1, 1, 1)
 	_ShininessL0 ("Layer1Shininess", Range (0.03, 1)) = 0.078125
 	_Splat0 ("Layer 1 (R)", 2D) = "white" {}
@@ -181,12 +181,13 @@ void surf (Input IN, inout SurfaceOutput o) {
  	o.Normal += splat_control.a * waterNormal;
 	
 	o.Normal = normalize(o.Normal);
-	//SpecColor =  _SpecColor0*splat_control.r + _SpecColor1*splat_control.g + _SpecColor2*splat_control.b + _SpecColor3*splat_control.a;
-
+	_SpecColor =  _SpecColor0*splat_control.r + _SpecColor1*splat_control.g + _SpecColor2*splat_control.b + _SpecColor3*splat_control.a;
+	_SpecColor = 0;
 	o.Gloss +=   splat_control.a;
 	o.Specular += _Gloss * splat_control.a;
 	o.Emission =  localskyColor.rgb * metallic_power  * splat_control.a;
 	o.Albedo = col;
+ 
 	o.Alpha = 0.0;
 }
 ENDCG  

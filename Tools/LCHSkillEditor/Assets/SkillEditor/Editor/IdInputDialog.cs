@@ -34,6 +34,8 @@ public class IdInputDialog : EditorWindow
                 return;
             }
             SkillEditorData.Instance.skillsData.CreateRole( id, type);
+
+            SkillEditorMainWindow .golbalWindow.OnRoleListModify();
             Close();
 
         }

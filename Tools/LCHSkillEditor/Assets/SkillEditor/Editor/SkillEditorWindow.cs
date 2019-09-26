@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class SkillEditorWindow : EditorWindow
 {
-    [MenuItem("TA/技能编辑器/关键帧")]
+   
     public static void Init()
     {
         SkillEditorWindow window = (SkillEditorWindow)EditorWindow.GetWindow(typeof(SkillEditorWindow));
@@ -18,12 +18,15 @@ public class SkillEditorWindow : EditorWindow
     {
         CurActive = this;
     }
+    
     void OnFocus()
     {
+        CurActive = this;
         hasFocus = true;
     }
     void OnLostFocus()
     {
+        CurActive = this;
         hasFocus = false;
     }
 
@@ -79,12 +82,11 @@ public class SkillEditorWindow : EditorWindow
     {
         
     }
-
-    
-
+ 
     private void OnDestroy()
     {
-        
+        if (null != SkillEditorMainWindow.golbalWindow)
+            SkillEditorMainWindow.golbalWindow.Close();
     }
     string[] channelNames;
 
@@ -92,7 +94,7 @@ public class SkillEditorWindow : EditorWindow
     public static LCHChannelData selectNormalChannel = null;
     public static LCHEventChannelData selectEventChannel = null;
     public static int selNormalKeyFrameIndex = -1;
-    public static bool autoApdateKeyFrame = true;
+    public static bool autoUpdateKeyFrame = true;
     void OnGUI()
     {
         var width100 = GUILayout.Width(100f);
@@ -256,7 +258,7 @@ public class SkillEditorWindow : EditorWindow
             selectNormalChannel.values[selNormalKeyFrameIndex] = EditorGUILayout.FloatField(selectNormalChannel.values[selNormalKeyFrameIndex], width80);
         }
         GUILayout.Label("自动更新:", width80);
-        autoApdateKeyFrame = EditorGUILayout.Toggle(autoApdateKeyFrame);
+        autoUpdateKeyFrame = EditorGUILayout.Toggle(autoUpdateKeyFrame);
 
         
         GUILayout.Label("");
@@ -347,7 +349,7 @@ public class SkillEditorWindow : EditorWindow
         SkillEditorData.Instance.curTime = maxLength * mousePos / width;
         if (forKeyFrame)
         {
-            SkillEditorData.Instance.curTime =    0.1f*((int)(SkillEditorData.Instance.curTime * 100f))  ;
+            SkillEditorData.Instance.curTime =    0.1f*((int)(SkillEditorData.Instance.curTime * 10f))  ;
         }
     }
     bool dragging = false;
@@ -486,7 +488,7 @@ public class SkillEditorWindow : EditorWindow
                 for (int i = 0, c = skill.objs.Count; i < c; i++)
                 {
                     var o = skill.objs[i];
-                    if ((o.type == 2 || o.type == 3) && o.gameobject != null && o.gameobject.activeInHierarchy)
+                    if ((o.type == 2 || o.type == 3) && o.gameobject != null /*&& o.gameobject.activeInHierarchy*/)
                     {
                         count++;
                     }
@@ -496,7 +498,7 @@ public class SkillEditorWindow : EditorWindow
                 for (int i = 0, c = skill.objs.Count; i < c; i++)
                 {
                     var o = skill.objs[i];
-                    if ((o.type == 2 || o.type == 3) && o.gameobject != null && o.gameobject.activeInHierarchy)
+                    if ((o.type == 2 || o.type == 3) && o.gameobject != null  /*&&o.gameobject.activeInHierarchy*/)
                     {
                         ColliderRender.colliderRender.colliders[count] = o.gameobject.GetComponent<Collider>();
                         count++;

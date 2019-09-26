@@ -37,7 +37,7 @@ public partial class CharacterBase : MonoBehaviour
     }
     public void AddAction(LCharacterAction action)
     {
- 
+        CheckInterface();
         StartCoroutine(action.onInit(loader, character, AddCoroutine));
         actionList.Add(action);
     }

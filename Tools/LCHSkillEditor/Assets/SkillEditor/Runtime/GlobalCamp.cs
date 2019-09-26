@@ -11,6 +11,10 @@ public struct CampInformation
     [Header("攻击物理碰撞层")]
     [Range(0, 31)]
     public int attack;
+
+    [Header("治疗&交互层")]
+    [Range(0, 31)]
+    public int other;
 }
 public class GlobalCamp : MonoBehaviour {
 
@@ -18,7 +22,7 @@ public class GlobalCamp : MonoBehaviour {
     public CampInformation[] campInformations = new CampInformation[0];
     public static CampInformation[]  globalCampInformations;
 
-    public int jumpLayer = 20;
+    //public int jumpLayer = 20;
     void Awake() {
         PhysicesData.ground = ground;
         globalCampInformations = campInformations;
@@ -48,32 +52,37 @@ public class GlobalCamp : MonoBehaviour {
                 var c1 = campInformations[j];
                 if (i == j)
                 {
-                   
 
+                    Physics.IgnoreLayerCollision(c.self, c.other, false);
                     //Physics.IgnoreLayerCollision(c.attack,c.self , true);
                     Physics.IgnoreLayerCollision(c.self, c.attack, true);
                     Physics.IgnoreLayerCollision(c.self, c.self, true);
                     Physics.IgnoreLayerCollision(c.attack, c.attack, true);
+             
+
+                    Physics.IgnoreLayerCollision(c.attack, c.other, true);
+                    Physics.IgnoreLayerCollision(c.other, c.other, true);
                 }
                 else
                 {
-
                     Physics.IgnoreLayerCollision(c.self, c1.attack, false);//自身与攻击层碰撞
                     //Physics.IgnoreLayerCollision(c1.attack,c.self, false);//自身与攻击层碰撞
                     Physics.IgnoreLayerCollision(c.self, c1.self, true);//自身对方身体碰撞
                     //Physics.IgnoreLayerCollision( c1.self, c.self,true);
                     Physics.IgnoreLayerCollision(c.attack, c1.attack, true);//双方攻击层不碰撞。
-                    //Physics.IgnoreLayerCollision(c1.attack, c.attack, true);//双方攻击层不碰撞。
-                   
+
+                    Physics.IgnoreLayerCollision(c.self, c1.other, true);
+                    Physics.IgnoreLayerCollision(c.attack, c1.other, true);
+                    Physics.IgnoreLayerCollision(c.other, c1.other, true);
                 }
             }
              
         }
-        if (campInformations.Length > 0)
+        /*if (campInformations.Length > 0)
         {
             var c = campInformations[0];
             Physics.IgnoreLayerCollision(c.self, jumpLayer, false);
-        }
+        }*/
         //jumpLayer
     }
 

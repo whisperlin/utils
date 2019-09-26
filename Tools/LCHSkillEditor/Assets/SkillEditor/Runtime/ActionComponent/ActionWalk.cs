@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionWalk : MonoBehaviour
 {
     public string animName = "Run";
@@ -13,7 +13,7 @@ public class ActionWalk : MonoBehaviour
     void Start()
     {
 
-        LChatacter chatacter = GetComponent<LChatacter>();
+        LCharacter chatacter = GetComponent<LCharacter>();
         var a = new LCharacterWalkAction();
         a.priority = priority;
         a.speed = speed;

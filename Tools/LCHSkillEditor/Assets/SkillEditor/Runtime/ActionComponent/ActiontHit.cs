@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActiontHit : MonoBehaviour
 {
 
@@ -23,7 +23,7 @@ public class ActiontHit : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        LChatacter chatacter = GetComponent<LChatacter>();
+        LCharacter chatacter = GetComponent<LCharacter>();
         {
            
             LCharacterHit a = new LCharacterHit();

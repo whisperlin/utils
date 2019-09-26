@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionIdle : MonoBehaviour {
 
     public string animName = "Idle";
@@ -10,7 +10,7 @@ public class ActionIdle : MonoBehaviour {
     void Start()
     {
 
-        LChatacter chatacter = GetComponent<LChatacter>();
+        LCharacter chatacter = GetComponent<LCharacter>();
         var a = new LCharactorIdleAction();
         a.animName = animName;
         a.priority = priority;

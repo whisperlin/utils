@@ -47,9 +47,9 @@ public class LCHJoystickButtons : MonoBehaviour {
 
     [Header("cd 字体阴影颜色")]
     public Color cdFontShadowColor = new Color(0.2f, 0.2f, 0.2f);
-    [Header("字体占按钮大小比例")]
+    [Header("字号")]
     
-    public float fontSize = 0.6f;
+    public float fontSize = 30f;
     public Font font;
 
     public Material dirMat;
@@ -104,7 +104,8 @@ public class LCHJoystickButtons : MonoBehaviour {
             button.txt.text = "10";
             button.txt.fontStyle = FontStyle.Bold;
             button.txt.color = cdFontColor;
-            button.txt.fontSize = (int)(fontSize* Mathf.Abs( button.cdImage.flexibleWidth));
+       ;
+            button.txt.fontSize = (int)fontSize;
            
             ol.effectColor = cdFontShadowColor;
 

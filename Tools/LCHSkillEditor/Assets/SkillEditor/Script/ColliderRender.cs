@@ -88,16 +88,23 @@ public class ColliderRender : MonoBehaviour {
 
     public Collider [] colliders = new Collider[0];
     static Color gizmosColor = new Color(0.5f, 0.5f, 1.0f);
+    static Color gizmosColor2 = new Color(0.3f, 0.3f, 0.3f);
     public float skillWidth;
 
     void OnDrawGizmos()
     {
-        Gizmos.color = gizmosColor;
+       
         for (int i = 0; i < colliders.Length; i++)
         {
             var c = colliders[i];
             if (null == c)
                 continue;
+
+            
+            if(c.gameObject.activeInHierarchy)
+                Gizmos.color = gizmosColor;
+            else
+                Gizmos.color = gizmosColor2;
             if (c is MeshCollider)
             {
                 MeshCollider c0 = (MeshCollider)c;

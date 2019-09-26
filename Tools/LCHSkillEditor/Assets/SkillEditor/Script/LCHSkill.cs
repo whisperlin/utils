@@ -90,7 +90,22 @@ public class LCHSkill  {
         if(null !=role)
             GameObject.DestroyImmediate(role.gameobject);
     }
+    public static Transform FindInChildrenIncludingInactive(Transform t, string name)
+    {
 
+        for (int i = 0; i < t.childCount; i++)
+        {
+            Transform t2 = t.GetChild(i);
+            //Debug.Log(t2.gameObject.name + "= " + name + " " + (name == t2.gameObject.name));
+            if (t2.gameObject.name == name)
+                return t2;
+            Transform found = FindInChildrenIncludingInactive(t.GetChild(i), name);
+            if (found != null)
+                return found;
+        }
+
+        return null;  //couldn't find crap
+    }
     public void SetObjectParent()
     {
         int c0 = skillData.objs.Length;
@@ -108,7 +123,13 @@ public class LCHSkill  {
                     {
                         if (role.gameobject && ct.gameobject)
                         {
-                            ct.gameobject.transform.parent = role.gameobject.transform.FindChild(bind_name);
+                            var t = FindInChildrenIncludingInactive(role.gameobject.transform, bind_name);
+                            if(ct.gameobject.transform.parent != t )
+                            {
+                                ct.gameobject.transform.parent = t;
+                                t.transform.localPosition = Vector3.zero;
+                            }
+                           
                         }
                     }
                 }

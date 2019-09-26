@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionFall : MonoBehaviour
 {
     public string animName = "Jump2";
@@ -10,7 +10,7 @@ public class ActionFall : MonoBehaviour
     void Start()
     {
 
-        LChatacter chatacter = GetComponent<LChatacter>();
+        LCharacter chatacter = GetComponent<LCharacter>();
         var a = new LCharactorFallAction();
         a.priority = priority;
         a.animName = animName;

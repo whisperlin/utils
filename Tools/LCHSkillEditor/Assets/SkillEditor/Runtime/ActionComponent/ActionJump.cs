@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class ActionJump : MonoBehaviour
 {
 
@@ -25,13 +25,13 @@ public class ActionJump : MonoBehaviour
 
     public VirtualInput.KeyCode button = VirtualInput.KeyCode.Button9;
     // Use this for initialization
-    LChatacter chatacter;
+    LCharacter chatacter;
     LCharacterJumpAction a;
  
 
     private void OnEnable()
     {
-        chatacter = GetComponent<LChatacter>();
+        chatacter = GetComponent<LCharacter>();
         a = new LCharacterJumpAction();
         a.priority = priority;
         a.button = button;

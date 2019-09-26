@@ -110,7 +110,7 @@ public class TimeBarHelper  {
             Color backColor2 = new Color(0.4f, 0.4f, 1f);
             EditorGUI.DrawRect(new Rect(curSelePos, _y0 , delta, ChannelHeight ), backColor2);
         }
-        float _d = delta > 5f ? 2f : 0f;
+        float _d = delta > 7f ? 3f : 0f;
         float _d2 = _d * 2f;
         for (int i = 0; i < times.Length; i++)
         {
@@ -128,16 +128,16 @@ public class TimeBarHelper  {
                 {
                     if (curSelectChannel < normalChanelCount)
                     {
-                        EditorGUI.DrawRect(new Rect(curSelePos + _d, _y0 + 1, delta - _d2, ChannelHeight - 2), backColor3);
+                        EditorGUI.DrawRect(new Rect(curSelePos + _d, _y0 + 2, delta - _d2, ChannelHeight - 4), backColor3);
                     }
                     else
                     {
-                        EditorGUI.DrawRect(new Rect(curSelePos + _d, _y0 + 1, delta - _d2, ChannelHeight - 2), eventColor3);
+                        EditorGUI.DrawRect(new Rect(curSelePos + _d, _y0 + 2, delta - _d2, ChannelHeight - 4), eventColor3);
                     }
                 }
                 else
                 {
-                    EditorGUI.DrawRect(new Rect(curSelePos + _d, _y0 + 1, delta - _d2, ChannelHeight - 2), backColor);
+                    EditorGUI.DrawRect(new Rect(curSelePos + _d, _y0 + 2, delta - _d2, ChannelHeight - 4), backColor);
                 }
             }
         }

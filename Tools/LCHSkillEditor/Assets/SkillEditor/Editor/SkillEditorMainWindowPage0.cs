@@ -14,7 +14,7 @@ public partial class SkillEditorMainWindow
     public string[] roleIds = new string[] { };
  
 
-    public void OnRoleListModify(params object[] arg)
+    public void OnRoleListModify( )
     {
          
         List<string> str =  SkillEditorData.Instance.skillsData.GetAllRoles();
@@ -27,12 +27,12 @@ public partial class SkillEditorMainWindow
     {
         List<string> str =  SkillEditorData.Instance.skillsData.GetAllRoles();
         roleIds = str.ToArray();
-        EventManager.AddEvent((int)SkillEvent.OnRoleListModify, OnRoleListModify);
+        
 
     }
     public void OnDisable0()
     {
-        EventManager.RemoveEvent((int)SkillEvent.OnRoleListModify, OnRoleListModify);
+        
     }
     Vector2 scrollViewPos;
     Vector2 scrollViewPos1;
@@ -163,6 +163,7 @@ public partial class SkillEditorMainWindow
         if (GUILayout.Button("删除角色"))
         {
             DeleteRole();
+            OnRoleListModify();
         }
 
         GUILayout.EndHorizontal();

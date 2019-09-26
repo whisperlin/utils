@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LChatacter))]
+[RequireComponent(typeof(LCharacter))]
 public class AISkill : MonoBehaviour
 {
 
@@ -11,7 +11,7 @@ public class AISkill : MonoBehaviour
     public int priority = 100;
     public string skillName = "s01";
     public float cd = 0f;
-    LChatacter chatacter;
+    LCharacter chatacter;
     LCharacterSkillAI a = new LCharacterSkillAI();
     string cdName = "";
     // Use this for initialization
@@ -22,7 +22,7 @@ public class AISkill : MonoBehaviour
     }
     private void OnEnable()
     {
-        chatacter = GetComponent<LChatacter>();
+        chatacter = GetComponent<LCharacter>();
         chatacter.EnableAI();
 
 
