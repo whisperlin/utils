@@ -243,6 +243,16 @@ public class LAssetBundleManager : MonoBehaviour {
                 else
                 {
 
+#if RESOURCE_LOAD_IN_EDITOR && UNITY_EDITOR
+
+                    if (_data.path.EndsWith(".prefab") || _data.path.EndsWith(".wav"))
+                    {
+                        _data.asset = AssetDatabase.LoadAssetAtPath<GameObject>(_data.path);
+                        loadingHandles.Remove(_data.path);
+                        _data.isFinish = true;
+                        continue;
+                    }
+#endif
                     WWW textWWW = new WWW(_data.path);
                     yield return textWWW;
                     _data.asset = textWWW.text;

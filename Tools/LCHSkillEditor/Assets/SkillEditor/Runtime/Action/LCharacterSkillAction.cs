@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,20 @@ public class LCharacterHitData
     public CdState cdState;
     public string effect = null;
     public GameObject effect_obj = null;
+
+    public  LCharacterHitData Clone()
+    {
+        //hittedObject 这个必须是自己的
+        LCharacterHitData data = new LCharacterHitData();
+        data.characterId = characterId;
+        data.value = this.value;
+        data.firstHit = true;
+        data.cdName = cdName;
+        data.skillState = skillState;
+        data.effect = effect;
+        data.effect_obj = effect_obj;
+        return data;
+    }
 }
 public class LCharacterSkillAction : LCharacterAction
 {
@@ -46,7 +61,6 @@ public class LCharacterSkillAction : LCharacterAction
     private ObjectContain[] objList ;
     private Dictionary<int, AudioClip> clips = new Dictionary<int, AudioClip>();
 
-
     private Dictionary<string, SkillData> loadedSkillData = new Dictionary<string, SkillData>();
     private Vector3 baseGroundPos;
     private Vector3 beginPositon;
@@ -68,23 +82,36 @@ public class LCharacterSkillAction : LCharacterAction
         bool inAir = pos0.y - pos.y > 0.01f;
         if (VirtualInput.buttons[(int)button]  && (!isOnGround ||   !inAir )/*  && character.CanUsedSkill(cdName, skillState) */ )
         {
-           
             var _param = character.GetSkillCDSkillParams(cdName);
             if (null != _param && _param.CanUse(skillState))
             {
-                 
-                
+                skill_type = _param.type;
+                if (skill_type == SkillParams.TYPE.DRAG_TARGET)
+                {
+                    curTargetId = character.GetTargetId();
+                    LCharacterInterface chr;
+                    if (information.TryGetCharacter(curTargetId, out chr))
+                    {
+                        Vector3 p0 = character.GetCurPosition();
+                        Vector3 p1 = chr.GetCurPosition();
+                        p0.y = 0f;
+                        p1.y = 0f;
+                        float distance =  Vector3.Distance(p0, p1);
+                        if (distance < skillData.skillRange)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
                 return true;
             }
-            
         }
-
         return false;
     }
     private  float curTime = 0f,lastTime = 0f ;
     public override IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun)
     {
-        Debug.Log("skill on init "+ SkillId);
         hasLoaded = false;
         CharactorLoadHandle handle0 = loader.LoadSkillDataFile(SkillId, fun);
         while (!handle0.isFinish)
@@ -134,8 +161,6 @@ public class LCharacterSkillAction : LCharacterAction
                             oc.gameobject.hideFlags = HideFlags.None;
                             oc.systems = oc.gameobject.GetComponentsInChildren<ParticleSystem>();
                         }
-                           
-
                     }
                 }
             }
@@ -176,18 +201,20 @@ public class LCharacterSkillAction : LCharacterAction
         }
 
         hasLoaded = true;
-        Debug.Log("skill on init finish "+ SkillId);
+ 
     }
-
-    
+    SkillParams.TYPE skill_type;
+    int curTargetId = -1;
     public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
-
+        
         var _param = character.GetSkillCDSkillParams(cdName);
-        if (null != _param && _param.CanUse(skillState))
+
+        if (null != _param  )
         {
-            if (_param.type == SkillParams.TYPE.DRAG_DIR)
+            skill_type = _param.type;
+            if (skill_type == SkillParams.TYPE.DRAG_DIR)
             {
                 skillDir = VirtualInput.skillDir;
                 if (VirtualInput.skillDir != Vector3.zero)
@@ -195,6 +222,11 @@ public class LCharacterSkillAction : LCharacterAction
                     character.SetCurForward(skillDir);
                 }
             }
+            else if (skill_type == SkillParams.TYPE.DRAG_TARGET)
+            {
+                curTargetId = character.GetTargetId();
+            }
+
         }
         beginPositon = baseGroundPos = character.GetCurPosition();
 
@@ -220,15 +252,18 @@ public class LCharacterSkillAction : LCharacterAction
         {
             var o0 = objList[i];
             o0.stopUpatePos = false;
+            o0.isFlyTool = false;
         }
-
     }
     
     
 
     public static void CmpAnimationPos(float curTime,ObjectContain contain, LCharacterInterface character, LChatacterInformationInterface information)
     {
+        if (contain.isFlyTool)
+            return;
         contain.ResetTransformData();
+        
         for (int i = 0, c0 = contain.channels.Count; i < c0; i++)
         {
             var channel = contain.channels[i];
@@ -337,12 +372,10 @@ public class LCharacterSkillAction : LCharacterAction
                 contain.gameobject.transform.position = new Vector3(new_h_pos.x, contain.gameobject.transform.position.y, new_h_pos.z);
             }
         }
-        
     }
 
     public static Transform FindInChildrenIncludingInactive(Transform t, string name)
     {
-
         for (int i = 0; i < t.childCount; i++)
         {
             Transform t2 = t.GetChild(i);
@@ -353,7 +386,6 @@ public class LCharacterSkillAction : LCharacterAction
             if (found != null)
                 return found;
         }
-
         return null;  //couldn't find crap
     }
      
@@ -363,6 +395,10 @@ public class LCharacterSkillAction : LCharacterAction
         Quaternion beginLocalRot )
     {
 
+        if (contain.isFlyTool)
+        {
+            return;
+        }
         if (contain.stopUpatePos)
         {
             if (contain.gameobject != null)
@@ -378,7 +414,7 @@ public class LCharacterSkillAction : LCharacterAction
            
             if (contain.bind == 1 && contain.gameobject != null && contain.gameobject.transform.parent == null && role.gameobject != null)
             {
-                //Debug.LogError("contain.bind = " + contain.bind + " " + contain.gameobject);
+                
                 contain.gameobject.transform.parent = role.gameobject.transform;
             }
             else if (contain.bind == 2 && contain.gameobject != null && contain.gameobject.transform.parent == null && role.gameobject != null)
@@ -422,12 +458,14 @@ public class LCharacterSkillAction : LCharacterAction
                 else if (contain.bind == 1)
                 {
                     ObjectContain c1 = objs[contain.bindObjId];
+                    if (c1.isFlyTool)
+                        contain.isFlyTool = true;
                     contain.gameobject = c1.gameobject;
                 }
             }
         }
     }
-    public static void CmpObjectEvent(float curTime, float lastTime, LCHEventChannelData _e, ObjectContain contain, LCharacterInterface character, LChatacterInformationInterface information,
+    public  void CmpObjectEvent(float curTime, float lastTime, LCHEventChannelData _e, ObjectContain contain, LCharacterInterface character, LChatacterInformationInterface information,
         Dictionary<int, ObjectContain> objs
         , CdState cdState
         , string cdName
@@ -438,6 +476,12 @@ public class LCharacterSkillAction : LCharacterAction
         , ref Vector3 beginTargetPoint
         )
     {
+        if (contain.isFlyTool)
+        {
+            if(null != contain.gameobject)
+                contain.gameobject.SetActive(false);
+            return;
+        }
         LCHChannelType t = (LCHChannelType)_e.type;
         ObjDictionary value;
         float _time;
@@ -501,7 +545,6 @@ public class LCharacterSkillAction : LCharacterAction
                                     }
                                 }
                             }
-
                             int ex_action = value.GetValueInt("ex_action", 0);
                             if (ex_action == 1)
                             {
@@ -516,8 +559,9 @@ public class LCharacterSkillAction : LCharacterAction
                                         beginTargetPoint = baseGroundPos;
                                     }
                                 }
-
                             }
+                           
+                            //
                             else if (ex_action == 2)
                             {
                                 contain.stopUpatePos = true;
@@ -607,6 +651,62 @@ public class LCharacterSkillAction : LCharacterAction
                                 hitData.effect_obj = null;
                             }
                             contain.hitData.data = hitData;
+                            int IsFlyTool = value.GetValueInt("IsFlyTool", 0);
+                            if (IsFlyTool == 1)
+                            {
+
+                                if (contain.type == 3)
+                                {
+                                    float FlyToolTime = value.GetValueFloat("FlyToolTime", 20f);
+                                    float FlyToolSpeed = value.GetValueFloat("FlyToolSpeed", 2f);
+                                    if (null != contain.gameobject)
+                                    {
+                                        var g = GameObject.Instantiate(contain.gameobject);
+                                        LCharacterHitDataCmp hdc0 =g.GetComponent<LCharacterHitDataCmp>();
+                                        g.name = "bullet";
+                                        LCHBullet bullet = g.AddComponent<LCHBullet>();
+                                        hdc0.data.data = hitData;
+                                        hdc0.data.type = "hit";
+                                        contain.isFlyTool = true;
+                                        bullet.type = LCHBullet.TYPE.NORMAL;
+                                        bullet.speed = FlyToolSpeed;
+                                        bullet.maxTime = FlyToolTime;
+ 
+                                        g.SetActive(true);
+                                        contain.gameobject.SetActive(false);
+
+                                    }
+                                }
+                                
+                            }
+                            else if (IsFlyTool == 2)
+                            {
+
+                                if (contain.type == 3)
+                                {
+                                    //float FlyToolTime = value.GetValueFloat("FlyToolTime", 20f);
+                                    float FlyToolSpeed = value.GetValueFloat("FlyToolSpeed", 2f);
+                                    if (null != contain.gameobject)
+                                    {
+                                        var g = GameObject.Instantiate(contain.gameobject);
+                                        LCharacterHitDataCmp hdc0 = g.GetComponent<LCharacterHitDataCmp>();
+                                        g.name = "bullet";
+                                        LCHBullet bullet = g.AddComponent<LCHBullet>();
+                                        hdc0.data.data = hitData;
+                                        hdc0.data.type = "hit";
+                                        contain.isFlyTool = true;
+                                        bullet.type = LCHBullet.TYPE.FELLOW;
+                                        bullet.speed = FlyToolSpeed;
+                                        bullet.curTargetId = curTargetId;
+ 
+                                        bullet.maxTime = 60f;
+                                        g.SetActive(true);
+                                        contain.gameobject.SetActive(false);
+
+                                    }
+                                }
+
+                            }
 
                         }
                     }
@@ -626,7 +726,6 @@ public class LCharacterSkillAction : LCharacterAction
         
         if (!hasLoaded)
             return;
-
         role.ResetTransformData();
         for (int i = 0, c0 = objList.Length; i < c0; i++)
         {
@@ -679,10 +778,16 @@ public class LCharacterSkillAction : LCharacterAction
         }
         if (beginToTarget >= 0f && curTime >= beginToTarget )
         {
-           
             if (curTime < endToTarget)
             {
-                
+                if (skill_type == SkillParams.TYPE.DRAG_TARGET)
+                {
+                    LCharacterInterface chr;
+                    if (information.TryGetCharacter(curTargetId, out chr))
+                    {
+                        targetPoint = chr.GetCurPosition();
+                    }
+                }
                 float t = (curTime - beginToTarget) / (endToTarget - curTime);
                 var p = Vector3.Lerp(beginTargetPoint, targetPoint,t);
                 //能移动就移动过去

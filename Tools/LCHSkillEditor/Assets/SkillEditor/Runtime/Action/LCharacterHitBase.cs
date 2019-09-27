@@ -29,8 +29,13 @@ public abstract class LCharacterHitBase : LCharacterAction
                     {
                         if (data.cdState == CdState.HIT)
                         {
-                            LCharacterInterface chr = information.GetCharacter(data.characterId);
-                            chr.updateCDState(data.cdName, data.skillState);
+                            LCharacterInterface chr;
+                            if (information.TryGetCharacter(data.characterId, out chr))
+                            {
+                                chr.updateCDState(data.cdName, data.skillState);
+                            }
+                            //    LCharacterInterface chr = information.GetCharacter(data.characterId);
+                            
                         }
                         if (slow_motion > 0.0001f)
                         {
@@ -51,11 +56,30 @@ public abstract class LCharacterHitBase : LCharacterAction
                     }
                     else if (hit_dir == 2)
                     {
-                        dir = character.GetCurPosition() -  information.GetCharacter(data.characterId).GetCurPosition() ;
+                        LCharacterInterface target;
+                        if (information.TryGetCharacter(data.characterId, out target))
+                        {
+                            dir = character.GetCurPosition() - target.GetCurPosition();
+                        }
+                        else
+                        {
+                            dir = Vector3.forward;
+                        }
+                            
                     }
                     else 
                     {
-                        dir = information.GetCharacter(data.characterId).GetCurPosition() - character.GetCurPosition()  ;
+                        LCharacterInterface target;
+                        if (information.TryGetCharacter(data.characterId, out target))
+                        {
+                            dir = target.GetCurPosition() - character.GetCurPosition();
+                        }
+                        else
+                        {
+                            dir = Vector3.forward;
+                        }
+
+
                     }
                     dir.y = 0;
                     dir.Normalize();

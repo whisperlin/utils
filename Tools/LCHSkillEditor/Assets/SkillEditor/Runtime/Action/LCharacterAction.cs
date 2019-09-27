@@ -60,15 +60,17 @@ public abstract class LCharacterAction {
                 {
                     if (data.cdState == CdState.HIT)
                     {
-                        LCharacterInterface chr = information.GetCharacter(data.characterId);
-                        chr.updateCDState(data.cdName, data.skillState);
+                        LCharacterInterface chr;
+                        if (information.TryGetCharacter(data.characterId, out chr))
+                        {
+                            chr.updateCDState(data.cdName, data.skillState);
+                        }
                     }
                     if (slow_motion > 0.0001f)
                     {
                         information.slowly(0.01f, slow_motion);
                         data.firstHit = true;
                     }
-                   
                 }
                 return false;
             }
@@ -85,8 +87,6 @@ public abstract class LCharacterAction {
     {
         return ActionType.NORMAL;
     }
-
-    
 
     protected static void CheckInstance<T>(ref T t) where T : LCharacterAction,new ()
     {

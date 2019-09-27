@@ -20,21 +20,26 @@ public class LCharacterHunt : LCharacterAction
         int targetId = character.GetTargetId();
         if (targetId != -1)
         {
-            LCharacterInterface target = information.GetCharacter(targetId);
-           
-            if (null == target || target.IsDead())
-                return ;
-            var selPos = character.GetCurPosition();
-            var targetPos = target.GetCurPosition();
-            Vector3 MoveDir = targetPos - selPos;
-            MoveDir.y = 0f;
-             
+            LCharacterInterface target;
+            if (information.TryGetCharacter(targetId, out target))
+            {
+                if (null == target || target.IsDead())
+                    return;
+                var selPos = character.GetCurPosition();
+                var targetPos = target.GetCurPosition();
+                Vector3 MoveDir = targetPos - selPos;
+                MoveDir.y = 0f;
 
-            MoveDir.Normalize();
-            Vector3 pos0 = MoveDir * Time.deltaTime * speed;
-            Vector3 pos = information.tryMove(character.GetCurPosition(), pos0, true);
-            character.SetCurPosition(pos);
-            character.SetCurForward(MoveDir);
+
+                MoveDir.Normalize();
+                Vector3 pos0 = MoveDir * Time.deltaTime * speed;
+                Vector3 pos = information.tryMove(character.GetCurPosition(), pos0, true);
+                character.SetCurPosition(pos);
+                character.SetCurForward(MoveDir);
+            }
+            //    LCharacterInterface target = information.GetCharacter(targetId);
+           
+            
 
         }
     }
@@ -45,21 +50,23 @@ public class LCharacterHunt : LCharacterAction
         int targetId = character.GetTargetId();
         if (targetId != -1)
         {
-            LCharacterInterface target = information.GetCharacter(targetId);
-            
-            if (null == target || target.IsDead())
-                return true;
-
-            var selPos = character.GetCurPosition();
-
-            var targetPos = target.GetCurPosition();
-
-            float f = Vector3.Distance(selPos, targetPos);
-            if (f < mixDistance)
+            LCharacterInterface target;
+            if (information.TryGetCharacter(targetId, out target))
             {
-                return true;
+                if (null == target || target.IsDead())
+                    return true;
+                var selPos = character.GetCurPosition();
+
+                var targetPos = target.GetCurPosition();
+
+                float f = Vector3.Distance(selPos, targetPos);
+                if (f < mixDistance)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+           
         }
         return true;
     }
@@ -69,22 +76,23 @@ public class LCharacterHunt : LCharacterAction
         int targetId = character.GetTargetId();
         if (targetId != -1)
         {
-            LCharacterInterface target = information.GetCharacter(targetId);
-            
-            if (null == target || target.IsDead())
-                return false;
-            var selPos = character.GetCurPosition();
-
-            var targetPos = target.GetCurPosition();
-
-            float f = Vector3.Distance(selPos, targetPos);
-            if (f > mixDistance)
+            LCharacterInterface target;
+            if (information.TryGetCharacter(targetId, out target))
             {
-                return true;
+                if (null == target || target.IsDead())
+                    return false;
+                var selPos = character.GetCurPosition();
+
+                var targetPos = target.GetCurPosition();
+
+                float f = Vector3.Distance(selPos, targetPos);
+                if (f > mixDistance)
+                {
+                    return true;
+                }
             }
-            
-             
-             
+            //    LCharacterInterface target = information.GetCharacter(targetId);
+ 
         }
         return false;
     }

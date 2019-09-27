@@ -84,7 +84,7 @@
 		},
 		"hit_back_time": {
 			"type": "float",
-			"defalut": 0,
+			"defalut": 0.2,
 			"tip": "击退时间",
 			"limit": "status",
 			"limit_items": [
@@ -155,6 +155,36 @@
 				"敌人->角色中心"
 			],
 			"tip": "击飞方向"
+		},
+		"IsFlyTool": {
+			"type": "list",
+			"defalut": 0,
+			"type_limit": "3",
+			"items": [
+				"否",
+				"直线飞行道具",
+				"追踪飞行道具"
+			],
+			"tip": "是否飞行道具"
+		},
+		"FlyToolSpeed": {
+			"type": "float",
+			"defalut": 10,
+			"limit": "IsFlyTool",
+			"limit_items": [
+				1,
+				2
+			],
+			"tip": "飞行道具速度"
+		},
+		"FlyToolTime": {
+			"type": "float",
+			"defalut": 2,
+			"limit": "IsFlyTool",
+			"limit_items": [
+				1
+			],
+			"tip": "飞行道具存在时长"
 		}
 	},
 	"object": {
@@ -179,8 +209,7 @@
 			"items": [
 				"无",
 				"坐标系移动向目标(主角才有效)",
-				"停止更新位置",
-				"转换为飞行道具(非主角)"
+				"停止更新位置"
 			],
 			"tip": "特殊行为"
 		},
@@ -192,29 +221,6 @@
 			"limit_items": [
 				1
 			]
-		},
-		"flyToolType": {
-			"type": "list",
-			"defalut": 0,
-			"limit": "ex_action",
-			"limit_items": [
-				3
-			],
-			"items": [
-				"普通",
-				"追踪",
-				"顶点轰炸"
-			],
-			"tip": "特殊行为"
-		},
-		"flyToolSpeed": {
-			"type": "float",
-			"defalut": 10,
-			"limit": "ex_action",
-			"limit_items": [
-				3
-			],
-			"tip": "飞行道具速度"
 		}
 	},
 	"role_state": {

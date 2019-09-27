@@ -53,5 +53,6 @@ public class VirtualInput  {
         }
     }
 
-    
+    //是否选择对象过程操作中
+    public static bool isTargetting = false;
 }

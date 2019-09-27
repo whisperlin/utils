@@ -98,15 +98,15 @@ public partial class CharacterBase : MonoBehaviour
     LCharacterDictionary<LCharacterHitDataCmp> triggers = new LCharacterDictionary<LCharacterHitDataCmp>();
     void OnTriggerEnter(Collider other)
     {
-
         LCharacterHitDataCmp hitData = other.gameObject.GetComponent<LCharacterHitDataCmp>();
         if (hitData != null)
         {
             //Debug.LogError("OnTriggerEnter " + other.name);
             LCharacterAction.OnHit(other, hitData.data, ref curAction, actionList, character, information);
             hitData._collider = other;
+            hitData.id = hitData._collider.GetInstanceID();
             hitData._colliderObj = other.gameObject;
-            triggers.Add(hitData._collider.GetInstanceID(), hitData);
+            triggers.Add(hitData.id, hitData);
         }
     }
     private void OnTriggerStay(Collider other)
@@ -129,11 +129,12 @@ public partial class CharacterBase : MonoBehaviour
         for (int i = triggers.list.Count - 1; i >= 0; i--)
         {
             var v = triggers.list[i];
-            if (!v._colliderObj.activeSelf)
+
+            if (v._colliderObj== null || !v._colliderObj.activeSelf)
             {
                 // Debug.LogError("remove");
                 //因为 OnTriggerExit有时很草蛋的不触发，用这个弥补
-                triggers.Remove(v._colliderObj.GetInstanceID());
+                triggers.Remove(v.id);
             }
 
 

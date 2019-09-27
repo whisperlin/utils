@@ -55,9 +55,22 @@ public class LCHJoystickButtons : MonoBehaviour {
     public Material dirMat;
     public Material pointMat;
     public Material randMat;
+    public Material targetMat;
     public float pointOperaSize = 0.15f;
+
+    [Header("选人时的那个圈")]
+    public GameObject Selecter;
     public void init()
     {
+
+        if (null != Selecter)
+        {
+            GameObject g = GameObject.Instantiate(Selecter);
+            g.name = "selecter";
+            LCHSelecter ls = g.AddComponent<LCHSelecter>();
+            ls.character = character.character;
+
+        }
         objects.Clear();
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -119,6 +132,7 @@ public class LCHJoystickButtons : MonoBehaviour {
             lb.pointOperaSize = pointOperaSize*Screen.height;
             lb.randMat = randMat;
             lb.keyCode = buttons[i].keyCode;
+            lb.targetMat = targetMat;
         }
     }
     // Use this for initialization
@@ -182,13 +196,7 @@ public class LCHJoystickButtons : MonoBehaviour {
                 {
 
 
-                    /*using (GameFramework.zstring.Block())
-                    {
-                        int c = (int)_param.cd;
-
-                        obj.txt.text = GameFramework.zstring.Format("{0}", c);   
-                        
-                    }*/
+                  
 
                     int c = (int)(_param.cd );
                     obj.txt.text = getIntString(c);

@@ -78,6 +78,7 @@ public class SkillParams
         CLICK,//按下施放.
         DRAG_DIR,//拖拽选择释放方向，
         DRAG_POINT,
+        DRAG_TARGET,
         //后续添加拖拽选择释放目标，拖拽选择释放点等?
     }
     private int state = 0;
@@ -173,6 +174,7 @@ public interface LCharacterInterface
     int GetAttackLayer();
     bool IsDead();//是否死亡.
     int GetTargetId();
+    void SetTargetId(int id);
     bool IsAI();
     void EnableAI();//绑定技能ai脚本会自动调用这个接口。
     int GetCamp();//
@@ -192,6 +194,9 @@ public interface LCharacterInterface
     void AddHaterd(int characterId, int v);
     void UpdateSkillRange(string cdName, float skillRange, float skillWidth);
     Vector3 GetCurForward();
+    Vector3 GetCurXZForward();
+
+
 }
 
 //角色相关数据的抽象接口。
@@ -201,10 +206,12 @@ public interface LChatacterInformationInterface  {
     Vector3 tryMove(Vector3 pos,Vector3 dir,bool fixToGround);
 
     bool getGroundHight(Vector3 pos,out Vector3 result );
-    
-    LCharacterInterface GetCharacter(int targetId);
+
+    bool TryGetCharacter(int targetId, out LCharacterInterface chr);
+ 
     void AddCharacter(LCharacterInterface character);
     void RemoveCharacter(LCharacterInterface character);
+    List<LCharacterInterface> GetAllCharacters();
     void slowly(float v, float slow_motion);
     Vector3 GetNewPointCanWalk(Vector3 pos);
 

@@ -6,7 +6,7 @@ using UnityEditor;
 public class PropertyHelper  {
 
      
-    public static void DrawPropertys(Dictionary<string,object> propertys , Dictionary<string,object> temps, string[] keys ,Dictionary<string,object> _params)
+    public static void DrawPropertys(Dictionary<string,object> propertys , Dictionary<string,object> temps, string[] keys ,Dictionary<string,object> _params,int objType = 0)
     {
         //string [] anims = null ,string [] sounds = null ,int []soundIds = null
         if (null == propertys)
@@ -16,8 +16,15 @@ public class PropertyHelper  {
             var name = keys[i];
             var r = temps[name];
             Dictionary<string, object> temp = (Dictionary<string, object>)r;
-            
 
+            //objType
+
+            if (temp.ContainsKey("type_limit") )
+            {
+                int type_limit = System.Convert.ToInt32(temp["type_limit"]);
+                if (objType != type_limit)
+                    continue;
+            }
             if (temp.ContainsKey("limit") && temp.ContainsKey("limit_items"))
             {
                 string lkey = temp["limit"].ToString();

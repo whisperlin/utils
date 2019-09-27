@@ -6,8 +6,6 @@ using UnityEngine;
 public partial class LCharacter : CharacterBase, LCharacterInterface
 {
 
-
-
     protected override void CheckInterface()
     {
         character = this;
@@ -22,7 +20,6 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
     protected override void OnUpdate()
     {
         UpdateSkillParams();
-
     }
 
     Dictionary<int, int> hatredMap = new Dictionary<int, int>();
@@ -90,6 +87,14 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
     public Vector3 GetCurForward()
     {
         return transform.forward.normalized;
+    }
+
+    public Vector3 GetCurXZForward()
+    {
+        Vector3 f = transform.forward;
+        f.y = 0;
+        f.Normalize();
+        return f;
     }
 
     public void CrossFade(string anim_name, float time = 0.05f)
@@ -183,18 +188,20 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
         transform.forward = forward;
     }
 
-
-
-
     public void OnHit(Collider other, LCharacterColliderData hitData, Vector3 dir, ref LCharacterAction curAction, List<LCharacterAction> actionList, LChatacterInformationInterface information)
     {
 
         LCharacterAction.OnHit(other, hitData, ref curAction, actionList, this, information);
 
     }
+
+    int targetCharacterId = -1;
+    public void SetTargetId(int id)
+    {
+        targetCharacterId = id;
+    }
     public int GetTargetId()
     {
-        int targetCharacterId = -1;
         if (IsAI())
         {
             if (hatredMap.Count > 0)
@@ -212,6 +219,9 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
                 }
                 e.Dispose();
             }
+        }
+        else
+        {
         }
         return targetCharacterId;
     }

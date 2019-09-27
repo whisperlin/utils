@@ -313,11 +313,15 @@ public class CharactorData : LChatacterInformationInterface
     }
     List<LCharacterInterface> characters = new List<LCharacterInterface>();
     Dictionary<int, LCharacterInterface> charactersMap = new Dictionary<int, LCharacterInterface>();
-    public LCharacterInterface GetCharacter(int targetId)
+    public bool TryGetCharacter(int targetId,out LCharacterInterface chr)
     {
-        return charactersMap[targetId];
+        return charactersMap.TryGetValue(targetId, out chr);
     }
 
+    public List<LCharacterInterface> GetAllCharacters()
+    {
+        return characters;
+    }
     public void AddCharacter(LCharacterInterface character)
     {
         characters.Add(character);
