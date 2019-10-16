@@ -31,10 +31,12 @@ public class CharactorData : LChatacterInformationInterface
         if (null == newScene)
         {
             newScene = new GameObject();
-            newScene.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+            newScene.name = "导航网格";
+            newScene.hideFlags = HideFlags.DontSave;
             //这个接口比较慢，用这种笨方法检查每个场景是否有导航网格。每个场景只检查一次。
             NavMeshTriangulation tmpNavMeshTriangulation = NavMesh.CalculateTriangulation();
             hasMavMesh = tmpNavMeshTriangulation.vertices.Length > 0;
+            //hasMavMesh = true;
             mc = newScene.AddComponent<MeshCollider>();
             Mesh mesh = new Mesh();
             mesh.vertices = tmpNavMeshTriangulation.vertices;
@@ -223,9 +225,14 @@ public class CharactorData : LChatacterInformationInterface
                 return GetPointFallNav(pos, hit.point, delta);
                 //return GetPointFall(pos,r, hit, delta);
             else
+            {
+                
                 return GetPointNotFall(newPos, hit.point);
+            }
+                
 
         }
+        //前面的位置不能走。
         if (!fixToGround)
         {
             dir.x = 0f;
@@ -290,7 +297,7 @@ public class CharactorData : LChatacterInformationInterface
         if (hasMavMesh)
         {
             RaycastHit hit;
-            if (mc.Raycast(new Ray(pos + Vector3.up, Vector3.down), out hit, 100f ))
+            if (mc.Raycast(new Ray(pos + Vector3.up*2f, Vector3.down), out hit, 100f ))
             {
                 ground = hit.point;
                 return true;

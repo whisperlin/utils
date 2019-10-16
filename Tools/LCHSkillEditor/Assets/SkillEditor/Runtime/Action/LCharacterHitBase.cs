@@ -18,8 +18,9 @@ public abstract class LCharacterHitBase : LCharacterAction
 
                 if (!data.hittedObject.Contains(character.GetId()) && null != data.value)
                 {
+                    character.OnHit(data);
                     data.hittedObject.Add(character.GetId());
-
+                    
                     if (character.IsAI())
                     {
                         character.AddHaterd(data.characterId, 1);
@@ -34,7 +35,6 @@ public abstract class LCharacterHitBase : LCharacterAction
                             {
                                 chr.updateCDState(data.cdName, data.skillState);
                             }
-                            //    LCharacterInterface chr = information.GetCharacter(data.characterId);
                             
                         }
                         if (slow_motion > 0.0001f)

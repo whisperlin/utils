@@ -16,12 +16,19 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
     {
         return campInformation.attack;
     }
-
     protected override void OnUpdate()
     {
         UpdateSkillParams();
     }
-
+    public int hp = 10000;
+    public int GetHp()
+    {
+        return hp;
+    }
+    public void SetHp(int hp)
+    {
+        this.hp = hp;
+    }
     Dictionary<int, int> hatredMap = new Dictionary<int, int>();
     public void AddHaterd(int otherCharacterId, int v)
     {
@@ -107,6 +114,13 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
         if (null != animCtrl)
             animCtrl.Play(anim_name);
     }
+    public void SetAnimationLoop(string animName, bool v)
+    {
+        if(v)
+            animCtrl[animName].wrapMode = WrapMode.Loop;
+        else
+            animCtrl[animName].wrapMode = WrapMode.Default;
+    }
     public void ResetAndPlay(string anim_name)
     {
         if (null != animCtrl)
@@ -144,7 +158,7 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
     }
     public bool IsDead()
     {
-        return false;
+        return hp<=0;
     }
 
 
@@ -240,5 +254,18 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
         characterData[key] = value;
     }
 
-    
+    public void OnHit(LCharacterHitData data)
+    {
+        int _hp = data.value.GetValueInt("hp", 0);
+        int _mp = data.value.GetValueInt("mp", 0);
+
+        this.hp -= (int)_hp;
+        this.hp -= (int)_mp;
+        Debug.LogError("hp = " + hp + " - "+_hp + " - "+_mp);
+    }
+
+    public void DestroySelf()
+    {
+        GameObject.Destroy(gameObject);
+    }
 }

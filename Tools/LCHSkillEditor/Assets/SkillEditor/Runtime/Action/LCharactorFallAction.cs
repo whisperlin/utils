@@ -53,7 +53,7 @@ public class LCharactorFallAction : LCharacterAction
         Vector3 pos;
         if (!information.getGroundHight(character.GetCurPosition(), out pos))
         {
-            Debug.LogError("has error");
+            Debug.LogError("has error on fall");
             pos = character.GetCurPosition();
         }
  

@@ -12,6 +12,7 @@ public class LCharacterWalkAction : LCharacterAction
     public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         character.CrossFade(animName,0.05f);
+        character.SetAnimationLoop(animName,true);
     }
 
     public override void doAction(LCharacterInterface character, LChatacterInformationInterface information)

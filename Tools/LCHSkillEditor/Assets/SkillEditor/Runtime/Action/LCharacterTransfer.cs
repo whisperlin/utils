@@ -52,6 +52,8 @@ public class LCharacterTransfer : LCharacterAction
 
         JumpTime = length * 0.5f / jumpSpeed;
         beginPositon = character.GetCurPosition();
+
+ 
     }
     public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
@@ -68,6 +70,7 @@ public class LCharacterTransfer : LCharacterAction
             jumpHeight = data.height;
             beginPositon = character.GetCurPosition();
             endPositoin = data.target.position;
+            //Debug.LogError("beginPositon 0" + beginPositon);
             return true;
         }
         return false;
@@ -84,6 +87,7 @@ public class LCharacterTransfer : LCharacterAction
         float h = jumpHeight * y;
 
 
+        //Debug.Log("beginPositon "+ beginPositon+ " endPositoin"+ endPositoin + " t= "+t);
         pos = Vector3.Lerp(beginPositon, endPositoin, t * 0.5f);
         pos += new Vector3(0f, h, 0f);
         character.SetCurPosition(pos);

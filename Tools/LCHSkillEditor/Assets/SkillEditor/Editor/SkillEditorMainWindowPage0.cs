@@ -103,7 +103,19 @@ public partial class SkillEditorMainWindow
         }
         if (roleIndex < 0 || roleIndex >= roleIds.Length)
             roleIndex = 0;
-         SkillEditorData.Instance.CurRoleId = roleIds[roleIndex];
+
+        var r = roleIds[roleIndex];
+        if(r != SkillEditorData.Instance.CurRoleId)
+        {
+            SkillEditorData.Instance.CurRoleId = r;
+            Selection.objects = new UnityEngine.Object[0];
+            //Selection.objects = null;
+            //Selection.activeGameObject = null;
+            //Selection.activeTransform = null;
+        }
+         
+
+        // //Selection.activeTransform
         if (roleData == null)
         {
             LoadRole( SkillEditorData.Instance.CurRoleId);
@@ -134,16 +146,10 @@ public partial class SkillEditorMainWindow
         if (null != roleData)
         {
             string id = (string)roleData.id;
-            //roleData = null;
-            //skills.DeleteRole(id);
-
             if ( SkillEditorData.Instance.CurSkillId.Length > 0)
             {
                  SkillEditorData.Instance.skillsData.DeleteSkill( SkillEditorData.Instance.CurSkillId);
-                //roleData.skills
-                //EventManager.CallEvent((int)SkillEvent.DeleteSkill,  SkillEditorData.Instance.CurSkillId);
- 
-
+  
                 roleData = null;
             }
         }
@@ -173,7 +179,10 @@ public partial class SkillEditorMainWindow
         index = EditorGUILayout.Popup("过滤:", index + 1, options) - 1;
 
         scrollViewPos = GUILayout.BeginScrollView(scrollViewPos, GUILayout.Height(120));
+
         roleIndex = GUILayout.SelectionGrid(roleIndex, roleIds, 1);
+
+       
         GUILayout.EndScrollView();
 
         SpeceLine();
@@ -234,7 +243,13 @@ public partial class SkillEditorMainWindow
              SkillEditorData.Instance.CurSkillId = "";
             return;
         }
-         SkillEditorData.Instance.CurSkillId = roleData.skills[idx];
+        //
+        if (SkillEditorData.Instance.CurSkillId != roleData.skills[idx])
+        {
+            Selection.objects = new UnityEngine.Object[0];
+            SkillEditorData.Instance.CurSkillId = roleData.skills[idx];
+        }
+        
         
     }
 }

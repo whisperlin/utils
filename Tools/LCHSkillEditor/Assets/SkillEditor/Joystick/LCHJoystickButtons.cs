@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 [System.Serializable]
-public struct LCHJsButtonInformation
+public class LCHJsButtonInformation
 {
 
  
@@ -20,21 +20,30 @@ public struct LCHJsButtonInformation
     public Vector2 size;
     [Header("虚拟按键(cd名为空可用)")]
     public VirtualInput.KeyCode keyCode;
+
+    public Image image;
+
+
+    [System.NonSerialized]
+    public Image cdImage;
+    [System.NonSerialized]
+    public Text txt;
  
+
 }
-public struct LCHJsButtonObject
+/*public struct LCHJsButtonObject
 {
     public Image image;
     public Image cdImage;
     public Text txt;
     public LCHJsButtonInformation information;
-}
+}*/
 public class LCHJoystickButtons : MonoBehaviour {
 
     
     public CharacterBase character;
     public LCHJsButtonInformation [] buttons = new LCHJsButtonInformation[0];
-    public List<LCHJsButtonObject> objects = new List<LCHJsButtonObject>();
+    //public List<LCHJsButtonObject> objects = new List<LCHJsButtonObject>();
 
     [Header("cd 颜色")]
     public Color cdColor = new Color(0.5f, 0.5f, 1f);
@@ -71,18 +80,14 @@ public class LCHJoystickButtons : MonoBehaviour {
             ls.character = character.character;
 
         }
-        objects.Clear();
+         
+        //objects.Clear();
         for (int i = 0; i < buttons.Length; i++)
         {
-            GameObject g = new GameObject();
-            g.name = "button" + i;
-            LCHJsButtonObject button = new LCHJsButtonObject();
-            button.image = g.AddComponent<Image>();
+            var button = buttons[i];
+            GameObject g = button.image.gameObject;
             button.image.sprite = buttons[i].sprite;
-            g.transform.parent = transform;
-            button.image.rectTransform.anchorMin = button.image.rectTransform.anchorMax = button.image.rectTransform.pivot = new Vector2(1, 0);
-            button.image.rectTransform.sizeDelta = buttons[i].size  *Screen.height;
-            button.image.rectTransform.anchoredPosition = buttons[i].position *Screen.height;
+ 
             LCHButton lb = g.AddComponent<LCHButton>();
             
 
@@ -92,8 +97,9 @@ public class LCHJoystickButtons : MonoBehaviour {
             button.cdImage = g2.AddComponent<Image>();
             button.cdImage.sprite = buttons[i].sprite;
             button.cdImage.rectTransform.anchorMin = button.cdImage.rectTransform.anchorMax = button.cdImage.rectTransform.pivot = new Vector2(1, 0);
-            button.cdImage.rectTransform.sizeDelta = buttons[i].size * Screen.height;
+            button.cdImage.rectTransform.sizeDelta = button.image.rectTransform.sizeDelta;
             button.cdImage.rectTransform.anchoredPosition = Vector2.zero;
+            button.cdImage.rectTransform.localScale = Vector3.one;
 
             button.cdImage.type = Image.Type.Filled;
             button.cdImage.fillMethod = Image.FillMethod.Radial360;
@@ -109,7 +115,7 @@ public class LCHJoystickButtons : MonoBehaviour {
             button.txt = g3.AddComponent<Text>();
             Outline ol = g3.AddComponent<Outline>();
             button.txt.rectTransform.anchorMin = button.txt.rectTransform.anchorMax = button.txt.rectTransform.pivot = new Vector2(1, 0);
-            button.txt.rectTransform.sizeDelta = buttons[i].size * Screen.height;
+            button.cdImage.rectTransform.sizeDelta = button.image.rectTransform.sizeDelta;
             button.txt.rectTransform.anchoredPosition = Vector2.zero;
 
             button.txt.font = font;
@@ -119,11 +125,10 @@ public class LCHJoystickButtons : MonoBehaviour {
             button.txt.color = cdFontColor;
        ;
             button.txt.fontSize = (int)fontSize;
-           
+            button.txt.rectTransform.localScale = Vector3.one;
             ol.effectColor = cdFontShadowColor;
 
-            button.information = buttons[i];
-            objects.Add(button);
+ 
 
             lb.button = button;
             lb.character = character.character;
@@ -133,6 +138,9 @@ public class LCHJoystickButtons : MonoBehaviour {
             lb.randMat = randMat;
             lb.keyCode = buttons[i].keyCode;
             lb.targetMat = targetMat;
+
+
+            
         }
     }
     // Use this for initialization
@@ -174,12 +182,13 @@ public class LCHJoystickButtons : MonoBehaviour {
         if (null == character)
             return;
         var chr = character.character;
-    
-        for (int i = 0, l = objects.Count; i < l; i++)
+
+        for (int i = 0; i < buttons.Length; i++)
         {
-            var obj = objects[i];
-            var _param = chr.GetSkillCDSkillParams(obj.information.cdName );
-            if (obj.information.cd &&_param != null && _param.GetMaxCD() > 0.0001f && _param.cd> 0.0001f)
+            var obj = buttons[i];
+ 
+            var _param = chr.GetSkillCDSkillParams(obj.cdName );
+            if (obj.cd &&_param != null && _param.GetMaxCD() > 0.0001f && _param.cd> 0.0001f)
             {
                 obj.cdImage.gameObject.SetActive(true);
                 obj.cdImage.fillAmount = _param.cd / _param.GetMaxCD();

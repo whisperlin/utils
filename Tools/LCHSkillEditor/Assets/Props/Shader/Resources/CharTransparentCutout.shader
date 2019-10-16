@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "YuLongZhi/Char-Transparent-Cutout"
 {
 	Properties
@@ -17,7 +19,7 @@ Shader "YuLongZhi/Char-Transparent-Cutout"
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-
+			#include "UnityCG.cginc"
 			struct appdata
 			{
 				fixed4 vertex : POSITION;
@@ -38,7 +40,7 @@ Shader "YuLongZhi/Char-Transparent-Cutout"
 			v2f vert (appdata v)
 			{
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				return o;
 			}

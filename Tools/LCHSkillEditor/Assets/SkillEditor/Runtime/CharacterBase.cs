@@ -92,21 +92,22 @@ public partial class CharacterBase : MonoBehaviour
         UpdateTrigger();
         LCharacterAction.UpdateAction(ref curAction, actionList, character, information);
     }
-
  
      
     LCharacterDictionary<LCharacterHitDataCmp> triggers = new LCharacterDictionary<LCharacterHitDataCmp>();
+    
     void OnTriggerEnter(Collider other)
     {
         LCharacterHitDataCmp hitData = other.gameObject.GetComponent<LCharacterHitDataCmp>();
         if (hitData != null)
         {
-            //Debug.LogError("OnTriggerEnter " + other.name);
+            //character.OnHit(hitData.data);
             LCharacterAction.OnHit(other, hitData.data, ref curAction, actionList, character, information);
             hitData._collider = other;
             hitData.id = hitData._collider.GetInstanceID();
             hitData._colliderObj = other.gameObject;
-            triggers.Add(hitData.id, hitData);
+            if(hitData.needTouchState)
+                triggers.Add(hitData.id, hitData);
         }
     }
     private void OnTriggerStay(Collider other)
@@ -116,8 +117,7 @@ public partial class CharacterBase : MonoBehaviour
         {
             LCharacterAction.OnHit(v._collider, v.data, ref curAction, actionList, character, information);
         }
-        //LChatacterAction.OnHit(v._collider, v.data, ref curAction, actionList, this, information);
-        //Debug.LogError("OnTriggerStay"+other.name);
+        
     }
     private void OnTriggerExit(Collider other)
     {

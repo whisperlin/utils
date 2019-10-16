@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Xml;
+
 public class DirectMesh  {
 
 
@@ -377,10 +379,12 @@ public class DirectMesh  {
         m.RecalculateNormals();
 
     }
+    
+     
     [MenuItem("Test/Mesh")]
     static void Start1()
     {
-        if (Selection.objects.Length == 1)
+        /*if (Selection.objects.Length == 1)
         {
             var obj = Selection.objects[0];
             
@@ -394,9 +398,9 @@ public class DirectMesh  {
                 //BuildDirCtrl(m, 1f, 3f);
                 //AssetDatabase.SaveAssets();
             }
-        }
+        }*/
         
-        
+
     }
 	static void Start () {
         Mesh m;

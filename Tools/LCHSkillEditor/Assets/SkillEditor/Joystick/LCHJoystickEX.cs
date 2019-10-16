@@ -6,12 +6,12 @@ using UnityEngine.EventSystems;
 
 public class LCHJoystickEX : MonoBehaviour ,/*IPointerDownHandler,IPointerUpHandler,IPointerClickHandler,*/ IBeginDragHandler,IDragHandler,IEndDragHandler
 {
-    [Header("触碰区域占屏幕的宽度比例")]
+    [Header("触碰区域占屏幕的高度比例")]
     [Range(0,1f)]
     public float width = 0.5f;
     [Header("触碰区域占屏幕的高度比例")]
     [Range(0, 1f)]
-    public float height = 0.7f;
+    public float height = 0.5f;
 
     public float backgroundHeight = 0.2f;
     public float buttonHeight = 0.1f;
@@ -21,16 +21,28 @@ public class LCHJoystickEX : MonoBehaviour ,/*IPointerDownHandler,IPointerUpHand
     Vector2 beginPos;
     public float radius = 50f;
 
-    void Start()
+
+
+    public void UpdateScreenSize(int w,int h)
     {
         if (null != panel)
         {
-            panel.rectTransform.sizeDelta = new Vector2(Screen.width*width, Screen.height*height);
-            background.rectTransform.sizeDelta = new Vector2(Screen.height * backgroundHeight, Screen.height * backgroundHeight);
-            button.rectTransform.sizeDelta = new Vector2(Screen.height * buttonHeight, Screen.height * buttonHeight);
+            if (width < 0.001f)
+            {
+                panel.rectTransform.sizeDelta = new Vector2(h * height, h * height);
+            }
+            else
+            {
+                panel.rectTransform.sizeDelta = new Vector2(w * width, h * height);
+            }
+            background.rectTransform.sizeDelta = new Vector2(h * backgroundHeight, h * backgroundHeight);
+            button.rectTransform.sizeDelta = new Vector2(h * buttonHeight, h * buttonHeight);
         }
-       
-
+    }
+    void Start()
+    {
+ 
+        //UpdateScreenSize(Screen.width, Screen.height);
         background.gameObject.SetActive(false);
     }
     
@@ -87,11 +99,5 @@ public class LCHJoystickEX : MonoBehaviour ,/*IPointerDownHandler,IPointerUpHand
 
  
 
-    // Use this for initialization
     
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

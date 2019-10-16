@@ -181,8 +181,7 @@ public interface LCharacterInterface
     void OnHit(Collider other, LCharacterColliderData data, Vector3 dir, ref LCharacterAction curAction, List<LCharacterAction> actionList , LChatacterInformationInterface information);
 
     SkillParams GetSkillCDSkillParams(string cdName );
-  
- 
+
     void AddParam(string cdName, SkillParams _params);
     void RemoveParam(string cdName);
     void UpdateSkillParams();
@@ -195,8 +194,13 @@ public interface LCharacterInterface
     void UpdateSkillRange(string cdName, float skillRange, float skillWidth);
     Vector3 GetCurForward();
     Vector3 GetCurXZForward();
+    void SetAnimationLoop(string animName, bool v);
 
 
+    int GetHp();
+    void SetHp(int hp);
+    void OnHit(LCharacterHitData data);
+    void DestroySelf();
 }
 
 //角色相关数据的抽象接口。

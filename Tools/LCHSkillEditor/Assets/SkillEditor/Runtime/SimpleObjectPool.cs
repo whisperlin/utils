@@ -49,6 +49,8 @@ public class SimpleGameObjectPool
 
 public class SimplePool<T> where T:Component
 {
+    public delegate T CreateHandle();
+    public CreateHandle createHandle = null;
     List<T> objs = new List<T>();
     public T Get()
     {
@@ -60,8 +62,16 @@ public class SimplePool<T> where T:Component
         }
         else
         {
-            GameObject g = new GameObject();
-            o = g.AddComponent<T>();
+            if (null == createHandle)
+            {
+                o = createHandle();
+            }
+            else
+            {
+                GameObject g = new GameObject();
+                o = g.AddComponent<T>();
+            }
+            
         }
         
         return o;

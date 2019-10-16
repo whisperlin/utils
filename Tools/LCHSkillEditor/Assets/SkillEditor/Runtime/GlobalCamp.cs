@@ -78,12 +78,7 @@ public class GlobalCamp : MonoBehaviour {
             }
              
         }
-        /*if (campInformations.Length > 0)
-        {
-            var c = campInformations[0];
-            Physics.IgnoreLayerCollision(c.self, jumpLayer, false);
-        }*/
-        //jumpLayer
+ 
     }
 
 

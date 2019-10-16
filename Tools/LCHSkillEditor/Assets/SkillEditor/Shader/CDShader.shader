@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "TA/UI/CD Shader" {
 	Properties{
@@ -65,7 +67,7 @@ Shader "TA/UI/CD Shader" {
 					o.tangentDir = normalize(mul(unity_ObjectToWorld, float4(v.tangent.xyz, 0.0)).xyz);
 					o.bitangentDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);
 					o.posWorld = mul(unity_ObjectToWorld, v.vertex);
-					o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+					o.pos = UnityObjectToClipPos(v.vertex);
 					#ifdef PIXELSNAP_ON
 						o.pos = UnityPixelSnap(o.pos);
 					#endif

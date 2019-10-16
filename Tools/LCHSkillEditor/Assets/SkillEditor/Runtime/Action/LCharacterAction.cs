@@ -29,7 +29,8 @@ public abstract class LCharacterAction {
         return priority;
     }
     public int priority = 0;
-
+    //播过场的时候把这个直接打开就好了。
+    public static bool pauseActions = false;
     public abstract IEnumerator onInit(LChatacterRecourceInterface loader, LCharacterInterface character, AddCoroutineFun fun);
     public abstract bool isQualified(LCharacterAction curAction, LCharacterInterface character, LChatacterInformationInterface information);
     public abstract void beginAction(LCharacterInterface character, LChatacterInformationInterface information);
@@ -98,9 +99,12 @@ public abstract class LCharacterAction {
     {
     }
 
+    
     public static void UpdateAction(ref LCharacterAction curAction, List<LCharacterAction> actions, LCharacterInterface character, LChatacterInformationInterface information)
     {
 
+        if (pauseActions)
+            return;
         if (null != curAction)
         {
             if (curAction.isFinish(character, information))

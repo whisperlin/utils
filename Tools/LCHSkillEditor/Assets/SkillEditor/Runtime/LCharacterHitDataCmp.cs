@@ -7,6 +7,8 @@ public class LCharacterHitDataCmp : MonoBehaviour {
 
     public int id;
     public LCharacterColliderData data = new LCharacterColliderData();
-    public Collider _collider;
-    public GameObject _colliderObj;
+    public bool needTouchState = true;
+    internal Collider _collider;
+    internal GameObject _colliderObj;
+    
 }

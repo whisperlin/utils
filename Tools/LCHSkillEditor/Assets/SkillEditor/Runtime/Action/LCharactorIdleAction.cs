@@ -10,8 +10,10 @@ public  class LCharactorIdleAction : LCharacterAction
     
     public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
+ 
         //character.ResetAndPlay(animName);
         character.CrossFade(animName,0.05f);
+        character.SetAnimationLoop(animName, true);
         //Debug.LogError("play idle "+ animName);
         //character.Play(animName);
     }

@@ -223,7 +223,7 @@ public partial class SkillEditorMainWindow
             if (null != SkillEditorWindow.selectEvent && null != SkillEditorWindow.selectEventChannel)
             {
                 int objId = SkillEditorWindow.selectEventChannel.objId;
-                var _object = skill.GetObject(objId);
+                var _object_type = skill.GetObjectType(objId);
                 
                 LCHChannelType _type = (LCHChannelType)SkillEditorWindow.selectEventChannel.type;
                 if (_type == LCHChannelType.Event)
@@ -247,7 +247,7 @@ public partial class SkillEditorMainWindow
                         property_params["soundIds"] = soundIds;
                         property_params["objectNames"] = objectNames;
                         property_params["objectid"] = objectid;
-                        PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetEventTemp(), SkillEditorData.Instance.skillsData.GetEventNames(), property_params, _object.type);
+                        PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetEventTemp(), SkillEditorData.Instance.skillsData.GetEventNames(), property_params, _object_type);
                     }
                 }
                 else if (_type == LCHChannelType.Object)
@@ -260,7 +260,7 @@ public partial class SkillEditorMainWindow
                     }
  
                     property_params["anims"] = anims;
-                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetObjecctTemp(), SkillEditorData.Instance.skillsData.GetObjectNames(), property_params, _object.type);
+                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetObjecctTemp(), SkillEditorData.Instance.skillsData.GetObjectNames(), property_params, _object_type);
                 }
                 else if (_type == LCHChannelType.RoleState)
                 {
@@ -271,7 +271,7 @@ public partial class SkillEditorMainWindow
                         anims = SkillEditorData.Instance.skill.GetAnimList(objId);
                     }
                     
-                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetRoleStateTemp(), SkillEditorData.Instance.skillsData.GetRoleStateNames(), null, _object.type);
+                    PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetRoleStateTemp(), SkillEditorData.Instance.skillsData.GetRoleStateNames(), null, _object_type);
                 }
             }
              
