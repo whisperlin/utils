@@ -25,6 +25,11 @@ public class LCHSelecter : MonoBehaviour {
         LCharacterInterface chr;
         if (CharacterBase.information.TryGetCharacter(id, out chr))
         {
+            if (chr.IsDead())
+            {
+                chr.SetTargetId(-1);
+            }
+
             mr.enabled = true;
             transform.position = chr.GetCurPosition() + delta;
             if (VirtualInput.isTargetting)

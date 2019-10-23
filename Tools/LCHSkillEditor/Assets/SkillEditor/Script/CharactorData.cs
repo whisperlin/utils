@@ -322,7 +322,12 @@ public class CharactorData : LChatacterInformationInterface
     Dictionary<int, LCharacterInterface> charactersMap = new Dictionary<int, LCharacterInterface>();
     public bool TryGetCharacter(int targetId,out LCharacterInterface chr)
     {
-        return charactersMap.TryGetValue(targetId, out chr);
+        bool b =  charactersMap.TryGetValue(targetId, out chr);
+        
+ 
+     
+        
+        return b;
     }
 
     public List<LCharacterInterface> GetAllCharacters()

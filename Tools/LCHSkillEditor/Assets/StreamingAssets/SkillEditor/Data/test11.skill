@@ -1,1 +1,130 @@
-{"id":"test10","roleId":"quanshi","maxLength":0.31,"objs":[{"id":0,"name":"对象-未命名","type":1,"propertys":{"mod":"Assets/Props/Prefabs/quan_shi/Sphere.prefab","mod_name":"Sphere","bind_name":"","bind":0}},{"id":1,"name":"触发器-未命名","type":3,"propertys":{"bind":1,"objid":0,"bind_name":"","mod_name":"","mod":""}},{"id":2,"name":"对象-未命名","type":1,"propertys":{"mod":"Assets/Props/Prefabs/quan_shi/attack9.prefab","mod_name":"attack9","bind_name":"","bind":0}}],"channels":[{"type":2,"objId":0,"times":[0],"values":[0.17]},{"type":1,"objId":0,"times":[0],"values":[1.21]}],"events":[{"type":100,"objId":-1,"times":[0],"values":[{"enable":true,"anim":"Attack1","crossFade":true,"ex_action":0}]},{"type":100,"objId":0,"times":[20],"values":[{"enable":true,"anim":"","crossFade":true,"ex_action":3,"flyToolType":0,"flyToolSpeed":10.0,"flyToolTime":2.0}]},{"type":101,"objId":1,"times":[20],"values":[{"enable":true,"hp":0,"mp":0,"hp_p":0,"mp_p":0,"status":1,"slow_motion":0.0,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":2,"hit_dir":0,"ctrl_time":0.0,"hit_back":10.0,"hit_back_time":0.1,"hit_fly":3.0,"IsFlyTool":2,"FlyToolSpeed":10.0,"FlyToolTime":2.0}]}],"skillRange":7.9,"skillWidth":1.0}
+{
+	"id": "test10",
+	"roleId": "quanshi",
+	"maxLength": 0.31,
+	"objs": [
+		{
+			"id": 0,
+			"name": "对象-未命名",
+			"type": 1,
+			"propertys": {
+				"mod": "Assets/Props/Prefabs/quan_shi/Sphere.prefab",
+				"mod_name": "Sphere",
+				"bind_name": "",
+				"bind": 0
+			}
+		},
+		{
+			"id": 1,
+			"name": "触发器-未命名",
+			"type": 3,
+			"propertys": {
+				"bind": 1,
+				"objid": 0,
+				"bind_name": "",
+				"mod_name": "",
+				"mod": ""
+			}
+		},
+		{
+			"id": 2,
+			"name": "对象-未命名",
+			"type": 1,
+			"propertys": {
+				"mod": "Assets/Props/Prefabs/quan_shi/attack9.prefab",
+				"mod_name": "attack9",
+				"bind_name": "",
+				"bind": 0
+			}
+		}
+	],
+	"channels": [
+		{
+			"type": 2,
+			"objId": 0,
+			"times": [
+				0
+			],
+			"values": [
+				0.17
+			]
+		},
+		{
+			"type": 1,
+			"objId": 0,
+			"times": [
+				0
+			],
+			"values": [
+				1.21
+			]
+		}
+	],
+	"events": [
+		{
+			"type": 100,
+			"objId": -1,
+			"times": [
+				0
+			],
+			"values": [
+				{
+					"enable": true,
+					"anim": "Attack1",
+					"crossFade": true,
+					"ex_action": 0
+				}
+			]
+		},
+		{
+			"type": 100,
+			"objId": 0,
+			"times": [
+				20
+			],
+			"values": [
+				{
+					"enable": true,
+					"anim": "",
+					"crossFade": true,
+					"ex_action": 3,
+					"flyToolType": 0,
+					"flyToolSpeed": 10.0,
+					"flyToolTime": 2.0
+				}
+			]
+		},
+		{
+			"type": 101,
+			"objId": 1,
+			"times": [
+				20
+			],
+			"values": [
+				{
+					"enable": true,
+					"hp": 150,
+					"mp": 0,
+					"hp_p": 0,
+					"mp_p": 0,
+					"status": 1,
+					"slow_motion": 0.0,
+					"reacting_force": 0.0,
+					"reacting_force_time": 0,
+					"hit_sound": -2,
+					"hit_effect": 2,
+					"hit_dir": 0,
+					"ctrl_time": 0.0,
+					"hit_back": 10.0,
+					"hit_back_time": 0.1,
+					"hit_fly": 3.0,
+					"IsFlyTool": 2,
+					"FlyToolSpeed": 10.0,
+					"FlyToolTime": 2.0
+				}
+			]
+		}
+	],
+	"skillRange": 7.9,
+	"skillWidth": 1.0
+}

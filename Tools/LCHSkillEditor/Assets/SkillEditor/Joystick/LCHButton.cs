@@ -405,6 +405,9 @@ public class LCHButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             LCharacterInterface chr = _characters[i];
             if (chr.GetCamp() != _camp)
             {
+                if (chr.IsDead())
+                    continue;
+
                 float distance = Vector3.Distance(chr.GetCurPosition(), curPos);
                 if (distance < _param.skillRange)
                 {

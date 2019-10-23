@@ -64,12 +64,13 @@ public class SimplePool<T> where T:Component
         {
             if (null == createHandle)
             {
-                o = createHandle();
+                GameObject g = new GameObject();
+                o = g.AddComponent<T>();
             }
             else
             {
-                GameObject g = new GameObject();
-                o = g.AddComponent<T>();
+                o = createHandle();
+                
             }
             
         }

@@ -7,7 +7,8 @@ Shader "Arm/PBR" {
         _Metallic ("Metallic", Range(0, 1)) = 0
         _Gloss ("Gloss", Range(0, 1)) = 0.8
 
-		[Toggle] _ENABLE_ARM("ENABLE_Rad", Float) = 0
+		[Toggle] _ENABLE_ARM("ENABLE_ARM", Float) = 0
+		[Toggle] _ENABLE_ARM2("ENABLE_ARM2", Float) = 0
  
  
 
@@ -41,6 +42,7 @@ Shader "Arm/PBR" {
             #pragma multi_compile_fog
 
 			#pragma multi_compile  _ENABLE_ARM_OFF _ENABLE_ARM_ON
+			#pragma multi_compile  _ENABLE_ARM2_OFF _ENABLE_ARM2_ON
  
 		
             #pragma only_renderers d3d9 d3d11 glcore gles 
@@ -118,6 +120,15 @@ Shader "Arm/PBR" {
 				float c = NdotH*NdotH   *   (n4-1) +1;
 				float b = 4*3.14*       c*c  *     LdotH*LdotH     *(roughness+0.5);
 				return n4/b;
+
+			}
+
+			float FilamentBRDF(float roughness, float NdotH, float LdotH)
+			{
+				float n4 = roughness * roughness*roughness*roughness;
+				float c = NdotH * NdotH   *   (n4 - 1) + 1;
+				float b = 4 * 3.14*       c*c  *     LdotH*LdotH     *(roughness + 0.5);
+				return n4 / b;
 
 			}
 			float ArmBRDFEnv(float roughness ,float NdotV )
@@ -223,7 +234,7 @@ Shader "Arm/PBR" {
                 float GeometricShadow = SmithJointGGXVisibilityTerm( NdotL, NdotV, roughness );
                 float NormalDistribution = GGXTerm(NdotH, roughness);
                 float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
-                float specularPBL = (GeometricShadow*NormalDistribution) * UNITY_PI;
+                float specularPBL = (GeometricShadow*NormalDistribution) * UNITY_PI*FresnelFunction;
 
 #endif
 
@@ -245,15 +256,12 @@ Shader "Arm/PBR" {
 				 #ifdef _ENABLE_ARM_ON 
 				  float3 directSpecular = attenColor*specularPBL;
 				 #else
-				 float3 directSpecular = attenColor*specularPBL*FresnelFunction;
+				 float3 directSpecular = attenColor*specularPBL;
 				 #endif
 				
  
  
-#ifdef _ENABLE_ARM_ON 
- 
-
-
+#ifdef  _ENABLE_ARM2_ON
 
 				half surfaceReduction;
 				#ifdef UNITY_COLORSPACE_GAMMA
@@ -264,8 +272,9 @@ Shader "Arm/PBR" {
 
 		 
 				float3 indirectSpecular = (gi.indirect.specular);
+				indirectSpecular += ArmBRDFEnv(roughness, NdotV);
 				indirectSpecular *= specularColor;
-				indirectSpecular +=  ArmBRDFEnv( roughness , NdotV );
+				
  
 
 				indirectSpecular *= surfaceReduction;

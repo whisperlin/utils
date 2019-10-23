@@ -6,6 +6,7 @@ using UnityEngine;
 public partial class LCharacter : CharacterBase, LCharacterInterface
 {
 
+    
     protected override void CheckInterface()
     {
         character = this;
@@ -261,11 +262,23 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
 
         this.hp -= (int)_hp;
         this.hp -= (int)_mp;
-        Debug.LogError("hp = " + hp + " - "+_hp + " - "+_mp);
+        if (null != HitFontManager.globalMgr)
+        {
+            HitFontManager.globalMgr.CreateFont(0, _hp,character.GetCurPosition());
+        }
+        
+
     }
 
     public void DestroySelf()
     {
         GameObject.Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        information.RemoveCharacter(this);
+    }
+    
+     
 }

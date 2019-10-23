@@ -201,6 +201,7 @@ public interface LCharacterInterface
     void SetHp(int hp);
     void OnHit(LCharacterHitData data);
     void DestroySelf();
+ 
 }
 
 //角色相关数据的抽象接口。
