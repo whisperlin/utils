@@ -6,9 +6,9 @@ Shader "Filament/PBR" {
         _MainTex ("Base Color", 2D) = "white" {}
         _Metallic ("Metallic", Range(0, 1)) = 0
         _Gloss ("Gloss", Range(0, 1)) = 0.8
-		anisotropy("anisotropy",Range(-1,1)) = 1
+		anisotropy("anisotropy",Range(-20,1)) = 1
 
-
+		//基础，Filament，布料，金属
 		[KeywordEnum(BASE, Filament, FilamentAsn ,FilamentAni)] _TYPE("SPE TYPE", Float) = 0
 		//[Toggle] _ENABLE_ARM("ENABLE_ARM", Float) = 0
 		[Toggle] _ENABLE_ARM2("ENABLE_ARM2", Float) = 0
@@ -38,11 +38,9 @@ Shader "Filament/PBR" {
             #include "Lighting.cginc"
             #include "UnityPBSLighting.cginc"
             #include "UnityStandardBRDF.cginc"
+			
             #pragma multi_compile_fwdbase_fullshadows
-            #pragma multi_compile LIGHTMAP_OFF LIGHTMAP_ON
-            #pragma multi_compile DIRLIGHTMAP_OFF DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
-            #pragma multi_compile DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
-            #pragma multi_compile_fog
+         
 
 			#pragma multi_compile  _TYPE_BASE _TYPE_FILAMENT _TYPE_FILAMENTASN _TYPE_FILAMENTANI
 
@@ -207,13 +205,13 @@ Shader "Filament/PBR" {
 				float HdotT = dot(t, h);
 				float HdotB = dot(b, h);
 				float D = TrowbridgeReitzAnisotropicNormalDistribution(_Gloss,anisotropy, NdotH, HdotT, HdotB);
-				//float D = WardAnisotropicNormalDistribution(_Gloss, anisotropy,   NdotL,   NdotV,   NdotH, HdotT, HdotB);
-				//float D = D_GGX_Anisotropic(NdotH,  TdotL, HdotB, at,ab);
+	 
 				
 				float3  F = F_Schlick(LdotH, f0);
-				float V = WardGeometricShadowingFunction(NdotL, NdotV, dot(v,h), NdotH);
-				//float V = V_SmithGGXCorrelated_Anisotropic(at,  ab,  TdotV,  BdotV,TdotL,  BdotL, NdotV, NdotL);
-				 
+				
+				float V = V_SmithGGXCorrelated(NdotV, NdotL, roughness);
+				//float V = WardGeometricShadowingFunction(NdotL, NdotV, dot(v,h), NdotH);
+	 
 				return (D * V) * F;
 			}
 			float FilamentBRDF(float roughness, float NdotH, float NdotL, float NdotV, float LdotH, float3 f0)
@@ -252,6 +250,7 @@ Shader "Filament/PBR" {
 				float D = D_Charlie(NdotH, roughness);
 				//float D = D_Ashikhmin(NdotH, roughness);
 				float3  F = F_Schlick(LdotH, f0);
+				
 				float V = V_SmithGGXCorrelated(NdotV, NdotL, roughness);
 				return saturate ( (D * V) * F);
 			}
@@ -263,8 +262,9 @@ Shader "Filament/PBR" {
 			}
 			float UnityBaseBRDF(float roughness ,float NdotH, float NdotL,float NdotV, float LdotH ,float3 specularColor)
 			{
-				float GeometricShadow = SmithJointGGXVisibilityTerm(NdotL, NdotV, roughness);
 				float NormalDistribution = GGXTerm(NdotH, roughness);
+				float GeometricShadow = SmithJointGGXVisibilityTerm(NdotL, NdotV, roughness);
+				
 				float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
 				return (GeometricShadow*NormalDistribution) * UNITY_PI*FresnelFunction;
 			}

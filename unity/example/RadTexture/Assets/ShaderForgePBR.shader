@@ -199,6 +199,7 @@ Shader "Shader Forge/PBR" {
 
                 float GeometricShadow = SmithJointGGXVisibilityTerm( NdotL, NdotV, roughness );
                 float NormalDistribution = GGXTerm(NdotH, roughness);
+				
                 
 				
  
@@ -209,17 +210,18 @@ Shader "Shader Forge/PBR" {
 				//float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
 				float3 FresnelFunction = FresnelTerm(specularColor, LdotH);
 #endif
- 
+			
 
 				float specularPBL = (GeometricShadow*NormalDistribution) * UNITY_PI;
-				#ifdef UNITY_COLORSPACE_GAMMA
+				
+				#ifdef FresnelFunction
 					specularPBL = sqrt(max(1e-4h, specularPBL));
 				#endif
 					specularPBL = max(0, specularPBL * NdotL);
 				#if defined(_SPECULARHIGHLIGHTS_OFF)
 					specularPBL = 0.0;
 				#endif
-
+					
 				specularPBL *= any(specularColor) ? 1.0 : 0.0;
 
 				//float3 directSpecular = attenColor*specularPBL * UNITY_PI;
