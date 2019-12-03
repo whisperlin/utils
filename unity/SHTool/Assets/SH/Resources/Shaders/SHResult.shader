@@ -1,15 +1,13 @@
 ﻿Shader "SH/SHResult"
 {
- 
 	Properties
 	{
- 
-		[Toggle(LOW_LEVEL_SH)] _SH9_ENABLE("sh9", Float) = 0
- 
+		[Toggle(ENABLE_FANCY)] _Fancy("Fancy?", Float) = 0
 	}
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
+
 		LOD 100
 
 		Pass
@@ -19,10 +17,7 @@
 			#pragma fragment frag
 			// make fog work
 			#pragma multi_compile_fog
-
-			#pragma multi_compile _ LOW_LEVEL_SH
- 
-			
+			#pragma shader_feature ENABLE_FANCY
 			#include "UnityCG.cginc"
 			#include "SHGlobal.cginc"
 			
@@ -55,12 +50,10 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-#if LOW_LEVEL_SH
-				fixed3 c = g_sh(i.worldNormal);
- 
+#if ENABLE_FANCY
+				fixed3 c = g_sh3(i.worldNormal);
 #else
 				fixed3 c = g_sh(i.worldNormal);
- 
 #endif
 				
 				fixed4 col = float4(c,1);

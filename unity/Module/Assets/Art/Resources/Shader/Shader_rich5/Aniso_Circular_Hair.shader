@@ -13,6 +13,7 @@ Shader "DAFUHAO_Editor/Character/Aniso Circular Hair" {
 		    	_emssion ("自发光", Color) = (0,0,0,1)
 		    	_maskmap("_maskmap" ,2D) =  "white" {}
 		    	_maskvalue("_maskvalue",Float ) = 1
+		_smoonthCtrl("_smoonthCtrl", Range(0,1)) = 1.0
 
 	}
 	
@@ -40,7 +41,7 @@ Shader "DAFUHAO_Editor/Character/Aniso Circular Hair" {
 		fixed4 _SpecularColor, _Color;
 		 uniform sampler2D _BumpMap;
 
-
+		 float _smoonthCtrl;
 		struct  vertexin{ 
 			float2 uv0:TEXCOORD0 ;
 			float4 vertex:POSITION ;

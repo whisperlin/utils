@@ -7,7 +7,7 @@
 		//_ShadowPower("Shader Power",Range(-1,0)) = 0
 		_MainTex ("Texture", 2D) = "white" {}
 
-		_EdgeThickness ("Outline Thickness", Float) = 1
+		_EdgeThickness ("Outline Thickness", Range(0.0001,0.01)) = 0.01
 		_EdgeColor ("_EdgeColor", Color) = (0,0,0,1)
 	}
 	SubShader

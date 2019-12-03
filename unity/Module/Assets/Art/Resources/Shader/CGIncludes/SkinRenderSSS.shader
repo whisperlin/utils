@@ -15,7 +15,8 @@
 		SPLSampleMap("SPLSampleMap",CUBE) = "sky"
 		_BRDFTex("BRDF (RGB)", 2D) = "white" {}
  
-		_CurveScale("Curvature Scale", Range(0, -1)) = -1
+		_CurveScale("Curvature Scale", Range(-0.001, -0.8)) = -0.01
+		_Roughness("_Roughness",Range(0,2)) = 1
 	}
 		SubShader
 		{
@@ -186,7 +187,7 @@ float DistributionGGX(float perceptualRoughness ,float NdotH)
 
 
 
-
+float _Roughness;
 
 
 
@@ -195,7 +196,7 @@ float DistributionGGX(float perceptualRoughness ,float NdotH)
 			// sample the texture
 			float4 _Metallic_var = tex2D(_Metallic, i.uv1);
 			float metalness = _Metallic_var.r;
-			float perceptualRoughness = _Metallic_var.a;
+			float perceptualRoughness = _Metallic_var.a * _Roughness;
 			float3 L = LightDir0;
 
 			float3 _BumpMap_var = UnpackNormal(tex2D(_BumpMap, TRANSFORM_TEX(i.uv, _BumpMap)));
