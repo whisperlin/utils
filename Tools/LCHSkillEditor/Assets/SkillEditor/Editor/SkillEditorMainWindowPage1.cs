@@ -79,7 +79,12 @@ public partial class SkillEditorMainWindow
         var buttonRect = EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("添加对象", layourWidth80))
         {
-            SkillEditorData.Instance.skillsData.SkillAddObject(  SkillEditorData.Instance.CurSkillId);
+            int _id = SkillEditorData.Instance.skillsData.SkillAddObject(  SkillEditorData.Instance.CurSkillId);
+
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.PosY);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.PosZ);
+            SkillEditorData.Instance.skillsData.SkillEventChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.Object);
+            
         }
         if (GUILayout.Button("添加碰撞体", layourWidth80))
         {

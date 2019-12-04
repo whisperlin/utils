@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(LCharacter))]
 public class ActionIdle : MonoBehaviour {
 
-    public string animName = "Idle";
+    public string animName = "FightIdle";
     public int priority = 5;
     void Start()
     {

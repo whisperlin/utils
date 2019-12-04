@@ -367,6 +367,10 @@ public class LCHSkillData
     public float skillRange = 1f;//技能攻击范围。
 
     public float skillWidth = 1f;//技能宽度。
+    public string CdName = "";
+    public int skillIndex = -1;
+    public SkillParams.TYPE type = SkillParams.TYPE.CLICK;
+
     public void GetidsAndName(ref string[] items0, ref int[] ids)
     {
         int objLen = objs.Length;

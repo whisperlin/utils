@@ -5,6 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public struct CampInformation
 {
+     
+    public CampInformation(int s,int a,int o)
+    {
+        self = s;
+        attack = a;
+        other = o;
+    }
     [Header("角色物理碰撞层")]
     [Range(0,31)]
     public int self;
@@ -19,7 +26,7 @@ public struct CampInformation
 public class GlobalCamp : MonoBehaviour {
 
     public LayerMask ground ;
-    public CampInformation[] campInformations = new CampInformation[0];
+    public CampInformation[] campInformations = new CampInformation[2] { new CampInformation(22,23,24), new CampInformation(25,26,27)   };
     public static CampInformation[]  globalCampInformations;
 
     //public int jumpLayer = 20;

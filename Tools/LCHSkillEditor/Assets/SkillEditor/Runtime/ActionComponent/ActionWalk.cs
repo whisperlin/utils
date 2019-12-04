@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(LCharacter))]
 public class ActionWalk : MonoBehaviour
 {
-    public string animName = "Run";
+    public string animName = "FightRun";
     public int priority = 10;
     public float speed = 10f;
 

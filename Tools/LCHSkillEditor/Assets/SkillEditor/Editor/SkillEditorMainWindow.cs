@@ -139,7 +139,15 @@ public partial class SkillEditorMainWindow : EditorWindow
         {
             SkillEditorData.Instance.UpdateModul();
             SkillEditorData.Instance.UpdateAnimation();
+
         }
+#if UNITY_EDITOR
+       /* System.Reflection.Assembly assembly = typeof(UnityEditor.EditorWindow).Assembly;
+        System.Type type1 = assembly.GetType("UnityEditor.GameView");
+        EditorWindow gameview = EditorWindow.GetWindow(type1);
+        gameview.Repaint();*/
+        SceneView.RepaintAll();
+#endif
     }
     void Update()
     {

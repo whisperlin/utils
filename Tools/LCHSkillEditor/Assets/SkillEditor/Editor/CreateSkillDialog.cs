@@ -31,7 +31,26 @@ public class CreateSkillDialog : EditorWindow
                 EditorUtility.DisplayDialog("警告", "id不能为空", "确定");
                 return;
             }
-            SkillEditorData.Instance.skillsData.CreateSkill(id, roleId);
+            if (SkillEditorData.Instance.skillsData.CreateSkill(id, roleId))
+            {
+                SkillEditorData.Instance.skillsData.SkillAddBoxCollider(id);
+                //SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, -1, LCHChannelType.PosX);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, -1, LCHChannelType.PosY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, -1, LCHChannelType.PosZ);
+
+                //SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.PosX);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.PosY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.PosZ);
+
+
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.ScaleX, false);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.ScaleY, false);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.ScaleZ, false);
+
+
+                SkillEditorData.Instance.skillsData.SkillEventChannel(id, -1, LCHChannelType.Object);
+                SkillEditorData.Instance.skillsData.SkillEventChannel(id, 0, LCHChannelType.Event);
+            }
             Close();
 
         }

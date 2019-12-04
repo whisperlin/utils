@@ -656,7 +656,7 @@ public class SkillData {
         SaveSkill(skillId);
  
     }
-    public void SkillAddObject(params object[] args)
+    public int SkillAddObject(params object[] args)
     {
         string skillId = (string)args[0];
         LCHSkillData skill = GetSkill(skillId);
@@ -680,11 +680,12 @@ public class SkillData {
         LCHSkillData s = new LCHSkillData();
         skill.objs =  ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
         SaveSkill(skillId);
+        return id;
     }
 
     
 
-    public void CreateSkill(params object[] arg)
+    public bool CreateSkill(params object[] arg)
     {
         string id = arg[0].ToString();
         string roidId = arg[1].ToString();
@@ -693,7 +694,7 @@ public class SkillData {
         if (this.loader.Exists(id, SkillDataType.SKILL))
         {
             EditorUtility.DisplayDialog("提示", "同id技能已经存在", "确定");
-            return;
+            return false;
         }
 #endif
         var roid = GetRole(roidId);
@@ -705,6 +706,7 @@ public class SkillData {
         string json = JsonConvert.SerializeObject(skill);
         loader.SaveFile(id, json, SkillDataType.SKILL);
         SaveRole(roidId);
+        return true;
 
     }
 

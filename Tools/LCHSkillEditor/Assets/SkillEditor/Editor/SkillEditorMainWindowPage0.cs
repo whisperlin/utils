@@ -171,18 +171,13 @@ public partial class SkillEditorMainWindow
             DeleteRole();
             OnRoleListModify();
         }
-
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         GUILayout.EndHorizontal();
-
         index = EditorGUILayout.Popup("过滤:", index + 1, options) - 1;
-
         scrollViewPos = GUILayout.BeginScrollView(scrollViewPos, GUILayout.Height(120));
-
         roleIndex = GUILayout.SelectionGrid(roleIndex, roleIds, 1);
 
-       
         GUILayout.EndScrollView();
 
         SpeceLine();
@@ -215,24 +210,23 @@ public partial class SkillEditorMainWindow
         if (GUILayout.Button("删除技能"))
         {
             DeleteSkill();
-            
-        
-            //skills.GetSkill();
         }
         GUILayout.EndHorizontal();
         GUILayout.Label("技能列表:");
         scrollViewPos2 = GUILayout.BeginScrollView(scrollViewPos2 );
         if ( SkillEditorData.Instance.CurRoleId.Length > 0)
         {
-            if (selSkillInt >= roleData.skills.Length)
+            if (roleData != null  )
             {
-                selSkillInt = 0;
+                if (selSkillInt >= roleData.skills.Length)
+                {
+                    selSkillInt = 0;
+                }
+                selSkillInt = GUILayout.SelectionGrid(selSkillInt, roleData.skills, 1);
             }
-            selSkillInt = GUILayout.SelectionGrid(selSkillInt, roleData.skills, 1);
             CheckSkillUpdate(selSkillInt);
         }
- 
-        
+
         GUILayout.EndScrollView();
     }
     

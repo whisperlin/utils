@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class SkillEditorWindow : EditorWindow
 {
-   
+    string[] operaStr = new string[] { "点击", "方向", "定点","目标" };
     public static void Init()
     {
         SkillEditorWindow window = (SkillEditorWindow)EditorWindow.GetWindow(typeof(SkillEditorWindow));
@@ -39,7 +39,7 @@ public class SkillEditorWindow : EditorWindow
     public float ChannelHeight = 30f; 
     public float fps = 10;
     Rect scrollViewRect;
-    Vector2 offset = new Vector3(300,50);
+    Vector2 offset = new Vector3(300,65);
     float scrollSize = 30f;
  
 
@@ -178,6 +178,16 @@ public class SkillEditorWindow : EditorWindow
             SkillEditorData.Instance.playing = false;
         }
         GUILayout.Space(50f);
+        if (GUILayout.Button("生成测试场景", width50))
+        {
+            TestScene.Create(SkillEditorData.Instance.CurRoleId);
+            //SkillEditorMainWindow.golbalWindow.Close();
+            Close();
+            
+            
+           
+        }
+
         showCollider = EditorGUILayout.ToggleLeft("显示碰撞体",showCollider);
         GUILayout.Label("AI自动攻击范围", width100);
         if (null != skill)
@@ -240,9 +250,7 @@ public class SkillEditorWindow : EditorWindow
             }
         }
         EditorGUI.EndDisabledGroup();
-
         GUILayout.Label("关键帧值:", width80);
-
         if (selectNormalChannel != null && selNormalKeyFrameIndex >= selectNormalChannel.values.Count)
         {
             selNormalKeyFrameIndex = selectNormalChannel.values.Count - 1;
@@ -262,6 +270,28 @@ public class SkillEditorWindow : EditorWindow
 
         
         GUILayout.Label("");
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (null != skill)
+        {
+            skill.type = (SkillParams.TYPE)EditorGUILayout.Popup((int)skill.type, operaStr, GUILayout.Width(100f));
+            if (EditorGUILayout.ToggleLeft("多段伤害", skill.skillIndex != -1))
+            {
+
+            }
+            else
+            {
+                skill.skillIndex = -1;
+            }
+        }
+        else
+        {
+            EditorGUILayout.Popup(0, operaStr, GUILayout.Width(100f));
+            EditorGUILayout.ToggleLeft("多段伤害", false);
+        }
+
+        
+        GUILayout.Button("any  more");
         GUILayout.EndHorizontal();
         SpeceLine();
         GUILayout.EndArea();
@@ -391,13 +421,17 @@ public class SkillEditorWindow : EditorWindow
                 if (selectNormalChannel.GetKeyframeIndex(selFrame)==-1)
                 {
                     int _index = selectNormalChannel.GetKeyframeIndex(curSelectFrame);
-                    var v = selectNormalChannel.values[_index];
-                    selectNormalChannel.DeleteFrame(_index);
-                    if (selectNormalChannel.AddKeyFrame(selFrame, v))
+                    if (_index != -1)
                     {
-                        curSelectFrame = selFrame;
-                        
+                        var v = selectNormalChannel.values[_index];
+                        selectNormalChannel.DeleteFrame(_index);
+                        if (selectNormalChannel.AddKeyFrame(selFrame, v))
+                        {
+                            curSelectFrame = selFrame;
+
+                        }
                     }
+                   
                 }
             }
             if (null != selectEventChannel)

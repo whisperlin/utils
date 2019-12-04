@@ -128,17 +128,7 @@ public class MenuDialog : PopupWindowContent
         }
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20f);
-        if (EditorGUILayout.ToggleLeft("位移旋转缩放", false, GUILayout.Width(300f)))
-        {
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosX);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosY);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.PosZ);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.RotY,false);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleX, false);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleY, false);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, objId, LCHChannelType.ScaleZ,false);
-            editorWindow.Close();
-        }
+         
         EditorGUILayout.EndHorizontal();
 
     }

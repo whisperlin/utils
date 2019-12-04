@@ -1,0 +1,221 @@
+v1.4.6.0
+=============
+Bug Fix: (Unity 2017.2) Fixed issue with rotation curves that prevented having keyframes go beyond 360 degrees.
+Bug Fix: Updated code for Unity 2017.
+Added: Updated our 3rd Party support for Cinemachine 2.
+Added: User-submitted Crossfade event, found under the Third Party folder.
+
+v1.4.5.4
+=============
+Bug Fix: Fixed issue where using the 'Snap Scrubber' when not in preview mode would cause your actor's initial state to be altered to the state at the time you snapped to, causes them to revert to this state after leaving Preview Mode instead of reverting back to their state before the cutscene.
+Bug Fix: Fixed issue with the Skip cutscene logic.
+Bug Fix: The changes made in our Unity 5.5 version of Director are now included in our regular versions (4.6.1 & 5.0.4), and should only load when necessary. This means we don't need a 5.5 specific upload for these changes.
+
+v1.4.5.3
+============= 
+Bug Fix: Fixed issue where some .DLLs would interfere and break the Director window. Now also prints a debug message telling the user which .DLL is causing the issue.
+Bug Fix: Fixed a styling issue in Unity 5.5 caused by the renaming of an internal editor style.
+Bug Fix: Missed some resource loading calls for our GUI.
+Bug Fix: Fixed issue where clicking the 'Add New Action' button in the Global Item Track's inspector would throw an error.
+Bug Fix: Cleaned up various warnings when using various versions of Unity.
+Added: A new timeline item the change an object's texture.
+
+v1.4.5.2
+=============
+Added: New folder structure; About window, documentation, and examples are now separate from the core product folders, and can be safetly deleted.
+Added: Editor GUI icon images moved to special Unity folder, "Editor Default Resources". Our icons in this folder will automatically no longer be included in your builds.
+Added: Additional options to the Director window's create drop-down (Default Cutscene, Empty Cutscene, New Cutscene Trigger) to help get up and running with a few less clicks.
+Bug Fix: Cinemachine Integration - Changed the CinemachineShot item to only accept current and future Cinemachine cameras.
+Bug Fix: Curve Clip no longer throws errors when right-clicking them if the actor has a missing script attached.
+Bug Fix: Updated a few scripts to work with Unity 5.4
+
+v1.4.5.1
+=============
+Bug Fix: Cinemachine Integration - CinemachineShots should now properly blend.
+Bug Fix: The Looping and Skippable checkboxes in the Cutscene Creator should now work.
+Bug Fix: Missing GUI icons should no longer freeze Director and have it throw exceptions.
+Bug Fix: Some items such as SetPosition  should now properly revert.
+Added: SetRotation and SetScale timeline actions.
+Added: CutsceneStarted event, subscribe to it to call a method when a cutscene starts.
+
+v1.4.5.0
+=============
+Added: Cinemachine Integration.
+Added: Can now create RevertInfo objects that call methods with any number of parameters.
+Added: Tracks can now be locked. Locked tracks cannot be edited.
+Bug Fix: Cutscene items should now properly Trigger/End once, regardless if they are at the start/end of a cutscene, in play/edit mode, or if the cutscene is looped.
+Bug Fix: Cutscene items should now properly cache their states before the cutscene is previewed/played, and will now proplery revert to their initial states.
+Bug Fix: Curves can now work with integer values. Curves will still display floating point numbers, but will round them before being applied. (X.5 will round to nearest even integer)
+Bug Fix: Actor item tracks will now pause any pausable items.
+Bug Fix: Cutscenes now play when being built to UWP with master build settings.
+
+v1.4.4.0
+=============
+Added: Events to manipulate uGUI elements.
+Added: Custom inspector for the SendMessage event, allowing the user to select the type and value of the parameter they wish to pass to the specified method.
+Bug Fix: Fixed issue preventing Cutscenes from being played in UWP.
+Bug Fix: Rotation curves no longer create keyframes while scrubbing in preview mode.
+Bug Fix: Fixed issue where the "Play Animation" action would not allow for clip length to be trimmed.
+Bug Fix: Implemented SetParent event.
+Bug Fix: Fixed issue where events would not trigger during consecutive plays of a cutscene if the firetime was set to 0.
+
+v1.4.3.0
+=============
+Added: New help window.
+Added: link.xml file to help with builds for iOS.
+Fixed: Bug where demo scene was sometime crashing due to revert info problems.
+Fixed: Bug in Unity 5.3 where Cutscene could no longer find parents in hierarchy. This temporary fix means the Cutscene hierarchy must be strictly followed.
+
+v1.4.2.1
+=============
+Cutscene will take the necessary time to initialize (if not called beforehand) on Play, before beginning playback. This helps avoid some lag at the beginning of playback.
+When editing curves, changes take effect immediately on target actor, instead of waiting for mouse-up.
+Fixed bug where "Add Key" option was no longer working.
+Can now build to NETFX_CORE.
+Load Level Event now has options for additive, async, additive+async and to load by index or name.
+
+v1.4.1.0
+=============
+Track Groups and Tracks' collapsed state is maintained between sessions.
+Fixed bug where Unity 4.6 users couldn't open demo scene.
+Fixed one scenario where CharacterTrackGroup was causing Unity to crash.
+Added Settings Window.
+Added ability to toggle Beta Features in settings panel. Users who wish to try out new features at the risk of loss of stability can opt to enable them.
+
+v1.4.0.6
+=============
+Playmaker integration.
+NodeCanvas integration.
+Sidebar can now be re-sized.
+Game Objects can now be dragged from the Hierarchy panel into the Director panel to create an Actor Track Group.
+Track Groups and Tracks can now be renamed/duplicated/deleted in the Director panel by context clicking label.
+Shift/Ctrl select now multi-selects items in sidebar.
+Added box-select in working area for timeline items.
+Ctrl-select now toggles timeline item selection.
+Added the ability to move multiple selected timeline items.
+Context clicking in an empty track space now presents Add menu and newly created items are added at that time.
+Fixed bug where Cutscene sometimes didn't start from time 0.
+Added option to open the Director panel from Cutscene's inspector, focusing the selected Cutscene.
+Double-clicking a Curve Clip toggles it between edit mode and done.
+
+v1.3.4.0
+=============
+Scroll wheel now controls vertical scroll. Ctrl+scroll now controls zoom (Can also zoom with alt+right click+mouse move).
+Updated Resources folder to stop conflicts with other extensions, by adding Director_ prefix to most assets.
+Added TransformLookAtAction.
+Made Cutscene.state non-serialized.
+
+v1.3.3.1
+=============
+Quick Fix: Cutscene drop down selector now correlates to the proper cutscene.
+
+v1.3.3.0
+=============
+Solved issue where edit-mode playback speed was slower than real time.
+Fixed fade to black transitions for Unity5.
+Fixed problem where audio playback wasn't exact in preview mode.
+Fixed issue in Unity5 where error was shown for setting incorrect audio time values.
+Cutscenes in dropdown selector are now shown alphabetically.
+Added Transform Track for Character Track Groups.
+Curve Editor: Tangent Mode is now maintained through sessions.
+Curve Editor: When Keyframes are alered/deleted/added, neighbours are updated according to tangent mode automatically.
+Curve Editor: Changing tangent mode can now be undone.
+Curve Editor: Automatic Keyframing can now be undone.
+Curve Editor: Fixed undo not working in some cases.
+Curve Editor: Master keys can now be used to delete all children keys.
+Curve Editor: The threshold for altering auto key values has now been changed to 0.000001
+
+v1.3.2.0
+=============
+Support for Behavior Designer.
+Added timecode to toolbar.
+GC Alloc for the Cutscene behaviour is now 0.
+Fixed issue where scrubber wouldn't work after exiting playmode in Unity5.
+Audio items now adapt when audio clips are changed in the AudioSource component.
+Fixed error when prefab cutscenes are added to the scene.
+Fixed error where editing curve items was not possible when the Actor for the track group was not set.
+
+v1.3.1.1
+=============
+Unity 5 Compatability.
+Current selected Cutscene in Director panel is maintained between playmode changes.
+
+v1.3.0.4
+=============
+New Character Track Group, made specifically for Humanoid characters.
+New Mecanim Track for controlling AnimationControllers and allowing mecanim animation previewing in Edit Mode.
+New Dialogue Track for Character Track Groups.
+All events/actions that manipulate scene data now have Revert options for both editor and runtime mode.
+Manually skipping/jumping to frames now handles cases where multiple tracks reference the same data.
+Cutscene.Optimize() is a new method that should be called during scene load, to cache all cutscene components for fast execution.
+Cutscene.Skip() implemented. CutsceneTrigger now has an option for Skipping. Default to "Jump" (Space bar by default).
+Cutscene can now be set to loop. Make sure to setup the ability to skip!
+New selector button on Director toolbar to quickly select current Cutscene.
+New refresh button, to re-bake all Mecanim previews.
+Keyframe tangent handles now look different than Keyframes.
+The 'Create' button now looks up any custom made Track Group and adds it to the list.
+The play button in the toolbar now works when in runtime as a method to trigger the Cutscene to play.
+
+Added DirectorRuntimeHelper.cs, a helper class for determining which tracks and track items belong to their proper parents.
+Added TimelineTrackAttribute, attribute for tracks to define which track group it belongs to and what type of track items it can hold.
+Added TrackGroupAttribute, an attribute for track groups to define which types of tracks it can hold
+Added RevertInfo.cs, used to capture state data of any item manipulated by the Cutscene.
+Added IBakeable, to be implemented in any track/item that needs to be baked and used for previewing.
+Added IOptimizable, to be implemented in any track/item that needs to perform some optimization process on Cutscene load.
+Added IRevertable, to be implemented in any track/item that manipulates scene data.
+Added IActorTrack.cs, to be implemented by any extended track that manipulates an Actor.
+Added IMultiActorTrack.cs, to be implemented by any extended track that manipulates multiple actors.
+Added GenericTrackGroupControl.cs, as an implementation with basic features for a track group control.
+Added CharacterTrackGroupControl.cs for character track groups.
+Added GenericTrackControl.cs as an implementation with basic features for track controls (copy/paste/etc).
+Added DialogueTrackControl.cs for dialogue tracks.
+Added DialogueTrackInspector.cs
+Added CutsceneControlHelper.cs, as a helper class for Cutscene Controls.
+Added new method SetDefaults() to TimelineItem.cs, override to set defaults to newly created items.
+Deleted ActorTrack.cs. No longer necessary with TrackAttributes.
+Deleted GlobalTrack.cs. No longer necessary with TrackAttributes.
+All existing CutsceneItems have been given a CutsceneItemGenre.
+All existing Cutscene Items that manipulate data now implement IRevertable.
+All existing Track Group Controls now inherit from GenericTrackGroupControl.
+All existing Track Controls now inherit from GenericTrackControl.
+Added new property EndTime to TimelineAction.cs
+Fixed issue where audio item control sometimes doesn't show wave form.
+CutsceneItemFactory now creates Cutscene Items generically.
+Renamed SetColorLight class name to match filename.
+Timeline Items no longer need to be a direct child of a Track in the hierarchy, but can be further down in the hierarchy.
+Tracks no longer need to be a direct child of a TrackGroup in the hierarchy, but can be further down in the hierarchy.
+
+Suggestions for people with Custom extensions:
+Custom Cutscene Items should now be given a CutsceneItemGenre in their CutsceneItemAttributes to be assigned to tracks.
+Custom Cutscene Item should override SetDefaults() which is called when a new instance is created.
+Custom Cutscene Items that manipulate scene data should implement the IRevertable interface.
+Custom TrackGroupControls should consider extending from GenericTrackGroupControl.
+Custom TrackControls shoulder consider extending from GenericTrackControl.
+Custom Tracks and TrackGroups shoulder consider implementing IOptimizable and caching children data.
+
+
+
+v1.2.1.2
+=============
+Fixed bug Unity Free users were experiencing with editing Curve Clips.
+
+v1.2.1.1.
+=============
+Fancy new ReadMe.txt file!
+Exciting new Help panel!
+Timeline library for manipulating other Cutscenes.
+Fixed bug where undesired keyframes were being added.
+Fixed bug where you could select non-visible keyframes.
+Fixed bug where Actors animated through curve clips sometimes return to Origin unexpectedly.
+Fixed "Enable/Disable Behaviour" to work for any Component that has an "enabled" property.
+
+v1.2.0.0.
+=============
+Copy and Paste for track items.
+Cutscene.Play() to be implemented as co-routine.
+Cutscene API improved with callback events.
+Tick marks in Time Ruler flicker black/white when camera preview is shown.
+Multi-Actor curve clips were attempting to assign values to properties which were not defined in inspector causing exceptions.
+In director panel, track headers are not indented to the right of parents.
+Timeline Items don't trigger on first/last frame of cutscene.
+"Mass Disable" doesn't turn tagged objects back on.

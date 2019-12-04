@@ -390,6 +390,7 @@ public class LCHSkill  {
             }
 
         }
+
     }
 
     GameObject FindColliderInChild(GameObject g,string name)
