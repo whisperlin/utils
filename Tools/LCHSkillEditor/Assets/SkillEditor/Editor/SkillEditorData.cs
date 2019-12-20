@@ -19,6 +19,7 @@ public class SkillEditorData {
     public string CurRoleId = "";
     public SkillData skillsData { get { return _skillsData; } }
     public LCHSkill skill;
+    public int subSkillIndex = 0;
     public float curTime = 0;
     public bool playing = false;
     EditorSkillResourceLoader loader;
@@ -53,9 +54,9 @@ public class SkillEditorData {
             skill = new LCHSkill(loader, role, s);
         }
 #if UNITY_EDITOR
-        skill.CheckModulUpdate();
+        skill.CheckModulUpdate(subSkillIndex);
 #endif
-        skill.SetObjectParent();
+        skill.SetObjectParent(subSkillIndex);
 
     }
 
@@ -69,7 +70,7 @@ public class SkillEditorData {
     {
         if (null == skill)
             return;
-        skill.ComputeAnim(curTime);
+        skill.ComputeAnim(curTime, subSkillIndex);
     }
     
  

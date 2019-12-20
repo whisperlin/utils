@@ -1,1 +1,302 @@
-{"id":"quanshi_attack6","roleId":"quanshi","maxLength":1.38,"objs":[{"id":0,"name":"攻击特效6","type":1,"propertys":{"mod":"Assets/Props/Prefabs/quan_shi/Attack6.prefab","mod_name":"Attack6","bind_name":"","bind":0}},{"id":1,"name":"触发器-未命名","type":2,"propertys":{"bind":0,"bind_name":"","mod_name":"","mod":""}}],"channels":[{"type":5,"objId":1,"times":[0],"values":[5.0]},{"type":4,"objId":1,"times":[0],"values":[2.0]},{"type":2,"objId":1,"times":[0],"values":[2.23]},{"type":1,"objId":1,"times":[0],"values":[1.0]}],"events":[{"type":100,"objId":-1,"times":[0],"values":[{"enable":true,"anim":"Attack6","crossFade":true,"bullet":true,"bullet_speed":1.0}]},{"type":100,"objId":0,"times":[0],"values":[{"enable":true,"anim":"","crossFade":true,"bullet":true,"bullet_speed":1.0}]},{"type":101,"objId":1,"times":[20,30,40,50,60,70,80,90,100,110,120],"values":[{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"hit_back":0.0,"hit_back_time":0.0,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":2,"slow_motion":0.01,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"ctrl_time":0.5,"air_delay":0.05,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":20,"mp":0,"hp_p":0,"mp_p":0,"status":1,"slow_motion":0.1,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"hit_back_time":0.5,"hit_back":10.0,"hit_fly":2.0,"ctrl_time":0.5,"hit_dir":0,"IsFlyTool":0}]}],"skillRange":4.9,"skillWidth":1.0}
+{
+	"id": "quanshi_attack6",
+	"roleId": "quanshi",
+	"subSkills": [
+		{
+			"maxLength": 2.3,
+			"objs": [
+				{
+					"id": 0,
+					"name": "攻击特效6",
+					"type": 1,
+					"propertys": {
+						"mod": "Assets/Props/Prefabs/quan_shi/Attack6.prefab",
+						"mod_name": "Attack6",
+						"bind_name": "",
+						"bind": 0
+					}
+				},
+				{
+					"id": 1,
+					"name": "触发器-未命名",
+					"type": 2,
+					"propertys": {
+						"bind": 0,
+						"bind_name": "",
+						"mod_name": "",
+						"mod": ""
+					}
+				}
+			],
+			"channels": [
+				{
+					"type": 5,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						5.0
+					]
+				},
+				{
+					"type": 4,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						2.0
+					]
+				},
+				{
+					"type": 2,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						2.23
+					]
+				},
+				{
+					"type": 1,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						1.0
+					]
+				}
+			],
+			"events": [
+				{
+					"type": 100,
+					"objId": -1,
+					"times": [
+						0
+					],
+					"values": [
+						{
+							"enable": true,
+							"anim": "Attack6",
+							"crossFade": true,
+							"bullet": true,
+							"bullet_speed": 1.0
+						}
+					]
+				},
+				{
+					"type": 100,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						{
+							"enable": true,
+							"anim": "",
+							"crossFade": true,
+							"bullet": true,
+							"bullet_speed": 1.0
+						}
+					]
+				},
+				{
+					"type": 101,
+					"objId": 1,
+					"times": [
+						30,
+						50,
+						70,
+						90,
+						110,
+						130,
+						150,
+						170,
+						190
+					],
+					"values": [
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 3,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0,
+							"IsFlyTool": 0,
+							"ctrl_time": 2.0,
+							"hit_back": 1.0,
+							"hit_back_time": 0.1,
+							"air_delay": 0.05
+						}
+					]
+				}
+			],
+			"skillRange": 4.9,
+			"skillWidth": 1.0,
+			"CdName": "",
+			"skillIndex": -1,
+			"type": 0
+		}
+	]
+}

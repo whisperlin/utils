@@ -55,6 +55,10 @@ public class ObjectContain
         scale = Vector3.one;
     }
 }
+public class LCHSkillSubData
+{
+    public List<ObjectContain> objs = new List<ObjectContain>();
+}
 public class LCHSkill  {
 
     SkillResourceLoader loader;
@@ -67,7 +71,8 @@ public class LCHSkill  {
     private LCHRoleData roleData;
     private LCHSkillData _skillData;
     public ObjectContain role = new ObjectContain();
-    public List<ObjectContain> objs = new List<ObjectContain>();
+    public LCHSkillSubData[] subDatas = new LCHSkillSubData[1] { new LCHSkillSubData() };
+
 
     public LCHRoleData RoleData
     {
@@ -107,19 +112,19 @@ public class LCHSkill  {
 
         return null;  //couldn't find crap
     }
-    public void SetObjectParent()
+    public void SetObjectParent(int index)
     {
-        int c0 = skillData.objs.Length;
+        int c0 = skillData.subSkills[index].objs.Length;
         for (int i = 0; i < c0; i++)
         {
-            var o = skillData.objs[i];
+            var o = skillData.subSkills[index].objs[i];
             if (o.type == 1 || o.type == 2)
             {
                 int bind = o.propertys.GetValueInt("bind", 0);
                 if (bind == 2)
                 {
                     string bind_name = o.propertys.GetValue<string>("bind_name", "");
-                    var ct = GetObjectContainById(o.id);
+                    var ct = GetObjectContainById(o.id,index);
                     if (ct.gameobject)
                     {
                         if (role.gameobject && ct.gameobject)
@@ -136,7 +141,7 @@ public class LCHSkill  {
                 }
                 else if (bind == 1)
                 {
-                    var ct = GetObjectContainById(o.id);
+                    var ct = GetObjectContainById(o.id,index);
                     if (role.gameobject && ct.gameobject)
                     {
                         ct.gameobject.transform.parent = role.gameobject.transform;
@@ -144,7 +149,7 @@ public class LCHSkill  {
                 }
                 else if (bind == 0)
                 {
-                    var ct = GetObjectContainById(o.id);
+                    var ct = GetObjectContainById(o.id,index);
                     if (null != ct.gameobject)
                         ct.gameobject.transform.parent = null;
                 }
@@ -157,38 +162,42 @@ public class LCHSkill  {
 #endif
     public void Release()
     {
-        int c0 = skillData.objs.Length;
-#if UNITY_EDITOR
-        int c1 = objs.Count;
-        if (c0 == c1)
+        for (int index = 0; index < skillData.subSkills.Length; index++)
         {
+            int c0 = skillData.subSkills[index].objs.Length;
+#if UNITY_EDITOR
+            int c1 = subDatas[index].objs.Count;
+            if (c0 == c1)
+            {
 #endif
-            for (int i = 0; i < c0; i++)
-            {
-                var o = skillData.objs[i];
-                if(null != objs[i])
-                    loader.ReleaseModel(o.type, o.propertys.GetValue<string>("mod_name", ""), o.propertys.GetValue<string>("mod", ""), objs[i].gameobject);
-            }
-#if UNITY_EDITOR
-        }
-        else //编辑器才会出现.
-        {
-            for (int i = 0; i < c1; i++)
-            {
-                var o = objs[i];
-                if (null != objs[i]&&null !=objs[i].gameobject)
+                for (int i = 0; i < c0; i++)
                 {
-                    var ct = objs[i];
-                    loader.ReleaseModel(ct.type, ct.mod_name, ct.mod, o.gameobject);
+                    var o = skillData.subSkills[index].objs[i];
+                    if (null != subDatas[index].objs[i])
+                        loader.ReleaseModel(o.type, o.propertys.GetValue<string>("mod_name", ""), o.propertys.GetValue<string>("mod", ""), subDatas[index].objs[i].gameobject);
                 }
-                    
+#if UNITY_EDITOR
             }
-        }
+            else //编辑器才会出现.
+            {
+                for (int i = 0; i < c1; i++)
+                {
+                    var o = subDatas[index].objs[i];
+                    if (null != subDatas[index].objs[i] && null != subDatas[index].objs[i].gameobject)
+                    {
+                        var ct = subDatas[index].objs[i];
+                        loader.ReleaseModel(ct.type, ct.mod_name, ct.mod, o.gameobject);
+                    }
+
+                }
+            }
 #endif
-        objs.Clear();
+            subDatas[index].objs.Clear();
+        }
+       
     }
     Dictionary<int,ObjectContain> objContains = new Dictionary<int,ObjectContain>();
-    public ObjectContain GetObjectContainById(int objId)
+    public ObjectContain GetObjectContainById(int objId ,int index)
     {
         if (objId == -1)
         {
@@ -200,9 +209,9 @@ public class LCHSkill  {
             return c;
         }
         
-        for (int i = 0, c0 = objs.Count; i < c0; i++)
+        for (int i = 0, c0 = subDatas[index].objs.Count; i < c0; i++)
         {
-            var o0 = objs[i];
+            var o0 = subDatas[index]. objs[i];
             if (objId == o0.objId)
             {
                 objContains[objId] = o0;
@@ -211,23 +220,23 @@ public class LCHSkill  {
         }
         return null;
     }
-    public void ComputeAnim(float curTime)
+    public void ComputeAnim(float curTime,int index)
     {
 #if UNITY_EDITOR
-        SetObjectParent();
+        SetObjectParent( index);
 #endif
         //初始化.
         role.ResetTransformData();
-        for (int i = 0, c0 = objs.Count; i < c0; i++)
+        for (int i = 0, c0 = subDatas[index].objs.Count; i < c0; i++)
         {
-            var o0 = objs[i];
+            var o0 = subDatas[index].objs[i];
             o0.ResetTransformData();
         }
         //计算位置变换.
-        for (int i = 0, c0 = _skillData.channels.Count; i < c0; i++)
+        for (int i = 0, c0 = _skillData.subSkills[index].channels.Count; i < c0; i++)
         {
-            var channel = _skillData.channels[i];
-            var contain = GetObjectContainById(channel.objId);
+            var channel = _skillData.subSkills[index].channels[i];
+            var contain = GetObjectContainById( channel.objId,index);
             LCHChannelType t = (LCHChannelType)channel.type;
 #if UNITY_EDITOR
             if (channel.times.Count == 0 || channel.times[0] != 0)
@@ -308,9 +317,9 @@ public class LCHSkill  {
 
         }
         
-        for (int i = 0, c0 = objs.Count; i < c0; i++)
+        for (int i = 0, c0 = subDatas[index].objs.Count; i < c0; i++)
         {
-            var o0 = objs[i];
+            var o0 = subDatas[index].objs[i];
             if (null == o0.gameobject)
                 continue;
             o0.gameobject.transform.localPosition = o0.pos;
@@ -319,10 +328,10 @@ public class LCHSkill  {
         }
 
         //计算物体事件，比如播放动作，声音等。
-        for (int i = 0, c0 = _skillData.events.Count; i < c0; i++)
+        for (int i = 0, c0 = _skillData.subSkills[index].events.Count; i < c0; i++)
         {
-            var _e = _skillData.events[i];
-            var contain = GetObjectContainById(_e.objId);
+            var _e = _skillData.subSkills[index].events[i];
+            var contain = GetObjectContainById(_e.objId,index);
             LCHChannelType t = (LCHChannelType)_e.type;
             ObjDictionary value;
             float _time;
@@ -408,18 +417,19 @@ public class LCHSkill  {
     }
 #if UNITY_EDITOR
 
-    public void CheckModulUpdate()
+    public void CheckModulUpdate(int index)
     {
+        CheckInstance();
         CheckModulUpdate( role,-1,-1, roleData.mod_name, roleData.mod,null);
         //释放已经删除的。
-        for (int i = 0, c = objs.Count; i < c; i++)
+        for (int i = 0, c = subDatas[index]. objs.Count; i < c; i++)
         {
-            var ct = objs[i];
+            var ct = subDatas[index].objs[i];
             if (null != ct)
             {
-                for (int j = 0, c2 = _skillData.objs.Length; j < c2; j++)
+                for (int j = 0, c2 = _skillData.subSkills[index].objs.Length; j < c2; j++)
                 {
-                    if (_skillData.objs[j].id == ct.objId)
+                    if (_skillData.subSkills[index].objs[j].id == ct.objId)
                         goto ct;
                 }
                 loader.ReleaseModel(ct.objId, ct.mod_name, ct.mod, ct.gameobject);
@@ -427,16 +437,16 @@ public class LCHSkill  {
             }
         }
         //编辑器添加删除了物体。objContains是用来提速的。
-        if (_skillData.objs.Length != objs.Count)
+        if (_skillData.subSkills[index].objs.Length != subDatas[index]. objs.Count)
         {
             objContains.Clear();
         }
-        ArrayHelper.ResizeArray<ObjectContain>(ref objs, _skillData.objs.Length);
-        for (int i = 0, c = _skillData.objs.Length; i < c; i++)
+        ArrayHelper.ResizeArray<ObjectContain>(ref subDatas[index].objs, _skillData.subSkills[index] .objs.Length);
+        for (int i = 0, c = _skillData.subSkills[index].objs.Length; i < c; i++)
         {
-            var o = _skillData.objs[i];
+            var o = _skillData.subSkills[index].objs[i];
             string name = o.propertys.GetValue<string>("bind_name", "");
-            var o1 = objs[i];
+            var o1 = subDatas[index].objs[i];
             if (o.type == 3)
             {
                 o1.objId = o.id ;
@@ -454,7 +464,7 @@ public class LCHSkill  {
     }
 #if UNITY_EDITOR
     string[]  nullAnims = new string[1] {"无" };
-    public void GetAllObjectList(int objId , ref string [] items , ref int [] ids ,ref string [] objects ,ref int []objIds)
+    public void GetAllObjectList(int objId , ref string [] items , ref int [] ids ,ref string [] objects ,ref int []objIds,int index)
     {
         List<string> obj_items = new List<string>();
         List<int> obj_ids = new List<int>();
@@ -465,9 +475,9 @@ public class LCHSkill  {
         _ids.Add(-2);
         obj_items.Add("无");
         obj_ids.Add(-2);
-        for (int i = 0; i < _skillData.objs.Length; i++)
+        for (int i = 0; i < _skillData.subSkills[index] .objs.Length; i++)
         {
-            var od = _skillData.objs[i];
+            var od = _skillData.subSkills[index].objs[i];
             if (od.type == 4)
             {
                 _items.Add("(" + od.id + ")" + od.name);
@@ -484,7 +494,7 @@ public class LCHSkill  {
         objects = obj_items.ToArray();
         objIds = obj_ids.ToArray();
     }
-    public string[]  GetAnimList(int objId)
+    public string[]  GetAnimList(int objId,int index)
     {
         if (objId == -1)
         {
@@ -504,13 +514,13 @@ public class LCHSkill  {
             }
             else
             {
-                for (int j = 0, c2 = objs.Count; j < c2; j++)
+                for (int j = 0, c2 = subDatas[index]. objs.Count; j < c2; j++)
                 {
-                    if (objs[j].objId == objId)
+                    if (subDatas[index].objs[j].objId == objId)
                     {
-                        if (null != objs[j].gameobject)
+                        if (null != subDatas[index].objs[j].gameobject)
                         {
-                            Animation ani = objs[j].gameobject.GetComponent<Animation>();
+                            Animation ani = subDatas[index]. objs[j].gameobject.GetComponent<Animation>();
                             List<string> anims = new List<string>();
                             anims.Add("无");
                             if (null != ani)
@@ -569,32 +579,59 @@ public class LCHSkill  {
     public void LoadModul()//非编辑器加载一次.
     {
         Release();
+        
         role.gameobject = loader.LoadModul(-1, roleData.mod_name, roleData.mod);
-        for (int i = 0, c = skillData.objs.Length; i < c; i++)
+
+        for (int index = 0; index < skillData.subSkills.Length; index++)
         {
-            if (objs[i] == null)
-                objs[i] = new ObjectContain();
-            var o2 = objs[i];
-            var o = skillData.objs[i];
-
-
-            string name = o.propertys.GetValue<string>("bind_name", "");
-            var o1 = objs[i];
-            if (o.type == 3)
+            for (int i = 0, c = skillData.subSkills[index].objs.Length; i < c; i++)
             {
-                o1.objId = o.id;
-                o1.type = o.type;
+                if (subDatas[index]. objs[i] == null)
+                    subDatas[index]. objs[i] = new ObjectContain();
+                var o2 = subDatas[index].objs[i];
+                var o = skillData.subSkills[index].objs[i];
 
-                o1.gameobject = FindColliderInChild(role.gameobject, name);
-            }
-            else
-            {
-                o2.gameobject = loader.LoadModul(o.type, o.propertys.GetValue<string>("mod_name", ""), o.propertys.GetValue<string>("mod", ""));
-                o2.objId = o.id;
-                o2.type = o.type;
-                o2.mod = o.propertys.GetValue<string>("mod", "");
-                o2.mod_name = o.propertys.GetValue<string>("mod_name", "");
+
+                string name = o.propertys.GetValue<string>("bind_name", "");
+                var o1 = subDatas[index]. objs[i];
+                if (o.type == 3)
+                {
+                    o1.objId = o.id;
+                    o1.type = o.type;
+
+                    o1.gameobject = FindColliderInChild(role.gameobject, name);
+                }
+                else
+                {
+                    o2.gameobject = loader.LoadModul(o.type, o.propertys.GetValue<string>("mod_name", ""), o.propertys.GetValue<string>("mod", ""));
+                    o2.objId = o.id;
+                    o2.type = o.type;
+                    o2.mod = o.propertys.GetValue<string>("mod", "");
+                    o2.mod_name = o.propertys.GetValue<string>("mod_name", "");
+                }
             }
         }
+        
+    }
+
+    public void CheckInstance()
+    {
+        if (subDatas.Length < skillData.subSkills.Length)
+        {
+            LCHSkillSubData[] newAry = new LCHSkillSubData[skillData.subSkills.Length];
+            for (int n = 0; n < skillData.subSkills.Length; n++)
+            {
+                if (n < subDatas.Length)
+                {
+                    newAry[n] = subDatas[n];
+                }
+                else
+                {
+                    newAry[n] = new LCHSkillSubData();
+                }
+            }
+            subDatas = newAry;
+        }
+        
     }
 }

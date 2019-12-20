@@ -1,1 +1,176 @@
-{"id":"quanshi_attack7","roleId":"quanshi","maxLength":2.78,"objs":[{"id":0,"name":"对象-未命名","type":1,"propertys":{"mod":"Assets/Props/Prefabs/quan_shi/Attack8.prefab","mod_name":"Attack8","bind_name":"","bind":0}},{"id":1,"name":"触发器-未命名","type":2,"propertys":{"bind_name":"","mod_name":"","mod":"","bind":0}}],"channels":[{"type":5,"objId":1,"times":[0],"values":[5.0]},{"type":4,"objId":1,"times":[0,10],"values":[10.0,0.0]},{"type":3,"objId":1,"times":[0],"values":[5.0]}],"events":[{"type":100,"objId":-1,"times":[0],"values":[{"enable":true,"anim":"Attack9","crossFade":true,"bullet":true,"bullet_speed":1.0,"ex_action":0,"status":0,"ToTargetTime":0.5}]},{"type":100,"objId":0,"times":[0],"values":[{"enable":true,"anim":"","crossFade":true,"bullet":true,"bullet_speed":1.0,"ex_action":0,"status":0}]},{"type":101,"objId":1,"times":[60,110,220],"values":[{"enable":true,"hp":100,"mp":0,"hp_p":0,"mp_p":0,"status":1,"slow_motion":0.0,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"hit_back_time":0.6,"hit_back":0.0,"hit_fly":1.0,"ctrl_time":0.0,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":100,"mp":0,"hp_p":0,"mp_p":0,"status":1,"slow_motion":0.0,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"hit_back_time":0.7,"hit_back":0.0,"hit_fly":3.0,"ctrl_time":0.0,"hit_dir":0,"IsFlyTool":0},{"enable":true,"hp":300,"mp":0,"hp_p":0,"mp_p":0,"status":1,"slow_motion":0.5,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"hit_back_time":1.0,"hit_back":5.0,"hit_fly":10.0,"ctrl_time":0.0,"hit_dir":1,"IsFlyTool":0}]}],"skillRange":3.3,"skillWidth":3.1}
+{
+	"id": "quanshi_attack7",
+	"roleId": "quanshi",
+	"subSkills": [
+		{
+			"maxLength": 2.5,
+			"objs": [
+				{
+					"id": 0,
+					"name": "对象-未命名",
+					"type": 1,
+					"propertys": {
+						"mod": "Assets/Props/Prefabs/quan_shi/Attack8.prefab",
+						"mod_name": "Attack8",
+						"bind_name": "",
+						"bind": 0
+					}
+				},
+				{
+					"id": 1,
+					"name": "触发器-未命名",
+					"type": 2,
+					"propertys": {
+						"bind_name": "",
+						"mod_name": "",
+						"mod": "",
+						"bind": 0
+					}
+				}
+			],
+			"channels": [
+				{
+					"type": 5,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						5.0
+					]
+				},
+				{
+					"type": 4,
+					"objId": 1,
+					"times": [
+						0,
+						10
+					],
+					"values": [
+						10.0,
+						0.0
+					]
+				},
+				{
+					"type": 3,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						5.0
+					]
+				}
+			],
+			"events": [
+				{
+					"type": 100,
+					"objId": -1,
+					"times": [
+						0
+					],
+					"values": [
+						{
+							"enable": true,
+							"anim": "Attack8",
+							"crossFade": true,
+							"bullet": true,
+							"bullet_speed": 1.0,
+							"ex_action": 0,
+							"status": 0,
+							"ToTargetTime": 0.5
+						}
+					]
+				},
+				{
+					"type": 100,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						{
+							"enable": true,
+							"anim": "",
+							"crossFade": true,
+							"bullet": true,
+							"bullet_speed": 1.0,
+							"ex_action": 0,
+							"status": 0
+						}
+					]
+				},
+				{
+					"type": 101,
+					"objId": 1,
+					"times": [
+						60,
+						110,
+						220
+					],
+					"values": [
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 1,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_back_time": 0.6,
+							"hit_back": 0.0,
+							"hit_fly": 1.0,
+							"ctrl_time": 0.0,
+							"hit_dir": 0
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 1,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_back_time": 0.7,
+							"hit_back": 0.0,
+							"hit_fly": 3.0,
+							"ctrl_time": 0.0,
+							"hit_dir": 0
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 1,
+							"slow_motion": 0.5,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_back_time": 1.0,
+							"hit_back": 5.0,
+							"hit_fly": 10.0,
+							"ctrl_time": 0.0,
+							"hit_dir": 1
+						}
+					]
+				}
+			],
+			"skillRange": 3.3,
+			"skillWidth": 3.1,
+			"CdName": "",
+			"skillIndex": -1,
+			"type": 0
+		}
+	]
+}

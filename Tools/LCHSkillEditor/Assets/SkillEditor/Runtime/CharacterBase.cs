@@ -41,6 +41,7 @@ public partial class CharacterBase : MonoBehaviour
         StartCoroutine(action.onInit(loader, character, AddCoroutine));
         actionList.Add(action);
     }
+    
     List<LCharacterAction> actionList = new List<LCharacterAction>();
     //当前行为.
     public LCharacterAction curAction;

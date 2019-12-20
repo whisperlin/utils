@@ -77,12 +77,12 @@ public partial class SkillEditorMainWindow : EditorWindow
                 var skillData = SkillEditorData.Instance.skillsData.GetSkill(SkillEditorData.Instance.CurSkillId);
                 if (null == skillData)
                     return;
-                object[] editorState = new object[skillData.channels.Count];
-                for (int i = 0, l = skillData.channels.Count; i < l; i++)
+                object[] editorState = new object[skillData.subSkills[SkillEditorData.Instance.subSkillIndex].channels.Count];
+                for (int i = 0, l = skillData.subSkills[SkillEditorData.Instance.subSkillIndex].channels.Count; i < l; i++)
                 {
-                    var ch = skillData.channels[i];
+                    var ch = skillData.subSkills[SkillEditorData.Instance.subSkillIndex].channels[i];
                     //ch.objId;
-                    var ct = SkillEditorData.Instance.skill.GetObjectContainById(ch.objId);
+                    var ct = SkillEditorData.Instance.skill.GetObjectContainById(ch.objId, SkillEditorData.Instance.subSkillIndex);
                     if (ct.gameobject == Selection.activeTransform.gameObject)
                     {
                         int idx = ch.GetKeyframeIndex(SkillEditorWindow.curSelectFrame);

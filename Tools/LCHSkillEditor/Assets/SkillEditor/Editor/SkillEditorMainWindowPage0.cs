@@ -61,7 +61,6 @@ public partial class SkillEditorMainWindow
                 string path = "";
                 if (PrefabUtility.GetPrefabType(anim.gameObject) == PrefabType.PrefabInstance)
                 {
-                    
                     UnityEngine.Object parentObject = PrefabUtility.GetPrefabParent(anim.gameObject);
                     path = AssetDatabase.GetAssetPath(parentObject);
                 }
@@ -109,9 +108,6 @@ public partial class SkillEditorMainWindow
         {
             SkillEditorData.Instance.CurRoleId = r;
             Selection.objects = new UnityEngine.Object[0];
-            //Selection.objects = null;
-            //Selection.activeGameObject = null;
-            //Selection.activeTransform = null;
         }
          
 
@@ -242,6 +238,9 @@ public partial class SkillEditorMainWindow
         {
             Selection.objects = new UnityEngine.Object[0];
             SkillEditorData.Instance.CurSkillId = roleData.skills[idx];
+
+             
+            
         }
         
         

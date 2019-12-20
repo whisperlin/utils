@@ -1,1 +1,200 @@
-{"id":"quanshi_attack8","roleId":"quanshi","maxLength":1.06,"objs":[{"id":0,"name":"大招盒子","type":2,"propertys":{"bind_name":"","mod_name":"","mod":"","bind":1}},{"id":1,"name":"对象-未命名","type":1,"propertys":{"mod":"Assets/Props/Prefabs/quan_shi/Attack7.prefab","mod_name":"Attack7","bind_name":"","bind":1}}],"channels":[{"type":0,"objId":-1,"times":[0],"values":[0.0]},{"type":1,"objId":-1,"times":[0],"values":[0.0]},{"type":0,"objId":0,"times":[0],"values":[0.0]},{"type":1,"objId":0,"times":[0],"values":[2.47]},{"type":2,"objId":0,"times":[0,70],"values":[0.0,0.0]},{"type":3,"objId":0,"times":[0],"values":[4.0]},{"type":4,"objId":0,"times":[0],"values":[5.0]},{"type":5,"objId":0,"times":[0],"values":[4.0]}],"events":[{"type":100,"objId":-1,"times":[0],"values":[{"enable":true,"anim":"Attack7","crossFade":true,"bullet":true,"bullet_speed":1.0,"ex_action":1,"ToTargetTime":0.1}]},{"type":101,"objId":0,"times":[0,70],"values":[{"enable":false,"hp":0,"mp":0,"hp_p":0,"mp_p":0,"status":0,"slow_motion":0.0,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"hit_dir":0},{"enable":true,"hp":0,"mp":1000,"hp_p":0,"mp_p":0,"status":1,"slow_motion":0.5,"reacting_force":0.0,"reacting_force_time":0,"hit_sound":-2,"hit_effect":-2,"hit_dir":1,"ctrl_time":0.0,"hit_back":10.0,"hit_back_time":0.5,"hit_fly":5.0,"IsFlyTool":0}]},{"type":100,"objId":1,"times":[0],"values":[{"enable":true,"anim":"","crossFade":true,"ex_action":0}]}],"skillRange":6.0,"skillWidth":2.8}
+{
+	"id": "quanshi_attack8",
+	"roleId": "quanshi",
+	"subSkills": [
+		{
+			"maxLength": 1.06,
+			"objs": [
+				{
+					"id": 0,
+					"name": "大招盒子",
+					"type": 2,
+					"propertys": {
+						"bind_name": "",
+						"mod_name": "",
+						"mod": "",
+						"bind": 1
+					}
+				},
+				{
+					"id": 1,
+					"name": "对象-未命名",
+					"type": 1,
+					"propertys": {
+						"mod": "Assets/Props/Prefabs/quan_shi/Attack7.prefab",
+						"mod_name": "Attack7",
+						"bind_name": "",
+						"bind": 1
+					}
+				}
+			],
+			"channels": [
+				{
+					"type": 0,
+					"objId": -1,
+					"times": [
+						0
+					],
+					"values": [
+						0.0
+					]
+				},
+				{
+					"type": 1,
+					"objId": -1,
+					"times": [
+						0
+					],
+					"values": [
+						0.0
+					]
+				},
+				{
+					"type": 0,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						0.0
+					]
+				},
+				{
+					"type": 1,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						2.47
+					]
+				},
+				{
+					"type": 2,
+					"objId": 0,
+					"times": [
+						0,
+						70
+					],
+					"values": [
+						0.0,
+						0.0
+					]
+				},
+				{
+					"type": 3,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						4.0
+					]
+				},
+				{
+					"type": 4,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						5.0
+					]
+				},
+				{
+					"type": 5,
+					"objId": 0,
+					"times": [
+						0
+					],
+					"values": [
+						4.0
+					]
+				}
+			],
+			"events": [
+				{
+					"type": 100,
+					"objId": -1,
+					"times": [
+						0
+					],
+					"values": [
+						{
+							"enable": true,
+							"anim": "Attack7",
+							"crossFade": true,
+							"bullet": true,
+							"bullet_speed": 1.0,
+							"ex_action": 1,
+							"ToTargetTime": 0.1
+						}
+					]
+				},
+				{
+					"type": 101,
+					"objId": 0,
+					"times": [
+						0,
+						70
+					],
+					"values": [
+						{
+							"enable": false,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 0,
+							"slow_motion": 0.0,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 0
+						},
+						{
+							"enable": true,
+							"hp": 0,
+							"mp": 0,
+							"hp_p": 0,
+							"mp_p": 0,
+							"status": 1,
+							"slow_motion": 0.2,
+							"reacting_force": 0.0,
+							"reacting_force_time": 0,
+							"hit_sound": -2,
+							"hit_effect": -2,
+							"hit_dir": 1,
+							"ctrl_time": 0.0,
+							"hit_back": 10.0,
+							"hit_back_time": 0.5,
+							"hit_fly": 5.0,
+							"IsFlyTool": 0
+						}
+					]
+				},
+				{
+					"type": 100,
+					"objId": 1,
+					"times": [
+						0
+					],
+					"values": [
+						{
+							"enable": true,
+							"anim": "",
+							"crossFade": true,
+							"ex_action": 0
+						}
+					]
+				}
+			],
+			"skillRange": 6.0,
+			"skillWidth": 2.8,
+			"CdName": "",
+			"skillIndex": -1,
+			"type": 0
+		}
+	]
+}

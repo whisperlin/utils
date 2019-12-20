@@ -71,7 +71,6 @@ public interface SkillDataLoader
 }
 public class SkillData {
 
-
     public  static LCHChannelType[] singleChannels = new LCHChannelType[] { LCHChannelType.PosX, LCHChannelType.PosY, LCHChannelType.PosZ };
 
     public bool EditorModel = false;
@@ -214,19 +213,18 @@ public class SkillData {
 
     
 
-    public void RemoveObject(params object[] args)
+    public void RemoveObject(string skillId, int objId ,int index)
     {
-        string skillId = (string)args[0];
-        int objId = (int)args[1];
+    
         var skill = GetSkill(skillId);
 
-        var o0 = skill.GetObject(objId);
-        skill.RemoveObject(objId);
+        var o0 = skill.subSkills[index].GetObject(objId);
+        skill.subSkills[index].RemoveObject(objId);
         if ( null != o0 && o0.type == 1)
         {
-            for (int i = skill.objs.Length-1; i >=0; i-- )
+            for (int i = skill.subSkills[index].objs.Length-1; i >=0; i-- )
             {
-                var o1 = skill.objs[i];
+                var o1 = skill.subSkills[index].objs[i];
                 if (o1.type == 3)
                 {
                     int bind = o1.propertys.GetValueInt("bind", 0);
@@ -235,7 +233,7 @@ public class SkillData {
                         int objid = o1.propertys.GetValueInt("objid", 0);
                         if (objid == o0.id)
                         {
-                            skill.RemoveObject(o1.id);
+                            skill.subSkills[index].RemoveObject(o1.id);
                         }
                     }
                 }
@@ -248,46 +246,45 @@ public class SkillData {
     }
 
    
-    private void RemoveEventChannel(string skillId, int curSelectChannel)
+    private void RemoveEventChannel(string skillId, int curSelectChannel,int index)
     {
      
         var skill = GetSkill(skillId);
-        if (curSelectChannel < 0 || curSelectChannel >= skill.events.Count)
+        if (curSelectChannel < 0 || curSelectChannel >= skill.subSkills[index].events.Count)
             return;
 
-        skill.events.RemoveAt(curSelectChannel);
+        skill.subSkills[index].events.RemoveAt(curSelectChannel);
         SaveSkill(skillId);
 
     }
-    public void RemoveChannel(params object[] args)
+    public void RemoveChannel(string skillId, int curSelectChannel,int index)
     {
-        string skillId = (string)args[0];
-        int curSelectChannel = (int)args[1];
+ 
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0  )
             return;
-        if (curSelectChannel >= skill.channels.Count)
+        if (curSelectChannel >= skill.subSkills[index].channels.Count)
         {
-            RemoveEventChannel(skillId, curSelectChannel - skill.channels.Count);
+            RemoveEventChannel(skillId, curSelectChannel - skill.subSkills[index].channels.Count,index);
             return;
         }
             
         
-        skill.channels.RemoveAt(curSelectChannel);
+        skill.subSkills[index].channels.RemoveAt(curSelectChannel);
         SaveSkill(skillId);
 
     }
-    public void RemoveKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    public void RemoveKeyFrame(string skillId, int curSelectChannel, int curSelectFrame,int index)
     {
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0 )
             return;
-        if (curSelectChannel >= skill.channels.Count)
+        if (curSelectChannel >= skill.subSkills[index].channels.Count)
         {
-            RemoveEventKeyFrame(skillId, curSelectChannel - skill.channels.Count, curSelectFrame);
+            RemoveEventKeyFrame(skillId, curSelectChannel - skill.subSkills[index].channels.Count, curSelectFrame,index);
             return;
         }
-        var channel = skill.channels[curSelectChannel];
+        var channel = skill.subSkills[index].channels[curSelectChannel];
         int count = channel.times.Count;
         for (int i = 0; i < count; i++)
         {
@@ -301,19 +298,19 @@ public class SkillData {
         SaveSkill(skillId);
     }
 
-    public void CopyKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    public void CopyKeyFrame(string skillId, int curSelectChannel, int curSelectFrame,int index)
     {
         
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0)
             return;
-        if (curSelectChannel >= skill.channels.Count)
+        if (curSelectChannel >= skill.subSkills[index].channels.Count)
         {
             
-            EventCopyKeyFrame(skillId, curSelectChannel - skill.channels.Count, curSelectFrame);
+            EventCopyKeyFrame(skillId, curSelectChannel - skill.subSkills[index].channels.Count, curSelectFrame,index);
             return;
         }
-        var channel = skill.channels[curSelectChannel];
+        var channel = skill.subSkills[index].channels[curSelectChannel];
         int count = channel.times.Count;
         for (int i = 0; i < count; i++)
         {
@@ -333,11 +330,11 @@ public class SkillData {
                     }
                     else
                     {
-                        AddKeyFrame(skillId, curSelectChannel, time, channel.values[oi]);
+                        AddKeyFrame(index, skillId, curSelectChannel, time, channel.values[oi]);
                         return;
                     }
                 }
-                AddKeyFrame(skillId, curSelectChannel, time, channel.values[oi]);
+                AddKeyFrame(index, skillId, curSelectChannel, time, channel.values[oi]);
                 return;
             }
         }
@@ -345,13 +342,13 @@ public class SkillData {
     }
     
 
-    private void EventCopyKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    private void EventCopyKeyFrame(string skillId, int curSelectChannel, int curSelectFrame,int index)
     {
 
         var skill = GetSkill(skillId);
-        if (curSelectChannel < 0 || curSelectChannel >= skill.events.Count)
+        if (curSelectChannel < 0 || curSelectChannel >= skill.subSkills[index].events.Count)
             return;
-        var events = skill.events[curSelectChannel];
+        var events = skill.subSkills[index].events[curSelectChannel];
         int count = events.times.Count;
         for (int i = 0; i < count; i++)
         {
@@ -372,12 +369,12 @@ public class SkillData {
                     else
                     {
            
-                        AddEventKeyFrame(skillId, curSelectChannel, time, events.values[oi].Copy());
+                        AddEventKeyFrame(index,skillId, curSelectChannel, time, events.values[oi].Copy());
                         
                         return;
                     }
                 }
-                AddEventKeyFrame(skillId, curSelectChannel  , time, events.values[oi].Copy());
+                AddEventKeyFrame(index,skillId, curSelectChannel  , time, events.values[oi].Copy());
                 //AddKeyFrame(skillId, curSelectChannel, time, channel.values[oi]);
                 return;
          
@@ -385,13 +382,13 @@ public class SkillData {
         }
         SaveSkill(skillId);
     }
-    private void RemoveEventKeyFrame(string skillId, int curSelectChannel, int curSelectFrame)
+    private void RemoveEventKeyFrame(string skillId, int curSelectChannel, int curSelectFrame,int index)
     {
      
         var skill = GetSkill(skillId);
-        if (curSelectChannel < 0 || curSelectChannel >= skill.events.Count)
+        if (curSelectChannel < 0 || curSelectChannel >= skill.subSkills[index].events.Count)
             return;
-        var events = skill.events[curSelectChannel];
+        var events = skill.subSkills[index].events[curSelectChannel];
         int count = events.times.Count;
         for (int i = 0; i < count; i++)
         {
@@ -405,18 +402,18 @@ public class SkillData {
         SaveSkill(skillId);
     }
 
-    public void AddKeyFrame(string skillId, int curSelectChannel, int curSelectFrame ,float defaultVal = 0f)
+    public void AddKeyFrame(int index,string skillId, int curSelectChannel, int curSelectFrame ,float defaultVal = 0f)
     {
  
         var skill = GetSkill(skillId);
         if (curSelectChannel < 0 )
             return;
-        if (curSelectChannel >= skill.channels.Count)
+        if (curSelectChannel >= skill.subSkills[index].channels.Count)
         {
-            AddEventKeyFrame(skillId, curSelectChannel - skill.channels.Count, curSelectFrame);
+            AddEventKeyFrame(index, skillId, curSelectChannel - skill.subSkills[index].channels.Count, curSelectFrame);
             return;
         }
-        var channel = skill.channels[curSelectChannel];
+        var channel = skill.subSkills[index].channels[curSelectChannel];
         int count = channel.times.Count;
         for (int i = 0 ; i < count; i++)
         {
@@ -437,12 +434,12 @@ public class SkillData {
        
     }
 
-    private void AddEventKeyFrame(string skillId, int curSelectChannel, int curSelectFrame, ObjDictionary defaultVal = null)
+    private void AddEventKeyFrame(int index,string skillId, int curSelectChannel, int curSelectFrame, ObjDictionary defaultVal = null)
     {
         var skill = GetSkill(skillId);
-        if (curSelectChannel < 0 || curSelectChannel >= skill.events.Count)
+        if (curSelectChannel < 0 || curSelectChannel >= skill.subSkills[index].events.Count)
             return;
-        var events = skill.events[curSelectChannel];
+        var events = skill.subSkills[index].events[curSelectChannel];
         int count = events.times.Count;
         for (int i = 0; i < count; i++)
         {
@@ -487,12 +484,12 @@ public class SkillData {
  
     }
 
-    bool HasChannel(LCHSkillData skill ,int objId, int type,params object[] arg)
+    bool HasChannel(LCHSkillData skill ,int objId, int type ,int index)
     {
-        int len = skill.channels.Count;
+        int len = skill.subSkills[index] .channels.Count;
         for (int i = 0; i < len; i++)
         {
-            var c = skill.channels[i];
+            var c = skill.subSkills[index].channels[i];
             if (c.type == type&&c.objId == objId)
             {
 
@@ -502,26 +499,24 @@ public class SkillData {
         return true;
     }
 
-    bool HasEventChannel(LCHSkillData skill, int objId, int type, params object[] arg)
+    bool HasEventChannel(LCHSkillData skill, int objId, LCHChannelType type,int index)
     {
-        int len = skill.events.Count;
+        int len = skill.subSkills[index].events.Count;
         for (int i = 0; i < len; i++)
         {
-            var c = skill.events[i];
-            if (c.type == type && c.objId == objId)
+            var c = skill.subSkills[index].events[i];
+            if (c.type == (int)type && c.objId == objId)
             {
                 return false;
             }
         }
         return true;
     }
-    public void SkillEventChannel(params object[] args)
+    public void SkillEventChannel(string skillId, int objId, LCHChannelType type,int index)
     {
-        string skillId = (string)args[0];//pos_x
-        int objId = (int)args[1];
-        int type = (int)args[2];
+   
         LCHSkillData skill = GetSkill(skillId);
-        if (!HasEventChannel(skill, objId, type))
+        if (!HasEventChannel(skill, objId, type, index))
         {
 #if UNITY_EDITOR
             EditorUtility.DisplayDialog("提示", "相同轨迹已经存在", "确定");
@@ -531,13 +526,13 @@ public class SkillData {
         LCHEventChannelData channel = new LCHEventChannelData();
         channel.type = (int)type;
         channel.objId = objId;
-        skill.events.Add(channel);
+        skill.subSkills[index].events.Add(channel);
         SaveSkill(skill.id); 
     }
-    public void SkillLerpFloatChannel(string skillId, int objId, LCHChannelType type,bool messsage = true)
+    public void SkillLerpFloatChannel(int index,string skillId, int objId, LCHChannelType type,bool messsage = true)
     {
         LCHSkillData skill = GetSkill(skillId);
-        if (!HasChannel(skill,objId,(int)type) && messsage)
+        if (!HasChannel(skill,objId,(int)type,index) && messsage)
         {
 #if UNITY_EDITOR
             EditorUtility.DisplayDialog("提示", "相同轨迹已经存在", "确定");
@@ -556,18 +551,18 @@ public class SkillData {
         {
             channel.AddKey(0, 0,0f);
         }
-        skill.channels.Add(channel);
+        skill.subSkills[index].channels.Add(channel);
         
 
         SaveSkill(skill.id); 
 
     }
-    public void SkillAddSound(params object[] args)
+    public void SkillAddSound(int index, string skillId)
     {
-        string skillId = (string)args[0];
+ 
  
         LCHSkillData skill = GetSkill(skillId);
-        var v = skill.objs;
+        var v = skill.subSkills[index].objs;
         int objCount = v.Length;
         int id = 0;
         List<object> _list = new List<object>();
@@ -588,18 +583,15 @@ public class SkillData {
  
 
         LCHSkillData s = new LCHSkillData();
-        skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
+        skill.subSkills[index].objs = ArrayHelper.AddItem<LCHObjectData>(skill.subSkills[index].objs, eo);
         SaveSkill(skillId);
  
     }
-    public void SkillAddBaseCollider(params object[] args)
+    public void SkillAddBaseCollider(string skillId,int index, int objId, string bindName)
     {
-
-        string skillId = (string)args[0];
-        int objId = (int)args[1];
-        string bindName = (string)args[2];
+ 
         LCHSkillData skill = GetSkill(skillId);
-        var v = skill.objs;
+        var v = skill.subSkills[index].objs;
         int objCount = v.Length;
         int id = 0;
         List<object> _list = new List<object>();
@@ -627,15 +619,15 @@ public class SkillData {
         eo.propertys["objid"] = objId;
         eo.propertys["bind_name"] = bindName;
         LCHSkillData s = new LCHSkillData();
-        skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
+        skill.subSkills[index].objs = ArrayHelper.AddItem<LCHObjectData>(skill.subSkills[index].objs, eo);
         SaveSkill(skillId);
  
     }
-    public void SkillAddBoxCollider(params object[] args)
+    public void SkillAddBoxCollider(string skillId,int index)
     {
-        string skillId = (string)args[0];
+      
         LCHSkillData skill = GetSkill(skillId);
-        var v = skill.objs;
+        var v = skill.subSkills[index].objs;
         int objCount = v.Length;
         int id = 0;
         List<object> _list = new List<object>();
@@ -652,15 +644,15 @@ public class SkillData {
         eo.id = id;
         eo.name = "触发器-未命名";
         LCHSkillData s = new LCHSkillData();
-        skill.objs = ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
+        skill.subSkills[index].objs = ArrayHelper.AddItem<LCHObjectData>(skill.subSkills[index].objs, eo);
         SaveSkill(skillId);
  
     }
-    public int SkillAddObject(params object[] args)
+    public int SkillAddObject(string skillId,int index)
     {
-        string skillId = (string)args[0];
+         
         LCHSkillData skill = GetSkill(skillId);
-        var v = skill.objs;
+        var v = skill.subSkills[index].objs;
 
         int objCount = v.Length;
         int id = 0;
@@ -678,7 +670,7 @@ public class SkillData {
         eo.id = id;
         eo.name = "对象-未命名"; 
         LCHSkillData s = new LCHSkillData();
-        skill.objs =  ArrayHelper.AddItem<LCHObjectData>(skill.objs, eo);
+        skill.subSkills[index].objs =  ArrayHelper.AddItem<LCHObjectData>(skill.subSkills[index].objs, eo);
         SaveSkill(skillId);
         return id;
     }

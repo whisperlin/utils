@@ -42,7 +42,7 @@ public partial class LCharacter : CharacterBase, LCharacterInterface
             hatredMap[otherCharacterId] = v;
         }
     }
-
+    
     Dictionary<string, SkillParams> cds = new Dictionary<string, SkillParams>();
     List<SkillParams> cdsList = new List<SkillParams>();
     public void AddParam(string cdName, SkillParams _params)

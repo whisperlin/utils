@@ -52,6 +52,16 @@ public partial class SkillEditorMainWindow
         ObjDictionary propertys = (ObjDictionary)args[0];
         propertys["bind_name"] = name;
     }
+
+    string[] GetStringList(int c)
+    {
+        string[] s = new string[c];
+        for (int i = 0; i < c; i++)
+        {
+            s[i] = "第" + (i+1) + "段";
+        }
+        return s;
+    }
     public void OnGUI1() {
 
         var layourWidth30 = GUILayout.Width(30f);
@@ -76,19 +86,84 @@ public partial class SkillEditorMainWindow
         }
         if (null == skill)
             return;
+        EditorGUILayout.BeginHorizontal();
+        int __index = EditorGUILayout.Popup("技能段数(总段数" + skill.subSkills.Length + "):", SkillEditorData.Instance.subSkillIndex, GetStringList(skill.subSkills.Length));
+        if (__index != SkillEditorData.Instance.subSkillIndex)
+        {
+            SkillEditorData.Instance.skill.Release();
+            SkillEditorData.Instance.subSkillIndex = __index;
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("添加段数"))
+        {
+            LCHSubSkill[] newList = new LCHSubSkill[skill.subSkills.Length+1];
+            LCHSkillSubData[] newSubList = new LCHSkillSubData[skill.subSkills.Length + 1];
+            for (int i = 0; i < skill.subSkills.Length; i++)
+            {
+                newSubList[i ] = SkillEditorData.Instance.skill.subDatas[i];
+                newList[i] = skill.subSkills[i];
+
+
+            }
+            int index0 = skill.subSkills.Length;
+            newList [index0] = new LCHSubSkill();
+            newSubList[index0] = new LCHSkillSubData();
+            skill.subSkills = newList;
+            SkillEditorData.Instance.skill.subDatas = newSubList;
+
+            SkillEditorData.Instance.skillsData.SkillAddBoxCollider(SkillEditorData.Instance.CurSkillId, index0);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, -1, LCHChannelType.PosY);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, -1, LCHChannelType.PosZ);
+
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, 0, LCHChannelType.PosY);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, 0, LCHChannelType.PosZ);
+
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, 0, LCHChannelType.ScaleX, false);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, 0, LCHChannelType.ScaleY, false);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(index0, SkillEditorData.Instance.CurSkillId, 0, LCHChannelType.ScaleZ, false);
+
+
+            SkillEditorData.Instance.skillsData.SkillEventChannel(SkillEditorData.Instance.CurSkillId, -1, LCHChannelType.Object, index0);
+            SkillEditorData.Instance.skillsData.SkillEventChannel(SkillEditorData.Instance.CurSkillId, 0, LCHChannelType.Event, index0);
+
+            
+
+
+        }
+        if (GUILayout.Button("删除段数"))
+        {
+            if (skill.subSkills.Length > 1)
+            {
+                LCHSubSkill[] newList = new LCHSubSkill[skill.subSkills.Length -1 ];
+                LCHSkillSubData[] newSubList = new LCHSkillSubData[skill.subSkills.Length - 1 ];
+                for (int i = 0; i < skill.subSkills.Length-1; i++)
+                {
+                    newSubList[i] = SkillEditorData.Instance.skill.subDatas[i];
+                    newList[i] = skill.subSkills[i];
+                }
+                skill.subSkills = newList;
+                SkillEditorData.Instance.skill.subDatas = newSubList;
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        SpeceLine();
         var buttonRect = EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("添加对象", layourWidth80))
         {
-            int _id = SkillEditorData.Instance.skillsData.SkillAddObject(  SkillEditorData.Instance.CurSkillId);
+            int _id = SkillEditorData.Instance.skillsData.SkillAddObject(  SkillEditorData.Instance.CurSkillId, SkillEditorData.Instance.subSkillIndex);
 
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.PosY);
-            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.PosZ);
-            SkillEditorData.Instance.skillsData.SkillEventChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.Object);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.subSkillIndex,SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.PosY);
+            SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(SkillEditorData.Instance.subSkillIndex,SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.PosZ);
+            SkillEditorData.Instance.skillsData.SkillEventChannel(SkillEditorData.Instance.CurSkillId, _id, LCHChannelType.Object, SkillEditorData.Instance.subSkillIndex);
             
         }
         if (GUILayout.Button("添加碰撞体", layourWidth80))
         {
-            SkillEditorData.Instance.skillsData.SkillAddBoxCollider(  SkillEditorData.Instance.CurSkillId);
+            SkillEditorData.Instance.skillsData.SkillAddBoxCollider(  SkillEditorData.Instance.CurSkillId, SkillEditorData.Instance.subSkillIndex);
         }
 
         EditorGUI.BeginDisabledGroup(null == anim);
@@ -104,7 +179,7 @@ public partial class SkillEditorMainWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("音效", layourWidth80))
         {
-            SkillEditorData.Instance.skillsData.SkillAddSound( SkillEditorData.Instance.CurSkillId);
+            SkillEditorData.Instance.skillsData.SkillAddSound(SkillEditorData.Instance.subSkillIndex, SkillEditorData.Instance.CurSkillId);
         }
          
 
@@ -136,9 +211,9 @@ public partial class SkillEditorMainWindow
 
         if (skill != null)
         {
-            for (int i = 0; i < skill.objs.Length; i++)
+            for (int i = 0; i < skill.subSkills[SkillEditorData.Instance.subSkillIndex].objs.Length; i++)
             {
-                LCHObjectData obj = skill.objs[i];
+                LCHObjectData obj = skill.subSkills[SkillEditorData.Instance.subSkillIndex].objs[i];
                 var rect = EditorGUILayout.BeginHorizontal();
                 bool b0 = selectObjId == obj.id;
                 if (b0)
@@ -169,7 +244,7 @@ public partial class SkillEditorMainWindow
                 {
                     if (selectObjId == obj.id)
                         selectObjId = -1;
-                    SkillEditorData.Instance.skillsData.RemoveObject( skill.id, obj.id);
+                    SkillEditorData.Instance.skillsData.RemoveObject( skill.id, obj.id, SkillEditorData.Instance.subSkillIndex);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -182,7 +257,7 @@ public partial class SkillEditorMainWindow
         LCHObjectData selectObject = null;
         if (selectObjId > -1   )
         {
-            selectObject = skill.GetObject(selectObjId);
+            selectObject = skill.subSkills[SkillEditorData.Instance.subSkillIndex].GetObject(selectObjId);
             if (selectObject.type == 3)
             {
                 var rect = EditorGUILayout.BeginHorizontal();
@@ -228,7 +303,7 @@ public partial class SkillEditorMainWindow
             if (null != SkillEditorWindow.selectEvent && null != SkillEditorWindow.selectEventChannel)
             {
                 int objId = SkillEditorWindow.selectEventChannel.objId;
-                var _object_type = skill.GetObjectType(objId);
+                var _object_type = skill.subSkills[SkillEditorData.Instance.subSkillIndex].GetObjectType(objId);
                 
                 LCHChannelType _type = (LCHChannelType)SkillEditorWindow.selectEventChannel.type;
                 if (_type == LCHChannelType.Event)
@@ -244,7 +319,7 @@ public partial class SkillEditorMainWindow
                     int[] objectid = ArrayHelper.emptyIntList;
                     if (null != SkillEditorData.Instance.skill)
                     {
-                        SkillEditorData.Instance.skill.GetAllObjectList(objId, ref sounds, ref soundIds,ref objectNames,ref objectid);
+                        SkillEditorData.Instance.skill.GetAllObjectList(objId, ref sounds, ref soundIds,ref objectNames,ref objectid, SkillEditorData.Instance.subSkillIndex);
                     }
                     if (eEnable)
                     {
@@ -261,7 +336,7 @@ public partial class SkillEditorMainWindow
                     
                     if (null != SkillEditorData.Instance.skill)
                     {
-                          anims = SkillEditorData.Instance.skill.GetAnimList(objId);
+                          anims = SkillEditorData.Instance.skill.GetAnimList(objId, SkillEditorData.Instance.subSkillIndex);
                     }
  
                     property_params["anims"] = anims;
@@ -273,7 +348,7 @@ public partial class SkillEditorMainWindow
 
                     if (null != SkillEditorData.Instance.skill)
                     {
-                        anims = SkillEditorData.Instance.skill.GetAnimList(objId);
+                        anims = SkillEditorData.Instance.skill.GetAnimList(objId, SkillEditorData.Instance.subSkillIndex);
                     }
                     
                     PropertyHelper.DrawPropertys(SkillEditorWindow.selectEvent, SkillEditorData.Instance.skillsData.GetRoleStateTemp(), SkillEditorData.Instance.skillsData.GetRoleStateNames(), null, _object_type);
@@ -287,6 +362,6 @@ public partial class SkillEditorMainWindow
 
     public void OnColliderAdd(int objId,string str, object[] args)
     {
-        SkillEditorData.Instance.skillsData.SkillAddBaseCollider( SkillEditorData.Instance.CurSkillId, objId,str);
+        SkillEditorData.Instance.skillsData.SkillAddBaseCollider( SkillEditorData.Instance.CurSkillId, SkillEditorData.Instance.subSkillIndex, objId,str);
     }
 }

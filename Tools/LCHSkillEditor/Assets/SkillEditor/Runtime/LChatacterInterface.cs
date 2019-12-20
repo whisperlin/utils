@@ -195,7 +195,7 @@ public interface LCharacterInterface
     Vector3 GetCurForward();
     Vector3 GetCurXZForward();
     void SetAnimationLoop(string animName, bool v);
-
+    void AddAction(LCharacterAction a);
 
     int GetHp();
     void SetHp(int hp);

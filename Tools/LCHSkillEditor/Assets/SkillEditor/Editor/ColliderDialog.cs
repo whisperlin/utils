@@ -53,9 +53,9 @@ public class ColliderDialog : PopupWindowContent
             }
             
         }
-        for (int j = 0, c = SkillEditorData.Instance.skill.objs.Count; j < c; j++)
+        for (int j = 0, c = SkillEditorData.Instance.skill.subDatas[SkillEditorData.Instance.subSkillIndex].objs.Count; j < c; j++)
         {
-            var o = SkillEditorData.Instance.skill.objs[j];
+            var o = SkillEditorData.Instance.skill.subDatas[SkillEditorData.Instance.subSkillIndex].objs[j];
             if (null != o.gameobject && o.objId == -1 || o.type == 1)
             {
 
@@ -85,10 +85,8 @@ public class ColliderDialog : PopupWindowContent
                         }
                     }
                 }
-                
             }
         }
-        
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();

@@ -43,7 +43,7 @@ public class LCharacterSkillAI : LCharacterSkillAction
                 var selPos = character.GetCurPosition();
                 var targetPos = target.GetCurPosition();
                 float dis = Vector3.Distance(selPos, targetPos);
-                if (null != skillData && dis < skillData.skillRange)
+                if (null != skillData && dis < skillData.subSkills[skillState].skillRange)
                 {
                     return true;
                 }

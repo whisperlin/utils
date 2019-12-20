@@ -29,6 +29,9 @@ public class ActionSkill : MonoBehaviour {
             a.cdState = state;
             a.cdName = cdName;
             a.skillState = i;
+            a.cdParam = _params;
+
+
             _params.button = button;
             chatacter.AddAction(a);
         }

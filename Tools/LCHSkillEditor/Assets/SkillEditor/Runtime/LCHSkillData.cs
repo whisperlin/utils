@@ -344,22 +344,9 @@ public class LCHEventChannelData
 
     
 }
-
-
-public class LCHSkillData
+[System.Serializable]
+public class LCHSubSkill
 {
-#if UNITY_EDITOR
-    static int innerId = 0;
-    int instanceId = 0;
-    public LCHSkillData()
-    {
-        innerId++;
-        instanceId = innerId;
-    }
-#endif
-
-    public string id = "";
-    public string roleId = "";
     public float maxLength = 3f;
     public LCHObjectData[] objs = new LCHObjectData[0];
     public List<LCHChannelData> channels = new List<LCHChannelData>();//这里搞不了多态，因为序列化json不支持多态。
@@ -367,9 +354,10 @@ public class LCHSkillData
     public float skillRange = 1f;//技能攻击范围。
 
     public float skillWidth = 1f;//技能宽度。
-    public string CdName = "";
-    public int skillIndex = -1;
+ 
     public SkillParams.TYPE type = SkillParams.TYPE.CLICK;
+
+    public int cd;
 
     public void GetidsAndName(ref string[] items0, ref int[] ids)
     {
@@ -408,7 +396,7 @@ public class LCHSkillData
     }
     public void RemoveObject(int _id)
     {
-        for (int i = 0; i < channels.Count;i++ )
+        for (int i = 0; i < channels.Count; i++)
         {
             var c = channels[i];
             if (c.objId == _id)
@@ -432,7 +420,7 @@ public class LCHSkillData
             {
                 var _obj = objs[i];
                 objs = ArrayHelper.DeleteItemAt<LCHObjectData>(objs, i);
- 
+
                 break;
             }
         }
@@ -462,4 +450,22 @@ public class LCHSkillData
         }
         return null;
     }
+}
+public class LCHSkillData
+{
+#if UNITY_EDITOR
+    static int innerId = 0;
+    int instanceId = 0;
+    public LCHSkillData()
+    {
+        innerId++;
+        instanceId = innerId;
+    }
+#endif
+
+    public string id = "";
+    public string roleId = "";
+
+    public LCHSubSkill[] subSkills = new LCHSubSkill[1] { new LCHSubSkill() };
+
 }

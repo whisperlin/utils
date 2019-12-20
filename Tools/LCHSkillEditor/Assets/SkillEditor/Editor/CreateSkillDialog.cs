@@ -33,23 +33,23 @@ public class CreateSkillDialog : EditorWindow
             }
             if (SkillEditorData.Instance.skillsData.CreateSkill(id, roleId))
             {
-                SkillEditorData.Instance.skillsData.SkillAddBoxCollider(id);
-                //SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, -1, LCHChannelType.PosX);
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, -1, LCHChannelType.PosY);
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, -1, LCHChannelType.PosZ);
+                SkillEditorData.Instance.skillsData.SkillAddBoxCollider(id,0);
+ 
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, -1, LCHChannelType.PosY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, -1, LCHChannelType.PosZ);
 
-                //SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.PosX);
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.PosY);
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.PosZ);
-
-
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.ScaleX, false);
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.ScaleY, false);
-                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(id, 0, LCHChannelType.ScaleZ, false);
+ 
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, 0, LCHChannelType.PosY);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, 0, LCHChannelType.PosZ);
 
 
-                SkillEditorData.Instance.skillsData.SkillEventChannel(id, -1, LCHChannelType.Object);
-                SkillEditorData.Instance.skillsData.SkillEventChannel(id, 0, LCHChannelType.Event);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, 0, LCHChannelType.ScaleX, false);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, 0, LCHChannelType.ScaleY, false);
+                SkillEditorData.Instance.skillsData.SkillLerpFloatChannel(0,id, 0, LCHChannelType.ScaleZ, false);
+
+
+                SkillEditorData.Instance.skillsData.SkillEventChannel(id, -1, LCHChannelType.Object,0);
+                SkillEditorData.Instance.skillsData.SkillEventChannel(id, 0, LCHChannelType.Event,0);
             }
             Close();
 

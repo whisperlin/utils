@@ -37,13 +37,17 @@ public class LCharacterSkillAction : LCharacterAction
     public VirtualInput.KeyCode button;
     public int skillState = 0;//技能段数，多段技能使用。
     public bool isOnGround = true;
+    
     protected LCHSkillData skillData;
-
+ 
     Vector3 targetPoint;
     Vector3 targetDir;
     Vector3 beginTargetPoint;
     float beginToTarget = -1f;
     float endToTarget = -1f;
+
+ 
+   
 
     public bool HasLoaded
     {
@@ -97,7 +101,7 @@ public class LCharacterSkillAction : LCharacterAction
                         p0.y = 0f;
                         p1.y = 0f;
                         float distance =  Vector3.Distance(p0, p1);
-                        if (distance < skillData.skillRange)
+                        if (distance < skillData.subSkills[skillState].skillRange)
                         {
                             return true;
                         }
@@ -120,14 +124,14 @@ public class LCharacterSkillAction : LCharacterAction
          
         role.type = 1;
         role.objId = -1;
-
-        character.UpdateSkillRange(cdName,skillData.skillRange,skillData.skillWidth);
+ 
+        character.UpdateSkillRange(cdName,skillData.subSkills[skillState].skillRange,skillData.subSkills[skillState].skillWidth);
         //
         objs[role.objId] = role;
-        objList = new ObjectContain[skillData.objs.Length];
-        for (int i = 0, l = skillData.objs.Length; i < l; i++)
+        objList = new ObjectContain[skillData.subSkills[skillState].objs.Length];
+        for (int i = 0, l = skillData.subSkills[skillState].objs.Length; i < l; i++)
         {
-            var o = skillData.objs[i];
+            var o = skillData.subSkills[skillState].objs[i];
             ObjectContain oc = new ObjectContain();
             oc.SetInformation(o);
             objs[o.id] = oc;
@@ -186,25 +190,61 @@ public class LCharacterSkillAction : LCharacterAction
                 loader.loadResource(oc.mod_name, oc.mod,fun);
             }
         }
-        for (int i = 0, c0 = skillData.events.Count; i < c0; i++)
+        for (int i = 0, c0 = skillData.subSkills[skillState].events.Count; i < c0; i++)
         {
-            var _e = skillData.events[i];
+            var _e = skillData.subSkills[skillState].events[i];
             var contain = objs[_e.objId];
             contain.events.Add(_e);
         }
 
-        for (int i = 0, c0 = skillData.channels.Count; i < c0; i++)
+        for (int i = 0, c0 = skillData.subSkills[skillState].channels.Count; i < c0; i++)
         {
-            var _c = skillData.channels[i];
+            var _c = skillData.subSkills[skillState].channels[i];
             var contain = objs[_c.objId];
             contain.channels.Add(_c);
         }
+        if (skillState < skillData.subSkills.Length-1)
+        {
+            
+            {
+                if (skillState ==0)
+                {
+                    CDData [] ary = new CDData[skillData.subSkills.Length];
+                    for (int i = 0; i < skillData.subSkills.Length; i++)
+                    {
+                        ary[i] = new CDData();
+                    }
+ 
+                    ary[0].cd = cdParam.cds[0].cd;
+                    ary[0].skillId = cdParam.cds[0].skillId;
 
+
+                    cdParam.cds = ary;
+                    //public CDData[] cds;
+                }
+                LCharacterSkillAction a = new LCharacterSkillAction();
+                
+                a.SkillId = SkillId;
+                a.priority = priority;
+                a.button = button;
+                a.skillState = skillState + 1;
+                a.cdState = cdState;
+                a.cdName = cdName;
+              
+                a.cdParam = cdParam;
+                a.cdParam.cds[a.skillState].skillId = SkillId;
+                a.cdParam.cds[a.skillState].cd = skillData.subSkills[a.skillState].cd;
+                character.AddAction(a);
+ 
+            }
+        }
         hasLoaded = true;
  
     }
     SkillParams.TYPE skill_type;
     int curTargetId = -1;
+    internal SkillParams cdParam;
+
     public override void beginAction(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime = 0f;
@@ -829,7 +869,7 @@ public class LCharacterSkillAction : LCharacterAction
     public override bool isFinish(LCharacterInterface character, LChatacterInformationInterface information)
     {
         curTime += Time.deltaTime;
-        if (skillData != null && skillData.maxLength < curTime)
+        if (skillData != null && skillData.subSkills[skillState].maxLength < curTime)
         {
             return true;
         }

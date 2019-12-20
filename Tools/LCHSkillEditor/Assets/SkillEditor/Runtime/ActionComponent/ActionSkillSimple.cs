@@ -34,6 +34,7 @@ public class ActionSkillSimple : MonoBehaviour {
         a.skillState = 0;
         a.cdState = CdState.NORMAL;
         a.cdName = cdName;
+        a.cdParam = _params;
         _params.button = button;
         chatacter.AddAction(a);
 

@@ -120,10 +120,10 @@ public class JSonHelper  {
     public static LCHSkillData DeserializeSkill(string str)
     {
         LCHSkillData _map = JsonConvert.DeserializeObject<LCHSkillData>(str);
-        for (int i = 0, c = _map.objs.Length; i < c; i++)
+        /*for (int i = 0, c = _map.objs.Length; i < c; i++)
         {
             var o = _map.objs[i];
-        }
+        }*/
         return _map;
     }
     

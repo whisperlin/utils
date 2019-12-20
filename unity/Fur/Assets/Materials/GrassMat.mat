@@ -42,16 +42,16 @@ Material:
       second: 0.528
     - first:
         name: _FurLength
-      second: 0.188
+      second: 0.085
     - first:
         name: _Glossiness
-      second: 0.476
+      second: 0.346
     - first:
         name: _GravityStrength
-      second: 0.373
+      second: 0.425
     - first:
         name: _Metallic
-      second: 0.337
+      second: 0.412
     m_Colors:
     - first:
         name: <noninit>
@@ -61,4 +61,4 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _Gravity
-      second: {r: 0, g: 0, b: 1, a: 0}
+      second: {r: 0, g: -1, b: 0, a: 0}
