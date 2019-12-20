@@ -36,14 +36,14 @@ Shader "Hidden/CubemapToEquirectangular" {
 	fixed4 frag(v2f i) : COLOR
 	{
 		float theta = i.uv.y;
-	float phi = i.uv.x;
-	float3 unit = float3(0,0,0);
+		float phi = i.uv.x;
+		float3 unit = float3(0,0,0);
 
-	unit.x = sin(phi) * sin(theta) * -1;
-	unit.y = cos(theta) * -1;
-	unit.z = cos(phi) * sin(theta) * -1;
+		unit.x = sin(phi) * sin(theta) * -1;
+		unit.y = cos(theta) * -1;
+		unit.z = cos(phi) * sin(theta) * -1;
 
-	return texCUBE(_MainTex, unit);
+		return texCUBE(_MainTex, unit);
 	}
 		ENDCG
 	}

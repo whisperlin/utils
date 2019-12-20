@@ -11,7 +11,6 @@ public class CubeMapCreator : MonoBehaviour
     [MenuItem("TA/环境球/捕捉CubeMap")]
     static void CubeMapCreatorFun()
     {
-
         GameObject g = Selection.activeGameObject;
         if (g == null)
         {
@@ -19,8 +18,6 @@ public class CubeMapCreator : MonoBehaviour
             return;
         }
         Cubemap ma = GetEnviromentAtPosition(g.transform.position);
-
-
         string path = EditorUtility.SaveFilePanelInProject("提示", "Cubemap", "cubemap",
                     "请输入保存文件名");
         if (path.Length != 0)
