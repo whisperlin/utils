@@ -59,17 +59,17 @@ public class CubeMapCreator : MonoBehaviour
         RenderTexture renderTexture = RenderTexture.GetTemporary(4096, 2048, 24);
         Graphics.Blit(cubemap, renderTexture, conversionMaterial);
 
-        RenderTexture rt2 = RenderTexture.GetTemporary(512, 256, 24);
-        Graphics.Blit(renderTexture, rt2);
+        //RenderTexture rt2 = RenderTexture.GetTemporary(512, 256, 24);
+        //Graphics.Blit(renderTexture, rt2);
 
         var old = RenderTexture.active;
-        RenderTexture.active = rt2;
-        Texture2D equirectangularTexture = new Texture2D(512, 256, TextureFormat.ARGB32, false);
-        equirectangularTexture.ReadPixels(new Rect(0, 0, rt2.width, rt2.height), 0, 0, false);
+        RenderTexture.active = renderTexture;
+        Texture2D equirectangularTexture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
+        equirectangularTexture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0, false);
         equirectangularTexture.Apply();
         RenderTexture.active = old;
         RenderTexture.ReleaseTemporary(renderTexture);
-        RenderTexture.ReleaseTemporary(rt2);
+        //RenderTexture.ReleaseTemporary(rt2);
 
         string path = EditorUtility.SaveFilePanelInProject("提示", "Panoramic", "png",
                    "请输入保存文件名");
