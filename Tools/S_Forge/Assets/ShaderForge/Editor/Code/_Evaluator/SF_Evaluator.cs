@@ -1233,19 +1233,26 @@ namespace ShaderForge {
 			return LightmappedAndLit() && ( currentPass == PassType.FwdBase || currentPass == PassType.Deferred );
 		}
 
+        /*
+        o.normalDir = UnityObjectToWorldNormal(v.normal);
+        o.tangentDir = UnityObjectToWorldDir(v.tangent.xyz);
+        half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+        o.bitangentDir = cross(o.normalDir, o.tangentDir) * tangentSign;
+        */
 		void InitNormalDirVert() {
 			if( dependencies.vert_out_normals ) {
-				App( "o.normalDir = UnityObjectToWorldNormal(" + ps.catGeometry.GetNormalSign() + "v.normal);" );
+				App("o.normalDir = UnityObjectToWorldNormal(v.normal);");
 			}
 		}
 
 		void InitTangentDirVert() {
-			App( "o.tangentDir = normalize( mul( unity_ObjectToWorld, float4( v.tangent.xyz, 0.0 ) ).xyz );" );
+			App("o.tangentDir = UnityObjectToWorldDir(v.tangent.xyz);");
 		}
 
 		void InitBitangentDirVert() {
-			App( "o.bitangentDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);" );
-		}
+			App("half tangentSign = v.tangent.w * unity_WorldTransformParams.w;");
+            App("o.bitangentDir = cross(o.normalDir, o.tangentDir) * tangentSign;");
+        }
 
 		void InitObjectPos() {
 			if( dependencies.frag_objectPos || dependencies.vert_objectPos )
