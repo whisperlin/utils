@@ -1,68 +1,58 @@
-﻿Shader "MyTest/TestMalloc"
-{
-    Properties
-    {
-        _MainTex("Texture", 2D) = "white" {}
+﻿Shader"MaterialPropertyDrawer/MaterialPropertyDrawerKeywordEnum"{
+	Properties{
+		[KeywordEnum(Red,Green,Blue)]_ColorMode("Color Mode",Float) = 0
+		[Toggle(_MyToggle1)] _button("Toggle", Float) = 0
 
-        // 声明需要的控件
-        [Toggle(S_BOOL)] _S_BOOL("S_BOOL", Int) = 0
-        [Toggle] _MyToggle1("MyToggle1", Float) = 0
-        [Toggle(MyToggle2)] _MyToggle2("MyToggle2", Float) = 0
-        [KeywordEnum(One, Two, Three)] _MyEnum("MyEnum", Float) = 0
-    }
-    SubShader
-    {
-        Tags{ "RenderType" = "Opaque" }
-        LOD 200
-		CGINCLUDE
-		//some code
-		END
-        CGPROGRAM
+		[MaterialToggle] _mt("MaterialToggle", Float) = 0
+	}
+		SubShader{
+			pass {
+				Tags{"LightMode" = "ForwardBase"}
+				CGPROGRAM
+				#pragma multi_compile  _COLORMODE_RED _COLORMODE_GREEN _COLORMODE_BLUE
+				//#pragma shader_feature _COLORMODE_RED _COLORMODE_GREEN _COLORMODE_BLUE
+				#pragma multi_compile  _ _MyToggle1 
+				#pragma vertex vert
+				#pragma fragment frag
+				#include "UnityCG.cginc"
 
-        #pragma surface surf Lambert addshadow
+				struct VertOut{
+					float4 pos:SV_POSITION;
+					float4 color:COLOR;
+				};
+				VertOut vert(appdata_base v)
+				{
 
-        // 创建变量，用来接收控件的值
-        #pragma shader_feature S_BOOL
-        #pragma shader_feature S_OUTSIDE_TEST
-        #pragma shader_feature _MYTOGGLE1_ON
-        #pragma shader_feature MyToggle2
-        #pragma multi_compile _MYENUM_ONE _MYENUM_TWO _MYENUM_THREE
-
-        sampler2D _MainTex;
-
-        struct Input
-        {
-            float2 uv_MainTex;
-        };
-
-        void surf(Input IN, inout SurfaceOutput o)
-        {
-            half4 c = tex2D(_MainTex, IN.uv_MainTex);
-            o.Albedo = c.rgb;
-            o.Alpha = c.a;
-
-            #if S_BOOL
-            o.Albedo.gb *= 0.5;
-            #endif
-
-            //#if _MYTOGGLE1_ON
-            //o.Albedo.gb *= 0.5;
-            //#endif
-
-            //#if MyToggle2
-            //o.Albedo.gb *= 0.5;
-            //#endif
-
-
-            #if S_OUTSIDE_TEST
-            o.Albedo.gb = fixed3(1,0,0);
-            #endif
+					VertOut o = (VertOut)0;
 
 
 
-           
-        }
+					o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
+					o.color = float4(0,0,0,1);
 
-        ENDCG
-    }
+					#if _COLORMODE_RED
+						o.color = float4(1,0,0,1);
+
+					#elif _COLORMODE_GREEN
+						o.color = float4(0,1,0,1);
+
+					#elif _COLORMODE_BLUE
+						o.color = float4(0,0,1,1);
+					#endif
+
+					return o;
+				}
+				float _mt;
+				float4 frag(VertOut i) :COLOR
+				{
+					if (_mt > 0)
+					return float4(0,1,1,1);
+#if _MyToggle1
+					return float4(1, 1, 1, 1);
+#endif
+					return i.color;
+				}
+				ENDCG
+	}//end pass
+	}
 }

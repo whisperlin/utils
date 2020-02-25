@@ -22,7 +22,7 @@ public class TestMalloc : MonoBehaviour {
 			} else {
 				Shader.DisableKeyword ("S_OUTSIDE_TEST");
 			}
-			b = !b;
+			b = !b;                         
 		}
 	}
 }
